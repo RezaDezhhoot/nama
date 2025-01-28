@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('body')->nullable();
 
             $table->boolean('confirm')->default(false);
-            $table->integer('amount')->nullable();
+            $table->unsignedBigInteger('amount')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

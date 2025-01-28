@@ -6,6 +6,7 @@ use App\Enums\RequestPlanStatus;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RequestPlan extends Model
@@ -29,5 +30,10 @@ class RequestPlan extends Model
     public function scopeComingSoon(Builder $builder): Builder
     {
         return $builder->where('status' , RequestPlanStatus::COMING_SOON);
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class,'request_plan_id');
     }
 }

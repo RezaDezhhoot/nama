@@ -38,4 +38,11 @@ return [
         'site_key' => env('RECAPTCHA_SITE_KEY'),
         'secret_key' => env('RECAPTCHA_SECRET_KEY'),
     ],
+
+    'arman' => [
+        'oauth' => [
+            'token' => env('ARMAN_OAUTH_TOKEN'),
+            'api_endpoint' => env('ARMAN_OAUTH_API_ENDPOINT')
+        ]
+    ]
 ];

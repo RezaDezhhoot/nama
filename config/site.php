@@ -10,6 +10,10 @@ return [
         ],
         'image' => [
             'formats' => explode(",",env("VALID_IMAGE_FORMATS","jpg,jpeg,png,gif"))
-        ]
+        ],
+        'document' => [
+            'formats' => explode(",",env("VALID_DOCUMENT_FORMATS","pptx,pdf,docx,xlsx,cfb"))
+        ],
     ],
+    'default_disk' => env('DEFAULT_DISK','public'),
 ];

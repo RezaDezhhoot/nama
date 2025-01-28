@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Traits\SimpleSearchable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -51,5 +52,10 @@ class Request extends Model
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class,'commentable');
+    }
+
+    public function scopeConfirmed(Builder $builder): Builder
+    {
+        return $builder->where('confirm' , true);
     }
 }
