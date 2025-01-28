@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->index();
             $table->text('body');
             $table->morphs('commentable');
+            $table->string('display_name')->nullable();
             $table->timestamps();
         });
     }

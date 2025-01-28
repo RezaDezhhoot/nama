@@ -1,8 +1,8 @@
 @use('App\Enums\PageAction')
 <div wire:init="init">
     <x-admin.big-loader :loading="$loading" />
-    @section('title', 'اکشن پلن ها')
-    <x-admin.form-control link="{{ route('admin.plans.store',[PageAction::CREATE] ) }}" title="اکشن پلن ها"/>
+    @section('title', 'درخواست ها')
+    <x-admin.form-control :store="false" title="درخواست ها"/>
 
     <div class="card card-custom">
         <div class="card-body">
@@ -17,9 +17,13 @@
                         <tr>
                             <th>#</th>
                             <th>شناسه</th>
-                            <th>عنوان</th>
-                            <th>زیر عنوان</th>
+                            <th>پلن</th>
+                            <th>کاربر</th>
                             <th>وضعیت</th>
+                            <th>مرحله</th>
+                            <th>تاریخ ارسال</th>
+                            <th>تاریخ اخرین بروزرسانی</th>
+                            <th>تعداد گفتوگو</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -28,12 +32,21 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->title }}</td>
-                                <td>{{ $item->sub_title ?? '-' }}</td>
-                                <td>{{ $item->status?->label() }}</td>
+                                <td>{{ $item->plan->title }}</td>
                                 <td>
-                                    <x-admin.edit-btn href="{{ route('admin.plans.store',[PageAction::UPDATE , $item->id]) }}"/>
-                                    <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
+                                    <ul>
+                                        <li>{{ $item->user->name }}</li>
+                                        <li>{{ $item->user->phone }}</li>
+                                        <li>{{ $item->user->national_id }}</li>
+                                    </ul>
+                                </td>
+                                <td>{{ $item->status->label() }}</td>
+                                <td>{{ $item->step->label() }}</td>
+                                <td>{{ persian_date($item->created_at) }}</td>
+                                <td>{{ persian_date($item->updated_at) }}</td>
+                                <td>{{ number_format($item->comments_count) }}</td>
+                                <td>
+                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[PageAction::UPDATE , $item->id]) }}"/>
                                 </td>
                             </tr>
                         @endforeach
@@ -55,23 +68,3 @@
         </div>
     </div>
 </div>
-@push('scripts')
-    <script>
-        function deleteItem(id) {
-            Swal.fire({
-                title: 'حذف کردن',
-                text: 'آیا از حذف کردن این مورد اطمینان دارید؟',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'خیر',
-                confirmButtonText: 'بله',
-            }).then((result) => {
-                if (result.value) {
-                    @this.call('deleteItem' , id)
-                }
-            })
-        }
-    </script>
-@endpush

@@ -25,6 +25,10 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         Route::group(['prefix' => 'feed' , 'as' => 'feed.','middleware' => 'is_admin'] , function () {
             Route::get('users' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');
         });
+        Route::group(['prefix' => 'requests' , 'as' => 'requests.' , 'middleware' => 'is_operator'] , function () {
+            Route::get('' , \App\Livewire\Requests\IndexRequest::class)->name('index');
+            Route::get('{action}/{id}' , \App\Livewire\Requests\StoreRequest::class)->name('store');
+        });
     });
     Route::group(['prefix' => 'auth' , 'as' => 'auth.'],function (){
         Route::middleware('guest')->get('/auth', \App\Livewire\Auth\Auth::class)->name('login');

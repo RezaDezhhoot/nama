@@ -45,6 +45,19 @@
                     </a>
                 </li>
 
+                <li class="menu-section">
+                    <h4 class="menu-text">گزارشات</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @if(isAdmin() || isOperator())
+                    <x-admin.menu-item
+                        href="{{route('admin.requests.index')}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.requests.index','admin.requests.store'])"
+                        label="درخواست ها({{ $requests }})" />
+                @endif
+
+
                 @if(isAdmin())
                     <li class="menu-section">
                         <h4 class="menu-text">تنظیمات</h4>

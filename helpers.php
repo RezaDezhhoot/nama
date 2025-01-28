@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OperatorRole;
 use App\Enums\UserRole;
 use App\Models\Setttings;
 use Illuminate\Support\Carbon;
@@ -145,4 +146,9 @@ function getSetting(...$name)
 function isAdmin(): bool
 {
     return in_array(auth()->user()->role , [UserRole::ADMIN, UserRole::SUPER_ADMIN]);
+}
+
+function isOperator(): bool
+{
+    return in_array(auth()->user()->nama_role , OperatorRole::cases());
 }

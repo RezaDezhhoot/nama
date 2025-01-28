@@ -28,4 +28,16 @@ enum OperatorRole: string
             self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'معاونت طرح و برنامه'
         };
     }
+
+    public function step(): array
+    {
+        return match ($this) {
+            self::MOSQUE_HEAD_COACH => [RequestStep::APPROVAL_MOSQUE_HEAD_COACH],
+            self::MOSQUE_CULTURAL_OFFICER => [RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER],
+            self::AREA_INTERFACE => [RequestStep::APPROVAL_AREA_INTERFACE],
+            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => [RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES],
+            self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => [RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING],
+            default => []
+        };
+    }
 }

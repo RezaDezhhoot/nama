@@ -1,6 +1,6 @@
-@props(['href' => false])
+@props(['href' => false,'target'=> '_self'])
 @if($href)
-    <a type="button" {{$attributes}} class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" href="{{$href}}">
+    <a type="button" {{$attributes}}  target="{{ $target }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" href="{{$href}}">
     <span class="svg-icon svg-icon-md">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

@@ -51,11 +51,20 @@ class Request extends Model
 
     public function comments(): MorphMany
     {
-        return $this->morphMany(Comment::class,'commentable');
+        return $this->morphMany(Comment::class,'commentable')->latest();
     }
 
     public function scopeConfirmed(Builder $builder): Builder
     {
         return $builder->where('confirm' , true);
+    }
+
+    public function scopeRoleFilter(Builder $builder): Builder
+    {
+        if (isAdmin()) {
+            return $builder;
+        }
+
+        return $builder->whereIn('step' , auth()->user()->nama_role->step());
     }
 }

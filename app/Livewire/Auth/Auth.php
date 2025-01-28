@@ -31,14 +31,18 @@ class Auth extends BaseComponent
             }
             abort(404);
         } else {
-            $http = Http::acceptJson()
-                ->post(config('services.arman.oauth.api_endpoint') , [
-                    'token' => config('services.arman.oauth.token'),
-                    'callback' => url()->current()
-                ]);
-            if ($http->successful()) {
-                $verify_url = $http->json('verify_url');
-                return redirect()->away($verify_url);
+            try {
+                $http = Http::acceptJson()
+                    ->post(config('services.arman.oauth.api_endpoint') , [
+                        'token' => config('services.arman.oauth.token'),
+                        'callback' => url()->current()
+                    ]);
+                if ($http->successful()) {
+                    $verify_url = $http->json('verify_url');
+                    return redirect()->away($verify_url);
+                }
+            } catch (\Exception $exception) {
+                report($exception);
             }
         }
     }

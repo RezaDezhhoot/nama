@@ -18,7 +18,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($items as $item)
+                        @foreach($items as $item)
                             <tr>
                                 <td class="sortable-handler" data-index="{{$item->id}}">{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
@@ -28,14 +28,15 @@
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>
-                        @empty
-                            <td class="text-center" colspan="16">
-                                اطلاعاتی جهت نمایش وجود ندارد
+                        @endforeach
+                        @if(sizeof($items) == 0)
+                            <td class="text-center" colspan="17">
+                                اطلاعاتی برای نمایش وجود ندارد
                             </td>
-                        @endforelse
+                        @endif
                         </tbody>
                         <tbody wire:loading >
-                        <x-admin.big-loader :table="true" width="20" height="20" />
+                            <x-admin.big-loader :table="true" width="20" height="20" />
                         </tbody>
                     </table>
                 </div>

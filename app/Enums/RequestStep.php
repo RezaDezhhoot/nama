@@ -20,6 +20,12 @@ enum RequestStep: string
 
     public function label()
     {
-        // TODO: Implement label() method.
+        return match ($this) {
+            self::APPROVAL_MOSQUE_HEAD_COACH => 'تایید سر مربی مسجد',
+            self::APPROVAL_MOSQUE_CULTURAL_OFFICER => 'تایید مسئول فرهنگی مسجد',
+            self::APPROVAL_AREA_INTERFACE => 'تایید  رابط منطقه',
+            self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'تایید معاونت اجرایی مساجد',
+            self::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'تایید معاونت طرح و برنامه',
+        };
     }
 }
