@@ -152,3 +152,21 @@ function isOperator(): bool
 {
     return in_array(auth()->user()->nama_role , OperatorRole::cases());
 }
+
+function my_bcmod( $x, $y ): int
+{
+    $take = 5;
+    $mod = '';
+    do
+    {
+
+        $a = (int)$mod.substr( $x, 0, $take );
+
+        $x = substr( $x, $take );
+
+        $mod = $a % $y;
+
+    }
+    while ( strlen($x) );
+    return (int)$mod;
+}

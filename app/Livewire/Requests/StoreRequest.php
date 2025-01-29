@@ -17,6 +17,8 @@ class StoreRequest extends BaseComponent
 
     public $status , $message , $comment;
 
+    public $offer_amount , $final_amount;
+
     public function mount($action , $id)
     {
         $this->setMode($action);
@@ -29,6 +31,9 @@ class StoreRequest extends BaseComponent
                 ->confirmed()
                 ->findOrFail($id);
             $this->header = "درخواست $id";
+
+            $this->offer_amount = $this->request->offer_amount ?? $this->request->total_amount;
+            $this->final_amount = $this->request->final_amount ?? $this->request->offer_amount ?? $this->request->total_amount;
         } else abort(404);
         $this->data['status'] = RequestStatus::labels();
     }
@@ -52,6 +57,7 @@ class StoreRequest extends BaseComponent
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
                 'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
+                'final_amount' => [$this->request->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000']
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
                 $this->request->status = RequestStatus::IN_PROGRESS;
@@ -67,10 +73,12 @@ class StoreRequest extends BaseComponent
                         break;
                     case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
                         $this->request->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                        $this->request->offer_amount = $this->offer_amount;
                         break;
                     case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
                         $this->request->step = RequestStep::FINISH;
                         $this->request->status = RequestStatus::DONE;
+                        $this->request->final_amount = $this->final_amount;
                         break;
                 }
             } else {

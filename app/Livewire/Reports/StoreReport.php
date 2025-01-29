@@ -17,6 +17,8 @@ class StoreReport extends BaseComponent
 
     public $status , $message , $comment;
 
+    public $offer_amount , $final_amount;
+
     public function mount($action , $id)
     {
         $this->setMode($action);
@@ -30,6 +32,9 @@ class StoreReport extends BaseComponent
                 ->findOrFail($id);
             $this->request = $this->report->request;
             $this->header = "گزارش $id";
+
+            $this->offer_amount = $this->request->offer_amount ?? $this->request->total_amount;
+            $this->final_amount = $this->request->final_amount ?? $this->request->offer_amount ?? $this->request->total_amount;
         } else abort(404);
         $this->data['status'] = RequestStatus::labels();
     }
@@ -47,6 +52,7 @@ class StoreReport extends BaseComponent
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
                 'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
+                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000']
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
                 $this->report->status = RequestStatus::IN_PROGRESS;
@@ -62,10 +68,12 @@ class StoreReport extends BaseComponent
                         break;
                     case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
                         $this->report->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                        $this->report->offer_amount = $this->offer_amount;
                         break;
                     case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
                         $this->report->step = RequestStep::FINISH;
                         $this->report->status = RequestStatus::DONE;
+                        $this->report->final_amount = $this->final_amount;
                         break;
                 }
             } else {

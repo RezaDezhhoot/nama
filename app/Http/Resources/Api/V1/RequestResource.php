@@ -22,6 +22,7 @@ class RequestResource extends JsonResource
             'students' => $this->whenHas('students'),
             'amount' => $this->whenHas('amount'),
             'total_amount' => $this->whenHas('total_amount'),
+            'final_amount' => $this->whenHas('final_amount'),
             'date' => $this->whenHas('date'),
             'confirm' => $this->confirm ?? false,
             'body' => $this->whenHas('body'),

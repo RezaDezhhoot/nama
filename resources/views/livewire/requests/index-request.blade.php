@@ -21,6 +21,11 @@
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
+
+                            <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
+                            <th>هزینه پیشنهادی توسط معاونت اجرایی مساجد</th>
+                            <th>هزینه نهایی تایید شده توسط معاونت طرح و برنامه</th>
+
                             <th>تاریخ ارسال</th>
                             <th>تاریخ اخرین بروزرسانی</th>
                             <th>تعداد گفتوگو</th>
@@ -42,6 +47,11 @@
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label() }}</td>
+
+                                <td><strong>{{ number_format($item->total_amount) }} تومان </strong></td>
+                                <td><strong>{{ number_format($item->offer_amount) }} تومان </strong></td>
+                                <td><strong>{{ number_format($item->final_amount) }} تومان </strong></td>
+
                                 <td>{{ persian_date($item->created_at) }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>

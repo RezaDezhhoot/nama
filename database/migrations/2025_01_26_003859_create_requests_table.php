@@ -20,9 +20,12 @@ return new class extends Migration
 
             $table->unsignedInteger('students')->nullable();
             $table->unsignedBigInteger('total_amount')->nullable();
+            $table->unsignedBigInteger('offer_amount')->nullable();
+            $table->unsignedBigInteger('final_amount')->nullable();
             $table->timestamp('date')->nullable();
 
             $table->text('body')->nullable();
+            $table->string('sheba')->nullable();
 
             $table->boolean('confirm')->default(false);
             $table->unsignedBigInteger('amount')->nullable();

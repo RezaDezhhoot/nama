@@ -81,9 +81,8 @@ class RequestController extends Controller
             ] , 403);
         }
 
-        $data = $submitRequest->only(['students','amount','date','body']);
-        $data['students'] = min($requestPlan->max_number_people_supported , $data['students']);
-        $data['total_amount'] = $data['students'] * $requestPlan->support_for_each_person_amount;
+        $data = $submitRequest->only(['students','amount','date','body','sheba']);
+        $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students']) * $requestPlan->support_for_each_person_amount;
         try {
             DB::beginTransaction();
             $request = $requestPlan->requests()->create([

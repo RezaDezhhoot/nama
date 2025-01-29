@@ -54,7 +54,9 @@
                             <th>تاریخ برگزاری</th>
                             <th>فایل پیوست نامه امام جماعت</th>
                             <th>فایل نامه رابط منطقه</th>
-                            <th>هزینه پرداختی توسط آرمان</th>
+                            <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
+                            <th>هزینه پیشنهادی مرحله اول توسط معاونت اجرایی مساجد</th>
+                            <th>هزینه نهایی تایید شده مرحله اول توسط معاونت طرح و برنامه</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -64,7 +66,9 @@
                             <td>{{ persian_date($request->date) }}</td>
                             <td><button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
                             <td><button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
-                            <td>{{ number_format($request->total_amount) }} تومان </td>
+                            <td><strong>{{ number_format($request->total_amount) }} تومان </strong></td>
+                            <td><strong>{{ number_format($request->offer_amount) }} تومان </strong></td>
+                            <td><strong>{{ number_format($request->final_amount) }} تومان </strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -95,6 +99,9 @@
                             <th>مرحله کار</th>
                             <th>تاریخ ثبت گزارش</th>
                             <th>تاریخ آخرین بروزرسانی</th>
+
+                            <th>هزینه پیشنهادی مرحله دوم توسط معاونت اجرایی مساجد</th>
+                            <th>هزینه نهایی تایید شده مرحله دوم توسط معاونت طرح و برنامه</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -103,6 +110,9 @@
                             <td>{{ $report->step->label() }}</td>
                             <td>{{ persian_date($report->created_at) }}</td>
                             <td>{{ persian_date($report->updated_at) }}</td>
+
+                            <td><strong>{{ number_format($report->offer_amount) }} تومان </strong></td>
+                            <td><strong>{{ number_format($report->final_amount) }} تومان </strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -143,6 +153,11 @@
                     <hr>
                     <div class="col-12">
                         <x-admin.forms.validation-errors/>
+                        @if($report->step === \App\Enums\RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES)
+                            <x-admin.forms.input type="number"  id="offer_amount" label="قیمت پیشنهادی توسط {{ \App\Enums\OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->label() }} مرحله دوم" wire:model.defer="offer_amount"/>
+                        @elseif($report->step === \App\Enums\RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING)
+                            <x-admin.forms.input help="پس از تایید پنجاه درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label() }} مرحله دوم" wire:model.defer="final_amount"/>
+                        @endif
                         <x-admin.forms.text-area dir="rtl" id="comment" :required="true" label="کامنت" wire:model.defer="comment"/>
                         <x-admin.forms.dropdown :data="$data['status']" :required="true" id="status" label="وضعیت درخواست" wire:model.live="status"/>
                         @if($status == \App\Enums\RequestStatus::REJECTED->value || $status == \App\Enums\RequestStatus::ACTION_NEEDED->value)

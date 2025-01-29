@@ -23,6 +23,9 @@ return new class extends Migration
             $table->timestamp('date')->nullable();
             $table->boolean('confirm')->default(false);
 
+            $table->unsignedBigInteger('offer_amount')->nullable();
+            $table->unsignedBigInteger('final_amount')->nullable();
+
             $table->timestamps();
         });
     }
