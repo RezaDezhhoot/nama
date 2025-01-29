@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_operator' => \App\Http\Middleware\IsOperatorMiddleware::class
         ]);
     })
+    ->withBindings([
+//        'path.public' => fn() => realpath(base_path().'/../public_html')
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
