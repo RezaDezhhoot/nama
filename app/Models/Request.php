@@ -8,6 +8,7 @@ use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +17,7 @@ class Request extends Model
 {
     use SoftDeletes , SimpleSearchable;
 
-    public array $searchAbleColumns = ['id','body'];
+    public array $searchAbleColumns = ['id','title','body'];
     protected $guarded = ['id'];
 
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
@@ -66,5 +67,10 @@ class Request extends Model
         }
 
         return $builder->whereIn('step' , auth()->user()->nama_role->step());
+    }
+
+    public function report(): HasOne
+    {
+        return $this->hasOne(Report::class,'request_id');
     }
 }

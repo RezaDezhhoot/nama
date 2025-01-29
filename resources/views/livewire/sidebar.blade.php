@@ -55,6 +55,12 @@
                         icon="fas fa-ticket-alt"
                         :active="request()->routeIs(['admin.requests.index','admin.requests.store'])"
                         label="درخواست ها({{ $requests }})" />
+
+                    <x-admin.menu-item
+                        href="{{route('admin.reports.index')}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.reports.index','admin.reports.store'])"
+                        label="گزارش ها({{ $reports }})" />
                 @endif
 
 

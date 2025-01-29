@@ -26,10 +26,13 @@ class RequestController extends Controller
             'direction' => ['nullable','in:desc,asc'],
             'status' => ['nullable',Rule::enum(RequestStatus::class)],
             'steps' => ['nullable',Rule::enum(RequestStep::class)],
+            'q' => ['nullable','string','max:50']
         ]);
         $request = RequestModel::query()
             ->select(['id','request_plan_id','step','status','confirm'])
-            ->when($request->filled('sort') , function (Builder $builder) use ($request) {
+            ->when($request->filled('q') , function (Builder $builder) use ($request) {
+                $builder->search($request->get('q'));
+            })->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
             })->when(! $request->filled('sort') , function (Builder $builder) {
                 $builder->orderBy('confirm');
@@ -185,8 +188,9 @@ class RequestController extends Controller
                     'subject' => $request::FILE_AREA_INTERFACE_LETTER_SUBJECT
                 ]);
             }
-
             DB::commit();
+            $request->refresh();
+            $request->load(['areaInterfaceLetter','imamLetter']);
             return RequestResource::make($request);
         } catch (\Exception $exception) {
             DB::rollBack();

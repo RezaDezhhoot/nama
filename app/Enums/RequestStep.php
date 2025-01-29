@@ -18,6 +18,8 @@ enum RequestStep: string
 
     case APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING = 'approval_deputy_for_planning_and_programming';
 
+    case FINISH = 'finish';
+
     public function label()
     {
         return match ($this) {
@@ -26,6 +28,7 @@ enum RequestStep: string
             self::APPROVAL_AREA_INTERFACE => 'تایید  رابط منطقه',
             self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'تایید معاونت اجرایی مساجد',
             self::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'تایید معاونت طرح و برنامه',
+            self::FINISH => 'اتمام یافته',
         };
     }
 }

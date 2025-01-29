@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Report extends Model
 {
+    protected $guarded = ['id'];
     protected $casts = [
         'confirm' => 'boolean',
         'step' => RequestStep::class,
@@ -29,9 +32,28 @@ class Report extends Model
         return $this->morphMany(File::class,'fileable')->subject(self::FILE_IMAGES_SUBJECT);
     }
 
-    public function videos(): MorphMany
+    public function video(): MorphOne
     {
-        return $this->morphMany(File::class,'fileable')->subject(self::FILE_VIDEOS_SUBJECT);
+        return $this->morphOne(File::class,'fileable')->subject(self::FILE_VIDEOS_SUBJECT);
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class,'fileable');
+    }
+
+    public function scopeConfirmed(Builder $builder): Builder
+    {
+        return $builder->where('confirm' , true);
+    }
+
+    public function scopeRoleFilter(Builder $builder): Builder
+    {
+        if (isAdmin()) {
+            return $builder;
+        }
+
+        return $builder->whereIn('step' , auth()->user()->nama_role->step());
     }
 
     public function comments(): MorphMany

@@ -14,4 +14,11 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::post('{request}/confirm' , 'confirm');
         Route::patch('{request}' , 'update');
     });
+    Route::controller(\App\Http\Controllers\Api\V1\ReportController::class)->middleware('auth:sanctum')->prefix('reports')->group(function () {
+        Route::get('' , 'index');
+        Route::get('{report}' , 'show');
+        Route::post('{request}' , 'create');
+        Route::post('{report}/confirm' , 'confirm');
+        Route::patch('{report}' , 'update');
+    });
 });

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Livewire\Requests;
+namespace App\Livewire\Reports;
 
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Livewire\BaseComponent;
 use App\Models\File;
-use App\Models\Request;
+use App\Models\Report;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class StoreRequest extends BaseComponent
+class StoreReport extends BaseComponent
 {
-    public $request , $tab = 'request';
+    public $request , $report , $tab = 'report';
 
     public $status , $message , $comment;
 
@@ -21,16 +21,71 @@ class StoreRequest extends BaseComponent
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
-            $this->request = Request::query()
-                ->with(['plan','user','comments'])
+            $this->report = Report::query()
+                ->with(['request','request.user','images','video','request.imamLetter','request.areaInterfaceLetter'])
                 ->withCount('comments')
-                ->whereHas('plan')
+                ->whereHas('request')
                 ->roleFilter()
                 ->confirmed()
                 ->findOrFail($id);
-            $this->header = "درخواست $id";
+            $this->request = $this->report->request;
+            $this->header = "گزارش $id";
         } else abort(404);
         $this->data['status'] = RequestStatus::labels();
+    }
+
+
+    public function store()
+    {
+        if (
+            in_array($this->report->status , [RequestStatus::DONE,RequestStatus::REJECTED])
+        ) {
+            return;
+        }
+        if (RequestStatus::tryFrom($this->status) !== $this->report->status) {
+            $this->validate([
+                'status' => ['required',Rule::enum(RequestStatus::class)],
+                'comment' => ['required','string','max:200'],
+                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
+            ]);
+            if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
+                $this->report->status = RequestStatus::IN_PROGRESS;
+                switch ($this->report->step) {
+                    case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+                        $this->report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+                        break;
+                    case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
+                        $this->report->step = RequestStep::APPROVAL_AREA_INTERFACE;
+                        break;
+                    case RequestStep::APPROVAL_AREA_INTERFACE:
+                        $this->report->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
+                        break;
+                    case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
+                        $this->report->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                        break;
+                    case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
+                        $this->report->step = RequestStep::FINISH;
+                        $this->report->status = RequestStatus::DONE;
+                        break;
+                }
+            } else {
+                $this->report->status = RequestStatus::tryFrom($this->status);
+            }
+            $this->report->comments()->create([
+                'user_id' => auth()->id(),
+                'body' => $this->comment,
+                'display_name' => auth()->user()->nama_role->label()
+            ]);
+            if ($this->message) {
+                $this->report->fill([
+                    'message' => $this->message
+                ]);
+            }
+            $this->report->save();
+            $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
+            $this->reset(['message','comment','status']);
+            redirect()->route('admin.reports.index');
+        }
     }
 
     public function download($id): StreamedResponse
@@ -40,61 +95,8 @@ class StoreRequest extends BaseComponent
             Storage::disk($file->disk)->download($file->path);
     }
 
-    public function store()
-    {
-        if (
-            in_array($this->request->status , [RequestStatus::DONE,RequestStatus::REJECTED])
-        ) {
-            return;
-        }
-        if (RequestStatus::tryFrom($this->status) !== $this->request->status) {
-            $this->validate([
-                'status' => ['required',Rule::enum(RequestStatus::class)],
-                'comment' => ['required','string','max:200'],
-                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
-            ]);
-            if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
-                $this->request->status = RequestStatus::IN_PROGRESS;
-                switch ($this->request->step) {
-                    case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
-                        $this->request->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
-                        break;
-                    case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
-                        $this->request->step = RequestStep::APPROVAL_AREA_INTERFACE;
-                        break;
-                    case RequestStep::APPROVAL_AREA_INTERFACE:
-                        $this->request->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
-                        break;
-                    case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
-                        $this->request->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
-                        break;
-                    case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
-                        $this->request->step = RequestStep::FINISH;
-                        $this->request->status = RequestStatus::DONE;
-                        break;
-                }
-            } else {
-                $this->request->status = RequestStatus::tryFrom($this->status);
-            }
-            $this->request->comments()->create([
-                'user_id' => auth()->id(),
-                'body' => $this->comment,
-                'display_name' => auth()->user()->nama_role->label()
-            ]);
-            if ($this->message) {
-                $this->request->fill([
-                    'message' => $this->message
-                ]);
-            }
-            $this->request->save();
-            $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
-            $this->reset(['message','comment','status']);
-            redirect()->route('admin.requests.index');
-        }
-    }
-
     public function render()
     {
-        return view('livewire.requests.store-request')->extends('livewire.layouts.admin');
+        return view('livewire.requests.store-report')->extends('livewire.layouts.admin');
     }
 }
