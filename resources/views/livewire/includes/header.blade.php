@@ -34,11 +34,11 @@
                 <hr>
                 <small  class="font-weight-bold  text-dark-75 text-hover-primary">
                     نقش در سامانه نما :
-                    {{ auth()->user()->nama_role->label() }}
+                    {{ auth()->user()->nama_role?->label() ?? "-" }}
                 </small>
                 <small  class="font-weight-bold  text-dark-75 text-hover-primary">
                     نقش در سامانه آرمان :
-                    {{ auth()->user()->role->label() }}
+                    {{ auth()->user()->role?->label() ?? "-" }}
                 </small>
                 <div class="navi mt-2">
                     <a class="navi-item">
