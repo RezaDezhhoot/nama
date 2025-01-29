@@ -33,7 +33,7 @@ class Auth extends BaseComponent
         } else {
             try {
                 $http = Http::acceptJson()
-                    ->post(config('services.arman.oauth.api_endpoint') , [
+                    ->get(config('services.arman.oauth.api_endpoint') , [
                         'token' => config('services.arman.oauth.token'),
                         'callback' => url()->current()
                     ]);
