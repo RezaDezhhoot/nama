@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'nama_role' => $this->nama_role,
             'arman_role' => $this->role,
-            'avatar' => "https://armaniran.org/".trim($this->avatar,'/'),
+            'avatar' => $this->avatar ? "https://armaniran.org/".trim($this->avatar,'/') : null,
         ];
     }
 }
