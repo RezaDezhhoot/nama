@@ -31,7 +31,9 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->select(['id','request_plan_id','step','status','confirm'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
-                $builder->search($request->get('q'));
+                $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
+                    $builder->search($request->get('q'));
+                });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
             })->when(! $request->filled('sort') , function (Builder $builder) {
