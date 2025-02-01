@@ -22,4 +22,10 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::post('{report}/confirm' , 'confirm');
         Route::patch('{report}' , 'update');
     });
+    Route::controller(\App\Http\Controllers\Api\V1\WrittenController::class)->middleware('auth:sanctum')->prefix('written-requests')->group(function () {
+        Route::get('' , 'index');
+        Route::get('{id}' , 'show');
+        Route::post('' , 'store');
+        Route::patch('{id}' , 'update');
+    });
 });

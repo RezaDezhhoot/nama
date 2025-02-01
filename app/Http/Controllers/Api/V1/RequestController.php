@@ -25,7 +25,7 @@ class RequestController extends Controller
             'sort' => ['nullable','in:created_at,confirm'],
             'direction' => ['nullable','in:desc,asc'],
             'status' => ['nullable',Rule::enum(RequestStatus::class)],
-            'steps' => ['nullable',Rule::enum(RequestStep::class)],
+            'step' => ['nullable',Rule::enum(RequestStep::class)],
             'q' => ['nullable','string','max:50']
         ]);
         $request = RequestModel::query()

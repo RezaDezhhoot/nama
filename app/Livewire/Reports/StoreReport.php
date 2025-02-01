@@ -82,7 +82,7 @@ class StoreReport extends BaseComponent
             $this->report->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $this->comment,
-                'display_name' => auth()->user()->nama_role?->label() ?? auth()->user()->role?->label()
+                'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
              ]);
             if ($this->message) {
                 $this->report->fill([

@@ -29,6 +29,10 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('' , \App\Livewire\Requests\IndexRequest::class)->name('index');
             Route::get('{action}/{id}' , \App\Livewire\Requests\StoreRequest::class)->name('store');
         });
+        Route::group(['prefix' => 'written-requests' , 'as' => 'written-requests.' , 'middleware' => 'is_operator'] , function () {
+            Route::get('' , \App\Livewire\WrittenRequests\IndexRequest::class)->name('index');
+            Route::get('{action}/{id}' , \App\Livewire\WrittenRequests\StoreRequest::class)->name('store');
+        });
         Route::group(['prefix' => 'reports' , 'as' => 'reports.' , 'middleware' => 'is_operator'] , function () {
             Route::get('' , \App\Livewire\Reports\IndexReport::class)->name('index');
             Route::get('{action}/{id}' , \App\Livewire\Reports\StoreReport::class)->name('store');

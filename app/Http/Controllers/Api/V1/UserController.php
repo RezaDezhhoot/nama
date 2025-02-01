@@ -6,6 +6,7 @@ use App\Enums\RequestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Models\Report;
+use App\Models\WrittenRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models\Request as RequestModel;
@@ -18,6 +19,7 @@ class UserController extends Controller
         $reports = Report::query()->whereHas('request' , function (Builder $builder) {
             $builder->where('user_id' , auth()->id());
         })->get();
+        $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
 
         return UserResource::make(auth()->user())->additional([
             'requests' => [
@@ -31,6 +33,12 @@ class UserController extends Controller
                 RequestStatus::REJECTED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
                 RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
                 RequestStatus::DONE->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
+            ],
+            'written-requests' => [
+                RequestStatus::IN_PROGRESS->value => $writtenRequests->where('status' , RequestStatus::IN_PROGRESS)->count(),
+                RequestStatus::REJECTED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::ACTION_NEEDED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::DONE->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
             ],
         ]);
     }
