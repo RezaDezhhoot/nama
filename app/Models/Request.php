@@ -17,7 +17,7 @@ class Request extends Model
 {
     use SoftDeletes , SimpleSearchable;
 
-    public array $searchAbleColumns = ['id','title','body'];
+    public array $searchAbleColumns = ['id','body'];
     protected $guarded = ['id'];
 
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
