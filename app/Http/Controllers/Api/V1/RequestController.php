@@ -87,7 +87,7 @@ class RequestController extends Controller
             DB::beginTransaction();
             $request = $requestPlan->requests()->create([
                 ... $data,
-                'date' => dateConverter($submitRequest->date ,'m','Y-m-d H:i:s'),
+                'date' => dateConverter($submitRequest->date ,'m','Y-m-d'),
                 'user_id' => auth()->id(),
                 'status' => RequestStatus::IN_PROGRESS,
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
