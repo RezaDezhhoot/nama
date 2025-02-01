@@ -81,12 +81,13 @@ class RequestController extends Controller
             ] , 403);
         }
 
-        $data = $submitRequest->only(['students','amount','date','body','sheba']);
+        $data = $submitRequest->only(['students','amount','body','sheba']);
         $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students']) * $requestPlan->support_for_each_person_amount;
         try {
             DB::beginTransaction();
             $request = $requestPlan->requests()->create([
                 ... $data,
+                'date' => dateConverter($submitRequest->date ,'m','Y-m-d H:i:s'),
                 'user_id' => auth()->id(),
                 'status' => RequestStatus::IN_PROGRESS,
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
