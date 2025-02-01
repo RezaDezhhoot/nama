@@ -119,9 +119,6 @@ class RequestController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             report($exception);
-            return response()->json([
-                'error' => $exception->getMessage()
-            ] , 500);
         }
         return response()->json([
             'error' => 'مشکلی در حین ارسال درخواست به وجود آمده است ، لطفا مجدد تلاش کنید'
@@ -133,7 +130,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->with(['areaInterfaceLetter','imamLetter','plan'])
             ->where('user_id' , auth()->id())
-            ->where('confirm' , false)
+//            ->where('confirm' , false)
             ->findOrFail($request);
 
         $request->update([
