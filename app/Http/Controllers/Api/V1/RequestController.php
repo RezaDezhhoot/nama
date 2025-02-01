@@ -87,7 +87,7 @@ class RequestController extends Controller
             DB::beginTransaction();
             $request = $requestPlan->requests()->create([
                 ... $data,
-                'date' => dateConverter($submitRequest->date ,'m','Y-m-d'),
+                'date' => dateConverter($submitRequest->date ,'m'),
                 'user_id' => auth()->id(),
                 'status' => RequestStatus::IN_PROGRESS,
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
@@ -155,6 +155,9 @@ class RequestController extends Controller
         if ($updateRequest->filled('students')) {
             $data['students'] = min($request->plan->max_number_people_supported , $data['students']);
             $data['total_amount'] = $data['students'] * $request->plan->support_for_each_person_amount;
+        }
+        if ($updateRequest->filled('date')) {
+            $data['date'] = dateConverter($updateRequest->date ,'m');
         }
         $data['status'] = RequestStatus::IN_PROGRESS;
         try {
