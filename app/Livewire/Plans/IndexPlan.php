@@ -21,7 +21,7 @@ class IndexPlan extends BaseComponent
     public function render()
     {
         $items = RequestPlan::query()
-            ->orderBy('bold')
+            ->latest()
             ->when($this->status , function ($q) {
                 $q->where('status' , $this->status);
             })->when($this->search , function ($q) {
