@@ -79,6 +79,7 @@ class ReportController extends Controller
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                 'status' => RequestStatus::IN_PROGRESS,
                 'amount' => 0,
+                'confirm' => true
             ]);
             $disk = config('site.default_disk');
             $now = now();

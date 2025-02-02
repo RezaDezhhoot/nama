@@ -98,6 +98,7 @@ class RequestController extends Controller
                 'user_id' => auth()->id(),
                 'status' => RequestStatus::IN_PROGRESS,
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                'confirm' => true
             ]);
             $disk = config('site.default_disk');
             $now = now();
