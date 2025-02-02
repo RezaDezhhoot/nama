@@ -29,7 +29,7 @@ class RequestController extends Controller
             'q' => ['nullable','string','max:50']
         ]);
         $request = RequestModel::query()
-            ->select(['id','request_plan_id','step','status','confirm'])
+            ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
@@ -58,6 +58,11 @@ class RequestController extends Controller
     public function show($request): RequestResource
     {
         $request = RequestModel::query()
+            ->whereHas('plan' , function (Builder $builder) {
+                $builder->withCount(['requests' => function ($q) {
+                    return $q->where('user_id' , auth()->id());
+                }]);
+            })
             ->with(['areaInterfaceLetter','imamLetter','plan'])
             ->where('user_id' , auth()->id())
             ->findOrFail($request);
@@ -117,6 +122,10 @@ class RequestController extends Controller
             ]);
             DB::commit();
             $request->load(['areaInterfaceLetter','imamLetter','plan']);
+            $request->plan->loadCount(['requests' => function ($q) {
+                return $q->where('user_id' , auth()->id());
+            }]);
+
             return RequestResource::make($request);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -195,7 +204,10 @@ class RequestController extends Controller
             }
             DB::commit();
             $request->refresh();
-            $request->load(['areaInterfaceLetter','imamLetter']);
+            $request->load(['areaInterfaceLetter','imamLetter','plan']);
+            $request->plan->loadCount(['requests' => function ($q) {
+                return $q->where('user_id' , auth()->id());
+            }]);
             return RequestResource::make($request);
         } catch (\Exception $exception) {
             DB::rollBack();
