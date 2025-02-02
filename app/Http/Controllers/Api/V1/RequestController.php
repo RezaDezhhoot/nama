@@ -58,11 +58,6 @@ class RequestController extends Controller
     public function show($request): RequestResource
     {
         $request = RequestModel::query()
-            ->whereHas('plan' , function (Builder $builder) {
-                $builder->withCount(['requests' => function ($q) {
-                    return $q->where('user_id' , auth()->id());
-                }]);
-            })
             ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
             ->where('user_id' , auth()->id())
             ->findOrFail($request);
@@ -76,9 +71,6 @@ class RequestController extends Controller
     public function create(SubmitRequest $submitRequest): JsonResponse|RequestResource
     {
         $requestPlan = RequestPlan::query()
-            ->withCount(['requests' => function ($q) {
-                return $q->where('user_id' , auth()->id());
-            }])
             ->published()
             ->findOrFail($submitRequest->request_plan_id);
 
