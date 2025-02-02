@@ -63,7 +63,7 @@ class RequestController extends Controller
                     return $q->where('user_id' , auth()->id());
                 }]);
             })
-            ->with(['areaInterfaceLetter','imamLetter','plan'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
             ->where('user_id' , auth()->id())
             ->findOrFail($request);
 
