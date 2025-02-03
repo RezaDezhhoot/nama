@@ -29,7 +29,7 @@ class RequestController extends Controller
             'q' => ['nullable','string','max:50']
         ]);
         $request = RequestModel::query()
-            ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at'])
+            ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at','report'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
@@ -47,7 +47,6 @@ class RequestController extends Controller
             ->with(['plan'])
             ->where('user_id' , auth()->id())
             ->paginate((int)$request->get('per_page' , 10));
-
 
         return RequestResource::collection($request)->additional([
             'statuses' => RequestStatus::values(),
