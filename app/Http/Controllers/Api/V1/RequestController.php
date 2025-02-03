@@ -29,7 +29,8 @@ class RequestController extends Controller
             'q' => ['nullable','string','max:50']
         ]);
         $request = RequestModel::query()
-            ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at','report'])
+            ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at'])
+            ->with(['report'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
