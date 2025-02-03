@@ -71,11 +71,12 @@ class ReportController extends Controller
             ->where('status' , RequestStatus::DONE)
             ->where('step' , RequestStep::FINISH)
             ->findOrFail($request);
-        $data = $submitReportRequest->only(['students','date','body']);
+        $data = $submitReportRequest->only(['students','body']);
         try {
             DB::beginTransaction();
             $report = $request->report()->create([
                 ... $data,
+                'date' => dateConverter($submitReportRequest->date ,'m'),
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                 'status' => RequestStatus::IN_PROGRESS,
                 'amount' => 0,
@@ -145,8 +146,11 @@ class ReportController extends Controller
             ->whereHas('request' , function (Builder $builder) {
                 $builder->where('user_id' , auth()->id());
             })->findOrFail($report);
-        $data = $updateReportRequest->only(['students','date','body']);
+        $data = $updateReportRequest->only(['students','body']);
         $data['status'] = RequestStatus::IN_PROGRESS;
+        if ($updateReportRequest->filled('date')) {
+            $data['date'] = dateConverter($updateReportRequest->date ,'m');
+        }
         try {
             DB::beginTransaction();
             $report->update($data);
