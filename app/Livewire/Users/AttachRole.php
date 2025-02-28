@@ -28,7 +28,7 @@ class AttachRole extends BaseComponent
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })
-            ->withCount('roles')
+//            ->withCount('roles')
             ->paginate($this->per_page);
 
         return view('livewire.users.attach-role' , get_defined_vars())->extends('livewire.layouts.admin');
