@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reports', function (Blueprint $table) {
-            $table->text('message')->nullable();
+        Schema::table('requests', function (Blueprint $table) {
+            $table->foreignId('item_id')->nullable()->index();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reports', function (Blueprint $table) {
-            $table->dropColumn('message');
+        Schema::table('requests', function (Blueprint $table) {
+            $table->dropColumn('item_id');
         });
     }
 };

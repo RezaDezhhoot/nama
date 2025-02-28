@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Api\V1;
+namespace App\Http\Resources;
 
+use App\Http\Resources\Api\V1\DashboardItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DashboardItemResource extends JsonResource
+class RoleResurce extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +17,9 @@ class DashboardItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'body' => $this->body,
-            'link' => $this->link,
-            'image' => asset($this->image),
-            'logo' => asset($this->logo),
-            'color' => $this->color
+            'role' => $this->role->label(),
+            'role_en' => $this->role,
+            'item_id' => DashboardItemResource::make($this->whenLoaded('item')),
         ];
     }
 }

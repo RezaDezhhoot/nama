@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
 use App\Http\Resources\Api\V1\RequestResource;
@@ -29,6 +31,7 @@ class RequestController extends Controller
             'q' => ['nullable','string','max:50']
         ]);
         $request = RequestModel::query()
+            ->item(\request()->get('item_id'))
             ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at'])
             ->with(['report'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
@@ -46,7 +49,7 @@ class RequestController extends Controller
                 $builder->where('step' , $request->get('step'));
             })
             ->with(['plan'])
-            ->where('user_id' , auth()->id())
+            ->role(\request()->get('role'))
             ->paginate((int)$request->get('per_page' , 10));
 
         return RequestResource::collection($request)->additional([
@@ -58,8 +61,9 @@ class RequestController extends Controller
     public function show($request): RequestResource
     {
         $request = RequestModel::query()
+            ->item(\request()->get('item_id'))
+            ->role(\request()->get('role'))
             ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
-            ->where('user_id' , auth()->id())
             ->findOrFail($request);
 
         return RequestResource::make($request)->additional([
@@ -90,7 +94,8 @@ class RequestController extends Controller
                 'user_id' => auth()->id(),
                 'status' => RequestStatus::IN_PROGRESS,
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
-                'confirm' => true
+                'confirm' => true,
+                'item_id' => \request()->get('item_id')
             ]);
             $disk = config('site.default_disk');
             $now = now();
@@ -132,9 +137,10 @@ class RequestController extends Controller
     public function confirm($request): RequestResource
     {
         $request = RequestModel::query()
+            ->item(\request()->get('item_id'))
             ->with(['areaInterfaceLetter','imamLetter','plan'])
             ->where('user_id' , auth()->id())
-//            ->where('confirm' , false)
+            ->where('confirm' , false)
             ->findOrFail($request);
 
         $request->update([
@@ -146,6 +152,7 @@ class RequestController extends Controller
     public function update(UpdateRequest $updateRequest , $request): JsonResponse|RequestResource
     {
         $request = RequestModel::query()
+            ->item(\request()->get('item_id'))
             ->with(['areaInterfaceLetter','imamLetter','plan'])
             ->whereHas('plan')
             ->where('user_id' , auth()->id())
@@ -209,5 +216,56 @@ class RequestController extends Controller
         return response()->json([
             'error' => 'مشکلی در حین ارسال درخواست به وجود آمده است ، لطفا مجدد تلاش کنید'
         ] , 500);
+    }
+
+    public function adminStore(AdminStoreRequest $adminStoreRequest , $request)
+    {
+        if (! \request()->filled('role')) {
+            abort(403);
+        }
+        $request = RequestModel::query()
+            ->item(\request()->get('item_id'))
+            ->role(\request()->get('role'))
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
+            ->where('status',RequestStatus::IN_PROGRESS)
+            ->findOrFail($request);
+
+        if ($adminStoreRequest->action == "accept") {
+            $request->status = RequestStatus::IN_PROGRESS;
+            switch ($request->step) {
+                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+                    $request->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+                    break;
+                case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
+                    $request->step = RequestStep::APPROVAL_AREA_INTERFACE;
+                    break;
+                case RequestStep::APPROVAL_AREA_INTERFACE:
+                    $request->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
+                    break;
+                case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
+                    $request->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                    $request->offer_amount = $adminStoreRequest->offer_amount;
+                    break;
+                case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
+                    $request->step = RequestStep::FINISH;
+                    $request->status = RequestStatus::DONE;
+                    $request->final_amount = $adminStoreRequest->final_amount;
+                    break;
+            }
+        } else if ($adminStoreRequest->action == "reject") {
+            $request->status = RequestStatus::REJECTED->value;
+        } else  {
+            $request->status = RequestStatus::ACTION_NEEDED->value;
+        }
+        $request->comments()->create([
+            'user_id' => auth()->id(),
+            'body' => $adminStoreRequest->comment,
+            'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+        ]);
+        $request->fill([
+            'message' => $adminStoreRequest->comment,
+        ])->save();
+
+        return RequestResource::make($request);
     }
 }

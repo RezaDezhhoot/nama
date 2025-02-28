@@ -15,31 +15,14 @@ class UserController extends Controller
 {
     public function __invoke(): UserResource
     {
-        $requests = RequestModel::query()->where('user_id' , auth()->id())->get();
-        $reports = Report::query()->whereHas('request' , function (Builder $builder) {
-            $builder->where('user_id' , auth()->id());
-        })->get();
-        $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
+        auth()->user()->load(['roles' => function ($q) {
+            if (\request()->filled('item_id')) {
+                return $q->where('item_id' , \request()->item_id);
+            }
+            return $q;
+        },'roles.item']);
 
-        return UserResource::make(auth()->user())->additional([
-            'requests' => [
-                RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->count(),
-                RequestStatus::REJECTED->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
-            ],
-            'reports' => [
-                RequestStatus::IN_PROGRESS->value => $reports->where('status' , RequestStatus::IN_PROGRESS)->count(),
-                RequestStatus::REJECTED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
-            ],
-            'written-requests' => [
-                RequestStatus::IN_PROGRESS->value => $writtenRequests->where('status' , RequestStatus::IN_PROGRESS)->count(),
-                RequestStatus::REJECTED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
-            ],
-        ]);
+
+        return UserResource::make(auth()->user());
     }
 }

@@ -18,7 +18,7 @@ enum WrittenRequestStep: string
     public function label()
     {
         return match ($this) {
-            self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'تایید معاونت اجرایی مساجد',
+            self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'تایید معاونت اجرایی',
             self::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'تایید معاونت طرح و برنامه',
             self::FINISH => 'اتمام یافته',
         };

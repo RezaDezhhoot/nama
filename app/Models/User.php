@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $q->selectRaw("CONCAT(name,' - کدملی: ',national_id, ' - شماره همراه:  ',phone) as text , id");
     }
+
+    public function roles(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\UserRole::class,'user_id');
+    }
 }

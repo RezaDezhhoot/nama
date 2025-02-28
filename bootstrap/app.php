@@ -17,7 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn (Request $request) => route('admin.dashboard.index'));
         $middleware->alias([
             'is_admin' => \App\Http\Middleware\IsAdminMiddleware::class,
-            'is_operator' => \App\Http\Middleware\IsOperatorMiddleware::class
+            'is_operator' => \App\Http\Middleware\IsOperatorMiddleware::class,
+            'has_item' => \App\Http\Middleware\ItemMiddleware::class
         ]);
     })
     ->withBindings([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1;
 
+use App\Http\Resources\RoleResurce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,7 @@ class UserResource extends JsonResource
             'nama_role' => $this->nama_role,
             'arman_role' => $this->role,
             'avatar' => $this->avatar ? "https://armaniran.org/".trim($this->avatar,'/') : null,
+            'roles' => RoleResurce::collection($this->whenLoaded('roles'))
         ];
     }
 }

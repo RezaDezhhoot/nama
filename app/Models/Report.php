@@ -60,4 +60,9 @@ class Report extends Model
     {
         return $this->morphMany(Comment::class,'commentable');
     }
+
+    public function scopeItem($q , $id)
+    {
+        return $q->where('item_id' , $id);
+    }
 }

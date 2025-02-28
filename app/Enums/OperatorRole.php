@@ -21,10 +21,10 @@ enum OperatorRole: string
     public function label(): string
     {
         return match ($this) {
-            self::MOSQUE_HEAD_COACH => 'سرمربی مسجد',
-            self::MOSQUE_CULTURAL_OFFICER => 'مسئول فرهنگی مسجد',
+            self::MOSQUE_HEAD_COACH => 'سرمربی',
+            self::MOSQUE_CULTURAL_OFFICER => 'مسئول فرهنگی',
             self::AREA_INTERFACE => 'رابط منطقه',
-            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'معاونت اجرایی مساجد',
+            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'معاونت اجرایی',
             self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'معاونت طرح و برنامه'
         };
     }

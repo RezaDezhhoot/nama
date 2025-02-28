@@ -4,24 +4,29 @@ namespace App\Livewire\Users;
 
 use App\Enums\OperatorRole;
 use App\Livewire\BaseComponent;
+use App\Models\DashboardItem;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 
 class AttachRole extends BaseComponent
 {
     public $role;
-    public $users = [];
+    public $users = [] , $item;
 
     public function mount()
     {
         $this->data['role'] = OperatorRole::labels();
+        $this->data['items'] = DashboardItem::query()->pluck('title','id');
     }
 
     public function render()
     {
         $items = User::query()
-            ->panelAccess()
-            ->get();
+            ->when($this->search , function ($q) {
+                $q->search($this->search);
+            })
+            ->withCount('roles')
+            ->paginate($this->per_page);
 
         return view('livewire.users.attach-role' , get_defined_vars())->extends('livewire.layouts.admin');
     }
@@ -33,17 +38,5 @@ class AttachRole extends BaseComponent
         ]);
     }
 
-    public function attachRole()
-    {
-        $this->validate([
-            'role' => ['required',Rule::enum(OperatorRole::class)],
-            'users' => ['array','min:1'],
-            'users.*' => ['exists:arman.users,id']
-        ]);
-        User::query()->whereIn('id' , $this->users)->update([
-            'nama_role' => $this->role
-        ]);
-        $this->reset(['role','users']);
-        $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
-    }
+
 }

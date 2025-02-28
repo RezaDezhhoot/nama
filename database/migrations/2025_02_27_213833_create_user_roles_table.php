@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reports', function (Blueprint $table) {
-            $table->text('message')->nullable();
+        Schema::create('user_roles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->index();
+            $table->string('role')->index();
+            $table->foreignId('item_id')->index();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reports', function (Blueprint $table) {
-            $table->dropColumn('message');
-        });
+        Schema::dropIfExists('user_roles');
     }
 };

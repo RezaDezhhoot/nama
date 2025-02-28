@@ -2,7 +2,7 @@
 <div wire:init="init">
     <x-admin.big-loader :loading="$loading" />
     @section('title',  'ایتم های داشبورد' )
-    <x-admin.form-control link="{{ route('admin.dashboard-items.store',[PageAction::CREATE] ) }}" title="ایتم های داشبورد"/>
+    <x-admin.form-control :store="false" title="ایتم های داشبورد"/>
     <div class="card card-custom">
         <div class="card-body">
             @include('livewire.includes.advance-table')
@@ -25,7 +25,6 @@
                                 <td>{{ $item->title }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.dashboard-items.store',[PageAction::UPDATE , $item->id]) }}"/>
-                                    <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>
                         @endforeach
@@ -47,23 +46,3 @@
         </div>
     </div>
 </div>
-@push('scripts')
-    <script>
-        function deleteItem(id) {
-            Swal.fire({
-                title: 'حذف کردن',
-                text: 'آیا از حذف کردن این مورد اطمینان دارید؟',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'خیر',
-                confirmButtonText: 'بله',
-            }).then((result) => {
-                if (result.value) {
-                @this.call('deleteItem' , id)
-                }
-            })
-        }
-    </script>
-@endpush

@@ -33,8 +33,8 @@ class ReportController extends Controller
         ]);
 
         return ReportResource::collection(
-            Report::query()->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
-                $builder->where('user_id' , auth()->id())->when($request->filled('q') , function (Builder $builder) use ($request) {
+            Report::query()->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
+                $builder->role(\request()->get('role'))->when($request->filled('q') , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
@@ -51,8 +51,8 @@ class ReportController extends Controller
     public function show($report): ReportResource
     {
         return ReportResource::make(
-            Report::query()->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->whereHas('request' , function (Builder $builder) {
-                $builder->where('user_id' , auth()->id());
+            Report::query()->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->whereHas('request' , function (Builder $builder) {
+                $builder->role(\request()->get('role'));
             })->findOrFail($report)
         )->additional([
             'statuses' => RequestStatus::values(),
@@ -65,6 +65,7 @@ class ReportController extends Controller
         $request = RequestModel::query()
             ->with(['areaInterfaceLetter','imamLetter','plan'])
             ->whereHas('plan')
+            ->item(\request()->get('item_id'))
             ->where('user_id' , auth()->id())
             ->whereDoesntHave('report')
             ->confirmed()
@@ -80,7 +81,8 @@ class ReportController extends Controller
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                 'status' => RequestStatus::IN_PROGRESS,
                 'amount' => 0,
-                'confirm' => true
+                'confirm' => true,
+                'item_id' => \request()->get('item_id')
             ]);
             $disk = config('site.default_disk');
             $now = now();
@@ -125,6 +127,7 @@ class ReportController extends Controller
     public function confirm($report): ReportResource
     {
         $report = Report::query()
+            ->item(\request()->get('item_id'))
             ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
             ->whereHas('request' , function (Builder $builder)  {
                 $builder->where('user_id' , auth()->id());
@@ -140,6 +143,7 @@ class ReportController extends Controller
     public function update(UpdateReportRequest $updateReportRequest , $report): ReportResource|JsonResponse
     {
         $report =  Report::query()
+            ->item(\request()->get('item_id'))
             ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
             ->where('status' , RequestStatus::ACTION_NEEDED)
             ->confirmed()

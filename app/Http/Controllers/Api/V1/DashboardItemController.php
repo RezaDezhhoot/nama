@@ -10,10 +10,17 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DashboardItemController extends Controller
 {
-    public function __invoke(): AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
         return DashboardItemResource::collection(
             DashboardItem::query()->paginate((int)\request()->query('per_page' , 10))
+        );
+    }
+
+    public function show($dashboardItem)
+    {
+        return DashboardItemResource::make(
+            DashboardItem::query()->findOrFail($dashboardItem)
         );
     }
 }

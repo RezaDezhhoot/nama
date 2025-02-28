@@ -6,25 +6,7 @@
 
     <div class="card card-custom">
         <div class="card-body">
-            <div class="row">
-                <div class="card-body ">
-                    <x-admin.forms.validation-errors/>
-                    <x-admin.form-section label="نقش در نما">
-                        <x-admin.forms.select2
-                            :multiple="true"
-                            id="users"
-                            :data="[]"
-                            text="text"
-                            label="انتخاب کاربران"
-                            ajaxUrl="{{route('admin.feed.users')}}"
-                            wire:model.defer="users"/>
-                        <x-admin.forms.dropdown  id="role" :data="$data['role']" label="نقش" wire:model.defer="role"/>
-                        <div class="col-12">
-                            <button class="btn btn-outline-primary" type="button" wire:click="attachRole">ارسال نقش</button>
-                        </div>
-                    </x-admin.form-section>
-                </div>
-            </div>
+            @include('livewire.includes.advance-table')
             <div class="row">
                 <div class="col-12  table-responsive">
                     <table class="table table-striped table-bordered">
@@ -34,8 +16,9 @@
                             <th>نام</th>
                             <th>کدملی</th>
                             <th>شماره همراه</th>
-                            <th>نقش در نما</th>
+                            <th>تعداد نقش در نما</th>
                             <th>نقش  در ارمان</th>
+                            <th>اقدامات</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,13 +28,12 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->national_id }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>
-                                    {{ $item->nama_role?->label() }}
-                                    @if($item->nama_role)
-                                        <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
-                                    @endif
-                                </td>
+                                <td>{{ $item->roles_count }}</td>
+
                                 <td>{{ $item->role?->label() }}</td>
+                                <td>
+                                    <x-admin.edit-btn href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                </td>
                             </tr>
                         @empty
                             <td class="text-center" colspan="17">
@@ -65,26 +47,9 @@
                     </table>
                 </div>
             </div>
+            @if(sizeof($items) > 0)
+                {{$items->links('livewire.layouts.paginate')}}
+            @endif
         </div>
     </div>
 </div>
-@push('scripts')
-    <script>
-        function deleteItem(id) {
-            Swal.fire({
-                title: 'گرفتن نقش',
-                text: 'آیا از گرفتن نقش از این کاربر اطمینان دارید؟',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'خیر',
-                confirmButtonText: 'بله',
-            }).then((result) => {
-                if (result.value) {
-                @this.call('deleteItem' , id)
-                }
-            })
-        }
-    </script>
-@endpush

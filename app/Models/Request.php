@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Traits\SimpleSearchable;
@@ -62,15 +63,27 @@ class Request extends Model
 
     public function scopeRoleFilter(Builder $builder): Builder
     {
-        if (isAdmin()) {
-            return $builder;
-        }
-
+        return $builder;
         return $builder->whereIn('step' , auth()->user()->nama_role->step());
     }
 
     public function report(): HasOne
     {
         return $this->hasOne(Report::class,'request_id');
+    }
+
+    public function scopeItem($q , $id)
+    {
+        return $q->where('item_id' , $id);
+    }
+
+    public function scopeRole(Builder $builder , $role = null)
+    {
+        return $builder->where(function (Builder $builder) use ($role) {
+            if ($role) {
+                return $builder->whereIn('step' , OperatorRole::from($role)->step());
+            }
+            return $builder->where('user_id' , auth()->id());
+        });
     }
 }

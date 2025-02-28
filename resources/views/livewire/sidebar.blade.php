@@ -94,7 +94,7 @@
                     <x-admin.menu-item
                         href="{{route('admin.users.roles')}}"
                         icon="fas fa-key"
-                        :active="request()->routeIs(['admin.users.roles'])"
+                        :active="request()->routeIs(['admin.users.roles','admin.users.roles.store'])"
                         label="مدیریت نقش ها" />
                 @endif
             </ul>

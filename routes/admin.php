@@ -21,6 +21,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         });
         Route::group(['prefix' => 'users' , 'as' => 'users.','middleware' => 'is_admin'] , function () {
             Route::get('roles' , \App\Livewire\Users\AttachRole::class)->name('roles');
+            Route::get('roles/{action}/{id}' , \App\Livewire\Users\StoreUser::class)->name('roles.store');
         });
         Route::group(['prefix' => 'feed' , 'as' => 'feed.','middleware' => 'is_admin'] , function () {
             Route::get('users' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');

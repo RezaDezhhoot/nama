@@ -11,6 +11,7 @@ class StoreItem extends BaseComponent
 {
     public $title , $body , $link , $image;
 
+    public $logo , $color;
     public function mount($action , $id = null)
     {
         $this->setMode($action);
@@ -20,6 +21,8 @@ class StoreItem extends BaseComponent
             $this->body = $this->model->body;
             $this->link = $this->model->link;
             $this->image = $this->model->image;
+            $this->color = $this->model->color;
+            $this->logo = $this->model->logo;
             $this->header = $this->title;
         } elseif ($this->isCreatingMode()) {
             $this->header = 'ایتم جدید';
@@ -32,13 +35,17 @@ class StoreItem extends BaseComponent
             'title' => ['required','string','max:100'],
             'body' => ['required','string','max:10000'],
             'link' => ['nullable','url','max:200'],
-            'image' => ['required','string','max:150000']
+            'image' => ['required','string','max:150000'],
+            'logo' => ['required','string','max:150000'],
+            'color' => ['nullable','string'],
         ]);
         $data = [
             'title' => $this->title,
             'body' => $this->body,
             'link' => $this->link,
-            'image' => $this->image
+            'image' => $this->image,
+            'logo' => $this->logo,
+            'color' => $this->color
         ];
         $model = $this->model ?: new DashboardItem;
         $model->fill($data)->save();

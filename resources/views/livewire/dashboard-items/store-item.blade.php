@@ -2,7 +2,7 @@
 <div wire:init="init" class="h-100">
     <x-admin.big-loader :loading="$loading"/>
     @section('title', 'اینم های داشبورد'.(' '.$header ?? '') )
-    <x-admin.form-control deleteAble="{{$mode === PageAction::UPDATE}}" title="اینم های داشبورد"/>
+    <x-admin.form-control :deleteAble="false" title="اینم های داشبورد"/>
     <div class="card card-custom h-100 gutter-b example example-compact">
         <div class="card-header">
             <h3 class="card-title">{{ $header }}</h3>
@@ -10,9 +10,11 @@
         <x-admin.forms.validation-errors/>
         <div class="card-body ">
             <x-admin.form-section label="تنطیمات پایه">
-                <x-admin.forms.input width="3" type="text" :required="true" id="title" label="عنوان" wire:model.defer="title"/>
-                <x-admin.forms.input width="3" type="url" id="link" label="لینک" wire:model.defer="link"/>
+                <x-admin.forms.input width="4" type="text" :required="true" id="title" label="عنوان" wire:model.defer="title"/>
+                <x-admin.forms.input width="4" type="url" id="link" label="لینک" wire:model.defer="link"/>
+                <x-admin.forms.input width="4" type="color" id="color" label="رنگ" wire:model.defer="color"/>
                 <x-admin.forms.lfm-standalone width="6" :required="true" id="image" label="تصویر" :file="$image" wire:model="image"/>
+                <x-admin.forms.lfm-standalone width="6" :required="true" id="logo" label="لوگو" :file="$logo" wire:model="logo"/>
 
                 <x-admin.forms.text-area dir="rtl" id="body" label="توضیحات" wire:model.defer="body"/>
 
