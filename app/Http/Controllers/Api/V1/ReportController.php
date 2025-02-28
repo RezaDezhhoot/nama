@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\FileStatus;
+use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\AdminStoreReportRequest;
+use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitReportRequest;
 use App\Http\Requests\Api\V1\UpdateReportRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
@@ -208,5 +211,54 @@ class ReportController extends Controller
         return response()->json([
             'error' => 'مشکلی در حین ارسال گزارش به وجود آمده است ، لطفا مجدد تلاش کنید'
         ] , 500);
+    }
+
+    public function adminStore(AdminStoreReportRequest $adminStoreReportRequest , $report)
+    {
+        if (! \request()->filled('role')) {
+            abort(403);
+        }
+        $report =  Report::query()->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->whereHas('request' , function (Builder $builder) {
+            $builder->role(\request()->get('role'));
+        })->findOrFail($report);
+
+        if ($adminStoreReportRequest->action == "accept") {
+            $report->status = RequestStatus::IN_PROGRESS;
+            switch ($report->step) {
+                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+                    $report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+                    break;
+                case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
+                    $report->step = RequestStep::APPROVAL_AREA_INTERFACE;
+                    break;
+                case RequestStep::APPROVAL_AREA_INTERFACE:
+                    $report->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
+                    break;
+                case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
+                    $report->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                    $report->offer_amount = $adminStoreReportRequest->offer_amount;
+                    break;
+                case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
+                    $report->step = RequestStep::FINISH;
+                    $report->status = RequestStatus::DONE;
+                    $report->final_amount = $adminStoreReportRequest->final_amount;
+                    break;
+            }
+        } else if ($adminStoreReportRequest->action == "reject") {
+            $report->status = RequestStatus::REJECTED->value;
+        } else  {
+            $report->step = $adminStoreReportRequest->to;
+            $report->status = RequestStatus::ACTION_NEEDED->value;
+        }
+        $report->comments()->create([
+            'user_id' => auth()->id(),
+            'body' => $adminStoreReportRequest->comment,
+            'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+        ]);
+        $report->fill([
+            'message' => $adminStoreReportRequest->comment,
+        ])->save();
+
+        return ReportResource::make($report);
     }
 }

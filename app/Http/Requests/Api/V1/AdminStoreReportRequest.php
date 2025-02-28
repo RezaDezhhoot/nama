@@ -6,7 +6,7 @@ use App\Enums\RequestStep;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AdminStoreRequest extends FormRequest
+class AdminStoreReportRequest extends FormRequest
 {
     public function rules(): array
     {

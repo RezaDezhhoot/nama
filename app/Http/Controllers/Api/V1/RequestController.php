@@ -255,6 +255,7 @@ class RequestController extends Controller
         } else if ($adminStoreRequest->action == "reject") {
             $request->status = RequestStatus::REJECTED->value;
         } else  {
+            $request->step = $adminStoreRequest->to;
             $request->status = RequestStatus::ACTION_NEEDED->value;
         }
         $request->comments()->create([

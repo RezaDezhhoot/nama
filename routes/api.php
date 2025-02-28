@@ -22,6 +22,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::get('{report}' , 'show');
         Route::post('{request}' , 'create');
         Route::post('{report}/confirm' , 'confirm');
+        Route::post('{report}/admin-submit' , 'adminStore');
         Route::patch('{report}' , 'update');
     });
     Route::controller(\App\Http\Controllers\Api\V1\WrittenController::class)->middleware(['auth:sanctum','has_item'])->prefix('written-requests')->group(function () {
