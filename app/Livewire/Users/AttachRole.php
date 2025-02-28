@@ -7,9 +7,12 @@ use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use Livewire\WithPagination;
 
 class AttachRole extends BaseComponent
 {
+    use WithPagination;
+
     public $role;
     public $users = [] , $item;
 
