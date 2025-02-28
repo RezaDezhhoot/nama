@@ -26,9 +26,6 @@ class AttachRole extends BaseComponent
     public function render()
     {
         $items = User::query()
-            ->addSelect([
-                'roles_count' => UserRole::query()->selectRaw("COUNT(id)")->whereColumn('users.id','=','user_roles.user_id')
-            ])
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })

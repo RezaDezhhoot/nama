@@ -16,7 +16,7 @@
                             <th>نام</th>
                             <th>کدملی</th>
                             <th>شماره همراه</th>
-                            <th>تعداد نقش در نما</th>
+{{--                            <th>تعداد نقش در نما</th>--}}
                             <th>نقش  در ارمان</th>
                             <th>اقدامات</th>
                         </tr>
@@ -28,8 +28,7 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->national_id }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>{{ $item->roles_count }}</td>
-
+{{--                                <td>{{ $item->roles_count }}</td>--}}
                                 <td>{{ $item->role?->label() }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->id]) }}"/>
