@@ -36,8 +36,8 @@ class ReportController extends Controller
         ]);
 
         return ReportResource::collection(
-            Report::query()->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
-                $builder->role(\request()->get('role'))->when($request->filled('q') , function (Builder $builder) use ($request) {
+            Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
+                $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
                 });
             })->when($request->filled('status') , function (Builder $builder) use ($request) {
@@ -58,9 +58,7 @@ class ReportController extends Controller
     public function show($report): ReportResource
     {
         return ReportResource::make(
-            Report::query()->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->whereHas('request' , function (Builder $builder) {
-                $builder->role(\request()->get('role'));
-            })->findOrFail($report)
+            Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->findOrFail($report)
         )->additional([
             'statuses' => RequestStatus::values(),
             'steps' => RequestStep::values()
@@ -222,9 +220,7 @@ class ReportController extends Controller
         if (! \request()->filled('role')) {
             abort(403);
         }
-        $report =  Report::query()->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->whereHas('request' , function (Builder $builder) {
-            $builder->role(\request()->get('role'));
-        })->findOrFail($report);
+        $report =  Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->findOrFail($report);
         $report->last_updated_by = $report->step;
 
         if ($adminStoreReportRequest->action == "accept") {

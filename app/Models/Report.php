@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,5 +66,17 @@ class Report extends Model
     public function scopeItem($q , $id)
     {
         return $q->where('item_id' , $id);
+    }
+
+    public function scopeRole(Builder $builder , $role = null)
+    {
+        return $builder->where(function (Builder $builder) use ($role) {
+            if ($role) {
+                return $builder->whereIn('step' , OperatorRole::from($role)->step());
+            }
+            return $builder->whereHas('request' , function ($q) {
+                $q->where('user_id',auth()->id());
+            });
+        });
     }
 }
