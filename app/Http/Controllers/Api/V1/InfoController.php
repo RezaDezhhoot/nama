@@ -19,7 +19,7 @@ class InfoController extends Controller
             $builder->role(\request()->get('role'));
         })->get();
         $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
-
+        dd($requests->count());
         return response()->json([
             'requests' => [
                 RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->count(),
