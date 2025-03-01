@@ -19,25 +19,24 @@ class InfoController extends Controller
             $builder->role(\request()->get('role'));
         })->get();
         $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
-        dd($requests->count());
         return response()->json([
             'requests' => [
                 RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->count(),
                 RequestStatus::REJECTED->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::ACTION_NEEDED)->count(),
+                RequestStatus::DONE->value => $requests->where('status' , RequestStatus::DONE)->count(),
             ],
             'reports' => [
                 RequestStatus::IN_PROGRESS->value => $reports->where('status' , RequestStatus::IN_PROGRESS)->count(),
                 RequestStatus::REJECTED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::ACTION_NEEDED)->count(),
+                RequestStatus::DONE->value => $reports->where('status' , RequestStatus::DONE)->count(),
             ],
             'written-requests' => [
                 RequestStatus::IN_PROGRESS->value => $writtenRequests->where('status' , RequestStatus::IN_PROGRESS)->count(),
                 RequestStatus::REJECTED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
                 RequestStatus::ACTION_NEEDED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::DONE->value => $writtenRequests->where('status' , RequestStatus::DONE)->count(),
             ],
         ]);
     }
