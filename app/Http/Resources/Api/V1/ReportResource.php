@@ -26,6 +26,7 @@ class ReportResource extends JsonResource
             'date' => $this->whenHas('date'),
             'final_amount' => $this->whenHas('final_amount'),
             'message' => $this->message,
+            'created_at' => $this->created_at,
             'request' => RequestResource::make($this->whenLoaded('request')),
             'images' => MediaResource::collection($this->whenLoaded('images')),
             'video' => MediaResource::make($this->whenLoaded('video')),
