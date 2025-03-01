@@ -28,6 +28,7 @@ class Request extends Model
         'confirm' => 'boolean',
         'status' => RequestStatus::class,
         'step' => RequestStep::class,
+        'last_updated_by' => RequestStep::class,
     ];
 
 

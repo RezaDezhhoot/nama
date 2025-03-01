@@ -16,7 +16,8 @@ class Report extends Model
     protected $casts = [
         'confirm' => 'boolean',
         'step' => RequestStep::class,
-        'status' => RequestStatus::class
+        'last_updated_by' => RequestStep::class,
+        'status' => RequestStatus::class,
     ];
 
     const FILE_IMAGES_SUBJECT = 'report_images';

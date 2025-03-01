@@ -225,6 +225,7 @@ class ReportController extends Controller
         $report =  Report::query()->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->whereHas('request' , function (Builder $builder) {
             $builder->role(\request()->get('role'));
         })->findOrFail($report);
+        $report->last_updated_by = $report->step;
 
         if ($adminStoreReportRequest->action == "accept") {
             $report->status = RequestStatus::IN_PROGRESS;

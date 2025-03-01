@@ -31,4 +31,16 @@ enum RequestStep: string
             self::FINISH => 'اتمام یافته',
         };
     }
+
+    public function title()
+    {
+        return match ($this) {
+            self::APPROVAL_MOSQUE_HEAD_COACH => ' سر مربی',
+            self::APPROVAL_MOSQUE_CULTURAL_OFFICER => ' مسئول فرهنگی',
+            self::APPROVAL_AREA_INTERFACE => '  رابط منطقه',
+            self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => ' معاونت اجرایی مساجد',
+            self::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING => ' معاونت طرح و برنامه',
+            self::FINISH => 'اتمام یافته',
+        };
+    }
 }

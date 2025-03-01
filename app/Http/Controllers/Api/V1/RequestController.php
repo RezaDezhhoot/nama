@@ -229,6 +229,7 @@ class RequestController extends Controller
             ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
             ->where('status',RequestStatus::IN_PROGRESS)
             ->findOrFail($request);
+        $request->last_updated_by = $request->step;
 
         if ($adminStoreRequest->action == "accept") {
             $request->status = RequestStatus::IN_PROGRESS;
