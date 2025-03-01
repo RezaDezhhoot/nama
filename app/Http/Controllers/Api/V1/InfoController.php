@@ -15,9 +15,7 @@ class InfoController extends Controller
     public function __invoke(): \Illuminate\Http\JsonResponse
     {
         $requests = RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'))->get();
-        $reports = Report::query()->item(\request()->get('item_id'))->whereHas('request' , function (Builder $builder) {
-            $builder->role(\request()->get('role'));
-        })->get();
+        $reports = Report::query()->item(\request()->get('item_id'))->role(\request()->get('role'))->get();
         $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
         return response()->json([
             'requests' => [
