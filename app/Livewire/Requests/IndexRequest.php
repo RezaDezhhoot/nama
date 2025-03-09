@@ -14,6 +14,7 @@ class IndexRequest extends BaseComponent
 
     public $status ;
 
+
     public function mount()
     {
         $this->data['status'] = RequestStatus::labels();

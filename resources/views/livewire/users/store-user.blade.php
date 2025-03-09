@@ -16,6 +16,7 @@
                 @endif
                 <x-admin.forms.dropdown  id="item" :data="$data['items']" label="پروژه" wire:model.live="item"/>
                 @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item)
+                    <x-admin.forms.dropdown :required="true" id="main_unit" :data="$data['main_units']" label="مرکز محوری" wire:model.live="main_unit"/>
                     <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
                 @endif
                 <div class="col-12">

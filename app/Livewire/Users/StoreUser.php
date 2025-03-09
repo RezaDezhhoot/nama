@@ -30,16 +30,25 @@ class StoreUser extends BaseComponent
         $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->pluck('title','id');
     }
 
-    public function updatedItem($value)
-    {
-        $item = DashboardItem::query()->findOrFail($value);
-        $this->data['units'] = Unit::query()->whereNotNull('parent_id')->where('type',$item->type)->latest()->pluck('title','id');
-    }
-
 
     public function render()
     {
         $roles = UserRole::query()->with(['unit'])->where('user_id',$this->user->id)->get()->groupBy('item_id');
+
+        if ($this->item) {
+            $item = DashboardItem::query()->findOrFail($this->item);
+            $this->data['units'] = Unit::query()
+                ->when($this->main_unit , function ($q) {
+                    $q->where('parent_id' , $this->main_unit);
+                })
+                ->whereNotNull('parent_id')
+                ->where('type',$item->type)
+                ->latest()->pluck('title','id');
+        } else {
+            $this->data['units'] = [];
+        }
+
+
         return view('livewire.users.store-user' , get_defined_vars())->extends('livewire.layouts.admin');
     }
 
