@@ -13,10 +13,11 @@
                 <x-admin.forms.dropdown  id="role" :data="$data['role']" label="نقش" wire:model.live="role"/>
                 @if($role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value)
                     <x-admin.forms.dropdown :required="true" id="main_unit" :data="$data['main_units']" label="مرکز محوری" wire:model.defer="unit"/>
-                @elseif($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
+                @endif
+                <x-admin.forms.dropdown  id="item" :data="$data['items']" label="پروژه" wire:model.live="item"/>
+                @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item)
                     <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
                 @endif
-                <x-admin.forms.dropdown  id="item" :data="$data['items']" label="پروژه" wire:model.defer="item"/>
                 <div class="col-12">
                     <button class="btn btn-outline-primary" type="button" wire:click="attachRole">ارسال نقش</button>
                 </div>

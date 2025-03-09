@@ -30,6 +30,12 @@ class StoreUser extends BaseComponent
         $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->pluck('title','id');
     }
 
+    public function updatedItem($value)
+    {
+        $item = DashboardItem::query()->findOrFail($value);
+        $this->data['units'] = Unit::query()->whereNotNull('parent_id')->where('type',$item->type)->latest()->pluck('title','id');
+    }
+
 
     public function render()
     {
@@ -59,7 +65,7 @@ class StoreUser extends BaseComponent
                 'user_id' => $this->user->id,
                 'unit_id' => emptyToNull($this->unit)
             ]);
-            $this->reset(['role']);
+            $this->reset(['role','item','unit']);
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         }
     }
