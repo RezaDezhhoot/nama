@@ -24,6 +24,7 @@
                             <th>مشخصات کاربر</th>
                             <th>تاریخ ثبت درخواست</th>
                             <th>تاریخ آخرین بروزرسانی</th>
+                            <th>واحد</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -41,6 +42,7 @@
                             </td>
                             <td>{{ persian_date($request->created_at) }}</td>
                             <td>{{ persian_date($request->updated_at) }}</td>
+                            <td>{{ $request->unit?->tilte ?? "-" }}</td>
                         </tr>
                         </tbody>
                     </table>

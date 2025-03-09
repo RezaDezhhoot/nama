@@ -20,6 +20,7 @@
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
+                            <th>مرکز</th>
                             <th>تاریخ ارسال</th>
                             <th>تاریخ اخرین بروزرسانی</th>
                             <th>تعداد گفتوگو</th>
@@ -40,6 +41,7 @@
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label() }}</td>
+                                <td>{{ $item->unit?->unit ?? '-' }}</td>
                                 <td>{{ persian_date($item->created_at) }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>

@@ -21,6 +21,7 @@
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
+                            <th>مرکز</th>
 
                             <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
                             <th>هزینه پیشنهادی توسط معاونت اجرایی مساجد</th>
@@ -47,6 +48,7 @@
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label() }}</td>
+                                <td>{{ $item->unit->title ?? "-" }}</td>
 
                                 <td><strong>{{ number_format($item->total_amount) }} تومان </strong></td>
                                 <td><strong>{{ number_format($item->offer_amount) }} تومان </strong></td>

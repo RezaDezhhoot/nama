@@ -103,7 +103,7 @@ class RequestController extends Controller
                 'date' => dateConverter($submitRequest->date ,'m'),
                 'user_id' => auth()->id(),
                 'status' => RequestStatus::IN_PROGRESS,
-                'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                'step' => RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER,
                 'confirm' => true,
                 'item_id' => $itemId,
                 'unit_id' => $validRole->unit_id
@@ -239,15 +239,17 @@ class RequestController extends Controller
             ->role(\request()->get('role'))
             ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
             ->where('status',RequestStatus::IN_PROGRESS)
+            ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
+
         $request->last_updated_by = $request->step;
 
         if ($adminStoreRequest->action == "accept") {
             $request->status = RequestStatus::IN_PROGRESS;
             switch ($request->step) {
-                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
-                    $request->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
-                    break;
+//                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+//                    $request->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+//                    break;
                 case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                     $request->step = RequestStep::APPROVAL_AREA_INTERFACE;
                     break;

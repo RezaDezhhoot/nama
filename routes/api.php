@@ -7,7 +7,7 @@ Route::group(['prefix' => 'v1'] , function () {
     Route::get('users/profile' , \App\Http\Controllers\Api\V1\UserController::class)->middleware(['auth:sanctum']);
     Route::get('info' , \App\Http\Controllers\Api\V1\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::apiResource('dashboard-items' , \App\Http\Controllers\Api\V1\DashboardItemController::class)->only(['index','show']);
-    Route::get('banners' , \App\Http\Controllers\Api\V1\BannerController::class);
+    Route::get('banners' , \App\Http\Controllers\Api\V1\BannerController::class)->middleware(['has_item']);
     Route::apiResource('request-plans' , \App\Http\Controllers\Api\V1\RequestPlanController::class)->middleware(['auth:sanctum','has_item'])->only(['index','show']);
     Route::controller(\App\Http\Controllers\Api\V1\RequestController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('requests')->group(function () {
         Route::get('' , 'index');

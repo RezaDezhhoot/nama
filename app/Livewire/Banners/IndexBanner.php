@@ -13,6 +13,7 @@ class IndexBanner extends BaseComponent
     public function render()
     {
         $items = Banner::query()
+            ->with(['item'])
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })->orderBy('position')

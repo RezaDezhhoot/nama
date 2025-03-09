@@ -22,7 +22,7 @@ class IndexRequest extends BaseComponent
     public function render()
     {
         $items = Request::query()
-            ->with(['plan','user'])
+            ->with(['plan','user','unit'])
             ->withCount('comments')
             ->latest('updated_at')
             ->whereHas('plan')

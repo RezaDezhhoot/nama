@@ -12,7 +12,9 @@
                 <x-admin.forms.input type="text" width="3" :required="true" id="title" label="عنوان مرکز" wire:model.defer="title" />
                 <x-admin.forms.dropdown :data="$data['type']" :required="true" width="3"  id="type" label="نوع پروفایل" wire:model.defer="type"/>
                 <x-admin.forms.dropdown :data="$data['sub_type']"  width="3"  id="sub_type" label="نوع فرعی" wire:model.defer="sub_type"/>
-                <x-admin.forms.dropdown :data="$data['parent']"  width="3"  id="parent" label="مرکز بالادست" wire:model.defer="parent"/>
+                @if(! $model || ! is_null($model->parent))
+                    <x-admin.forms.dropdown :data="$data['parent']"  width="3"  id="parent" label="مرکز بالادست" wire:model.defer="parent"/>
+                @endif
 
                 <x-admin.forms.select2
                     id="city"

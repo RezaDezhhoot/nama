@@ -85,7 +85,7 @@ class ReportController extends Controller
             $report = $request->report()->create([
                 ... $data,
                 'date' => dateConverter($submitReportRequest->date ,'m'),
-                'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                'step' => RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER,
                 'status' => RequestStatus::IN_PROGRESS,
                 'amount' => 0,
                 'confirm' => true,
@@ -222,15 +222,19 @@ class ReportController extends Controller
         if (! \request()->filled('role')) {
             abort(403);
         }
-        $report =  Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->findOrFail($report);
+        $report =  Report::query()->role(\request()->get('role'))
+            ->item(\request()->get('item_id'))
+            ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
+            ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
+            ->findOrFail($report);
         $report->last_updated_by = $report->step;
 
         if ($adminStoreReportRequest->action == "accept") {
             $report->status = RequestStatus::IN_PROGRESS;
             switch ($report->step) {
-                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
-                    $report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
-                    break;
+//                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+//                    $report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+//                    break;
                 case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                     $report->step = RequestStep::APPROVAL_AREA_INTERFACE;
                     break;

@@ -4,34 +4,40 @@ namespace App\Livewire\Banners;
 
 use App\Livewire\BaseComponent;
 use App\Models\Banner;
+use App\Models\DashboardItem;
 
 class StoreBanner extends BaseComponent
 {
-    public $title , $image;
+    public $title , $image , $item;
 
     public function mount($action , $id = null)
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
-            $this->model = Banner::query()->findOrFail($id);
+            $this->model = Banner::query()->with(['item'])->findOrFail($id);
             $this->title = $this->model->title;
             $this->image = $this->model->image;
+            $this->item = $this->model->item_id;
             $this->header = $this->title;
         } elseif ($this->isCreatingMode()) {
             $this->header = 'بنر جدید';
         } else abort(404);
+
+        $this->data['items'] = DashboardItem::query()->pluck('title','id');
     }
 
     public function store()
     {
         $this->validate([
             'title' => ['required','string','max:150'],
-            'image' => ['required','string','max:150000']
+            'image' => ['required','string','max:150000'],
+            'item' => ['required']
         ]);
         $model = $this->model ?: new Banner;
         $data = [
             'title' => $this->title,
-            'image' => $this->image
+            'image' => $this->image,
+            'item_id' => $this->item,
         ];
         $model->fill($data)->save();
 
