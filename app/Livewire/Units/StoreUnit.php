@@ -35,10 +35,27 @@ class StoreUnit extends BaseComponent
             $this->header = 'مرکز جدید';
         } else abort(404);
         $this->data['type'] = UnitType::labels();
-        $this->data['sub_type'] = UnitSubType::labels();
         $this->data['parent'] = Unit::query()->when($id , function ($q) use ($id) {
             $q->where('id','!=',$id);
         })->whereNull('parent_id')->pluck('title','id')->toArray();
+        $this->data['sub_type'] = [];
+    }
+
+    public function updatedType($value)
+    {
+        $this->data['sub_type'] = [];
+        if ($value == UnitType::SCHOOL->value) {
+            $this->data['sub_type'] = [
+                UnitSubType::MALE->value => UnitSubType::MALE->label(),
+                UnitSubType::FEMALE->value => UnitSubType::FEMALE->label(),
+                UnitSubType::SUPPORT->value => UnitSubType::SUPPORT->label(),
+            ];
+        } elseif ($value == UnitType::MOSQUE->value) {
+            $this->data['sub_type'] = [
+                UnitSubType::BROTHERS->value => UnitSubType::BROTHERS->label(),
+                UnitSubType::SISTERS->value => UnitSubType::SISTERS->label(),
+            ];
+        }
     }
 
     public function render()
