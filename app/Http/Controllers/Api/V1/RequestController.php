@@ -231,9 +231,6 @@ class RequestController extends Controller
 
     public function adminStore(AdminStoreRequest $adminStoreRequest , $request): RequestResource
     {
-        if (! \request()->filled('role')) {
-            abort(403);
-        }
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
@@ -243,7 +240,6 @@ class RequestController extends Controller
             ->findOrFail($request);
 
         $request->last_updated_by = $request->step;
-
         if ($adminStoreRequest->action == "accept") {
             $request->status = RequestStatus::IN_PROGRESS;
             switch ($request->step) {

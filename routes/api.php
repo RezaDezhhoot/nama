@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::get('' , 'index');
         Route::get('{id}' , 'show');
         Route::post('' , 'store');
+        Route::post('{id}/admin-submit' , 'adminStore');
         Route::patch('{id}' , 'update');
     });
 });

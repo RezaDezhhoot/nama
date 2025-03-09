@@ -15,7 +15,7 @@ class SubmitWrittenRequest extends FormRequest
             'body' => ['required','string','max:3000'],
             'letter' => ['required',Rule::imageFile()->max(5 * 1024)],
             'sign' => ['required',Rule::imageFile()->max(5 * 1024)],
-            'reference_to' => ['required',Rule::in(OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value,OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->value)]
+            'reference_to' => ['required',Rule::in([OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value])]
         ];
     }
 }
