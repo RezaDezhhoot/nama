@@ -32,6 +32,18 @@ enum RequestStep: string
         };
     }
 
+    public function backSteps(): array
+    {
+        return match ($this) {
+            self::APPROVAL_MOSQUE_HEAD_COACH => [],
+            self::APPROVAL_MOSQUE_CULTURAL_OFFICER => [self::APPROVAL_MOSQUE_HEAD_COACH],
+            self::APPROVAL_AREA_INTERFACE => [self::APPROVAL_MOSQUE_HEAD_COACH , self::APPROVAL_MOSQUE_CULTURAL_OFFICER],
+            self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => [self::APPROVAL_MOSQUE_HEAD_COACH  , self::APPROVAL_MOSQUE_CULTURAL_OFFICER , self::APPROVAL_AREA_INTERFACE],
+            self::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING => [self::APPROVAL_MOSQUE_HEAD_COACH  , self::APPROVAL_MOSQUE_CULTURAL_OFFICER , self::APPROVAL_AREA_INTERFACE , self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES],
+            default => []
+        };
+    }
+
     public function title()
     {
         return match ($this) {

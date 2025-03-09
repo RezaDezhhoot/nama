@@ -65,7 +65,7 @@ class Request extends Model
     public function scopeRoleFilter(Builder $builder): Builder
     {
         return $builder;
-        return $builder->whereIn('step' , auth()->user()->nama_role->step());
+//        return $builder->whereIn('step' , auth()->user()->nama_role->step());
     }
 
     public function report(): HasOne
@@ -78,13 +78,31 @@ class Request extends Model
         return $q->where('item_id' , $id);
     }
 
-    public function scopeRole(Builder $builder , $role = null)
+    public function scopeRole(Builder $builder , $role = null): Builder
     {
         return $builder->where(function (Builder $builder) use ($role) {
-            if ($role) {
-                return $builder->whereIn('step' , OperatorRole::from($role)->step());
+            $role = OperatorRole::tryFrom($role);
+            if ($role && $role !== OperatorRole::MOSQUE_HEAD_COACH) {
+                return $builder->whereIn('step' ,$role->step())
+                    ->whereHas('unit' , function (Builder $builder) use ($role) {
+                        if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
+                            return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                                $builder->where('role' , $role)->where('user_id' , auth()->id());
+                            })->orWhereHas('parent' , function (Builder $builder) use ($role) {
+                                $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                                    $builder->where('role' , $role)->where('user_id' , auth()->id());
+                                });
+                            });
+                        }
+                        return $builder;
+                    });
             }
             return $builder->where('user_id' , auth()->id());
         });
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

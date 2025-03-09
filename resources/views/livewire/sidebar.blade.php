@@ -75,7 +75,16 @@
                         <h4 class="menu-text">تنظیمات</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                     </li>
-
+                    <x-admin.menu-item
+                        href="{{route('admin.cities.index')}}"
+                        icon="fas fa-city"
+                        :active="request()->routeIs(['admin.cities.index','admin.cities.store'])"
+                        label="شهر ها و مناطق" />
+                    <x-admin.menu-item
+                        href="{{route('admin.units.index')}}"
+                        icon="fas fa-mosque"
+                        :active="request()->routeIs(['admin.units.index','admin.units.store'])"
+                        label="مراکز" />
                     <x-admin.menu-item
                         href="{{route('admin.plans.index')}}"
                         icon="fas fa-gem"

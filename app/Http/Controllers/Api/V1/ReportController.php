@@ -57,11 +57,13 @@ class ReportController extends Controller
 
     public function show($report): ReportResource
     {
+        $report = Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->findOrFail($report);
         return ReportResource::make(
-            Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])->findOrFail($report)
+            $report
         )->additional([
             'statuses' => RequestStatus::values(),
-            'steps' => RequestStep::values()
+            'steps' => RequestStep::values(),
+            'back_steps' => $report->step->backSteps()
         ]);
     }
 
@@ -215,7 +217,7 @@ class ReportController extends Controller
         ] , 500);
     }
 
-    public function adminStore(AdminStoreReportRequest $adminStoreReportRequest , $report)
+    public function adminStore(AdminStoreReportRequest $adminStoreReportRequest , $report): ReportResource
     {
         if (! \request()->filled('role')) {
             abort(403);
@@ -248,6 +250,12 @@ class ReportController extends Controller
         } else if ($adminStoreReportRequest->action == "reject") {
             $report->status = RequestStatus::REJECTED->value;
         } else  {
+            if (
+                ! in_array(
+                    RequestStep::tryFrom($adminStoreReportRequest->to) ,
+                    $report->step->backSteps()
+                )
+            ) abort(422);
             $report->step = $adminStoreReportRequest->to;
             $report->status = RequestStatus::ACTION_NEEDED->value;
         }

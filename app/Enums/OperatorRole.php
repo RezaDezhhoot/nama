@@ -41,6 +41,8 @@ enum OperatorRole: string
         };
     }
 
+
+
     public function writtenStep(): array
     {
         return match ($this) {

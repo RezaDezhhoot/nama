@@ -24,12 +24,12 @@
                     <div class="d-flex">
                         @if($saveAction)
                             <button id="send" wire:loading.attr="disabled"  type="button" class="btn d-flex btn-success" {{ $attributes }}>
-                                {{ __('general.actions.save-changes') }}
+                                دخیره تغییرات
                                 <x-admin.loader  />
                             </button>
                         @endif
 
-                        <button type="button" class="btn btn-light-primary ml-2 font-weight-bold" data-dismiss="modal">{{ __('general.actions.cancel') }}</button>
+                        <button type="button" class="btn btn-light-primary ml-2 font-weight-bold" data-dismiss="modal">لغو</button>
                     </div>
                 @endif
             </div>

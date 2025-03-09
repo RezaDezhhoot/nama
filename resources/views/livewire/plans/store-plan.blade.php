@@ -11,8 +11,9 @@
         <div class="card-body ">
             <x-admin.form-section label="تنطیمات پایه">
                 <x-admin.forms.input width="3" type="text" :required="true" id="title" label="عنوان" wire:model.defer="title"/>
-                <x-admin.forms.dropdown width="3" :data="$data['status']" :required="true" id="status" label="وضعیت" wire:model.defer="status"/>
-                <x-admin.forms.input width="6" type="text" :required="true" id="sub_title" label="زیر عنوان" wire:model.defer="sub_title"/>
+                <x-admin.forms.dropdown width="2" :data="$data['status']" :required="true" id="status" label="وضعیت" wire:model.defer="status"/>
+                <x-admin.forms.dropdown width="2" :data="$data['version']" :required="true" id="version" label="نسخه آرمان" wire:model.defer="version"/>
+                <x-admin.forms.input width="5" type="text" :required="true" id="sub_title" label="زیر عنوان" wire:model.defer="sub_title"/>
 
                 <x-admin.forms.lfm-standalone :required="true" id="image" label="لوگو" :file="$image" wire:model="image"/>
                 <x-admin.forms.checkbox  id="bold" label="اولین پلن نمایش داده شود" wire:model.defer="bold"/>

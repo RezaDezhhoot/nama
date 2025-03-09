@@ -44,7 +44,7 @@
                     </a>
                 @else
                     <button wire:loading.attr="disabled" wire:click="store()" class="btn d-flex btn-light-primary font-weight-bolder btn-sm">
-                       دخیره اطلاعات <x-admin.loader wire:targer="store" />
+                       دخیره اطلاعات
                     </button>
                 @endif
             @endif

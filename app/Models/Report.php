@@ -68,11 +68,26 @@ class Report extends Model
         return $q->where('item_id' , $id);
     }
 
-    public function scopeRole(Builder $builder , $role = null)
+    public function scopeRole(Builder $builder , $role = null): Builder
     {
         return $builder->where(function (Builder $builder) use ($role) {
-            if ($role) {
-                return $builder->whereIn('step' , OperatorRole::from($role)->step());
+            $role = OperatorRole::tryFrom($role);
+            if ($role && $role !== OperatorRole::MOSQUE_HEAD_COACH) {
+                return $builder->whereIn('step' , $role->step())->whereHas('request' , function (Builder $builder) use ($role) {
+                    $builder->whereHas('unit' , function (Builder $builder) use ($role) {
+                        if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
+                            return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                                $builder->where('role' , $role)->where('user_id' , auth()->id());
+                            })->orWhereHas('parent' , function (Builder $builder) use ($role) {
+                                $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                                    $builder->where('role' , $role)->where('user_id' , auth()->id());
+                                });
+                            });
+                        }
+                        return $builder;
+                    });
+                });
+
             }
             return $builder->whereHas('request' , function ($q) {
                 $q->where('user_id',auth()->id());

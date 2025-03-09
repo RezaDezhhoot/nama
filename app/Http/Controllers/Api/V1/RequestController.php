@@ -11,6 +11,7 @@ use App\Http\Requests\Api\V1\SubmitRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
 use App\Http\Resources\Api\V1\RequestResource;
 use App\Models\RequestPlan;
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -68,15 +69,24 @@ class RequestController extends Controller
 
         return RequestResource::make($request)->additional([
             'statuses' => RequestStatus::values(),
-            'steps' => RequestStep::values()
+            'steps' => RequestStep::values(),
+            'back_steps' => $request->step->backSteps()
         ]);
     }
 
     public function create(SubmitRequest $submitRequest): JsonResponse|RequestResource
     {
+        $itemId = \request()->get('item_id');
         $requestPlan = RequestPlan::query()
             ->published()
             ->findOrFail($submitRequest->request_plan_id);
+
+        $validRole = UserRole::query()
+            ->where('user_id' , auth()->id())
+            ->where('item_id' , $itemId)
+            ->where('role' , OperatorRole::MOSQUE_HEAD_COACH)
+            ->whereHas('unit')
+            ->firstOrFail();
 
         if ($requestPlan->requests_count >= $requestPlan->max_allocated_request) {
             return response()->json([
@@ -95,7 +105,8 @@ class RequestController extends Controller
                 'status' => RequestStatus::IN_PROGRESS,
                 'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                 'confirm' => true,
-                'item_id' => \request()->get('item_id')
+                'item_id' => $itemId,
+                'unit_id' => $validRole->unit_id
             ]);
             $disk = config('site.default_disk');
             $now = now();
@@ -218,7 +229,7 @@ class RequestController extends Controller
         ] , 500);
     }
 
-    public function adminStore(AdminStoreRequest $adminStoreRequest , $request)
+    public function adminStore(AdminStoreRequest $adminStoreRequest , $request): RequestResource
     {
         if (! \request()->filled('role')) {
             abort(403);
@@ -256,6 +267,13 @@ class RequestController extends Controller
         } else if ($adminStoreRequest->action == "reject") {
             $request->status = RequestStatus::REJECTED->value;
         } else  {
+            if (
+                ! in_array(
+                    RequestStep::tryFrom($adminStoreRequest->to) ,
+                    $request->step->backSteps()
+                )
+            ) abort(422);
+
             $request->step = $adminStoreRequest->to;
             $request->status = RequestStatus::ACTION_NEEDED->value;
         }

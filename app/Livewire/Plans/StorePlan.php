@@ -3,6 +3,7 @@
 namespace App\Livewire\Plans;
 
 use App\Enums\RequestPlanStatus;
+use App\Enums\RequestPlanVersion;
 use App\Livewire\BaseComponent;
 use App\Models\RequestPlan;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,8 @@ class StorePlan extends BaseComponent
 {
     public $title , $sub_title , $image , $status , $max_number_people_supported = 10 , $support_for_each_person_amount = 1000;
     public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false;
+
+    public $version;
 
     public function mount($action , $id = null)
     {
@@ -28,12 +31,14 @@ class StorePlan extends BaseComponent
             $this->max_allocated_request = $this->model->max_allocated_request;
             $this->body = $this->model->body;
             $this->bold = $this->model->bold;
+            $this->version = $this->model->version->value ?? null;
             $this->header = $this->title;
         } elseif ($this->isCreatingMode()) {
             $this->header = 'اکشن پلن جدید';
             $this->status = RequestPlanStatus::PUBLISHED->value;
         } else abort(404);
         $this->data['status'] = RequestPlanStatus::labels();
+        $this->data['version'] = RequestPlanVersion::values();
     }
 
     public function store()
@@ -53,7 +58,8 @@ class StorePlan extends BaseComponent
             'starts_at' => ['nullable'],
             'expires_at' => ['nullable'],
             'body' => ['nullable','string','max:1500000'],
-            'bold' => ['nullable','boolean']
+            'bold' => ['nullable','boolean'],
+            'version' => ['required',Rule::enum(RequestPlanVersion::class)]
         ]);
         $data = [
             'title' => $this->title,
@@ -66,7 +72,8 @@ class StorePlan extends BaseComponent
             'starts_at' => dateConverter($this->starts_at ,'m','Y-m-d H:i:s'),
             'expires_at' => dateConverter($this->expires_at ,'m','Y-m-d H:i:s'),
             'body' => $this->body,
-            'bold' => $this->bold
+            'bold' => $this->bold,
+            'version' => $this->version
         ];
         $model->fill($data)->save();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');

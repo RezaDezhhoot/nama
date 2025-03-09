@@ -25,6 +25,10 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         });
         Route::group(['prefix' => 'feed' , 'as' => 'feed.','middleware' => 'is_admin'] , function () {
             Route::get('users' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');
+            Route::get('cities' , \App\Http\Controllers\Feed\CityFeedController::class)->name('cities');
+            Route::get('regions/{city?}' , \App\Http\Controllers\Feed\RegionFeedController::class)->name('regions');
+            Route::get('neighborhoods/{region?}' , \App\Http\Controllers\Feed\NeighborhoodFeedController::class)->name('neighborhoods');
+            Route::get('areas/{neighborhood?}' , \App\Http\Controllers\Feed\AreaFeedController::class)->name('areas');
         });
         Route::group(['prefix' => 'requests' , 'as' => 'requests.' , 'middleware' => 'is_operator'] , function () {
             Route::get('' , \App\Livewire\Requests\IndexRequest::class)->name('index');
@@ -37,6 +41,14 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         Route::group(['prefix' => 'reports' , 'as' => 'reports.' , 'middleware' => 'is_operator'] , function () {
             Route::get('' , \App\Livewire\Reports\IndexReport::class)->name('index');
             Route::get('{action}/{id}' , \App\Livewire\Reports\StoreReport::class)->name('store');
+        });
+        Route::group(['prefix' => 'cities' , 'as' => 'cities.' , 'middleware' => 'is_admin'] , function () {
+            Route::get('' , \App\Livewire\Cities\IndexCity::class)->name('index');
+            Route::get('{action}/{id}' , \App\Livewire\Cities\StoreCity::class)->name('store');
+        });
+        Route::group(['prefix' => 'units' , 'as' => 'units.' , 'middleware' => 'is_admin'] , function () {
+            Route::get('' , \App\Livewire\Units\IndexUnit::class)->name('index');
+            Route::get('{action}/{id?}' , \App\Livewire\Units\StoreUnit::class)->name('store');
         });
     });
     Route::group(['prefix' => 'auth' , 'as' => 'auth.'],function (){

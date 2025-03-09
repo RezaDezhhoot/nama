@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OperatorRole;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserRole extends Model
 {
@@ -19,8 +20,13 @@ class UserRole extends Model
         ];
     }
 
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(DashboardItem::class,'item_id');
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

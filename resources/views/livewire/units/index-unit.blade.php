@@ -1,13 +1,13 @@
 @use('App\Enums\PageAction')
 <div wire:init="init">
     <x-admin.big-loader :loading="$loading" />
-    @section('title', 'اکشن پلن ها')
-    <x-admin.form-control link="{{ route('admin.plans.store',[PageAction::CREATE] ) }}" title="اکشن پلن ها"/>
+    @section('title', 'مراکز')
+    <x-admin.form-control link="{{ route('admin.units.store',[PageAction::CREATE] ) }}" title="مراکز"/>
 
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.dropdown  id="type" :data="$data['type']" label="نوع" wire:model.live="type"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -18,9 +18,9 @@
                             <th>#</th>
                             <th>شناسه</th>
                             <th>عنوان</th>
-                            <th>زیر عنوان</th>
-                            <th>وضعیت</th>
-                            <th>نسخه آرمان</th>
+                            <th>نوغ</th>
+                            <th>نوغ فرعی</th>
+                            <th>مرکز بالادست</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -30,11 +30,11 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->title }}</td>
-                                <td>{{ $item->sub_title ?? '-' }}</td>
-                                <td>{{ $item->status?->label() }}</td>
-                                <td>{{ $item->version?->value ?? "-" }}</td>
+                                <td>{{ $item->type->label() }}</td>
+                                <td>{{ $item->sub_type?->label() ?? '-' }}</td>
+                                <td>{{ $item->parent?->title ?? "مرکز محوری" }}</td>
                                 <td>
-                                    <x-admin.edit-btn href="{{ route('admin.plans.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                    <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>
@@ -71,7 +71,7 @@
                 confirmButtonText: 'بله',
             }).then((result) => {
                 if (result.value) {
-                    @this.call('deleteItem' , id)
+                @this.call('deleteItem' , id)
                 }
             })
         }
