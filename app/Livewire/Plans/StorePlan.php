@@ -5,6 +5,7 @@ namespace App\Livewire\Plans;
 use App\Enums\RequestPlanStatus;
 use App\Enums\RequestPlanVersion;
 use App\Livewire\BaseComponent;
+use App\Models\DashboardItem;
 use App\Models\RequestPlan;
 use Illuminate\Validation\Rule;
 
@@ -14,6 +15,8 @@ class StorePlan extends BaseComponent
     public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false;
 
     public $version;
+
+    public $item;
 
     public function mount($action , $id = null)
     {
@@ -33,12 +36,15 @@ class StorePlan extends BaseComponent
             $this->bold = $this->model->bold;
             $this->version = $this->model->version->value ?? null;
             $this->header = $this->title;
+            $this->item = $this->model->item_id;
         } elseif ($this->isCreatingMode()) {
             $this->header = 'اکشن پلن جدید';
             $this->status = RequestPlanStatus::PUBLISHED->value;
         } else abort(404);
         $this->data['status'] = RequestPlanStatus::labels();
         $this->data['version'] = RequestPlanVersion::values();
+        $this->data['items'] = DashboardItem::query()->pluck('title','id');
+
     }
 
     public function store()
@@ -59,7 +65,8 @@ class StorePlan extends BaseComponent
             'expires_at' => ['nullable'],
             'body' => ['nullable','string','max:1500000'],
             'bold' => ['nullable','boolean'],
-            'version' => ['required',Rule::enum(RequestPlanVersion::class)]
+            'version' => ['required',Rule::enum(RequestPlanVersion::class)],
+            'item' => ['required']
         ]);
         $data = [
             'title' => $this->title,
@@ -73,6 +80,7 @@ class StorePlan extends BaseComponent
             'expires_at' => dateConverter($this->expires_at ,'m','Y-m-d H:i:s'),
             'body' => $this->body,
             'bold' => $this->bold,
+            'item_id' => $this->item,
             'version' => $this->version
         ];
         $model->fill($data)->save();

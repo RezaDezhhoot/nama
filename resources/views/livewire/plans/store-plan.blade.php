@@ -14,6 +14,7 @@
                 <x-admin.forms.dropdown width="2" :data="$data['status']" :required="true" id="status" label="وضعیت" wire:model.defer="status"/>
                 <x-admin.forms.dropdown width="2" :data="$data['version']" :required="true" id="version" label="نسخه آرمان" wire:model.defer="version"/>
                 <x-admin.forms.input width="5" type="text" :required="true" id="sub_title" label="زیر عنوان" wire:model.defer="sub_title"/>
+                <x-admin.forms.dropdown  :data="$data['items']" :required="true" id="item" label="پروژه" wire:model.defer="item"/>
 
                 <x-admin.forms.lfm-standalone :required="true" id="image" label="لوگو" :file="$image" wire:model="image"/>
                 <x-admin.forms.checkbox  id="bold" label="اولین پلن نمایش داده شود" wire:model.defer="bold"/>

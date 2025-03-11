@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RequestPlanStatus;
 use App\Enums\RequestPlanVersion;
+use App\Enums\UnitType;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ class RequestPlan extends Model
     protected $casts = [
         'status' => RequestPlanStatus::class,
         'bold' => 'boolean',
-        'version' => RequestPlanVersion::class
+        'version' => RequestPlanVersion::class,
     ];
 
     protected static function booted()
