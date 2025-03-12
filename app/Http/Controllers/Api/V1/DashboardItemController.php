@@ -13,7 +13,7 @@ class DashboardItemController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return DashboardItemResource::collection(
-            DashboardItem::query()->where('item_id',\request()->get('item_id'))->paginate((int)\request()->query('per_page' , 10))
+            DashboardItem::query()->paginate((int)\request()->query('per_page' , 10))
         );
     }
 
