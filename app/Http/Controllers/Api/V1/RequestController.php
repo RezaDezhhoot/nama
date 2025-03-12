@@ -172,8 +172,7 @@ class RequestController extends Controller
             ->findOrFail($request);
         $data = $updateRequest->only(['students','amount','date','body']);
         if ($updateRequest->filled('students')) {
-            $data['students'] = min($request->plan->max_number_people_supported , $data['students']);
-            $data['total_amount'] = $data['students'] * $request->plan->support_for_each_person_amount;
+            $data['total_amount'] = min($request->plan->max_number_people_supported, $data['students']) *  $request->plan->support_for_each_person_amount;
         }
         if ($updateRequest->filled('date')) {
             $data['date'] = dateConverter($updateRequest->date ,'m');
@@ -181,7 +180,7 @@ class RequestController extends Controller
         $data['status'] = RequestStatus::IN_PROGRESS;
         try {
             DB::beginTransaction();
-            $request->update($data);
+            $request->update([...$data , 'step' => $request->last_updated_by]);
             $disk = config('site.default_disk');
             $now = now();
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;
@@ -275,15 +274,16 @@ class RequestController extends Controller
             $request->step = $adminStoreRequest->to;
             $request->status = RequestStatus::ACTION_NEEDED->value;
         }
-        $request->comments()->create([
-            'user_id' => auth()->id(),
-            'body' => $adminStoreRequest->comment,
-            'display_name' => OperatorRole::from(\request()->get('role'))->label(),
-        ]);
-        $request->fill([
-            'message' => $adminStoreRequest->comment,
-        ])->save();
+        if ($adminStoreRequest->filled('comment')) {
+            $request->comments()->create([
+                'user_id' => auth()->id(),
+                'body' => $adminStoreRequest->comment,
+                'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+            ]);
+            $request->message = $adminStoreRequest->comment;
+        }
 
+        $request->save();
         return RequestResource::make($request);
     }
 }

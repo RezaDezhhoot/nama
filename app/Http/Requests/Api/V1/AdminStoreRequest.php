@@ -11,7 +11,7 @@ class AdminStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comment' => ['required','string'],
+            'comment' => ['nullable','string'],
             'action' => ['required','in:accept,action_needed,reject'],
             'offer_amount' => ['nullable','integer'],
             'final_amount' => ['nullable','integer'],
