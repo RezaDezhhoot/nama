@@ -16,7 +16,8 @@ class UserRole extends Model
     {
         return [
             'password' => 'hashed',
-            'role' => OperatorRole::class
+            'role' => OperatorRole::class,
+            'auto_accept' => 'boolean'
         ];
     }
 
@@ -28,5 +29,25 @@ class UserRole extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function neighborhood(): BelongsTo
+    {
+        return $this->belongsTo(Neighborhood::class);
+    }
+
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class);
     }
 }

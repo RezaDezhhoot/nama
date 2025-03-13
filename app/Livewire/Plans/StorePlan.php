@@ -18,6 +18,8 @@ class StorePlan extends BaseComponent
 
     public $item;
 
+    public $letter_required , $letter2_required;
+
     public function mount($action , $id = null)
     {
         $this->setMode($action);
@@ -34,6 +36,8 @@ class StorePlan extends BaseComponent
             $this->max_allocated_request = $this->model->max_allocated_request;
             $this->body = $this->model->body;
             $this->bold = $this->model->bold;
+            $this->letter_required = $this->model->letter_required ?? false;
+            $this->letter2_required = $this->model->letter2_required ?? false;
             $this->version = $this->model->version->value ?? null;
             $this->header = $this->title;
             $this->item = $this->model->item_id;
@@ -65,6 +69,8 @@ class StorePlan extends BaseComponent
             'expires_at' => ['nullable'],
             'body' => ['nullable','string','max:1500000'],
             'bold' => ['nullable','boolean'],
+            'letter_required' => ['nullable','boolean'],
+            'letter2_required' => ['nullable','boolean'],
             'version' => ['required',Rule::enum(RequestPlanVersion::class)],
             'item' => ['required']
         ]);
@@ -81,7 +87,9 @@ class StorePlan extends BaseComponent
             'body' => $this->body,
             'bold' => $this->bold,
             'item_id' => $this->item,
-            'version' => $this->version
+            'version' => $this->version,
+            'letter_required' => $this->letter_required,
+            'letter2_required' => $this->letter2_required,
         ];
         $model->fill($data)->save();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');

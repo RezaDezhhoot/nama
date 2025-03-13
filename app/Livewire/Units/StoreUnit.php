@@ -101,7 +101,7 @@ class StoreUnit extends BaseComponent
             'lng'=> ['required','numeric'],
             'type' => ['required','string','max:150'],
             'sub_type' => ['nullable','string','max:150'],
-            'parent' => ['nullable','exists:units,id'],
+            'parent' => [$this->type == UnitType::MOSQUE->value ? 'nullable' : 'required','exists:units,id'],
             'auto_accept' => ['nullable','boolean']
         ]);
         $data = [

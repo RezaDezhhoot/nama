@@ -270,6 +270,7 @@ class ReportController extends Controller
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
             ]);
             $report->message = $adminStoreReportRequest->comment;
+            $report->messages[\request()->get('role')] = $adminStoreReportRequest->comment;
         }
         $report->save();
         return ReportResource::make($report);

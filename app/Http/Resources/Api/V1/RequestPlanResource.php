@@ -27,7 +27,9 @@ class RequestPlanResource extends JsonResource
             'bold' => $this->bold,
             'body' => $this->body,
             'image' => asset($this->image),
-            'previous_requests' => $this->whenCounted('requests')
+            'previous_requests' => $this->whenCounted('requests'),
+            'imam_letter' => $this->letter_required,
+            'area_interface_letter' => $this->letter2_required,
         ];
     }
 }

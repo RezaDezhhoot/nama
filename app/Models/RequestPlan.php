@@ -23,6 +23,8 @@ class RequestPlan extends Model
         'status' => RequestPlanStatus::class,
         'bold' => 'boolean',
         'version' => RequestPlanVersion::class,
+        'letter_required' => 'boolean',
+        'letter2_required' => 'boolean',
     ];
 
     protected static function booted()

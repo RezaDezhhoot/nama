@@ -17,6 +17,10 @@ class StoreUser extends BaseComponent
 
     public $unit , $main_unit;
 
+    public $city , $region , $neighborhood , $area , $auto_accept , $lat , $lng;
+    public $regionAjax , $neighborhoodAjax , $areaAjax;
+
+
     public function mount($action , $id)
     {
         $this->setMode($action);
@@ -28,12 +32,20 @@ class StoreUser extends BaseComponent
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
         $this->data['main_units'] = Unit::query()->whereNull('parent_id')->latest()->pluck('title','id');
         $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->pluck('title','id');
+        $this->item = collect($this->data['items'])->keys()->first();
     }
 
 
+    public function updatedRole()
+    {
+        $this->reset(['city','region','neighborhood','area','lat','lng']);
+    }
+
     public function render()
     {
-        $roles = UserRole::query()->with(['unit'])->where('user_id',$this->user->id)->get()->groupBy('item_id');
+        $roles = UserRole::query()->with(['unit'])
+            ->with(['city','region','neighborhood','area'])
+            ->where('user_id',$this->user->id)->get()->groupBy('item_id');
 
         if ($this->item) {
             $item = DashboardItem::query()->findOrFail($this->item);
@@ -57,7 +69,12 @@ class StoreUser extends BaseComponent
         $this->validate([
             'role' => ['required',Rule::enum(OperatorRole::class)],
             'item' => ['required'],
-            'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable','string','max:150']
+            'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable','string','max:150'],
+            'city' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
+            'region' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
+            'neighborhood' => [ 'nullable'],
+            'area' => ['nullable'],
+            'auto_accept' => ['nullable','boolean']
         ]);
         if ($this->role == OperatorRole::MOSQUE_HEAD_COACH->value && UserRole::query()->where(
             [
@@ -72,7 +89,14 @@ class StoreUser extends BaseComponent
                 'item_id' => $this->item,
                 'role' => $this->role,
                 'user_id' => $this->user->id,
-                'unit_id' => emptyToNull($this->unit)
+                'unit_id' => emptyToNull($this->unit),
+                'auto_accept' => emptyToNull($this->auto_accept) ?? false,
+                'lat' => $this->lat,
+                'lng' => $this->lng,
+                'city_id' => emptyToNull($this->city),
+                'region_id' => emptyToNull($this->region),
+                'neighborhood_id' => emptyToNull($this->neighborhood),
+                'area_id' => emptyToNull($this->area),
             ]);
             $this->reset(['role','item','unit']);
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
@@ -82,5 +106,23 @@ class StoreUser extends BaseComponent
     public function deleteRole($id)
     {
         UserRole::destroy($id);
+    }
+
+    public function updatedCity($v): void
+    {
+        $this->regionAjax = route('admin.feed.regions',is_array($v) ? $v['id'] : $v);
+        $this->dispatch('reloadAjaxURL#region' , $this->regionAjax);
+    }
+
+    public function updatedRegion($v): void
+    {
+        $this->neighborhoodAjax = route('admin.feed.neighborhoods',is_array($v) ? $v['id'] : $v);
+        $this->dispatch('reloadAjaxURL#neighborhood' , $this->neighborhoodAjax);
+    }
+
+    public function updatedNeighborhood($v): void
+    {
+        $this->areaAjax = route('admin.feed.areas',is_array($v) ? $v['id'] : $v);
+        $this->dispatch('reloadAjaxURL#area' , $this->areaAjax);
     }
 }

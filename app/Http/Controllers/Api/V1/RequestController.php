@@ -112,23 +112,26 @@ class RequestController extends Controller
             $now = now();
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;
 
-            $imamLetter = $submitRequest->file('imam_letter');
-            $request->imamLetter()->create([
-                'path' => $imamLetter->store($path,$disk),
-                'mime_type' => $imamLetter->getMimeType(),
-                'size' => $imamLetter->getSize(),
-                'disk' => $disk,
-                'subject' => $request::FILE_IMAM_LETTER_SUBJECT
-            ]);
-
-            $areaInterfaceLetter = $submitRequest->file('area_interface_letter');
-            $request->areaInterfaceLetter()->create([
-                'path' => $areaInterfaceLetter->store($path,$disk),
-                'mime_type' => $areaInterfaceLetter->getMimeType(),
-                'size' => $areaInterfaceLetter->getSize(),
-                'disk' => $disk,
-                'subject' => $request::FILE_AREA_INTERFACE_LETTER_SUBJECT
-            ]);
+            if ($submitRequest->hasFile('imam_letter')) {
+                $imamLetter = $submitRequest->file('imam_letter');
+                $request->imamLetter()->create([
+                    'path' => $imamLetter->store($path,$disk),
+                    'mime_type' => $imamLetter->getMimeType(),
+                    'size' => $imamLetter->getSize(),
+                    'disk' => $disk,
+                    'subject' => $request::FILE_IMAM_LETTER_SUBJECT
+                ]);
+            }
+            if ($submitRequest->hasFile('area_interface_letter')) {
+                $areaInterfaceLetter = $submitRequest->file('area_interface_letter');
+                $request->areaInterfaceLetter()->create([
+                    'path' => $areaInterfaceLetter->store($path,$disk),
+                    'mime_type' => $areaInterfaceLetter->getMimeType(),
+                    'size' => $areaInterfaceLetter->getSize(),
+                    'disk' => $disk,
+                    'subject' => $request::FILE_AREA_INTERFACE_LETTER_SUBJECT
+                ]);
+            }
             DB::commit();
             $request->load(['areaInterfaceLetter','imamLetter','plan']);
             $request->plan->loadCount(['requests' => function ($q) {
@@ -259,6 +262,8 @@ class RequestController extends Controller
                     $request->step = RequestStep::FINISH;
                     $request->status = RequestStatus::DONE;
                     $request->final_amount = $adminStoreRequest->final_amount;
+
+
                     break;
             }
         } else if ($adminStoreRequest->action == "reject") {
@@ -281,6 +286,7 @@ class RequestController extends Controller
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
             ]);
             $request->message = $adminStoreRequest->comment;
+            $request->messages[\request()->get('role')] = $adminStoreRequest->comment;
         }
 
         $request->save();

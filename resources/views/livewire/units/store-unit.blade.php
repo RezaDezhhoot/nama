@@ -13,7 +13,7 @@
                 <x-admin.forms.dropdown :data="$data['type']" :required="true" width="3"  id="type" label="نوع پروفایل" wire:model.live="type"/>
 
                 @if(! $model || ! is_null($model->parent))
-                    <x-admin.forms.dropdown :data="$data['parent']"  width="3"  id="parent" label="مرکز بالادست" wire:model.defer="parent"/>
+                    <x-admin.forms.dropdown :data="$data['parent']"  width="3" :required="$type != \App\Enums\UnitType::MOSQUE->value" id="parent" label="مرکز بالادست" wire:model.defer="parent"/>
                 @endif
                 @if(sizeof($data['sub_type']) > 0)
                     <x-admin.forms.dropdown :data="$data['sub_type']"  width="3"  id="sub_type" label="نوع فرعی" wire:model.defer="sub_type"/>
@@ -84,6 +84,4 @@
 @push('scripts')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
-
 @endpush

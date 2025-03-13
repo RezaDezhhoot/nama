@@ -32,6 +32,7 @@ class RequestResource extends JsonResource
             'area_interface_letter' => MediaResource::make($this->whenLoaded('areaInterfaceLetter')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'messages' => $this->messages,
             'message' => $this->whenHas('message'),
             'report' => ReportResource::make($this->whenLoaded('report')),
             'need_offer_amount' => $this->step === RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,
