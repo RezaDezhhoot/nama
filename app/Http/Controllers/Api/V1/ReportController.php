@@ -164,7 +164,7 @@ class ReportController extends Controller
         }
         try {
             DB::beginTransaction();
-            $report->update($data);
+            $report->update([...$data , 'step' => $report->last_updated_by]);
             $disk = config('site.default_disk');
             $now = now();
             $path =  'reports/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$report->id;
@@ -263,15 +263,15 @@ class ReportController extends Controller
             $report->step = $adminStoreReportRequest->to;
             $report->status = RequestStatus::ACTION_NEEDED->value;
         }
-        $report->comments()->create([
-            'user_id' => auth()->id(),
-            'body' => $adminStoreReportRequest->comment,
-            'display_name' => OperatorRole::from(\request()->get('role'))->label(),
-        ]);
-        $report->fill([
-            'message' => $adminStoreReportRequest->comment,
-        ])->save();
-
+        if ($adminStoreReportRequest->filled('comments')) {
+            $report->comments()->create([
+                'user_id' => auth()->id(),
+                'body' => $adminStoreReportRequest->comment,
+                'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+            ]);
+            $report->message = $adminStoreReportRequest->comment;
+        }
+        $report->save();
         return ReportResource::make($report);
     }
 }
