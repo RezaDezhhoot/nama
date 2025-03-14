@@ -19,7 +19,7 @@ class Report extends Model
         'step' => RequestStep::class,
         'last_updated_by' => RequestStep::class,
         'status' => RequestStatus::class,
-        'messages' => [],
+        'messages' => 'array',
     ];
 
     const FILE_IMAGES_SUBJECT = 'report_images';
