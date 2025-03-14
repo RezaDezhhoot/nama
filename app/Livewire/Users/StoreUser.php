@@ -98,7 +98,7 @@ class StoreUser extends BaseComponent
                 'neighborhood_id' => emptyToNull($this->neighborhood),
                 'area_id' => emptyToNull($this->area),
             ]);
-            $this->reset(['role','item','unit']);
+            $this->reset(['role','unit']);
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         }
     }

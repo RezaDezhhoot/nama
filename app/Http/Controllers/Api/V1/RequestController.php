@@ -142,6 +142,7 @@ class RequestController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             report($exception);
+            dd($exception->getMessage());
         }
         return response()->json([
             'error' => 'مشکلی در حین ارسال درخواست به وجود آمده است ، لطفا مجدد تلاش کنید'
@@ -262,8 +263,6 @@ class RequestController extends Controller
                     $request->step = RequestStep::FINISH;
                     $request->status = RequestStatus::DONE;
                     $request->final_amount = $adminStoreRequest->final_amount;
-
-
                     break;
             }
         } else if ($adminStoreRequest->action == "reject") {
@@ -275,10 +274,10 @@ class RequestController extends Controller
                     $request->step->backSteps()
                 )
             ) abort(422);
-
             $request->step = $adminStoreRequest->to;
             $request->status = RequestStatus::ACTION_NEEDED->value;
         }
+
         if ($adminStoreRequest->filled('comment')) {
             $request->comments()->create([
                 'user_id' => auth()->id(),
@@ -286,9 +285,13 @@ class RequestController extends Controller
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
             ]);
             $request->message = $adminStoreRequest->comment;
-            $request->messages[\request()->get('role')] = $adminStoreRequest->comment;
+            if (! $request->messages) {
+                $request->messages = [];
+            }
+            $messages =  $request->messages;
+            $messages[\request()->get('role')] = $adminStoreRequest->comment;
+            $request->messages = $messages;
         }
-
         $request->save();
         return RequestResource::make($request);
     }

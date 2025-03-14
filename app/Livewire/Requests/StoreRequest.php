@@ -89,6 +89,7 @@ class StoreRequest extends BaseComponent
                 'body' => $this->comment,
                 'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
             ]);
+            $this->request->messages[$this->request->step->value] = $this->comment;
             if ($this->message) {
                 $this->request->fill([
                     'message' => $this->message
