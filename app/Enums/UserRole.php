@@ -9,6 +9,7 @@ enum UserRole: string
 {
     use EnumHelpers , HasLabel;
     case SUPER_ADMIN = 'super_admin';
+    case TICKET_ROLE = 'ticket_role';
     case ADMIN = 'admin';
     case USER = 'user';
 
@@ -19,6 +20,7 @@ enum UserRole: string
             self::SUPER_ADMIN => 'super_admin',
             self::ADMIN => 'admin',
             self::USER => 'user',
+            self::TICKET_ROLE => 'ticket_role',
         };
     }
 }
