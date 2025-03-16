@@ -17,14 +17,27 @@
         <div class="card-body ">
             <x-admin.form-section label="تنطیمات نقش کاربر">
                 <x-admin.forms.dropdown  id="role" :data="$data['role']" label="نقش" wire:model.live="role"/>
-                @if($role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value)
-                    <x-admin.forms.dropdown :required="true" id="main_unit" :data="$data['main_units']" label="مرکز محوری" wire:model.defer="unit"/>
-                @endif
-{{--                <x-admin.forms.dropdown  id="item" :data="$data['items']" label="پروژه" wire:model.live="item"/>--}}
-                @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item)
-                    <x-admin.forms.dropdown :required="true" id="main_unit" :data="$data['main_units']" label="مرکز محوری" wire:model.live="main_unit"/>
+                <div class="col-12 {{$role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value ? '' :"d-none"}}" >
+                    <x-admin.forms.select2
+                        id="unit"
+                        :data="[]"
+                        text="title"
+                        :required="true"
+                        label="مرکز محوری"
+                        ajaxUrl="{{route('admin.feed.units')}}"
+                        wire:model.live="unit"/>
+                </div>
+                <div class="col-12 {{ $role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item ? '' : 'd-none' }}">
+                    <x-admin.forms.select2
+                        id="main_unit"
+                        :data="[]"
+                        text="title"
+                        :required="true"
+                        label="مرکز محوری"
+                        ajaxUrl="{{route('admin.feed.units')}}"
+                        wire:model.live="main_unit"/>
                     <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
-                @endif
+                </div>
                 <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
                     <x-admin.forms.select2 id="city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
                     <x-admin.forms.select2 id="region" :required="true" :data="$region ?? []" text="title" label="منظقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>

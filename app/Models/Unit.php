@@ -53,6 +53,11 @@ class Unit extends Model
         return $this->belongsTo(Area::class);
     }
 
+    public function scopeSelect2($q)
+    {
+        return $q->selectRaw("title as text , id");
+    }
+
     public function roles(): HasMany
     {
         return $this->hasMany(UserRole::class,'unit_id');

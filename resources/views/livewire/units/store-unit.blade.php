@@ -13,7 +13,17 @@
                 <x-admin.forms.dropdown :data="$data['type']" :required="true" width="3"  id="type" label="نوع پروفایل" wire:model.live="type"/>
 
                 @if(! $model || ! is_null($model->parent))
-                    <x-admin.forms.dropdown :data="$data['parent']"  width="3" :required="$type != \App\Enums\UnitType::MOSQUE->value" id="parent" label="مرکز بالادست" wire:model.defer="parent"/>
+                    <x-admin.forms.select2
+                        id="parent"
+                        :data="$model?->parent?->toArray() ?? []"
+                        text="title"
+                        :required="$type != \App\Enums\UnitType::MOSQUE->value"
+                        label="مرکز بالادست"
+                        width="3"
+                        ajaxUrl="{{route('admin.feed.units')}}"
+                        wire:model.live="parent"/>
+
+{{--                    <x-admin.forms.dropdown :data="$data['parent']"  width="3" :required="$type != \App\Enums\UnitType::MOSQUE->value" id="parent" label="مرکز بالادست" wire:model.defer="parent"/>--}}
                 @endif
                 @if(sizeof($data['sub_type']) > 0)
                     <x-admin.forms.dropdown :data="$data['sub_type']"  width="3"  id="sub_type" label="نوع فرعی" wire:model.defer="sub_type"/>
