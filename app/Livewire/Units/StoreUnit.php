@@ -39,6 +39,7 @@ class StoreUnit extends BaseComponent
             $q->where('id','!=',$id);
         })->whereNull('parent_id')->pluck('title','id')->toArray();
         $this->data['sub_type'] = [];
+        $this->updatedType($this->type);
     }
 
     public function updatedType($value)
