@@ -88,8 +88,8 @@ class StorePlan extends BaseComponent
             'bold' => $this->bold,
             'item_id' => $this->item,
             'version' => $this->version,
-            'letter_required' => $this->letter_required,
-            'letter2_required' => $this->letter2_required,
+            'letter_required' => emptyToNull($this->letter_required) ?? false,
+            'letter2_required' => emptyToNull($this->letter2_required) ?? false,
         ];
         $model->fill($data)->save();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
