@@ -30,8 +30,8 @@ class StoreUser extends BaseComponent
         } else abort(404);
         $this->data['role'] = OperatorRole::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
-        $this->data['main_units'] = Unit::query()->whereNull('parent_id')->latest()->pluck('title','id');
-        $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->pluck('title','id');
+        $this->data['main_units'] = Unit::query()->whereNull('parent_id')->latest()->get()->pluck('title','id');
+        $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->get()->pluck('title','id');
         $this->item = collect($this->data['items'])->keys()->first();
     }
 
@@ -55,7 +55,7 @@ class StoreUser extends BaseComponent
                 })
                 ->whereNotNull('parent_id')
                 ->where('type',$item->type)
-                ->latest()->pluck('title','id');
+                ->latest()->get()->pluck('title','id');
         } else {
             $this->data['units'] = [];
         }

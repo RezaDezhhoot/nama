@@ -6,6 +6,7 @@ use App\Enums\RequestStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use App\Models\Request as RequestModel;
+use App\Models\RequestPlan;
 use App\Models\WrittenRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class InfoController extends Controller
                 RequestStatus::ACTION_NEEDED->value => $writtenRequests->where('status' , RequestStatus::REJECTED)->count(),
                 RequestStatus::DONE->value => $writtenRequests->where('status' , RequestStatus::DONE)->count(),
             ],
+            'plans' => RequestPlan::query()->where('item_id',\request()->get('item_id'))->published()->count()
         ]);
     }
 }

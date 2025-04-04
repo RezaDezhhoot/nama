@@ -93,23 +93,27 @@ class WrittenController extends Controller
             $now = now();
             $path =  'written_requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$writtenRequest->id;
 
-            $letter = $request->file('letter');
-            $writtenRequest->letter()->create([
-                'path' => $letter->store($path,$disk),
-                'mime_type' => $letter->getMimeType(),
-                'size' => $letter->getSize(),
-                'disk' => $disk,
-                'subject' => $writtenRequest::FILE_LETTER_SUBJECT
-            ]);
+            if ($request->hasFile('letter')) {
+                $letter = $request->file('letter');
+                $writtenRequest->letter()->create([
+                    'path' => $letter->store($path,$disk),
+                    'mime_type' => $letter->getMimeType(),
+                    'size' => $letter->getSize(),
+                    'disk' => $disk,
+                    'subject' => $writtenRequest::FILE_LETTER_SUBJECT
+                ]);
+            }
 
-            $sign = $request->file('sign');
-            $writtenRequest->letter()->create([
-                'path' => $sign->store($path,$disk),
-                'mime_type' => $sign->getMimeType(),
-                'size' => $sign->getSize(),
-                'disk' => $disk,
-                'subject' => $writtenRequest::FILE_SIGN_SUBJECT
-            ]);
+            if ($request->hasFile('sign')) {
+                $sign = $request->file('sign');
+                $writtenRequest->letter()->create([
+                    'path' => $sign->store($path,$disk),
+                    'mime_type' => $sign->getMimeType(),
+                    'size' => $sign->getSize(),
+                    'disk' => $disk,
+                    'subject' => $writtenRequest::FILE_SIGN_SUBJECT
+                ]);
+            }
             DB::commit();
             $writtenRequest->load(['letter','sign']);
 

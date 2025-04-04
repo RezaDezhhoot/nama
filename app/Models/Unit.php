@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\UnitSubType;
 use App\Enums\UnitType;
 use App\Traits\SimpleSearchable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,13 @@ class Unit extends Model
         'type' => UnitType::class,
         'sub_type' => UnitSubType::class
     ];
+
+    public function title(): Attribute
+    {
+        return Attribute::get(function ($v) {
+           return sprintf("%s - %s",$v,$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+        });
+    }
 
     public function parent(): BelongsTo
     {
