@@ -12,7 +12,17 @@ class IndexReport extends BaseComponent
 {
     use WithPagination;
 
-    public $status ;
+    public $status , $item ;
+
+    protected function queryString()
+    {
+        return [
+            'item' => [
+                'as' => 'item'
+            ]
+        ];
+    }
+
 
     public function mount()
     {
@@ -25,6 +35,9 @@ class IndexReport extends BaseComponent
             ->with(['request','request.user'])
             ->withCount('comments')
             ->latest('updated_at')
+            ->when($this->item , function ($q) {
+                $q->where('item_id' , $this->item);
+            })
             ->whereHas('request' , function (Builder $builder) {
                 $builder->when($this->search , function (Builder $builder) {
                     $builder->search($this->search)->orWhereHas('user' , function (Builder $builder) {
