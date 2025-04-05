@@ -3,6 +3,8 @@
 namespace App\Livewire\Users;
 
 use App\Enums\OperatorRole;
+use App\Enums\SchoolCoachType;
+use App\Enums\UnitType;
 use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
 use App\Models\Unit;
@@ -18,7 +20,7 @@ class StoreUser extends BaseComponent
     public $unit , $main_unit;
 
     public $city , $region , $neighborhood , $area , $auto_accept , $lat , $lng;
-    public $regionAjax , $neighborhoodAjax , $areaAjax;
+    public $regionAjax , $neighborhoodAjax , $areaAjax , $coach_type;
 
 
     public function mount($action , $id)
@@ -33,6 +35,7 @@ class StoreUser extends BaseComponent
         $this->data['main_units'] = Unit::query()->whereNull('parent_id')->latest()->get()->pluck('title','id');
         $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->get()->pluck('title','id');
         $this->item = collect($this->data['items'])->keys()->first();
+        $this->data['coach_type'] = SchoolCoachType::labels();
     }
 
 
@@ -48,13 +51,13 @@ class StoreUser extends BaseComponent
             ->where('user_id',$this->user->id)->get()->groupBy('item_id');
 
         if ($this->item) {
-            $item = DashboardItem::query()->findOrFail($this->item);
+            $itemModel = DashboardItem::query()->findOrFail($this->item);
             $this->data['units'] = Unit::query()
                 ->when($this->main_unit , function ($q) {
                     $q->where('parent_id' , $this->main_unit);
                 })
                 ->whereNotNull('parent_id')
-                ->where('type',$item->type)
+                ->where('type',$itemModel->type)
                 ->latest()->get()->pluck('title','id');
         } else {
             $this->data['units'] = [];
@@ -66,10 +69,12 @@ class StoreUser extends BaseComponent
 
     public function attachRole()
     {
+        $itemModel  = DashboardItem::query()->findOrFail($this->item);
         $this->validate([
             'role' => ['required',Rule::enum(OperatorRole::class)],
             'item' => ['required'],
             'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable','string','max:150'],
+            'coach_type' => [($this->role == OperatorRole::MOSQUE_HEAD_COACH->value && $itemModel->type === UnitType::SCHOOL) ? 'required' : 'nullable','string','max:150'],
             'city' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
             'region' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
             'neighborhood' => [ 'nullable'],
@@ -97,6 +102,7 @@ class StoreUser extends BaseComponent
                 'region_id' => emptyToNull($this->region),
                 'neighborhood_id' => emptyToNull($this->neighborhood),
                 'area_id' => emptyToNull($this->area),
+                'school_coach_type' => emptyToNull($this->coach_type),
             ]);
             $this->reset(['role','unit']);
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');

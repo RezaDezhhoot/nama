@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OperatorRole;
+use App\Enums\SchoolCoachType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,7 +18,8 @@ class UserRole extends Model
         return [
             'password' => 'hashed',
             'role' => OperatorRole::class,
-            'auto_accept' => 'boolean'
+            'auto_accept' => 'boolean',
+            'school_coach_type' => SchoolCoachType::class
         ];
     }
 

@@ -76,7 +76,7 @@
 
                             </td>
                             <td>
-                                @if(request->areaInterfaceLetter)
+                                @if($request->areaInterfaceLetter)
                                     <button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-sm btn-outline-success">بارگیری فایل</button>
                                     <a target="_blank" href="{{ $request->areaInterfaceLetter->url }}" class="btn btn-sm  btn-outline-success">مشاهده فایل</a>
                                 @endif

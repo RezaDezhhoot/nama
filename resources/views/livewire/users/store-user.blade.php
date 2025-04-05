@@ -37,6 +37,9 @@
                         ajaxUrl="{{route('admin.feed.units')}}"
                         wire:model.live="main_unit"/>
                     <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
+                    @if($itemModel->type === \App\Enums\UnitType::SCHOOL)
+                        <x-admin.forms.dropdown :required="true" id="coach_type" :data="$data['coach_type']" label="نوع مربی" wire:model.defer="coach_type"/>
+                    @endif
                 </div>
                 <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
                     <x-admin.forms.select2 id="city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
@@ -93,6 +96,7 @@
                                             <th>منطقه</th>
                                             <th>محله</th>
                                             <th>ناحیه</th>
+                                            <th>نوع مربی</th>
                                             <th>تایید خودکار</th>
                                             <th>عملیات</th>
                                         </tr>
@@ -107,6 +111,7 @@
                                                 <td>{{ $r?->region?->title ?? '-' }}</td>
                                                 <td>{{ $r?->neighborhood?->title ?? '-' }}</td>
                                                 <td>{{ $r?->area?->title ?? '-' }}</td>
+                                                <td>{{ $r?->school_coach_type?->label() ?? '-' }}</td>
                                                 <td>{{ $r?->auto_accept ? 'بله' : '-' }}</td>
                                                 <td><x-admin.delete-btn onclick="deleteRole('{{$r->id}}')"  /></td>
                                             </tr>

@@ -95,6 +95,7 @@
                         @if($request->step === \App\Enums\WrittenRequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES)
                         @elseif($request->step === \App\Enums\WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING)
                             <x-admin.forms.checkbox  id="countable" label="جز درخواست های کاربر شمرده شود" wire:model.defer="countable"/>
+                            <x-admin.forms.checkbox  id="financial" label="درخواست مالی" wire:model.defer="financial"/>
                             <x-admin.forms.input type="number"  id="amount" label=" مبلغ" wire:model.defer="amount" />
                         @endif
                         <x-admin.forms.text-area dir="rtl" id="comment" :required="true" label="کامنت" wire:model.defer="comment"/>

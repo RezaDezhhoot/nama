@@ -17,7 +17,7 @@ class StoreRequest extends BaseComponent
 
     public $status , $message , $comment;
 
-    public $countable = false , $amount;
+    public $countable = false , $financial = false, $amount;
 
     public function mount($action , $id)
     {
@@ -55,6 +55,7 @@ class StoreRequest extends BaseComponent
                 'comment' => ['required','string','max:200'],
                 'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
                 'countable' => [$this->request->step ===  WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','boolean'],
+                'financial' => [$this->request->step ===  WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','boolean'],
                 'amount' => ['nullable','min:0','numeric']
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
@@ -66,8 +67,9 @@ class StoreRequest extends BaseComponent
                     case WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
                         $this->request->step = WrittenRequestStep::FINISH;
                         $this->request->status = RequestStatus::DONE;
-                        $this->request->countable = $this->countable;
-                        $this->request->amount = $this->amount;
+                        $this->request->countable = emptyToNull($this->countable);
+                        $this->request->amount = emptyToNull( $this->amount);
+                        $this->request->financial = emptyToNull($this->financial);
                         break;
                 }
             } else {
