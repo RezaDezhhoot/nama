@@ -32,6 +32,18 @@ enum RequestStep: string
         };
     }
 
+    public function label2()
+    {
+        return match ($this) {
+            self::APPROVAL_MOSQUE_HEAD_COACH => 'در انتظار تایید سر مربی',
+            self::APPROVAL_MOSQUE_CULTURAL_OFFICER => 'انتظار تایید مسئول فرهنگی',
+            self::APPROVAL_AREA_INTERFACE => 'انتظار تایید  رابط منطقه',
+            self::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'انتظار تایید معاونت اجرایی مساجد',
+            self::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'انتظار تایید معاونت طرح و برنامه',
+            self::FINISH => 'اتمام یافته',
+        };
+    }
+
     public function backSteps(): array
     {
         return match ($this) {

@@ -7,7 +7,8 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.dropdown width="6" id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.dropdown width="6" id="items" :data="$data['items']" label="پروژه" wire:model.live="item"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -47,7 +48,7 @@
                                     </ul>
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
-                                <td>{{ $item->step->label() }}</td>
+                                <td>{{ $item->step->label2() }}</td>
                                 <td>{{ $item->unit->title ?? "-" }}</td>
 
                                 <td><strong>{{ number_format($item->total_amount) }} تومان </strong></td>

@@ -55,8 +55,18 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><button wire:click="download({{ $request->letter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
-                            <td><button wire:click="download({{ $request->sign->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
+                            <td>
+                                @if($request->letter)
+                                    <button wire:click="download({{ $request->letter->id }})" class="btn btn-outline-success">بارگیری فایل</button>
+                                    <a target="_blank" href="{{ $request->letter->url }}" class="btn btn-sm  btn-outline-success">مشاهده فایل</a>
+                                @endif
+                            </td>
+                            <td>
+                                @if($request->sign)
+                                    <button wire:click="download({{ $request->sign->id }})" class="btn btn-outline-success">بارگیری فایل</button>
+                                    <a target="_blank" href="{{ $request->sign->url }}" class="btn btn-sm  btn-outline-success">مشاهده فایل</a>
+                                @endif
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -85,6 +95,7 @@
                         @if($request->step === \App\Enums\WrittenRequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES)
                         @elseif($request->step === \App\Enums\WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING)
                             <x-admin.forms.checkbox  id="countable" label="جز درخواست های کاربر شمرده شود" wire:model.defer="countable"/>
+                            <x-admin.forms.input type="number"  id="amount" label=" مبلغ" wire:model.defer="amount" />
                         @endif
                         <x-admin.forms.text-area dir="rtl" id="comment" :required="true" label="کامنت" wire:model.defer="comment"/>
                         <x-admin.forms.dropdown :data="$data['status']" :required="true" id="status" label="وضعیت درخواست" wire:model.live="status"/>

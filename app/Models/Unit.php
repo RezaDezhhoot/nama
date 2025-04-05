@@ -27,7 +27,15 @@ class Unit extends Model
     public function title(): Attribute
     {
         return Attribute::get(function ($v) {
-           return sprintf("%s - %s",$v,$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+           return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری',$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+        });
+    }
+
+
+    public function text(): Attribute
+    {
+        return Attribute::get(function ($v) {
+            return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری',$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
         });
     }
 
@@ -63,7 +71,7 @@ class Unit extends Model
 
     public function scopeSelect2($q)
     {
-        return $q->selectRaw("title as text , id");
+        return $q->selectRaw("title as text , id,sub_type,parent_id");
     }
 
     public function roles(): HasMany

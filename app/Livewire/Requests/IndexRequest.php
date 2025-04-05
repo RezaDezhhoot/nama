@@ -4,6 +4,7 @@ namespace App\Livewire\Requests;
 
 use App\Enums\RequestStatus;
 use App\Livewire\BaseComponent;
+use App\Models\DashboardItem;
 use App\Models\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
@@ -12,12 +13,21 @@ class IndexRequest extends BaseComponent
 {
     use WithPagination;
 
-    public $status ;
+    public $status , $item ;
 
+    protected function queryString()
+    {
+        return [
+            'item' => [
+                'as' => 'item'
+            ]
+        ];
+    }
 
     public function mount()
     {
         $this->data['status'] = RequestStatus::labels();
+        $this->data['items'] = DashboardItem::query()->pluck('title','id');
     }
 
     public function render()
@@ -26,6 +36,9 @@ class IndexRequest extends BaseComponent
             ->with(['plan','user','unit'])
             ->withCount('comments')
             ->latest('updated_at')
+            ->when($this->item , function ($q) {
+                $q->where('item_id' , $this->item);
+            })
             ->whereHas('plan')
             ->confirmed()
             ->roleFilter()

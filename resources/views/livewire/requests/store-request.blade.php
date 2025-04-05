@@ -31,7 +31,7 @@
                         <tr>
                             <td>{{ $request->plan?->title }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
-                            <td>{{ $request->step->label() }}</td>
+                            <td>{{ $request->step->label2() }}</td>
                             <td>
                                 <ul>
                                     <li>{{ $request->user->name ?? "-" }}</li>
@@ -68,8 +68,19 @@
                             <td>{{ number_format($request->amount) }} تومان </td>
                             <td>{{ persian_date($request->date) }}</td>
                             <td>{{ $request->sheba }}</td>
-                            <td><button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
-                            <td><button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
+                            <td>
+                                @if($request->imamLetter)
+                                    <button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                    <a target="_blank" href="{{ $request->imamLetter->url }}" class="btn btn-sm  btn-outline-success">مشاهده فایل</a>
+                                @endif
+
+                            </td>
+                            <td>
+                                @if(request->areaInterfaceLetter)
+                                    <button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-sm btn-outline-success">بارگیری فایل</button>
+                                    <a target="_blank" href="{{ $request->areaInterfaceLetter->url }}" class="btn btn-sm  btn-outline-success">مشاهده فایل</a>
+                                @endif
+                            </td>
                             <td><strong>{{ number_format($request->total_amount) }} تومان </strong></td>
                             <td><strong>{{ number_format($request->offer_amount) }} تومان </strong></td>
                             <td><strong>{{ number_format($request->final_amount) }} تومان </strong></td>
