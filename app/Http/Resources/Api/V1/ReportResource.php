@@ -19,6 +19,7 @@ class ReportResource extends JsonResource
             'id' => $this->id,
             'request_id' => $this->request_id,
             'step' => $this->step,
+            'role' => $this->step->role(),
             'status' => $this->status,
             'students' => $this->students,
             'confirm' => $this->confirm ?? false,

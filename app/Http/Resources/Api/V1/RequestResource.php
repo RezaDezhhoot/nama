@@ -19,6 +19,7 @@ class RequestResource extends JsonResource
             'id' => $this->id,
             'request_plan' => RequestPlanResource::make($this->whenLoaded('plan')),
             'step' => $this->step,
+            'role' => $this->step->role(),
             'status' => $this->status,
             'students' => $this->whenHas('students'),
             'amount' => $this->whenHas('amount'),
