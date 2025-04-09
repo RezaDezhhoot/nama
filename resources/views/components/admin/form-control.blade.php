@@ -1,4 +1,4 @@
-@props(['deleteAble' => false ,'chatAble' => false , 'deleteContent' , 'confirmContent' => 'ایجاد کردن' , 'link' => false, 'store' => true ,'title'=>false])
+@props(['deleteAble' => false ,'chatAble' => false , 'deleteContent' , 'confirmContent' => 'ایجاد کردن' , 'link' => false, 'store' => true ,'title'=>false ,'exportable' => false])
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Info-->
@@ -37,6 +37,11 @@
                     حذف کردن
                 </button>
             @endif
+                @if($exportable)
+                    <button wire:click="{{$exportable}}" class="btn d-flex btn-light-success font-weight-bolder btn-sm mx-3">
+                        خروجی xlsx
+                    </button>
+                @endif
             @if($store)
                 @if($link)
                     <a class="btn btn-light-primary font-weight-bolder btn-sm" href="{{$link}}">

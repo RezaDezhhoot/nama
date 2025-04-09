@@ -107,4 +107,9 @@ class Request extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(DashboardItem::class,'item_id');
+    }
 }

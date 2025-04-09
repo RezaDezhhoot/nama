@@ -12,7 +12,7 @@ class IndexReport extends BaseComponent
 {
     use WithPagination;
 
-    public $status , $item ;
+    public $status , $item ,$type;
 
     protected function queryString()
     {
@@ -24,8 +24,9 @@ class IndexReport extends BaseComponent
     }
 
 
-    public function mount()
+    public function mount($type)
     {
+        $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
     }
 
@@ -35,8 +36,10 @@ class IndexReport extends BaseComponent
             ->with(['request','request.user'])
             ->withCount('comments')
             ->latest('updated_at')
-            ->when($this->item , function ($q) {
-                $q->where('item_id' , $this->item);
+            ->when($this->type , function ($q) {
+                $q->whereHas('item' , function ($q){
+                    $q->where('type' , $this->type);
+                });
             })
             ->whereHas('request' , function (Builder $builder) {
                 $builder->when($this->search , function (Builder $builder) {

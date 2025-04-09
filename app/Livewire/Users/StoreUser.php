@@ -22,6 +22,14 @@ class StoreUser extends BaseComponent
     public $city , $region , $neighborhood , $area , $auto_accept , $lat , $lng;
     public $regionAjax , $neighborhoodAjax , $areaAjax , $coach_type;
 
+    public $sheba1 , $sheba1_title;
+    public $sheba2 , $sheba2_title;
+    public $sheba3 , $sheba3_title;
+    public $sheba4 , $sheba4_title;
+    public $sheba5 , $sheba5_title;
+    public $sheba6 , $sheba6_title;
+    public $sheba7 , $sheba7_title;
+    public $sheba8 , $sheba8_title;
 
     public function mount($action , $id)
     {
@@ -79,7 +87,23 @@ class StoreUser extends BaseComponent
             'region' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
             'neighborhood' => [ 'nullable'],
             'area' => ['nullable'],
-            'auto_accept' => ['nullable','boolean']
+            'auto_accept' => ['nullable','boolean'],
+            'sheba1' => ['nullable','string','max:100'],
+            'sheba1_title' => ['nullable','string','max:100'],
+            'sheba2' => ['nullable','string','max:100'],
+            'sheba2_title' => ['nullable','string','max:100'],
+            'sheba3' => ['nullable','string','max:100'],
+            'sheba3_title' => ['nullable','string','max:100'],
+            'sheba4' => ['nullable','string','max:100'],
+            'sheba4_title' => ['nullable','string','max:100'],
+            'sheba5' => ['nullable','string','max:100'],
+            'sheba5_title' => ['nullable','string','max:100'],
+            'sheba6' => ['nullable','string','max:100'],
+            'sheba6_title' => ['nullable','string','max:100'],
+            'sheba7' => ['nullable','string','max:100'],
+            'sheba7_title' => ['nullable','string','max:100'],
+            'sheba8' => ['nullable','string','max:100'],
+            'sheba8_title' => ['nullable','string','max:100'],
         ]);
         if ($this->role == OperatorRole::MOSQUE_HEAD_COACH->value && UserRole::query()->where(
             [
@@ -103,8 +127,31 @@ class StoreUser extends BaseComponent
                 'neighborhood_id' => emptyToNull($this->neighborhood),
                 'area_id' => emptyToNull($this->area),
                 'school_coach_type' => emptyToNull($this->coach_type),
+                'sheba1' => $this->sheba1,
+                'sheba1_title' => $this->sheba1,
+                'sheba2' => $this->sheba2,
+                'sheba2_title' => $this->sheba2_title,
+                'sheba3' => $this->sheba3,
+                'sheba3_title' => $this->sheba3_title,
+                'sheba4' => $this->sheba4,
+                'sheba4_title' => $this->sheba4_title,
+                'sheba5' => $this->sheba5,
+                'sheba5_title' => $this->sheba5_title,
+                'sheba6' => $this->sheba6,
+                'sheba6_title' => $this->sheba6_title,
+                'sheba7' => $this->sheba7,
+                'sheba7_title' => $this->sheba7_title,
+                'sheba8' => $this->sheba8,
+                'sheba8_title' => $this->sheba8_title,
             ]);
-            $this->reset(['role','unit']);
+            $this->reset(['role','unit','sheba1','sheba1_title',
+                'sheba2','sheba2_title',
+                'sheba3','sheba3_title',
+                'sheba4','sheba4_title',
+                'sheba5','sheba5_title',
+                'sheba6','sheba6_title',
+                'sheba7','sheba7_title',
+                'sheba8','sheba8_title',]);
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         }
     }

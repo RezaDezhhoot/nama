@@ -10,6 +10,7 @@
         <div class="card-body ">
             <div class="row">
                 <x-admin.forms.input type="text" width="3" :required="true" id="title" label="عنوان مرکز" wire:model.defer="title" />
+                <x-admin.forms.input type="text" width="3"  id="code" label="شناسه یکتای واحد" wire:model.defer="code" />
                 <x-admin.forms.dropdown :data="$data['type']" :required="true" width="3"  id="type" label="نوع پروفایل" wire:model.live="type"/>
 
                 @if(! $model || ! is_null($model->parent))
@@ -66,6 +67,25 @@
                     :ajaxUrl="$areaAjax"
                     wire:model.live="area"/>
                 <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست ها" wire:model.defer="auto_accept"/>
+
+
+                <x-admin.forms.input type="text" width="6"  id="phone1" label="شماره 1" wire:model.defer="phone1" />
+                <x-admin.forms.input type="text" width="6"  id="phone1_title" label="عنوان شماره 1" wire:model.defer="phone1_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone2" label="شماره 2" wire:model.defer="phone2" />
+                <x-admin.forms.input type="text" width="6"  id="phone2_title" label="عنوان شماره 2" wire:model.defer="phone2_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone3" label="شماره 3" wire:model.defer="phone3" />
+                <x-admin.forms.input type="text" width="6"  id="phone3_title" label="عنوان شماره 3" wire:model.defer="phone3_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone4" label="شماره 4" wire:model.defer="phone4" />
+                <x-admin.forms.input type="text" width="6"  id="phone4_title" label="عنوان شماره 4" wire:model.defer="phone4_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone5" label="شماره 5" wire:model.defer="phone5" />
+                <x-admin.forms.input type="text" width="6"  id="phone5_title" label="عنوان شماره 5" wire:model.defer="phone5_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone6" label="شماره 6" wire:model.defer="phone6" />
+                <x-admin.forms.input type="text" width="6"  id="phone6_title" label="عنوان شماره 6" wire:model.defer="phone6_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone7" label="شماره 7" wire:model.defer="phone7" />
+                <x-admin.forms.input type="text" width="6"  id="phone7_title" label="عنوان شماره 7" wire:model.defer="phone7_title" />
+                <x-admin.forms.input type="text" width="6"  id="phone8" label="شماره 8" wire:model.defer="phone8" />
+                <x-admin.forms.input type="text" width="6"  id="phone8_title" label="عنوان شماره 8" wire:model.defer="phone8_title" />
+
 
                 <div class="col-12" x-data="{map: null , marker: null}">
                     <label> لوکیشن مسجد<span class="text-danger">*</span></label>

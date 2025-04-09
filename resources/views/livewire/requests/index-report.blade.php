@@ -7,9 +7,7 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown  width="6"\  id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
-                <x-admin.forms.dropdown width="6" id="items" :data="$data['items']" label="پروژه" wire:model.live="item"/>
-
+                <x-admin.forms.dropdown  width="6"  id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -48,7 +46,7 @@
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
-                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.reports.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.reports.store',[$type,PageAction::UPDATE , $item->id]) }}"/>
                                 </td>
                             </tr>
                         @endforeach

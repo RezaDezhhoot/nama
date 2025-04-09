@@ -19,8 +19,11 @@ class StoreRequest extends BaseComponent
 
     public $offer_amount , $final_amount;
 
-    public function mount($action , $id)
+    public $type;
+
+    public function mount($type , $action , $id)
     {
+        $this->type = $type;
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->request = Request::query()
@@ -89,7 +92,9 @@ class StoreRequest extends BaseComponent
                 'body' => $this->comment,
                 'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
             ]);
-            $this->request->messages[$this->request->step->value] = $this->comment;
+            $messages = $this->request->messages;
+            $messages[$this->request->step->value] = $this->comment;
+            $this->request->messages = $messages;
             if ($this->message) {
                 $this->request->fill([
                     'message' => $this->message
@@ -98,7 +103,7 @@ class StoreRequest extends BaseComponent
             $this->request->save();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
             $this->reset(['message','comment','status']);
-            redirect()->route('admin.requests.index');
+            redirect()->route('admin.requests.index',[$this->type]);
         }
     }
 

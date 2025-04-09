@@ -67,6 +67,24 @@
                     <x-admin.forms.input type="text" width="6" :required="true" id="lng" label="طول جغرافیایی X" wire:model.defer="lng" />
                 </div>
                 <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست/گزارش ها" wire:model.defer="auto_accept"/>
+
+                <x-admin.forms.input type="text" width="6"  id="sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
+                <x-admin.forms.input type="text" width="6"  id="sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba2" label="شماره شبا 2" wire:model.defer="sheba2" />
+                <x-admin.forms.input type="text" width="6"  id="sheba2_title" label="عنوان شماره شبا 2" wire:model.defer="sheba2_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba3" label="شماره شبا 3" wire:model.defer="sheba3" />
+                <x-admin.forms.input type="text" width="6"  id="sheba3_title" label="عنوان شماره شبا 3" wire:model.defer="sheba3_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba4" label="شماره شبا 4" wire:model.defer="sheba4" />
+                <x-admin.forms.input type="text" width="6"  id="sheba4_title" label="عنوان شماره شبا 4" wire:model.defer="sheba4_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba5" label="شماره شبا 5" wire:model.defer="sheba5" />
+                <x-admin.forms.input type="text" width="6"  id="sheba5_title" label="عنوان شماره شبا 5" wire:model.defer="sheba5_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba6" label="شماره شبا 6" wire:model.defer="sheba6" />
+                <x-admin.forms.input type="text" width="6"  id="sheba6_title" label="عنوان شماره شبا 6" wire:model.defer="sheba6_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba7" label="شماره شبا 7" wire:model.defer="sheba7" />
+                <x-admin.forms.input type="text" width="6"  id="sheba7_title" label="عنوان شماره شبا 7" wire:model.defer="sheba7_title" />
+                <x-admin.forms.input type="text" width="6"  id="sheba8" label="شماره شبا 8" wire:model.defer="sheba8" />
+                <x-admin.forms.input type="text" width="6"  id="sheba8_title" label="عنوان شماره شبا 8" wire:model.defer="sheba8_title" />
+
                 <div class="col-12">
                     <button class="btn w-100 my-2 btn-outline-primary" type="button" wire:click="attachRole">ارسال نقش</button>
                 </div>
@@ -98,6 +116,14 @@
                                             <th>ناحیه</th>
                                             <th>نوع مربی</th>
                                             <th>تایید خودکار</th>
+                                            <th>شبا 1</th>
+                                            <th>شبا 2</th>
+                                            <th>شبا 3</th>
+                                            <th>شبا 4</th>
+                                            <th>شبا 5</th>
+                                            <th>شبا 6</th>
+                                            <th>شبا 7</th>
+                                            <th>شبا 8</th>
                                             <th>عملیات</th>
                                         </tr>
                                         </thead>
@@ -113,6 +139,14 @@
                                                 <td>{{ $r?->area?->title ?? '-' }}</td>
                                                 <td>{{ $r?->school_coach_type?->label() ?? '-' }}</td>
                                                 <td>{{ $r?->auto_accept ? 'بله' : '-' }}</td>
+                                                <td>{{ $r->sheba1.' : '.$r->sheba1_title }}</td>
+                                                <td>{{ $r->sheba2.' : '.$r->sheba2_title }}</td>
+                                                <td>{{ $r->sheba3.' : '.$r->sheba3_title }}</td>
+                                                <td>{{ $r->sheba4.' : '.$r->sheba4_title }}</td>
+                                                <td>{{ $r->sheba5.' : '.$r->sheba5_title }}</td>
+                                                <td>{{ $r->sheba6.' : '.$r->sheba6_title }}</td>
+                                                <td>{{ $r->sheba7.' : '.$r->sheba7_title }}</td>
+                                                <td>{{ $r->sheba8.' : '.$r->sheba8_title }}</td>
                                                 <td><x-admin.delete-btn onclick="deleteRole('{{$r->id}}')"  /></td>
                                             </tr>
                                         @endforeach

@@ -97,4 +97,8 @@ class Report extends Model
             });
         });
     }
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(DashboardItem::class,'item_id');
+    }
 }

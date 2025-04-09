@@ -2,7 +2,7 @@
 <div wire:init="init">
     <x-admin.big-loader :loading="$loading" />
     @section('title', 'مراکز')
-    <x-admin.form-control link="{{ route('admin.units.store',[PageAction::CREATE] ) }}" title="مراکز"/>
+    <x-admin.form-control exportable="export" link="{{ route('admin.units.store',[PageAction::CREATE] ) }}" title="مراکز"/>
 
     <div class="card card-custom">
         <div class="card-body">

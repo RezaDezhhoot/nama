@@ -8,7 +8,6 @@
         <div class="card-body">
             <div class="row">
                 <x-admin.forms.dropdown width="6" id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
-                <x-admin.forms.dropdown width="6" id="items" :data="$data['items']" label="پروژه" wire:model.live="item"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -25,7 +24,7 @@
                             <th>مرکز</th>
 
                             <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
-                            <th>هزینه پیشنهادی توسط معاونت اجرایی مساجد</th>
+                            <th>هزینه پیشنهادی توسط معاونت اجرایی </th>
                             <th>هزینه نهایی تایید شده توسط معاونت طرح و برنامه</th>
 
                             <th>تاریخ ارسال</th>
@@ -59,7 +58,7 @@
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
-                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}"/>
                                 </td>
                             </tr>
                         @endforeach

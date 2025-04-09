@@ -32,16 +32,16 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('areas/{neighborhood?}' , \App\Http\Controllers\Feed\AreaFeedController::class)->name('areas');
         });
         Route::group(['prefix' => 'requests' , 'as' => 'requests.' , 'middleware' => 'is_operator'] , function () {
-            Route::get('' , \App\Livewire\Requests\IndexRequest::class)->name('index');
-            Route::get('{action}/{id}' , \App\Livewire\Requests\StoreRequest::class)->name('store');
+            Route::get('{type}' , \App\Livewire\Requests\IndexRequest::class)->name('index');
+            Route::get('{type}/{action}/{id}' , \App\Livewire\Requests\StoreRequest::class)->name('store');
         });
         Route::group(['prefix' => 'written-requests' , 'as' => 'written-requests.' , 'middleware' => 'is_operator'] , function () {
             Route::get('' , \App\Livewire\WrittenRequests\IndexRequest::class)->name('index');
             Route::get('{action}/{id}' , \App\Livewire\WrittenRequests\StoreRequest::class)->name('store');
         });
         Route::group(['prefix' => 'reports' , 'as' => 'reports.' , 'middleware' => 'is_operator'] , function () {
-            Route::get('' , \App\Livewire\Reports\IndexReport::class)->name('index');
-            Route::get('{action}/{id}' , \App\Livewire\Reports\StoreReport::class)->name('store');
+            Route::get('{type}' , \App\Livewire\Reports\IndexReport::class)->name('index');
+            Route::get('{type}/{action}/{id}' , \App\Livewire\Reports\StoreReport::class)->name('store');
         });
         Route::group(['prefix' => 'cities' , 'as' => 'cities.' , 'middleware' => 'is_admin'] , function () {
             Route::get('' , \App\Livewire\Cities\IndexCity::class)->name('index');

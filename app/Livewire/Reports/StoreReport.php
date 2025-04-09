@@ -17,10 +17,11 @@ class StoreReport extends BaseComponent
 
     public $status , $message , $comment;
 
-    public $offer_amount , $final_amount;
+    public $offer_amount , $final_amount , $type;
 
-    public function mount($action , $id)
+    public function mount($type , $action , $id)
     {
+        $this->type = $type;
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->report = Report::query()
@@ -92,7 +93,7 @@ class StoreReport extends BaseComponent
             $this->report->save();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
             $this->reset(['message','comment','status']);
-            redirect()->route('admin.reports.index');
+            redirect()->route('admin.reports.index',[$this->type]);
         }
     }
 

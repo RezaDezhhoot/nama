@@ -45,22 +45,51 @@
                     </a>
                 </li>
 
-                <li class="menu-section">
-                    <h4 class="menu-text">گزارشات</h4>
-                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                </li>
                 @if(isAdmin() || isOperator())
+                    <li class="menu-section">
+                        <h4 class="menu-text">مساجد</h4>
+                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                    </li>
                     <x-admin.menu-item
-                        href="{{route('admin.requests.index')}}"
+                        href="{{route('admin.requests.index',[\App\Enums\UnitType::MOSQUE])}}"
                         icon="fas fa-ticket-alt"
-                        :active="request()->routeIs(['admin.requests.index','admin.requests.store'])"
-                        label="درخواست ها({{ $requests }})" />
+                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
+                        label="درخواست های مساجد({{ $mosque_requests }})" />
+                    <x-admin.menu-item
+                        href="{{route('admin.reports.index',[\App\Enums\UnitType::MOSQUE])}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
+                        label="گزارش های مساجد({{ $mosque_reports }})" />
+
+                    <li class="menu-section">
+                        <h4 class="menu-text">مدارس</h4>
+                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                    </li>
+                    <x-admin.menu-item
+                        href="{{route('admin.requests.index',[\App\Enums\UnitType::SCHOOL])}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
+                        label="درخواست های مدارس({{ $school_requests }})" />
+                    <x-admin.menu-item
+                        href="{{route('admin.reports.index',[\App\Enums\UnitType::SCHOOL])}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
+                        label="گزارش های مدارس({{ $school_reports }})" />
+                    <li class="menu-section">
+                        <h4 class="menu-text">مرکز تعالی</h4>
+                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                    </li>
+                    <x-admin.menu-item
+                        href="{{route('admin.requests.index',[\App\Enums\UnitType::CENTER])}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
+                        label="درخواست های مرکز تعالی({{ $center_requests }})" />
 
                     <x-admin.menu-item
-                        href="{{route('admin.reports.index')}}"
+                        href="{{route('admin.reports.index',[\App\Enums\UnitType::CENTER])}}"
                         icon="fas fa-ticket-alt"
-                        :active="request()->routeIs(['admin.reports.index','admin.reports.store'])"
-                        label="گزارش ها({{ $reports }})" />
+                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
+                        label="گزارش های مرکز تعالی({{ $center_reports }})" />
 
                     <x-admin.menu-item
                         href="{{route('admin.written-requests.index')}}"
