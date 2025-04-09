@@ -142,7 +142,6 @@ class RequestController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             report($exception);
-            dd($exception->getMessage());
         }
         return response()->json([
             'error' => 'مشکلی در حین ارسال درخواست به وجود آمده است ، لطفا مجدد تلاش کنید'
@@ -263,6 +262,13 @@ class RequestController extends Controller
                     $request->step = RequestStep::FINISH;
                     $request->status = RequestStatus::DONE;
                     $request->final_amount = $adminStoreRequest->final_amount;
+                    $request->report()->create([
+                        'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                        'status' => RequestStatus::PENDING,
+                        'amount' => 0,
+                        'confirm' => true,
+                        'item_id' => $request->item_id
+                    ]);
                     break;
             }
         } else if ($adminStoreRequest->action == "reject") {

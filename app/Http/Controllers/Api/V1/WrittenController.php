@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Enums\WrittenRequestRole;
 use App\Enums\WrittenRequestStep;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminStoreWrittenRequest;
@@ -80,9 +81,10 @@ class WrittenController extends Controller
             DB::beginTransaction();
             $writtenRequest = WrittenRequest::query()->create([
                 ... $data,
-                'step' => match (OperatorRole::from($request->reference_to)) {
-                    OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES => WrittenRequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,
-                    OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,
+                'step' => match (WrittenRequestRole::from($request->reference_to)) {
+                    WrittenRequestRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES => WrittenRequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,
+                    WrittenRequestRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => WrittenRequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,
+                    WrittenRequestRole::ARMAN_BUS => WrittenRequestStep::APPROVAL_ARMAN_BUS,
                 } ,
                 'status' => RequestStatus::IN_PROGRESS,
                 'user_id' => auth()->id(),

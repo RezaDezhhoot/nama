@@ -19,6 +19,7 @@ class UpdateReportRequest extends FormRequest
             'date' => ['sometimes','required','date'],
             'body' => ['sometimes','nullable','max:10000'],
             'images_to_remove' => ['sometimes','array'],
+            'amount' => ['sometimes','nullable','numeric','min:0'],
             'images_to_remove.*' => ['required','integer','min:1',Rule::exists('files','id')->where('fileable_id' , $id)->where('fileable_type' , $report->getMorphClass())],
             'remove_video' => ['sometimes','boolean'],
             'images' => [$report->images_count >= 3 ? 'sometimes' : null,'required','array',

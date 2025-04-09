@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1;
 
 use App\Enums\OperatorRole;
+use App\Enums\WrittenRequestRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +16,7 @@ class SubmitWrittenRequest extends FormRequest
             'body' => ['required','string','max:3000'],
             'letter' => ['nullable',Rule::imageFile()->max(5 * 1024)],
             'sign' => ['nullable',Rule::imageFile()->max(5 * 1024)],
-            'reference_to' => ['required',Rule::in([OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value])]
+            'reference_to' => ['required',Rule::enum(WrittenRequestRole::class)]
         ];
     }
 }

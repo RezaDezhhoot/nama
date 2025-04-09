@@ -30,6 +30,7 @@ class InfoController extends Controller
                 RequestStatus::REJECTED->value => $reports->where('status' , RequestStatus::REJECTED)->count(),
                 RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::ACTION_NEEDED)->count(),
                 RequestStatus::DONE->value => $reports->where('status' , RequestStatus::DONE)->count(),
+                RequestStatus::PENDING->value => $reports->where('status' , RequestStatus::PENDING)->count(),
             ],
             'written-requests' => [
                 RequestStatus::IN_PROGRESS->value => $writtenRequests->where('status' , RequestStatus::IN_PROGRESS)->count(),

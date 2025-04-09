@@ -13,6 +13,7 @@ enum RequestStatus: string
     case IN_PROGRESS = 'in_progress';
     case ACTION_NEEDED = 'action_needed';
     case DONE = 'done';
+    case PENDING = 'pending';
 
     public function label()
     {
@@ -20,6 +21,7 @@ enum RequestStatus: string
             self::DONE => 'تایید شده',
             self::REJECTED => 'رد شده',
             self::IN_PROGRESS => 'جاری',
+            self::PENDING => 'باز',
             self::ACTION_NEEDED => 'نیازمند اصلاح'
         };
     }

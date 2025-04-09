@@ -18,7 +18,6 @@ class RoleMiddleware
         if ($request->filled('role')) {
             return $next($request);
         }
-
         abort(403);
     }
 }

@@ -152,19 +152,19 @@ class ReportController extends Controller
         $report =  Report::query()
             ->item(\request()->get('item_id'))
             ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
-            ->where('status' , RequestStatus::ACTION_NEEDED)
+            ->whereIn('status' , [RequestStatus::ACTION_NEEDED,RequestStatus::PENDING])
             ->confirmed()
             ->whereHas('request' , function (Builder $builder) {
                 $builder->where('user_id' , auth()->id());
             })->findOrFail($report);
-        $data = $updateReportRequest->only(['students','body']);
+        $data = $updateReportRequest->only(['students','body','amount']);
         $data['status'] = RequestStatus::IN_PROGRESS;
         if ($updateReportRequest->filled('date')) {
             $data['date'] = dateConverter($updateReportRequest->date ,'m');
         }
         try {
             DB::beginTransaction();
-            $report->update([...$data , 'step' => $report->last_updated_by]);
+            $report->update([...$data , 'step' => $report->last_updated_by ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER]);
             $disk = config('site.default_disk');
             $now = now();
             $path =  'reports/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$report->id;
