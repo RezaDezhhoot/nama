@@ -270,7 +270,10 @@ class ReportController extends Controller
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
             ]);
             $report->message = $adminStoreReportRequest->comment;
-            $messages =  $report->messages;
+            if (! $report->messages) {
+                $report->messages = [];
+            }
+            $messages = $report->messages;
             $messages[\request()->get('role')] = $adminStoreReportRequest->comment;
             $report->messages = $messages;
         }
