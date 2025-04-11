@@ -237,6 +237,7 @@ class RequestController extends Controller
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
             ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
+            ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->where('status',RequestStatus::IN_PROGRESS)
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);

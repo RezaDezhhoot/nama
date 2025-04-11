@@ -224,6 +224,7 @@ class ReportController extends Controller
         }
         $report =  Report::query()->role(\request()->get('role'))
             ->item(\request()->get('item_id'))
+            ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
             ->findOrFail($report);
@@ -263,13 +264,13 @@ class ReportController extends Controller
             $report->step = $adminStoreReportRequest->to;
             $report->status = RequestStatus::ACTION_NEEDED->value;
         }
-        if ($adminStoreReportRequest->filled('comments')) {
+        if ($adminStoreReportRequest->filled('comment')) {
+            $report->message = $adminStoreReportRequest->input('comment');
             $report->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $adminStoreReportRequest->comment,
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
             ]);
-            $report->message = $adminStoreReportRequest->comment;
             if (! $report->messages) {
                 $report->messages = [];
             }
