@@ -21,6 +21,8 @@ class Request extends Model
     public array $searchAbleColumns = ['id','body'];
     protected $guarded = ['id'];
 
+    protected $with = ['item','user'];
+
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
     const FILE_AREA_INTERFACE_LETTER_SUBJECT = 'request_area_interface_letter';
 

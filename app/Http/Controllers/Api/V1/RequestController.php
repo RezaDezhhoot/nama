@@ -33,8 +33,6 @@ class RequestController extends Controller
         ]);
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->select(['id','request_plan_id','step','status','confirm','created_at','updated_at'])
-            ->with(['report'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
@@ -49,7 +47,7 @@ class RequestController extends Controller
             })->when($request->filled('step') , function (Builder $builder) use ($request) {
                 $builder->where('step' , $request->get('step'));
             })
-            ->with(['plan'])
+            ->with(['plan','unit','report'])
             ->role(\request()->get('role'))
             ->paginate((int)$request->get('per_page' , 10));
 
@@ -64,7 +62,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit'])
             ->findOrFail($request);
 
         return RequestResource::make($request)->additional([
@@ -133,7 +131,7 @@ class RequestController extends Controller
                 ]);
             }
             DB::commit();
-            $request->load(['areaInterfaceLetter','imamLetter','plan']);
+            $request->load(['areaInterfaceLetter','imamLetter','plan','unit']);
             $request->plan->loadCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }]);
@@ -152,7 +150,7 @@ class RequestController extends Controller
     {
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->with(['areaInterfaceLetter','imamLetter','plan'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','unit'])
             ->where('user_id' , auth()->id())
             ->where('confirm' , false)
             ->findOrFail($request);
@@ -167,7 +165,7 @@ class RequestController extends Controller
     {
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->with(['areaInterfaceLetter','imamLetter','plan'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','unit'])
             ->whereHas('plan')
             ->where('user_id' , auth()->id())
             ->confirmed()
@@ -236,7 +234,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit'])
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->where('status',RequestStatus::IN_PROGRESS)
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)

@@ -18,6 +18,8 @@ class Unit extends Model
 
     protected $guarded = ['id'];
 
+    protected $with = ['city','area','parent','region','neighborhood','area'];
+
     protected $casts = [
         'auto_accept' => 'boolean',
         'type' => UnitType::class,
