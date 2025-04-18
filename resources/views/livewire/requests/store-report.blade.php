@@ -64,13 +64,13 @@
                         <tbody>
                         <tr>
                             <td>{{ $request->students }}</td>
-                            <td>{{ number_format($request->amount) }} تومان </td>
+                            <td>{{ number_format($request->amount) }} ریال </td>
                             <td>{{ persian_date($request->date) }}</td>
                             <td><button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
                             <td><button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
-                            <td><strong>{{ number_format($request->total_amount) }} تومان </strong></td>
-                            <td><strong>{{ number_format($request->offer_amount) }} تومان </strong></td>
-                            <td><strong>{{ number_format($request->final_amount) }} تومان </strong></td>
+                            <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
+                            <td><strong>{{ number_format($request->offer_amount) }} ریال </strong></td>
+                            <td><strong>{{ number_format($request->final_amount) }} ریال </strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -113,8 +113,8 @@
                             <td>{{ persian_date($report->created_at) }}</td>
                             <td>{{ persian_date($report->updated_at) }}</td>
 
-                            <td><strong>{{ number_format($report->offer_amount) }} تومان </strong></td>
-                            <td><strong>{{ number_format($report->final_amount) }} تومان </strong></td>
+                            <td><strong>{{ number_format($report->offer_amount) }} ریال </strong></td>
+                            <td><strong>{{ number_format($report->final_amount) }} ریال </strong></td>
                         </tr>
                         </tbody>
                     </table>

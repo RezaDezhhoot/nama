@@ -20,7 +20,7 @@
                 <x-admin.forms.checkbox  id="bold" label="اولین پلن نمایش داده شود" wire:model.defer="bold"/>
 
                 <x-admin.forms.input width="4" type="number" :required="true" id="max_number_people_supported" label="سقف تعداد نفرات مورد حمایت" wire:model.defer="max_number_people_supported"/>
-                <x-admin.forms.input width="4" type="number" help="تومان" :required="true" id="support_for_each_person_amount" label="سرانه حمایتی هر نفر" wire:model.defer="support_for_each_person_amount"/>
+                <x-admin.forms.input width="4" type="number" help="ریال" :required="true" id="support_for_each_person_amount" label="سرانه حمایتی هر نفر" wire:model.defer="support_for_each_person_amount"/>
                 <x-admin.forms.input width="4" type="number"  :required="true" id="max_allocated_request" label="تعداد دفعات مجاز برای این پلن" wire:model.defer="max_allocated_request"/>
 
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="starts_at" label="تاریخ شروع مهلت زمانی این پلن" wire:model.defer="starts_at"/>

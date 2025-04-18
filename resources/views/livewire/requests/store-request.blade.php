@@ -65,7 +65,7 @@
                         <tbody>
                         <tr>
                             <td>{{ $request->students }}</td>
-                            <td>{{ number_format($request->amount) }} تومان </td>
+                            <td>{{ number_format($request->amount) }} ریال </td>
                             <td>{{ persian_date($request->date) }}</td>
                             <td>{{ $request->sheba }}</td>
                             <td>
@@ -81,9 +81,9 @@
                                     <a target="_blank" href="{{ $request->areaInterfaceLetter->url }}" class="btn btn-sm  btn-outline-success">مشاهده فایل</a>
                                 @endif
                             </td>
-                            <td><strong>{{ number_format($request->total_amount) }} تومان </strong></td>
-                            <td><strong>{{ number_format($request->offer_amount) }} تومان </strong></td>
-                            <td><strong>{{ number_format($request->final_amount) }} تومان </strong></td>
+                            <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
+                            <td><strong>{{ number_format($request->offer_amount) }} ریال </strong></td>
+                            <td><strong>{{ number_format($request->final_amount) }} ریال </strong></td>
                         </tr>
                         </tbody>
                     </table>

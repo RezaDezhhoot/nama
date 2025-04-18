@@ -50,9 +50,9 @@
                                 <td>{{ $item->step->label2() }}</td>
                                 <td>{{ $item->unit->title ?? "-" }}</td>
 
-                                <td><strong>{{ number_format($item->total_amount) }} تومان </strong></td>
-                                <td><strong>{{ number_format($item->offer_amount) }} تومان </strong></td>
-                                <td><strong>{{ number_format($item->final_amount) }} تومان </strong></td>
+                                <td><strong>{{ number_format($item->total_amount) }} ریال </strong></td>
+                                <td><strong>{{ number_format($item->offer_amount) }} ریال </strong></td>
+                                <td><strong>{{ number_format($item->final_amount) }} ریال </strong></td>
 
                                 <td>{{ persian_date($item->created_at) }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>
