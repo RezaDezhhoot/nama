@@ -224,6 +224,7 @@ class ReportController extends Controller
         }
         $report =  Report::query()->role(\request()->get('role'))
             ->item(\request()->get('item_id'))
+            ->where('status' , RequestStatus::IN_PROGRESS)
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
