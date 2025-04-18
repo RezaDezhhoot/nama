@@ -18,6 +18,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'phone' => $this->phone,
+            'national_id' => $this->national_id,
             'nama_role' => $this->nama_role,
             'arman_role' => $this->role,
             'avatar' => $this->avatar ? "https://armaniran.app/thumb/md/".ltrim($this->avatar,'/') : null,
