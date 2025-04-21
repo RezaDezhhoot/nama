@@ -20,7 +20,7 @@ class Auth extends BaseComponent
 
     public function mount()
     {
-        AuthFacades::loginUsingId(24);
+//        AuthFacades::loginUsingId(24);
         if (request()->query('jwt')) {
             $token = PersonalAccessToken::findToken(request()->query('jwt'));
             if ($token) {

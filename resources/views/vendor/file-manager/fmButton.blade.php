@@ -23,16 +23,16 @@
 
 <!-- File manager -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // set fm height
-    document.getElementById('fm-main-block').setAttribute('style', 'height:' + window.innerHeight + 'px');
+    document.addEventListener('DOMContentLoaded', function() {
+        // set fm height
+        document.getElementById('fm-main-block').setAttribute('style', 'height:' + window.innerHeight + 'px');
 
-    // Add callback to file manager
-    fm.$store.commit('fm/setFileCallBack', function(fileUrl) {
-      window.opener.fmSetLink(fileUrl);
-      window.close();
+        // Add callback to file manager
+        fm.$store.commit('fm/setFileCallBack', function(fileUrl) {
+            window.opener.getURL(fileUrl);
+            window.close();
+        });
     });
-  });
 </script>
 <script src="{{asset('lfm/js/file-manager.js')}}"></script>
 

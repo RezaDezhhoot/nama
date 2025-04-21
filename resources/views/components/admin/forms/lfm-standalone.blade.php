@@ -2,7 +2,7 @@
 <div class="form-group col-12 col-md-{{$width}} {{ $hidden ? 'd-none' : '' }}">
     <label for="{{$id}}">{{$label}} <span {{ ! $required ? 'hidden' : '' }} class="text-danger">*</span></label>
     @if(!$disable)
-        <div class="input-group d-flex align-items-center justify-content-center">
+        <div class="input-group d-flex align-items-center justify-content-center"  x-data="{id , input , input_id}">
             @if($file && gettype($file) == 'string')
                 @foreach(explode(',', $file) as $key => $item)
                     @if(isImage($item))
@@ -27,12 +27,25 @@
             <input type="text" {{ $attributes->wire('model') }} id="{{$id}}" {!! $attributes->merge(['class'=>
             'form-control']) !!} name="image"
                    aria-label="Image" aria-describedby="button-image"
-                   x-data
-                   x-init="$('#{{$id}}').on('change', function () {alert(2); $dispatch('input', $(this).val()) })"
+                   x-init="
+                        $('#{{$id}}').on('change', function () { $dispatch('input', $(this).val()) })
+                   "
             >
             <div class="input-group-append">
-                <button onclick="openWindow('{{$id}}')" {{$disable ? 'disabled' : '' }} class="btn btn-outline-secondary" type="button"
-                        id="button-{{$id}}">select</button>
+                <button  class="btn btn-outline-secondary" x-on:click="function(e){
+                    e.preventDefault();
+                    id = e.target.id;
+                    input_id = id.replace('button-', '');
+                    input = document.getElementById(input_id);
+                    newWindow = window.open('/file-manager/fm-button', 'fm', 'width=1400,height=800');
+                    window.getURL = function(url) {
+                        @this.set('{{$attributes->wire("model")->value}}', url);
+
+                    }
+                    newWindow.onload = function () {
+
+                    };
+                }" type="button" id="button-{{$id}}">select</button>
             </div>
         </div>
         @error($id)
@@ -41,25 +54,23 @@
     @endif
 </div>
 @push('scripts')
-<script>
-    var id , input , input_id;
-        document.addEventListener("DOMContentLoaded", function() {
+    <script>
+        var id , input , input_id;
+        {{--    document.addEventListener("DOMContentLoaded", function() {--}}
+        {{--        document.getElementById('button-{{$id}}').addEventListener('click', (event) => {--}}
+        {{--            event.preventDefault();--}}
+        {{--            id = event.target.id;--}}
+        {{--            input_id = id.replace("button-", '');--}}
+        {{--            input = document.getElementById(input_id);--}}
+        {{--            window.open('/file-manager/fm-button', 'fm', 'width=1400,height=800');--}}
+        {{--        });--}}
+        {{--    });--}}
 
-            document.getElementById('button-{{$id}}').addEventListener('click', (event) => {
-                event.preventDefault();
-                id = event.target.id;
-                input_id = id.replace("button-", '');
-                input = document.getElementById(input_id);
-                window.open('/file-manager/fm-button', 'fm', 'width=1400,height=800');
-            });
-        });
-
-
-        // set file link
+        {{--    // set file link--}}
 
         function fmSetLink($url) {
             input.value = $url;
-            @this.set(input_id, $url);
+        @this.set(input_id, $url);
         }
-</script>
+    </script>
 @endpush
