@@ -7,7 +7,15 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown  id="type" :data="$data['type']" label="نوع" wire:model.live="type"/>
+                <x-admin.forms.dropdown width="6"  id="type" :data="$data['type']" label="نوع" wire:model.live="type"/>
+                <x-admin.forms.select2
+                    id="region"
+                    :data="$region ?? []"
+                    text="title"
+                    label="منظقه"
+                    width="6"
+                    :ajaxUrl="route('admin.feed.regions')"
+                    wire:model.defer="region"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -29,7 +37,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->title }}</td>
+                                <td>{{ $item->text }}</td>
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ $item->sub_type?->label() ?? '-' }}</td>
                                 <td>{{ $item->parent?->title ?? "مرکز محوری" }}</td>

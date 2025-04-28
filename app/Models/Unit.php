@@ -26,12 +26,12 @@ class Unit extends Model
         'sub_type' => UnitSubType::class
     ];
 
-    public function title(): Attribute
-    {
-        return Attribute::get(function ($v) {
-           return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری',$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
-        });
-    }
+//    public function title(): Attribute
+//    {
+//        return Attribute::get(function ($v) {
+//           return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری',$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+//        });
+//    }
 
 
     public function text(): Attribute

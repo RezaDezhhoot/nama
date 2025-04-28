@@ -12,7 +12,7 @@ class IndexReport extends BaseComponent
 {
     use WithPagination;
 
-    public $status , $item ,$type;
+    public $status , $item ,$type , $region;
 
     protected function queryString()
     {
@@ -33,8 +33,15 @@ class IndexReport extends BaseComponent
     public function render()
     {
         $items = Report::query()
-            ->with(['request','request.user'])
+            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region'])
             ->withCount('comments')
+            ->when($this->region , function (Builder   $builder) {
+                $builder->whereHas('request' , function (Builder $builder) {
+                    $builder->whereHas('unit' , function (Builder $builder) {
+                        $builder->where('region_id' , $this->region);
+                    });
+                });
+            })
             ->latest('updated_at')
             ->when($this->type , function ($q) {
                 $q->whereHas('item' , function ($q){

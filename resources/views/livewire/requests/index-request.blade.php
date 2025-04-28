@@ -8,6 +8,15 @@
         <div class="card-body">
             <div class="row">
                 <x-admin.forms.dropdown width="6" id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.select2
+                    id="region"
+                    :data="$region ?? []"
+                    text="title"
+                    label="منظقه"
+                    :required="true"
+                    width="6"
+                    :ajaxUrl="route('admin.feed.regions')"
+                    wire:model.defer="region"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -22,6 +31,7 @@
                             <th>وضعیت</th>
                             <th>مرحله</th>
                             <th>مرکز</th>
+                            <th>شهر/منطقه</th>
 
                             <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
                             <th>هزینه پیشنهادی توسط معاونت اجرایی </th>
@@ -48,8 +58,12 @@
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label2() }}</td>
-                                <td>{{ $item->unit->title ?? "-" }}</td>
-
+                                <td>
+                                    {{ $item->unit->title ?? "-" }}
+                                </td>
+                                <td>
+                                    {{ $item->unit?->city?->title }} / {{ $item->unit?->regin?->title }}
+                                </td>
                                 <td><strong>{{ number_format($item->total_amount) }} ریال </strong></td>
                                 <td><strong>{{ number_format($item->offer_amount) }} ریال </strong></td>
                                 <td><strong>{{ number_format($item->final_amount) }} ریال </strong></td>

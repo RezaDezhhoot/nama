@@ -13,7 +13,7 @@ class IndexRequest extends BaseComponent
 {
     use WithPagination;
 
-    public $status , $item  , $type;
+    public $status , $item  , $type , $region;
 
     protected function queryString()
     {
@@ -34,8 +34,13 @@ class IndexRequest extends BaseComponent
     public function render()
     {
         $items = Request::query()
-            ->with(['plan','user','unit'])
+            ->with(['plan','user','unit','unit.city','unit.region'])
             ->withCount('comments')
+            ->when($this->region , function (Builder $builder) {
+                $builder->whereHas('unit' , function (Builder $builder) {
+                    $builder->where('region_id' , $this->region);
+                });
+            })
             ->latest('updated_at')
             ->when($this->type , function ($q) {
                 $q->whereHas('item' , function ($q){

@@ -10,13 +10,18 @@ use Livewire\WithPagination;
 class IndexCity extends BaseComponent
 {
     use WithPagination;
-    public $title;
+    public $title , $region;
 
     public function render()
     {
         $items = City::query()
             ->latest()
             ->withCount(['regions','neighborhoods'])
+            ->when($this->region , function ($q) {
+                $q->whereHas('regions' , function ($q){
+                    $q->where('id' , $this->region);
+                });
+            })
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })->paginate($this->per_page);

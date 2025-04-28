@@ -6,13 +6,14 @@ use App\Enums\UnitType;
 use App\Exports\ExportUnits;
 use App\Livewire\BaseComponent;
 use App\Models\Unit;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
 
 class IndexUnit extends BaseComponent
 {
     use WithPagination;
 
-    public $type;
+    public $type , $region;
 
     public function mount()
     {
@@ -24,6 +25,9 @@ class IndexUnit extends BaseComponent
     {
         $items = Unit::query()
             ->latest()
+            ->when($this->region , function (Builder $builder) {
+                $builder->where('region_id' , $this->region);
+            })
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })->when($this->type , function ($q) {

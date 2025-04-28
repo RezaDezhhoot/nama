@@ -7,7 +7,16 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.dropdown width="6" id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.select2
+                    id="region"
+                    :data="$region ?? []"
+                    text="title"
+                    label="منظقه"
+                    :required="true"
+                    width="6"
+                    :ajaxUrl="route('admin.feed.regions')"
+                    wire:model.defer="region"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -22,6 +31,9 @@
                             <th>وضعیت</th>
                             <th>مرحله</th>
                             <th>جز درخواست های کاربر شمرده شود</th>
+
+                            <th>مرکز</th>
+                            <th>شهر/منطقه</th>
 
                             <th>تاریخ ارسال</th>
                             <th>تاریخ اخرین بروزرسانی</th>
@@ -45,6 +57,9 @@
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label() }}</td>
                                 <td>{{ $item->countable ? 'بله' : 'خیر' }}</td>
+
+                                <td>{{ $item->unit?->title ?? '-' }}</td>
+                                <td>{{ $item->unit?->city?->title }} / {{ $item->request?->unit?->regin?->title }}</td>
 
                                 <td>{{ persian_date($item->created_at) }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>

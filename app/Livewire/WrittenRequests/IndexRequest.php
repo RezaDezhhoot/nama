@@ -12,7 +12,7 @@ class IndexRequest extends BaseComponent
 {
     use WithPagination;
 
-    public $status ;
+    public $status , $region;
 
     public function mount()
     {
@@ -22,9 +22,19 @@ class IndexRequest extends BaseComponent
     public function render()
     {
         $items = WrittenRequest::query()
-            ->with(['user'])
+            ->with(['user','unit','unit.city','unit.region'])
             ->withCount('comments')
+            ->when($this->region , function (Builder $builder) {
+                $builder->whereHas('unit' , function (Builder $builder) {
+                    $builder->where('region_id' , $this->region);
+                });
+            })
             ->latest('updated_at')
+            ->when($this->region , function (Builder $builder) {
+                $builder->whereHas('unit' , function (Builder $builder) {
+                    $builder->where('region_id' , $this->region);
+                });
+            })
             ->roleFilter()
             ->when($this->status , function (Builder $builder) {
                 $builder->where('status' , $this->status);

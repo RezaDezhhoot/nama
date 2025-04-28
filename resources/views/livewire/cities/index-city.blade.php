@@ -11,6 +11,17 @@
             </button>
         </div>
         <div class="card-body">
+            <div class="row">
+                <x-admin.forms.select2
+                    id="region"
+                    :data="$region ?? []"
+                    text="title"
+                    label="منظقه"
+                    :required="true"
+                    width="6"
+                    :ajaxUrl="route('admin.feed.regions')"
+                    wire:model.defer="region"/>
+            </div>
             @include('livewire.includes.advance-table')
             <div class="row">
                 <div class="col-12 table-responsive">
