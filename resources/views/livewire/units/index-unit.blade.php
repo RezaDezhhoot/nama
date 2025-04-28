@@ -26,8 +26,8 @@
                             <th>#</th>
                             <th>شناسه</th>
                             <th>عنوان</th>
-                            <th>نوغ</th>
-                            <th>نوغ فرعی</th>
+                            <th>نوع</th>
+                            <th>نوع فرعی</th>
                             <th>مرکز بالادست</th>
                             <th>اقدامات</th>
                         </tr>
@@ -37,7 +37,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->text }}</td>
+                                <td>{{ $item->tilte }} - {{ $item->text }}</td>
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ $item->sub_type?->label() ?? '-' }}</td>
                                 <td>{{ $item->parent?->title ?? "مرکز محوری" }}</td>
