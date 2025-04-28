@@ -37,7 +37,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->tilte }} - {{ $item->text }}</td>
+                                <td>{{ $item->title }} - {{ $item->text }}</td>
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ $item->sub_type?->label() ?? '-' }}</td>
                                 <td>{{ $item->parent?->title ?? "مرکز محوری" }}</td>
