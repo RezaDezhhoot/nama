@@ -76,6 +76,7 @@ class RequestController extends Controller
     {
         $itemId = \request()->get('item_id');
         $requestPlan = RequestPlan::query()
+            ->where('item_id' , $itemId)
             ->published()
             ->findOrFail($submitRequest->request_plan_id);
 
