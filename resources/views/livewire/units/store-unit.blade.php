@@ -89,9 +89,9 @@
 
                 <div class="col-12" x-data="{map: null , marker: null}">
                     <label> لوکیشن مسجد<span class="text-danger">*</span></label>
-                    <div wire:ignore id="location"  style="height: 300px; width: 100%; border: 1px solid #ccc; border-radius: 10px;"
+                    <div wire:ignore id="location"  style="height: 400px; width: 100%; border: 1px solid #ccc; border-radius: 10px;"
                          x-init="
-                                                  map = L.map('location').setView([35.6892, 51.3890], 13);
+                                                  map = L.map('location').setView(['{{ $lat ?? 35.6892 }}', '{{$lng ?? 51.3890}}'], 13);
                                                   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
                                                   marker = L.marker(['{{ $lat ?? 35.6892 }}', '{{$lng ?? 51.3890}}']).addTo(map);
                                                   map.on('click', function (e) {
