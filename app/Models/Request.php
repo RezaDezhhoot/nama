@@ -85,9 +85,10 @@ class Request extends Model
     {
         return $builder->where(function (Builder $builder) use ($role) {
             $role = OperatorRole::tryFrom($role);
+            dd($role);
             if ($role && $role !== OperatorRole::MOSQUE_HEAD_COACH) {
                 return $builder->where(function (Builder $builder) use ($role) {
-                    $builder->whereIn('step' ,$role->step());
+                    $builder->whereIn('step' ,$role->step())->orWhereIn('step',$role->history());
                 })->whereHas('unit' , function (Builder $builder) use ($role) {
                         if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
                             return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
