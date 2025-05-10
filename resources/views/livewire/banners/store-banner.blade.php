@@ -11,7 +11,8 @@
         <div class="card-body ">
             <x-admin.form-section label="تنطیمات پایه">
                 <x-admin.forms.input width="4" type="text" :required="true" id="title" label="عنوان" wire:model.defer="title"/>
-                <x-admin.forms.lfm-standalone width="8" :required="true" id="image" label="تصویر" :file="$image" wire:model="image"/>
+                <x-admin.forms.lfm-standalone width="4" :required="true" id="image" label="تصویر" :file="$image" wire:model="image"/>
+                <x-admin.forms.lfm-standalone width="4"  id="mobile_image" label="تصویر موبایل" :file="$mobile_image" wire:model="mobile_image"/>
                 <x-admin.forms.dropdown  id="item" :data="$data['items']" label="پروژه" wire:model.defer="item"/>
             </x-admin.form-section>
         </div>

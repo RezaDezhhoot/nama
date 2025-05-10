@@ -19,6 +19,7 @@ class BannerResource extends JsonResource
             'title' => $this->title,
             'position' => $this->position,
             'image' => asset($this->image),
+            'mobile_image' => $this->mobile_image ? asset($this->mobile_image) : null,
         ];
     }
 }
