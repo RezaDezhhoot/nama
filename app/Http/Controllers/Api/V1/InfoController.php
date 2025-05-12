@@ -35,8 +35,8 @@ class InfoController extends Controller
             RequestStatus::PENDING->value => $reports->where('status' , RequestStatus::PENDING)->count(),
         ];
         if ($role !== OperatorRole::MOSQUE_HEAD_COACH) {
-            $requestsRes[RequestStatus::DONE->value."_temp"] = $requests->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->next())->count();
-            $reportsRes[RequestStatus::DONE->value."_temp"] = $reports->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->next())->count();
+            $requestsRes[RequestStatus::DONE->value."_temp"] = $requests->whereIn('step',$role->next())->count();
+            $reportsRes[RequestStatus::DONE->value."_temp"] = $reports->whereIn('step',$role->next())->count();
         }
         return response()->json([
             'requests' => $requestsRes,

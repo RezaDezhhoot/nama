@@ -28,10 +28,11 @@ class RequestController extends Controller
         $request->validate([
             'sort' => ['nullable','in:created_at,confirm'],
             'direction' => ['nullable','in:desc,asc'],
-            'status' => ['nullable',Rule::enum(RequestStatus::class)],
             'step' => ['nullable',Rule::enum(RequestStep::class)],
             'q' => ['nullable','string','max:50']
         ]);
+        $role = OperatorRole::from(request()->get('role'));
+
         $requests = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
@@ -47,8 +48,14 @@ class RequestController extends Controller
             })->when(! $request->filled('sort') , function (Builder $builder) {
                 $builder->orderBy('confirm');
             })
-            ->when($request->filled('status') , function (Builder $builder) use ($request) {
-                $builder->where('status' , $request->get('status'));
+            ->when($request->filled('status') , function (Builder $builder) use ($request , $role) {
+                $builder->where(function (Builder $builder) use ($request , $role) {
+                    if ( $request->get('status') == "done_temp") {
+                        $builder->whereIn('step' , $role->next());
+                    } else {
+                        $builder->where('status' , $request->get('status'));
+                    }
+                });
             })->when($request->filled('step') , function (Builder $builder) use ($request) {
                 $builder->where('step' , $request->get('step'));
             })
