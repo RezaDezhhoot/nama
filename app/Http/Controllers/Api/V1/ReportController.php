@@ -60,6 +60,10 @@ class ReportController extends Controller
                $builder->whereHas('request' , function (Builder $builder) use ($request) {
                    $builder->where('request_plan_id' , $request->get('plan_id'));
                });
+            })->when($request->filled('unit_id') , function (Builder $builder) use ($request) {
+                $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                    $builder->where('unit_id' , $request->get('unit_id'));
+                });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
             })->when(! $request->filled('sort') , function (Builder $builder) {

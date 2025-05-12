@@ -80,4 +80,9 @@ class Unit extends Model
     {
         return $this->hasMany(UserRole::class,'unit_id');
     }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class);
+    }
 }
