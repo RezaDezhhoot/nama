@@ -165,6 +165,7 @@
                         @if($status == \App\Enums\RequestStatus::REJECTED->value || $status == \App\Enums\RequestStatus::ACTION_NEEDED->value)
                             <x-admin.forms.text-area dir="rtl" id="message"  label="علت" wire:model.defer="message"/>
                         @endif
+                        <x-admin.forms.dropdown :data="$data['step']" id="step" help="در صورت تایید درخواست به صورت خودکار وارد مراحل بعدی می شود" label="ارجاع به" wire:model.live="step"/>
                         <button class="btn btn-outline-primary" onclick="store()">دخیره تغییرات </button>
                     </div>
                 @endif

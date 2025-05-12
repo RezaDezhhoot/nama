@@ -2,7 +2,7 @@
     <div class="brand flex-column-auto" id="kt_brand">
         <!--begin::Logo-->
         <a href="" class="brand-logo">
-            <img alt="Logo" style="max-width: 4rem;" src="{{asset(getSetting('logo'))}}" />
+            <img alt="Logo" style="max-width: 4rem;" src="https://armaniran.app/site/sa/arman_logo.png" />
         </a>
         <!--end::Logo-->
         <!--begin::Toggle-->

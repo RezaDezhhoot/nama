@@ -11,6 +11,7 @@ use App\Http\Requests\Api\V1\SubmitRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
 use App\Http\Resources\Api\V1\RequestResource;
 use App\Models\RequestPlan;
+use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -35,6 +36,10 @@ class RequestController extends Controller
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
+                    $builder->search($request->get('q'));
+                })->orWhere(function (Builder $builder) use ($request){
+                    $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
+                })->orWhereHas('unit' , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {

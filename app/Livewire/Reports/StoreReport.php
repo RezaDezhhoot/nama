@@ -36,8 +36,10 @@ class StoreReport extends BaseComponent
 
             $this->offer_amount = $this->request->offer_amount ?? $this->request->total_amount;
             $this->final_amount = $this->request->final_amount ?? $this->request->offer_amount ?? $this->request->total_amount;
+            $this->status = $this->report->status->value;
         } else abort(404);
         $this->data['status'] = RequestStatus::labels();
+        $this->data['step'] = RequestStep::labels();
     }
 
 
@@ -53,32 +55,36 @@ class StoreReport extends BaseComponent
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
                 'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
-                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000']
+                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000'],
+                'step' => ['nullable',Rule::enum(RequestStep::class)]
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
                 $this->report->status = RequestStatus::IN_PROGRESS;
                 switch ($this->report->step) {
                     case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
-                        $this->report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+                        $this->report->step = $this->step ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
                         break;
                     case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
-                        $this->report->step = RequestStep::APPROVAL_AREA_INTERFACE;
+                        $this->report->step = $this->step ?? RequestStep::APPROVAL_AREA_INTERFACE;
                         break;
                     case RequestStep::APPROVAL_AREA_INTERFACE:
-                        $this->report->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
+                        $this->report->step = $this->step ?? RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
                         break;
                     case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
-                        $this->report->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                        $this->report->step = $this->step ?? RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
                         $this->report->offer_amount = $this->offer_amount;
                         break;
                     case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
-                        $this->report->step = RequestStep::FINISH;
+                        $this->report->step = $this->step ?? RequestStep::FINISH;
                         $this->report->status = RequestStatus::DONE;
                         $this->report->final_amount = $this->final_amount;
                         break;
                 }
             } else {
                 $this->report->status = RequestStatus::tryFrom($this->status);
+                if ($this->step) {
+                    $this->request->step = $this->step;
+                }
             }
             $this->report->comments()->create([
                 'user_id' => auth()->id(),

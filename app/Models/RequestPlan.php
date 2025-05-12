@@ -8,6 +8,7 @@ use App\Enums\UnitType;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -50,5 +51,15 @@ class RequestPlan extends Model
     public function requests(): HasMany
     {
         return $this->hasMany(Request::class,'request_plan_id');
+    }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(DashboardItem::class,'item_id');
+    }
+
+    public function scopeSelect2($q)
+    {
+        return $q->selectRaw("title as text , id");
     }
 }

@@ -15,6 +15,7 @@ use App\Http\Requests\Api\V1\UpdateRequest;
 use App\Http\Resources\Api\V1\ReportResource;
 use App\Models\Report;
 use App\Models\Request as RequestModel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,7 +39,13 @@ class ReportController extends Controller
         return ReportResource::collection(
             Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
                 $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
-                    $builder->search($request->get('q'));
+                    $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
+                        $builder->search($request->get('q'));
+                    })->orWhere(function (Builder $builder) use ($request){
+                        $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
+                    })->orWhereHas('unit' , function (Builder $builder) use ($request) {
+                        $builder->search($request->get('q'));
+                    });
                 });
             })->when($request->filled('status') , function (Builder $builder) use ($request) {
                 $builder->where('status' , $request->get('status'));

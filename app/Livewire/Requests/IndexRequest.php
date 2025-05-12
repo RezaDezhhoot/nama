@@ -3,10 +3,14 @@
 namespace App\Livewire\Requests;
 
 use App\Enums\RequestStatus;
+use App\Enums\RequestStep;
 use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
 use App\Models\Request;
+use App\Models\RequestPlan;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use League\Uri\UriTemplate\Operator;
 use Livewire\WithPagination;
 
 class IndexRequest extends BaseComponent
@@ -14,6 +18,8 @@ class IndexRequest extends BaseComponent
     use WithPagination;
 
     public $status , $item  , $type , $region;
+
+    public $plan , $unit , $step;
 
     protected function queryString()
     {
@@ -29,13 +35,25 @@ class IndexRequest extends BaseComponent
         $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
+        $this->data['step'] = RequestStep::labels();
     }
 
     public function render()
     {
         $items = Request::query()
             ->with(['plan','user','unit','unit.city','unit.region'])
+            ->when($this->step , function (Builder $builder) {
+                $builder->where('step' , $this->step);
+            })
             ->withCount('comments')
+            ->when($this->plan , function (Builder $builder){
+                $builder->whereHas('plan' , function (Builder $builder){
+                    $builder->where('id',$this->plan);
+                });
+            })
+            ->when($this->unit , function (Builder $builder){
+                $builder->where('unit_id', $this->unit);
+            })
             ->when($this->region , function (Builder $builder) {
                 $builder->whereHas('unit' , function (Builder $builder) {
                     $builder->where('region_id' , $this->region);
@@ -53,8 +71,12 @@ class IndexRequest extends BaseComponent
             ->when($this->status , function (Builder $builder) {
                 $builder->where('status' , $this->status);
             })->when($this->search , function (Builder $builder) {
-                $builder->search($this->search)->orWhereHas('user' , function (Builder $builder) {
+                $builder->search($this->search )->orWhereHas('plan' , function (Builder $builder) {
                     $builder->search($this->search);
+                })->orWhere(function (Builder $builder) {
+                    $builder->whereIn('user_id' , User::query()->search($this->search )->take(30)->get()->pluck('id')->toArray());
+                })->orWhereHas('unit' , function (Builder $builder)  {
+                    $builder->search($this->search );
                 });
             })->paginate($this->per_page);
 

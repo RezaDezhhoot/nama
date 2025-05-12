@@ -3,8 +3,10 @@
 namespace App\Livewire\Reports;
 
 use App\Enums\RequestStatus;
+use App\Enums\RequestStep;
 use App\Livewire\BaseComponent;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
 
@@ -13,6 +15,7 @@ class IndexReport extends BaseComponent
     use WithPagination;
 
     public $status , $item ,$type , $region;
+    public $plan , $unit , $step;
 
     protected function queryString()
     {
@@ -28,17 +31,35 @@ class IndexReport extends BaseComponent
     {
         $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
+        $this->data['step'] = RequestStep::labels();
     }
 
     public function render()
     {
         $items = Report::query()
-            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region'])
+            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan'])
+            ->when($this->step , function (Builder $builder) {
+                $builder->where('step' , $this->step);
+            })
             ->withCount('comments')
             ->when($this->region , function (Builder   $builder) {
                 $builder->whereHas('request' , function (Builder $builder) {
                     $builder->whereHas('unit' , function (Builder $builder) {
                         $builder->where('region_id' , $this->region);
+                    });
+                });
+            })
+            ->when($this->unit , function (Builder   $builder) {
+                $builder->whereHas('request' , function (Builder $builder) {
+                    $builder->whereHas('unit' , function (Builder $builder) {
+                        $builder->where('id' , $this->unit);
+                    });
+                });
+            })
+            ->when($this->plan , function (Builder   $builder) {
+                $builder->whereHas('request' , function (Builder $builder) {
+                    $builder->whereHas('plan' , function (Builder $builder){
+                        $builder->where('id',$this->plan);
                     });
                 });
             })
@@ -50,8 +71,12 @@ class IndexReport extends BaseComponent
             })
             ->whereHas('request' , function (Builder $builder) {
                 $builder->when($this->search , function (Builder $builder) {
-                    $builder->search($this->search)->orWhereHas('user' , function (Builder $builder) {
+                    $builder->search($this->search )->orWhereHas('plan' , function (Builder $builder) {
                         $builder->search($this->search);
+                    })->orWhere(function (Builder $builder) {
+                        $builder->whereIn('user_id' , User::query()->search($this->search )->take(30)->get()->pluck('id')->toArray());
+                    })->orWhereHas('unit' , function (Builder $builder)  {
+                        $builder->search($this->search );
                     });
                 });
             })

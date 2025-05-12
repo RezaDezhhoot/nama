@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -51,5 +52,10 @@ class User extends Authenticatable
     public function roles(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(\App\Models\UserRole::class,'user_id');
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class,'user_id');
     }
 }
