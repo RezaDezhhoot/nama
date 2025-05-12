@@ -13,7 +13,7 @@ class IndexUnit extends BaseComponent
 {
     use WithPagination;
 
-    public $type , $region;
+    public $type , $region , $unit;
 
     public function mount()
     {
@@ -25,8 +25,11 @@ class IndexUnit extends BaseComponent
     {
         $items = Unit::query()
             ->latest()
+            ->with(['roles','roles.user'])
             ->when($this->region , function (Builder $builder) {
                 $builder->where('region_id' , $this->region);
+            })->when($this->unit , function (Builder $builder) {
+                $builder->where('parent_id' , $this->unit);
             })
             ->when($this->search , function ($q) {
                 $q->search($this->search);

@@ -7,15 +7,23 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown width="6"  id="type" :data="$data['type']" label="نوع" wire:model.live="type"/>
+                <x-admin.forms.dropdown width="4"  id="type" :data="$data['type']" label="نوع" wire:model.live="type"/>
                 <x-admin.forms.select2
                     id="region"
                     :data="$region ?? []"
                     text="title"
                     label="منظقه"
-                    width="6"
+                    width="4"
                     :ajaxUrl="route('admin.feed.regions')"
                     wire:model.defer="region"/>
+                <x-admin.forms.select2
+                    id="unit"
+                    :data="[]"
+                    text="title"
+                    label="مرکز محوری"
+                    width="4"
+                    :ajaxUrl="route('admin.feed.units')"
+                    wire:model.defer="unit"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -29,6 +37,7 @@
                             <th>نوع</th>
                             <th>نوع فرعی</th>
                             <th>مرکز بالادست</th>
+                            <th>نقش ها</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -41,6 +50,15 @@
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ $item->sub_type?->label() ?? '-' }}</td>
                                 <td>{{ $item->parent?->title ?? "مرکز محوری" }}</td>
+                                <td>
+                                   <ul>
+                                       @foreach($item->roles as $role)
+                                           <li>
+                                               <span class="badge my-1 badge-{{ $role->role->badge() }}">{{ $role->user?->name }} : {{ $role->role?->label() }}</span>
+                                           </li>
+                                       @endforeach
+                                   </ul>
+                                </td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />

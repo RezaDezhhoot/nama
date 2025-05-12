@@ -41,6 +41,18 @@ enum OperatorRole: string
         };
     }
 
+    public function badge(): string
+    {
+        return match ($this) {
+            self::MOSQUE_HEAD_COACH => 'danger',
+            self::MOSQUE_CULTURAL_OFFICER => 'warning',
+            self::AREA_INTERFACE => 'info',
+            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'success',
+            self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'primary',
+            default => []
+        };
+    }
+
     public function relatedSteps(): array
     {
         return match ($this) {
