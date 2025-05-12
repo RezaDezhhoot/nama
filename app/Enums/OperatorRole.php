@@ -77,6 +77,18 @@ enum OperatorRole: string
         };
     }
 
+    public function next(): array
+    {
+        return match ($this) {
+            self::MOSQUE_HEAD_COACH => [RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER , RequestStep::APPROVAL_AREA_INTERFACE,RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::FINISH],
+            self::MOSQUE_CULTURAL_OFFICER => [RequestStep::APPROVAL_AREA_INTERFACE,RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::FINISH],
+            self::AREA_INTERFACE => [RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::FINISH],
+            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => [RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::FINISH],
+            self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => [RequestStep::FINISH],
+            default => []
+        };
+    }
+
     public function writtenStep(): array
     {
         return match ($this) {

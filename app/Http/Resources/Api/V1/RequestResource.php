@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Api\V1;
 
+use App\Enums\OperatorRole;
+use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Http\Resources\UnitResource;
 use Illuminate\Http\Request;
@@ -16,12 +18,20 @@ class RequestResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $status = $this->status;
+        $role = OperatorRole::from(request()->get('role'));
+
+        if (
+            $role !== OperatorRole::MOSQUE_HEAD_COACH && ! in_array($this->step ,$role->step()) && in_array($this->step ,$role->next())
+        ) {
+            $status = RequestStatus::DONE;
+        }
         return [
             'id' => $this->id,
             'request_plan' => RequestPlanResource::make($this->whenLoaded('plan')),
             'step' => $this->step,
             'role' => $this->step->role(),
-            'status' => $this->status,
+            'status' => $status,
             'students' => $this->whenHas('students'),
             'amount' => $this->whenHas('amount'),
             'total_amount' => $this->whenHas('total_amount'),

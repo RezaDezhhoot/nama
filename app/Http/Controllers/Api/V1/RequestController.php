@@ -32,7 +32,7 @@ class RequestController extends Controller
             'step' => ['nullable',Rule::enum(RequestStep::class)],
             'q' => ['nullable','string','max:50']
         ]);
-        $request = RequestModel::query()
+        $requests = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
@@ -56,7 +56,7 @@ class RequestController extends Controller
             ->role(\request()->get('role'))
             ->paginate((int)$request->get('per_page' , 10));
 
-        return RequestResource::collection($request)->additional([
+        return RequestResource::collection($requests)->additional([
             'statuses' => RequestStatus::values(),
             'steps' => RequestStep::values()
         ]);
