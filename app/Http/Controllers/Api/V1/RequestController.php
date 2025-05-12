@@ -48,6 +48,9 @@ class RequestController extends Controller
             })->when(! $request->filled('sort') , function (Builder $builder) {
                 $builder->orderBy('confirm');
             })
+            ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
+                $builder->where('request_plan_id' , $request->get('plan_id'));
+            })
             ->when($request->filled('status') , function (Builder $builder) use ($request , $role) {
                 $builder->where(function (Builder $builder) use ($request , $role) {
                     if ( $request->get('status') == "done_temp") {

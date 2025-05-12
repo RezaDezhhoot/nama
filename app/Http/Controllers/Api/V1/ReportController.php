@@ -56,6 +56,10 @@ class ReportController extends Controller
                 });
             })->when($request->filled('step') , function (Builder $builder) use ($request) {
                 $builder->where('step' , $request->get('step'));
+            })->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
+               $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                   $builder->where('request_plan_id' , $request->get('plan_id'));
+               });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
             })->when(! $request->filled('sort') , function (Builder $builder) {
