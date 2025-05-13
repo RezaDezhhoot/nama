@@ -80,7 +80,7 @@
                                     {{ $item->unit->title ?? "-" }}
                                 </td>
                                 <td>
-                                    {{ $item->unit?->city?->title }} / {{ $item->unit?->regin?->title }}
+                                    {{ $item->unit?->city?->title }} / {{ $item->unit?->region?->title }}
                                 </td>
                                 <td><strong>{{ number_format($item->total_amount) }} ریال </strong></td>
                                 <td><strong>{{ number_format($item->offer_amount) }} ریال </strong></td>

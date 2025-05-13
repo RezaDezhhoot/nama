@@ -73,7 +73,7 @@
                                 <td>{{ $item->step->label() }}</td>
                                 <td>{{ $item->request?->unit?->title ?? '-' }}</td>
                                 <td>
-                                    {{ $item->request?->unit?->city?->title }} / {{ $item->request?->unit?->regin?->title }}
+                                    {{ $item->request?->unit?->city?->title }} / {{ $item->request?->unit?->region?->title }}
                                 </td>
                                 <td>{{ persian_date($item->created_at) }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>
