@@ -89,11 +89,10 @@ class Request extends Model
                 return $builder->where(function (Builder $builder) use ($role) {
                     $builder->whereIn('step' ,$role->step())->orWhereIn('step',$role->history());
                 })->whereHas('unit' , function (Builder $builder) use ($role) {
-                    $builder->whereHas('roles' , function (Builder $builder) use ($role) {
-                        $builder->where('role' , $role)->where('user_id' , auth()->id());
-                    });
                     if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
-                        return $builder->orWhereHas('parent' , function (Builder $builder) use ($role) {
+                        return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                            $builder->where('role' , $role)->where('user_id' , auth()->id());
+                        })->orWhereHas('parent' , function (Builder $builder) use ($role) {
                             $builder->whereHas('roles' , function (Builder $builder) use ($role) {
                                 $builder->where('role' , $role)->where('user_id' , auth()->id());
                             });
@@ -101,8 +100,8 @@ class Request extends Model
                     } elseif ($role === OperatorRole::AREA_INTERFACE) {
                         return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
                             $builder
-//                                    ->whereColumn('user_roles.city_id' , '=','units.city_id')
-//                                    ->whereColumn('user_roles.region_id' , '=','units.region_id')
+                                    ->whereColumn('user_roles.city_id' , '=','units.city_id')
+                                    ->whereColumn('user_roles.region_id' , '=','units.region_id')
                             ;
                         });
                     }
