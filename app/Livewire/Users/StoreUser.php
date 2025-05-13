@@ -31,6 +31,8 @@ class StoreUser extends BaseComponent
     public $sheba7 , $sheba7_title;
     public $sheba8 , $sheba8_title;
 
+    public $roleToEdit;
+
     public function mount($action , $id)
     {
         $this->setMode($action);
@@ -81,7 +83,7 @@ class StoreUser extends BaseComponent
         $this->validate([
             'role' => ['required',Rule::enum(OperatorRole::class)],
             'item' => ['required'],
-            'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable','string','max:150'],
+            'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable'],
             'coach_type' => [($this->role == OperatorRole::MOSQUE_HEAD_COACH->value && $itemModel->type === UnitType::SCHOOL) ? 'required' : 'nullable','string','max:150'],
             'city' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
             'region' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
@@ -128,7 +130,7 @@ class StoreUser extends BaseComponent
                 'area_id' => emptyToNull($this->area),
                 'school_coach_type' => emptyToNull($this->coach_type),
                 'sheba1' => $this->sheba1,
-                'sheba1_title' => $this->sheba1,
+                'sheba1_title' => $this->sheba1_title,
                 'sheba2' => $this->sheba2,
                 'sheba2_title' => $this->sheba2_title,
                 'sheba3' => $this->sheba3,
@@ -151,7 +153,7 @@ class StoreUser extends BaseComponent
                 'sheba5','sheba5_title',
                 'sheba6','sheba6_title',
                 'sheba7','sheba7_title',
-                'sheba8','sheba8_title',]);
+                'sheba8','sheba8_title','lat','lng']);
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         }
     }
@@ -165,17 +167,136 @@ class StoreUser extends BaseComponent
     {
         $this->regionAjax = route('admin.feed.regions',is_array($v) ? $v['id'] : $v);
         $this->dispatch('reloadAjaxURL#region' , $this->regionAjax);
+        $this->dispatch('reloadAjaxURL#edit_region' , $this->regionAjax);
     }
 
     public function updatedRegion($v): void
     {
         $this->neighborhoodAjax = route('admin.feed.neighborhoods',is_array($v) ? $v['id'] : $v);
         $this->dispatch('reloadAjaxURL#neighborhood' , $this->neighborhoodAjax);
+        $this->dispatch('reloadAjaxURL#edit_neighborhood' , $this->neighborhoodAjax);
     }
 
     public function updatedNeighborhood($v): void
     {
         $this->areaAjax = route('admin.feed.areas',is_array($v) ? $v['id'] : $v);
         $this->dispatch('reloadAjaxURL#area' , $this->areaAjax);
+        $this->dispatch('reloadAjaxURL#edit_area' , $this->areaAjax);
+    }
+
+    public function editRole($id)
+    {
+        $this->roleToEdit = UserRole::query()->with(['city','region','neighborhood','area','unit','unit.parent'])->findOrFail($id);
+
+        $this->role = $this->roleToEdit->role?->value;
+        $this->unit = $this->roleToEdit->unit_id;
+        $this->lat = $this->roleToEdit->lat;
+        $this->lng = $this->roleToEdit->lng;
+
+        $this->city = $this->roleToEdit->city?->toArray();
+        $this->region = $this->roleToEdit->region?->toArray();
+        $this->neighborhood = $this->roleToEdit->neighborhood?->toArray();
+        $this->area = $this->roleToEdit->area?->toArray();
+        $this->coach_type = $this->roleToEdit->school_coach_type?->value;
+
+        $this->sheba1 = $this->roleToEdit->sheba1;
+        $this->sheba1_title = $this->roleToEdit->sheba1_title;
+        $this->sheba2 = $this->roleToEdit->sheba2;
+        $this->sheba2_title = $this->roleToEdit->sheba2_title;
+        $this->sheba3 = $this->roleToEdit->sheba3;
+        $this->sheba3_title = $this->roleToEdit->sheba3_title;
+        $this->sheba4 = $this->roleToEdit->sheba4;
+        $this->sheba4_title = $this->roleToEdit->sheba4_title;
+        $this->sheba5 = $this->roleToEdit->sheba5;
+        $this->sheba5_title = $this->roleToEdit->sheba5_title;
+        $this->sheba6 = $this->roleToEdit->sheba6;
+        $this->sheba6_title = $this->roleToEdit->sheba6_title;
+        $this->sheba7 = $this->roleToEdit->sheba7;
+        $this->sheba7_title = $this->roleToEdit->sheba7_title;
+        $this->sheba8 = $this->roleToEdit->sheba8;
+        $this->sheba8_title = $this->roleToEdit->sheba8_title;
+
+        $this->updatedCity($this->roleToEdit->city_id);
+        $this->updatedRegion($this->roleToEdit->region_id);
+        $this->updatedNeighborhood($this->roleToEdit->neighborhood_id);
+
+        $this->emitShowModal("role");
+
+        $this->dispatch('reloadSelect2#edit_city',$this->city);
+        $this->dispatch('reloadSelect2#edit_region',$this->region);
+        $this->dispatch('reloadSelect2#edit_neighborhood',$this->neighborhood);
+        $this->dispatch('reloadSelect2#edit_area',$this->area);
+        if (\App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value == $this->role) {
+            $this->dispatch('reloadSelect2#edit_unit',$this->roleToEdit->unit?->toArray());
+        } elseif ($this->role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value) {
+            $this->dispatch('reloadSelect2#edit_main_unit',$this->roleToEdit->unit?->parent?->toArray());
+        }
+    }
+
+    public function updateRole()
+    {
+        $itemModel  = DashboardItem::query()->findOrFail($this->item);
+        $this->validate([
+            'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable'],
+            'coach_type' => [($this->role == OperatorRole::MOSQUE_HEAD_COACH->value && $itemModel->type === UnitType::SCHOOL) ? 'required' : 'nullable','string','max:150'],
+            'city' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
+            'region' => [$this->role == OperatorRole::AREA_INTERFACE->value ? 'required' : 'nullable'],
+            'neighborhood' => [ 'nullable'],
+            'area' => ['nullable'],
+            'auto_accept' => ['nullable','boolean'],
+            'sheba1' => ['nullable','string','max:100'],
+            'sheba1_title' => ['nullable','string','max:100'],
+            'sheba2' => ['nullable','string','max:100'],
+            'sheba2_title' => ['nullable','string','max:100'],
+            'sheba3' => ['nullable','string','max:100'],
+            'sheba3_title' => ['nullable','string','max:100'],
+            'sheba4' => ['nullable','string','max:100'],
+            'sheba4_title' => ['nullable','string','max:100'],
+            'sheba5' => ['nullable','string','max:100'],
+            'sheba5_title' => ['nullable','string','max:100'],
+            'sheba6' => ['nullable','string','max:100'],
+            'sheba6_title' => ['nullable','string','max:100'],
+            'sheba7' => ['nullable','string','max:100'],
+            'sheba7_title' => ['nullable','string','max:100'],
+            'sheba8' => ['nullable','string','max:100'],
+            'sheba8_title' => ['nullable','string','max:100'],
+        ]);
+        $this->roleToEdit->fill([
+            'unit_id' => emptyToNull($this->unit),
+            'lat' => $this->lat,
+            'lng' => $this->lng,
+            'city_id' => emptyToNull($this->city),
+            'region_id' => emptyToNull($this->region),
+            'neighborhood_id' => emptyToNull($this->neighborhood),
+            'area_id' => emptyToNull($this->area),
+            'school_coach_type' => emptyToNull($this->coach_type),
+            'sheba1' => $this->sheba1,
+            'sheba1_title' => $this->sheba1_title,
+            'sheba2' => $this->sheba2,
+            'sheba2_title' => $this->sheba2_title,
+            'sheba3' => $this->sheba3,
+            'sheba3_title' => $this->sheba3_title,
+            'sheba4' => $this->sheba4,
+            'sheba4_title' => $this->sheba4_title,
+            'sheba5' => $this->sheba5,
+            'sheba5_title' => $this->sheba5_title,
+            'sheba6' => $this->sheba6,
+            'sheba6_title' => $this->sheba6_title,
+            'sheba7' => $this->sheba7,
+            'sheba7_title' => $this->sheba7_title,
+            'sheba8' => $this->sheba8,
+            'sheba8_title' => $this->sheba8_title,
+        ])->save();
+        $this->reset(['role','unit',
+            'sheba1','sheba1_title',
+            'sheba2','sheba2_title',
+            'sheba3','sheba3_title',
+            'sheba4','sheba4_title',
+            'sheba5','sheba5_title',
+            'sheba6','sheba6_title',
+            'sheba7','sheba7_title',
+            'sheba8','sheba8_title','lat','lng']);
+        $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
+        $this->emitHideModal("role");
     }
 }

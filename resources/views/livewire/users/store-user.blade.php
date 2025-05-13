@@ -147,7 +147,11 @@
                                                 <td>{{ $r->sheba6.' : '.$r->sheba6_title }}</td>
                                                 <td>{{ $r->sheba7.' : '.$r->sheba7_title }}</td>
                                                 <td>{{ $r->sheba8.' : '.$r->sheba8_title }}</td>
-                                                <td><x-admin.delete-btn onclick="deleteRole('{{$r->id}}')"  /></td>
+                                                <td>
+                                                    <x-admin.delete-btn onclick="deleteRole('{{$r->id}}')"  />
+                                                    <x-admin.edit-btn  wire:click="editRole({{$r->id}})"/>
+
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -161,6 +165,77 @@
             </x-admin.form-section>
         </div>
     </div>
+    <x-admin.modal-page id="role" title="ویرایش" wire:click="updateRole">
+        <div class="row">
+            <div class="col-12 {{$role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value ? '' :"d-none"}}" >
+                <x-admin.forms.select2
+                    id="edit_unit"
+                    :data="[]"
+                    text="title"
+                    :required="true"
+                    label="مرکز محوری"
+                    ajaxUrl="{{route('admin.feed.units')}}"
+                    wire:model.live="unit"/>
+            </div>
+            <div class="col-12 {{ $role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item ? '' : 'd-none' }}">
+                <x-admin.forms.select2
+                    id="edit_main_unit"
+                    :data="[]"
+                    text="title"
+                    :required="true"
+                    label="مرکز محوری"
+                    ajaxUrl="{{route('admin.feed.units')}}"
+                    wire:model.live="main_unit"/>
+                <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
+                @if($itemModel->type === \App\Enums\UnitType::SCHOOL)
+                    <x-admin.forms.dropdown :required="true" id="coach_type" :data="$data['coach_type']" label="نوع مربی" wire:model.defer="coach_type"/>
+                @endif
+            </div>
+
+            <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
+                <x-admin.forms.select2 id="edit_city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
+                <x-admin.forms.select2 id="edit_region" :required="true" :data="$region ?? []" text="title" label="منظقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
+                <x-admin.forms.select2 id="edit_neighborhood" :data="$neighborhood ?? []" text="title" label="محله" width="3" :ajaxUrl="$neighborhoodAjax" wire:model.live="neighborhood"/>
+                <x-admin.forms.select2 id="edit_area" :data="$area ?? []" text="title" label="ناحیه" width="3" :ajaxUrl="$areaAjax" wire:model.live="area"/>
+                <div class="col-12" x-data="{map: null , marker: null}">
+                    <label> لوکیشن مسجد<span class="text-danger">*</span></label>
+                    <div wire:ignore id="edit_location"  style="height: 300px; width: 100%; border: 1px solid #ccc; border-radius: 10px;"
+                         x-init="
+                                                  map = L.map('edit_location').setView([35.6892, 51.3890], 13);
+                                                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+                                                  marker = L.marker(['{{ $lat ?? 35.6892 }}', '{{$lng ?? 51.3890}}']).addTo(map);
+                                                  map.on('click', function (e) {
+                                                        lat = e.latlng.lat;
+                                                        lng = e.latlng.lng;
+                                                        marker.setLatLng([lat, lng]);
+                                                        @this.set('lat' ,lat)
+                                                        @this.set('lng' , lng)
+                                                    });
+                                                  "
+                    ></div>
+                </div>
+                <x-admin.forms.input type="text" width="6" :required="true" id="edit_lat" label="عرض جغرافیایی Y" wire:model.defer="lat" />
+                <x-admin.forms.input type="text" width="6" :required="true" id="edit_lng" label="طول جغرافیایی X" wire:model.defer="lng" />
+            </div>
+
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba2" label="شماره شبا 2" wire:model.defer="sheba2" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba2_title" label="عنوان شماره شبا 2" wire:model.defer="sheba2_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba3" label="شماره شبا 3" wire:model.defer="sheba3" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba3_title" label="عنوان شماره شبا 3" wire:model.defer="sheba3_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba4" label="شماره شبا 4" wire:model.defer="sheba4" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba4_title" label="عنوان شماره شبا 4" wire:model.defer="sheba4_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba5" label="شماره شبا 5" wire:model.defer="sheba5" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba5_title" label="عنوان شماره شبا 5" wire:model.defer="sheba5_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba6" label="شماره شبا 6" wire:model.defer="sheba6" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba6_title" label="عنوان شماره شبا 6" wire:model.defer="sheba6_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba7" label="شماره شبا 7" wire:model.defer="sheba7" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba7_title" label="عنوان شماره شبا 7" wire:model.defer="sheba7_title" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba8" label="شماره شبا 8" wire:model.defer="sheba8" />
+            <x-admin.forms.input type="text" width="6"  id="edit_sheba8_title" label="عنوان شماره شبا 8" wire:model.defer="sheba8_title" />
+        </div>
+    </x-admin.modal-page>
 </div>
 @push('scripts')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
