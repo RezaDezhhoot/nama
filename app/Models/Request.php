@@ -101,7 +101,7 @@ class Request extends Model
                     } elseif ($role === OperatorRole::AREA_INTERFACE) {
                         return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
                             $builder
-                                    ->whereColumn('user_roles.city_id' , '=','units.city_id')
+//                                    ->whereColumn('user_roles.city_id' , '=','units.city_id')
 //                                    ->whereColumn('user_roles.region_id' , '=','units.region_id')
                             ;
                         });
