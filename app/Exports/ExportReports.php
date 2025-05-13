@@ -103,7 +103,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
                 'id' => $row->id,
                 'plan' => $row->request?->plan?->title,
                 'name' => $row->request?->user->name,
-                'phone' => $row->request?->user->name,
+                'phone' => $row->request?->user->phone,
                 'national_id' => $row->request?->user->national_id,
                 'status' => $row->status->label(),
                 'step' => $row->step->label(),
