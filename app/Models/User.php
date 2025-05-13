@@ -54,6 +54,16 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\UserRole::class,'user_id');
     }
 
+    public function getAreaInterfaceLocations(): array
+    {
+        $roles = $this->roles()->where('role' , OperatorRole::AREA_INTERFACE)
+            ->cursor();
+        return [
+            $roles->pluck('city_id')->unique()->toArray(),
+            $roles->pluck('region_id')->unique()->toArray(),
+        ];
+    }
+
     public function requests(): HasMany
     {
         return $this->hasMany(Request::class,'user_id');
