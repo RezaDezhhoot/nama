@@ -87,6 +87,12 @@ class Report extends Model
                                     $builder->where('role' , $role)->where('user_id' , auth()->id());
                                 });
                             });
+                        } elseif ($role === OperatorRole::AREA_INTERFACE) {
+                            [$cities , $regions] = auth()->user()->getAreaInterfaceLocations();
+                            $builder
+                                ->whereIn('city_id' , $cities)
+                                ->whereIn('region_id' , $regions)
+                            ;
                         }
                         return $builder;
                     });
