@@ -4,6 +4,7 @@ namespace App\Livewire\Reports;
 
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Exports\ExportReports;
 use App\Livewire\BaseComponent;
 use App\Models\Report;
 use App\Models\User;
@@ -32,6 +33,11 @@ class IndexReport extends BaseComponent
         $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
         $this->data['step'] = RequestStep::labels();
+    }
+
+    public function exportXLSX()
+    {
+        return (new ExportReports($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search))->download('reports.xlsx');
     }
 
     public function render()

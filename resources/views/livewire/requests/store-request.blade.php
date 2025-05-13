@@ -42,7 +42,7 @@
                             </td>
                            <td>{{ persian_date($request->created_at) }}</td>
                            <td>{{ persian_date($request->updated_at) }}</td>
-                            <td>{{ $request->unit?->tilte ?? "-" }}</td>
+                            <td>{{ $request->unit?->title ?? "-" }}</td>
                         </tr>
                         </tbody>
                     </table>

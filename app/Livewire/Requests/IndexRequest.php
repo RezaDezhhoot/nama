@@ -4,6 +4,7 @@ namespace App\Livewire\Requests;
 
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Exports\ExportRequests;
 use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
 use App\Models\Request;
@@ -36,6 +37,11 @@ class IndexRequest extends BaseComponent
         $this->data['status'] = RequestStatus::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
         $this->data['step'] = RequestStep::labels();
+    }
+
+    public function exportXLSX()
+    {
+        return (new ExportRequests($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search))->download('requests.xlsx');
     }
 
     public function render()

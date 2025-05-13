@@ -2,7 +2,7 @@
 <div wire:init="init">
     <x-admin.big-loader :loading="$loading" />
     @section('title', 'گزارش ها')
-    <x-admin.form-control :store="false" title="گزارش ها"/>
+    <x-admin.form-control :store="false" title="گزارش ها" exportable="exportXLSX"/>
 
     <div class="card card-custom">
         <div class="card-body">
