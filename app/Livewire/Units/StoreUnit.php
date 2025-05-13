@@ -59,6 +59,9 @@ class StoreUnit extends BaseComponent
             $this->phone8 = $this->model->phone8;
             $this->phone8_title = $this->model->phone8_title;
             $this->code = $this->model->code;
+            $this->updatedCity($this->model->city_id);
+            $this->updatedRegion($this->model->region_id);
+            $this->updatedNeighborhood($this->model->neighborhood_id);
         } elseif ($this->isCreatingMode()) {
             $this->header = 'مرکز جدید';
         } else abort(404);
