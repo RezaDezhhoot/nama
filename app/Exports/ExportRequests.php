@@ -99,7 +99,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
                 'national_id' => $row->user->national_id,
                 'status' => $row->status->label(),
                 'step' => $row->step->label(),
-                'unit' => sprintf("%s - %s",$row->unit->title , $row->unit->text),
+                'unit' => sprintf("%s - %s",$row?->unit?->title , $row?->unit?->text),
                 'city' => $row->unit?->city?->title,
                 'region' => $row->unit?->region?->title,
                 'total_amount' =>  number_format($row->total_amount),
