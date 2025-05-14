@@ -56,8 +56,7 @@ class Report extends Model
         if (isAdmin()) {
             return $builder;
         }
-
-        return $builder->whereIn('step' , auth()->user()->nama_role->step());
+        return $builder;
     }
 
     public function comments(): MorphMany
