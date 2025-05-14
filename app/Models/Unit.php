@@ -20,6 +20,8 @@ class Unit extends Model
 
     protected $with = ['city','area','parent','region','neighborhood','area'];
 
+    protected $appends = ['full'];
+
     protected $casts = [
         'auto_accept' => 'boolean',
         'type' => UnitType::class,
@@ -38,6 +40,14 @@ class Unit extends Model
     {
         return Attribute::get(function ($v) {
             return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری',$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+        });
+    }
+
+
+    public function full(): Attribute
+    {
+        return Attribute::get(function ($v) {
+            return sprintf("%s- %s",$this->title,$this->text);
         });
     }
 
