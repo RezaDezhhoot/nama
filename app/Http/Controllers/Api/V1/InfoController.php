@@ -21,20 +21,39 @@ class InfoController extends Controller
         $role = OperatorRole::from(request()->get('role'));
 
         $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
+        $isNotCoach = $role !== OperatorRole::MOSQUE_HEAD_COACH;
         $requestsRes = [
-            RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->step())->count(),
-            RequestStatus::REJECTED->value => $requests->where('status' , RequestStatus::REJECTED)->whereIn('step',$role->step())->count(),
-            RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::ACTION_NEEDED)->whereIn('step',$role->step())->count(),
-            RequestStatus::DONE->value => $requests->where('status' , RequestStatus::DONE)->whereIn('step',$role->step())->count(),
+            RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::REJECTED->value => $requests->where('status' , RequestStatus::REJECTED)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::ACTION_NEEDED)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::DONE->value => $requests->where('status' , RequestStatus::DONE)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
         ];
         $reportsRes = [
-            RequestStatus::IN_PROGRESS->value => $reports->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->step())->count(),
-            RequestStatus::REJECTED->value => $reports->where('status' , RequestStatus::REJECTED)->whereIn('step',$role->step())->count(),
-            RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::ACTION_NEEDED)->whereIn('step',$role->step())->count(),
-            RequestStatus::DONE->value => $reports->where('status' , RequestStatus::DONE)->whereIn('step',$role->step())->count(),
-            RequestStatus::PENDING->value => $reports->where('status' , RequestStatus::PENDING)->whereIn('step',$role->step())->count(),
+            RequestStatus::IN_PROGRESS->value => $reports->where('status' , RequestStatus::IN_PROGRESS)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::REJECTED->value => $reports->where('status' , RequestStatus::REJECTED)->when($isNotCoach, function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::ACTION_NEEDED->value => $reports->where('status' , RequestStatus::ACTION_NEEDED)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::DONE->value => $reports->where('status' , RequestStatus::DONE)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
+            RequestStatus::PENDING->value => $reports->where('status' , RequestStatus::PENDING)->when($isNotCoach , function ($c) use($role) {
+                $c->whereIn('step',$role->step());
+            })->count(),
         ];
-        if ($role !== OperatorRole::MOSQUE_HEAD_COACH) {
+        if ($isNotCoach) {
             $requestsRes[RequestStatus::DONE->value."_temp"] = $requests->whereIn('step',$role->next())->count();
             $reportsRes[RequestStatus::DONE->value."_temp"] = $reports->whereIn('step',$role->next())->count();
         }
