@@ -47,7 +47,7 @@ class Unit extends Model
     public function full(): Attribute
     {
         return Attribute::get(function ($v) {
-            return sprintf("%s- %s - %s",$this->title,$this->parent_id ? "معمولی" : 'محوری' ,  $this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+            return sprintf("%s- %s - %s",$this->title,$this->parent_id ? "معمولی" : 'محوری' ,  $this->sub_type );
         });
     }
 
