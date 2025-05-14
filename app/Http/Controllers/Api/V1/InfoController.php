@@ -22,6 +22,7 @@ class InfoController extends Controller
 
         $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
         $isNotCoach = $role !== OperatorRole::MOSQUE_HEAD_COACH;
+        dd($isNotCoach);
         $requestsRes = [
             RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->when($isNotCoach , function ($c) use($role) {
                 $c->whereIn('step',$role->step());
