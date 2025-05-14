@@ -18,7 +18,7 @@ class SubmitRequest extends FormRequest
         return [
             'students' => ['required','integer','between:1,1000000000'],
             'amount' => ['required','integer','between:1000,10000000000000'],
-            'date' => ['required','date'],
+            'date' => ['required'],
             'body' => ['nullable','max:10000'],
             'imam_letter' => ['nullable',Rule::file()->extensions([...config('site.files.image.formats'),...config('site.files.document.formats')])->max(5 * 1024)],
             'area_interface_letter' => ['nullable',Rule::file()->extensions([...config('site.files.image.formats'),...config('site.files.document.formats')])->max(5 * 1024)],
