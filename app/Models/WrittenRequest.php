@@ -41,11 +41,7 @@ class WrittenRequest extends Model
 
     public function scopeRoleFilter(Builder $builder): Builder
     {
-        if (isAdmin()) {
-            return $builder;
-        }
-
-        return $builder->whereIn('step' , auth()->user()->nama_role->writtenStep());
+        return $builder;
     }
 
     public function user(): BelongsTo
