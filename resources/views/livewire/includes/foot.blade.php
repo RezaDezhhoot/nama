@@ -61,19 +61,27 @@
 <script src="{{asset('admin/js/sweetalert2@11.js')}}"></script>
 <script src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/plugins/global/plugins.bundle.js?v=7.2.9"></script>
 <script src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/js/scripts.bundle.js?v=7.2.9"></script>
-<script src="{{asset('admin/plugins/custom/datepicker/persian-date.min.js')}}"></script>
-<script src="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.js')}}"></script>
+{{--<script src="{{asset('admin/plugins/custom/datepicker/persian-date.min.js')}}"></script>--}}
+{{--<script src="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.js')}}"></script>--}}
+
+
 <script src="{{asset('admin/js/select2.min.js')}}"></script>
 
 <script>
 
     document.addEventListener('livewire:init', () => {
-        Livewire.on('showModal', function (data) {
+        Livewire.on('showModal', function ([data]) {
             const id = '#' + data + 'Modal';
             $(id).modal('show');
         })
 
-        Livewire.on('hideModal', function (data) {
+        Livewire.on('hideCollapse', function ([data]) {
+            console.log(data)
+            const id = '#' + data;
+            $(id).collapse('hide');
+        })
+
+        Livewire.on('hideModal', function ([data]) {
             const id = '#' + data + 'Modal';
             $(id).modal('hide');
 
