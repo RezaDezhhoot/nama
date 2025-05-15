@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
     <link href="{{asset('admin/plugins/global/plugins.bundle.css?v=7.0.6')}}" rel="stylesheet" type="text/css"/>
     <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/style.bundle.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
-    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/header/base/light.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
-    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/header/menu/light.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
-    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/aside/light.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/header/base/dark.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/header/menu/dark.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/aside/dark.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
 
     {{--    <link rel="stylesheet" href="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.css')}}"/>--}}
 
