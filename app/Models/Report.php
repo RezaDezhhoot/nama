@@ -75,7 +75,9 @@ class Report extends Model
             $role = OperatorRole::tryFrom($role);
             if ($role && $role !== OperatorRole::MOSQUE_HEAD_COACH) {
                 return $builder->where(function (Builder $builder) use ($role) {
-                    $builder->whereIn('step' ,$role->step())->orWhereIn('step' , $role->history());
+                    if (in_array($role,[OperatorRole::MOSQUE_CULTURAL_OFFICER,OperatorRole::AREA_INTERFACE]) || request()->filled('status')) {
+                        $builder->whereIn('step' ,$role->step())->orWhereIn('step',$role->history());
+                    }
                 })->whereHas('request' , function (Builder $builder) use ($role) {
                     $builder->whereHas('unit' , function (Builder $builder) use ($role) {
                         if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {

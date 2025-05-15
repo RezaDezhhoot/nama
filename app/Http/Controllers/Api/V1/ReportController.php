@@ -12,7 +12,9 @@ use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitReportRequest;
 use App\Http\Requests\Api\V1\UpdateReportRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
+use App\Http\Resources\Api\V1\CommentResource;
 use App\Http\Resources\Api\V1\ReportResource;
+use App\Models\Comment;
 use App\Models\Report;
 use App\Models\Request as RequestModel;
 use App\Models\User;
@@ -250,6 +252,7 @@ class ReportController extends Controller
             ->with(['request','images','video','request.areaInterfaceLetter','request.imamLetter','request.plan'])
             ->findOrFail($report);
         $report->last_updated_by = $report->step;
+        $from_status = $report->status;
 
         if ($adminStoreReportRequest->action == "accept") {
             $report->status = RequestStatus::IN_PROGRESS;
@@ -291,6 +294,8 @@ class ReportController extends Controller
                 'user_id' => auth()->id(),
                 'body' => $adminStoreReportRequest->comment,
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+                'from_status' => $from_status,
+                'to_status' => $report->status,
             ]);
             if (! $report->messages) {
                 $report->messages = [];
@@ -301,5 +306,18 @@ class ReportController extends Controller
         }
         $report->save();
         return ReportResource::make($report);
+    }
+
+    public function getComments($report): AnonymousResourceCollection
+    {
+        $items = Comment::query()
+            ->latest()
+            ->whereHasMorph('commentable',[Report::class],function ($q) use ($report){
+                $q->where('commentable_id' , $report);
+            })
+            ->with(['user'])
+            ->paginate(\request()->get('per_page' , 10));
+
+        return CommentResource::collection($items);
     }
 }

@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
+use App\Http\Resources\Api\V1\CommentResource;
 use App\Http\Resources\Api\V1\RequestResource;
+use App\Models\Comment;
 use App\Models\RequestPlan;
 use App\Models\User;
 use App\Models\UserRole;
@@ -258,6 +260,7 @@ class RequestController extends Controller
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
+        $from_status = $request->status;
 
         $request->last_updated_by = $request->step;
         if ($adminStoreRequest->action == "accept") {
@@ -307,6 +310,8 @@ class RequestController extends Controller
                 'user_id' => auth()->id(),
                 'body' => $adminStoreRequest->comment,
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+                'from_status' => $from_status,
+                'to_status' => $request->status,
             ]);
             $request->message = $adminStoreRequest->comment;
             if (! $request->messages) {
@@ -318,5 +323,18 @@ class RequestController extends Controller
         }
         $request->save();
         return RequestResource::make($request);
+    }
+
+    public function getComments($request): AnonymousResourceCollection
+    {
+        $items = Comment::query()
+            ->latest()
+            ->whereHasMorph('commentable',[RequestModel::class],function ($q) use ($request){
+                $q->where('commentable_id' , $request);
+            })
+            ->with(['user'])
+            ->paginate(\request()->get('per_page' , 10));
+
+        return CommentResource::collection($items);
     }
 }

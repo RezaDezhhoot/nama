@@ -17,6 +17,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::post('{request}/confirm' , 'confirm');
         Route::post('{request}/admin-submit' , 'adminStore');
         Route::patch('{request}' , 'update');
+        Route::get('{request}/comments' , 'getComments');
     });
     Route::controller(\App\Http\Controllers\Api\V1\ReportController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('reports')->group(function () {
         Route::get('' , 'index');
@@ -25,6 +26,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::post('{report}/confirm' , 'confirm');
         Route::post('{report}/admin-submit' , 'adminStore');
         Route::patch('{report}' , 'update');
+        Route::get('{report}/comments' , 'getComments');
     });
     Route::controller(\App\Http\Controllers\Api\V1\WrittenController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('written-requests')->group(function () {
         Route::get('' , 'index');
