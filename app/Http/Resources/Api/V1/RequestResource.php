@@ -25,7 +25,7 @@ class RequestResource extends JsonResource
             if (! in_array($this->step ,$role->step()) && in_array($this->step ,$role->next())) {
                 $status = RequestStatus::DONE;
             } elseif (in_array($role , [OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES,OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING]) && ! in_array($this->step ,$role->step()) && ! in_array($this->step ,$role->next())) {
-                $status = "";
+                $status = null;
             }
         }
 
