@@ -94,4 +94,9 @@ class IndexReport extends BaseComponent
 
         return view('livewire.requests.index-report' , get_defined_vars())->extends('livewire.layouts.admin');
     }
+
+    public function deleteItem($id)
+    {
+        Report::destroy($id);
+    }
 }

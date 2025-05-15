@@ -33,7 +33,7 @@
                     :ajaxUrl="route('admin.feed.plans',[$type])"
                     wire:model.defer="plan"/>
 
-                <x-admin.forms.dropdown width="3" id="step" :data="$data['step']" label="نقش" wire:model.live="step"/>
+                <x-admin.forms.dropdown width="3" id="step" :data="$data['step']" label="نقش / مرحله" wire:model.live="step"/>
 
             </div>
             @include('livewire.includes.advance-table')
@@ -91,6 +91,7 @@
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
                                     <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}"/>
+                                    <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>
                         @endforeach
@@ -112,3 +113,43 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+    <script>
+        function deleteItem(id) {
+            Swal.fire({
+                title: 'حذف کردن',
+                text: 'آیا از حذف کردن این مورد اطمینان دارید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله',
+                showLoaderOnConfirm: true,
+                input: "text",
+                inputAttributes: {
+                    autocapitalize: "off"
+                },
+                preConfirm: async (login) => {
+                    if (! login || login === "") {
+                        Swal.showValidationMessage('رمز عبور اجباری می باشد');
+                        return
+                    }
+                    if (! ["1234"].includes(login)) {
+                        Swal.showValidationMessage('رمز عبور اشتباه می باشد');
+                        return
+                    }
+                    return login
+                },
+            }).then((result) => {
+                if (result.value) {
+                    @this.call('deleteItem' , id)
+                }
+            })
+        }
+
+    </script>
+@endpush

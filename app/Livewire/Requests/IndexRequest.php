@@ -88,4 +88,9 @@ class IndexRequest extends BaseComponent
 
         return view('livewire.requests.index-request' , get_defined_vars())->extends('livewire.layouts.admin');
     }
+
+    public function deleteItem($id)
+    {
+        Request::destroy($id);
+    }
 }
