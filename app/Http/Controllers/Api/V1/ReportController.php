@@ -253,6 +253,7 @@ class ReportController extends Controller
             ->findOrFail($report);
         $report->last_updated_by = $report->step;
         $from_status = $report->status;
+        $step = $report->step;
 
         if ($adminStoreReportRequest->action == "accept") {
             $report->status = RequestStatus::IN_PROGRESS;
@@ -296,6 +297,7 @@ class ReportController extends Controller
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
                 'from_status' => $from_status,
                 'to_status' => $report->status,
+                'step' => $step
             ]);
             if (! $report->messages) {
                 $report->messages = [];
@@ -314,6 +316,9 @@ class ReportController extends Controller
             ->latest()
             ->whereHasMorph('commentable',[Report::class],function ($q) use ($report){
                 $q->where('commentable_id' , $report);
+            })
+            ->when(\request()->filled('step') , function ($q){
+                $q->where('step' , \request()->get('step'));
             })
             ->with(['user'])
             ->paginate(\request()->get('per_page' , 10));

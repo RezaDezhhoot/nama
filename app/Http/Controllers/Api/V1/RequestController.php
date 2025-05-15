@@ -261,7 +261,7 @@ class RequestController extends Controller
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
         $from_status = $request->status;
-
+        $step = $request->step;
         $request->last_updated_by = $request->step;
         if ($adminStoreRequest->action == "accept") {
             $request->status = RequestStatus::IN_PROGRESS;
@@ -312,6 +312,7 @@ class RequestController extends Controller
                 'display_name' => OperatorRole::from(\request()->get('role'))->label(),
                 'from_status' => $from_status,
                 'to_status' => $request->status,
+                'step' => $step
             ]);
             $request->message = $adminStoreRequest->comment;
             if (! $request->messages) {
@@ -331,6 +332,9 @@ class RequestController extends Controller
             ->latest()
             ->whereHasMorph('commentable',[RequestModel::class],function ($q) use ($request){
                 $q->where('commentable_id' , $request);
+            })
+            ->when(\request()->filled('step') , function ($q){
+                $q->where('step' , \request()->get('step'));
             })
             ->with(['user'])
             ->paginate(\request()->get('per_page' , 10));

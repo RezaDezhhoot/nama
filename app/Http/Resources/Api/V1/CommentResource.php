@@ -21,6 +21,7 @@ class CommentResource extends JsonResource
             'display_name' => $this->display_name,
             'from_status' => $this->from_status,
             'to_status' => $this->to_status,
+            'step' => $this->step,
             'user' => UserResource::make($this->whenLoaded('user'))
         ];
     }
