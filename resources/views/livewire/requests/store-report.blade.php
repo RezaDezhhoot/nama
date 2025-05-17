@@ -66,8 +66,16 @@
                             <td>{{ $request->students }}</td>
                             <td>{{ number_format($request->amount) }} ریال </td>
                             <td>{{ persian_date($request->date) }}</td>
-                            <td><button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
-                            <td><button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-outline-success">بارگیری فایل</button></td>
+                            <td>
+                                @if($request->imamLetter)
+                                    <button wire:click="download({{ $request->imamLetter?->id }})" class="btn btn-outline-success">بارگیری فایل</button>
+                                @endif
+                            </td>
+                            <td>
+                                @if($request->areaInterfaceLetter)
+                                    <button wire:click="download({{ $request->areaInterfaceLetter?->id }})" class="btn btn-outline-success">بارگیری فایل</button>
+                                @endif
+                            </td>
                             <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
                             <td><strong>{{ number_format($request->offer_amount) }} ریال </strong></td>
                             <td><strong>{{ number_format($request->final_amount) }} ریال </strong></td>
@@ -135,7 +143,6 @@
                             <td>{{ persian_date($report->date) }}</td>
                             <td>
                                 @foreach($report->images as $image)
-
                                     <button wire:click="download({{ $image->id }})" class="btn btn-outline-success">
                                         بارگیری تصویر
                                         ({{ $loop->iteration }})
