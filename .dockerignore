@@ -1,0 +1,10 @@
+Dockerfile
+docker-compose.yml
+.idea
+.vscode
+.git
+.dockerignore
+.gitlab-ci.yml
+README.md
+src/public/storage
+dist

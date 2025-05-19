@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  namaApi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nama_api
+    hostname: nama_api
+    image: nama_api
+    ports:
+      - "8002:8000"
+    restart: unless-stopped
+    working_dir: /home/app
+    environment:
+      APP_ENV: ${APP_ENV}
+    depends_on:
+      - db
+    volumes:
+      - ./storage/app/public:/home/app/storage/app/public
+    env_file:
+      - .env
+    networks:
+      - main
+  db:
+    image: mysql
+    restart: unless-stopped
+    container_name: ${DB_HOST}
+    volumes:
+        - ./services/mysql/data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_USER: ${DB_USER}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - main
+  phpmyadmin:
+      image: phpmyadmin
+      container_name: toping_phpmyadmin
+      restart: always
+      depends_on:
+        - db
+      ports:
+         - "5051:80"
+      environment:
+        - PMA_ARBITRARY=1
+      networks:
+        - main
+networks:
+  main:
+    name: nama-api
+    driver: bridge
