@@ -15,7 +15,7 @@ class PlanFeedController extends Controller
             $q->whereHas('item' , function ($q) use($type){
                 $q->where('type' , $type);
             });
-        })->search($request->get('search'))->take(15)->select2()->get();
+        })->search($request->get('search'))->take(100)->select2()->get();
 
         return response()->json($items);
     }

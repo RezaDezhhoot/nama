@@ -12,7 +12,7 @@ class UnitFeedController extends Controller
     {
         $items = Unit::query()->when($parent , function ($q) {
             $q->whereNull('parent_id');
-        })->search($request->get('search'))->take(15)->select2()->get();
+        })->search($request->get('search'))->take(200)->select2()->get();
         return response()->json($items);
     }
 }

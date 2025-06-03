@@ -12,7 +12,7 @@ class AreaFeedController extends Controller
     {
         $items = Area::query()->when($neighborhood , function ($q) use ($neighborhood) {
             $q->where('neighborhood_id' , $neighborhood);
-        })->search($request->get('search'))->take(15)->select2()->get();
+        })->search($request->get('search'))->take(100)->select2()->get();
         return response()->json($items);
     }
 }

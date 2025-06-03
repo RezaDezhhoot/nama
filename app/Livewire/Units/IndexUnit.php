@@ -15,6 +15,21 @@ class IndexUnit extends BaseComponent
 
     public $type , $region , $unit;
 
+    public function queryString()
+    {
+        return [
+            'type' => [
+                'as' => 'type'
+            ],
+            'region' => [
+                'as' => 'region'
+            ],
+            'unit' => [
+                'as' => 'unit'
+            ]
+        ];
+    }
+
     public function mount()
     {
         $this->data['type'] = UnitType::labels();

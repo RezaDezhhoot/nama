@@ -12,7 +12,7 @@ class NeighborhoodFeedController extends Controller
     {
         $items = Neighborhood::query()->when($region , function ($q) use ($region) {
             $q->where('region_id' , $region);
-        })->search($request->get('search'))->take(15)->select2()->get();
+        })->search($request->get('search'))->take(100)->select2()->get();
         return response()->json($items);
     }
 }
