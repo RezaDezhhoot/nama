@@ -15,8 +15,8 @@ class SubmitReportRequest extends FormRequest
             'date' => ['required','date'],
             'body' => ['nullable','max:10000'],
             'images' => ['required','array','min:3','max:10'],
-            'images.*' => ['required',Rule::file()->extensions(config('site.files.image.formats'))->max(2 * 1024)],
-            'video' => ['nullable',Rule::file()->extensions(config('site.files.video.formats'))->max(5 * 1024)],
+            'images.*' => ['required',Rule::file()->extensions(config('site.files.image.formats'))],
+            'video' => ['nullable',Rule::file()->extensions(config('site.files.video.formats'))],
         ];
     }
 }
