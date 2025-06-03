@@ -14,8 +14,8 @@ class UpdateWrittenRequest extends FormRequest
         return [
             'title' => ['sometimes','required','string','max:150'],
             'body' => ['sometimes','required','string','max:3000'],
-            'letter' => ['sometimes','required',Rule::imageFile()->max(5 * 1024)],
-            'sign' => ['sometimes','required',Rule::imageFile()->max(5 * 1024)],
+            'letter' => ['sometimes','required',Rule::imageFile()->max(100 * 1024)],
+            'sign' => ['sometimes','required',Rule::imageFile()->max(100 * 1024)],
             'reference_to' => ['sometimes','required',Rule::in(OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value,OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->value)]
         ];
     }

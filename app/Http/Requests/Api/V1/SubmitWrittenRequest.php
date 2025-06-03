@@ -14,8 +14,8 @@ class SubmitWrittenRequest extends FormRequest
         return [
             'title' => ['required','string','max:150'],
             'body' => ['required','string','max:3000'],
-            'letter' => ['nullable',Rule::imageFile()->max(5 * 1024)],
-            'sign' => ['nullable',Rule::imageFile()->max(5 * 1024)],
+            'letter' => ['nullable',Rule::imageFile()->max(100 * 1024)],
+            'sign' => ['nullable',Rule::imageFile()->max(100 * 1024)],
             'reference_to' => ['required',Rule::enum(WrittenRequestRole::class)]
         ];
     }

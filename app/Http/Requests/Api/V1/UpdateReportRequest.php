@@ -26,8 +26,8 @@ class UpdateReportRequest extends FormRequest
                 'min:'.(max(min(3 - $report->images_count + $images_to_remove , 3), 0)),
                 'max:'.(max(min(10 - $report->images_count + $images_to_remove , 10) , 0))
             ],
-            'images.*' => ['required',Rule::file()->extensions(config('site.files.image.formats'))->max(2 * 1024)],
-            'video' => ['sometimes','nullable',Rule::file()->extensions(config('site.files.video.formats'))->max(5 * 1024)],
+            'images.*' => ['required',Rule::file()->extensions(config('site.files.image.formats'))->max(100 * 1024)],
+            'video' => ['sometimes','nullable',Rule::file()->extensions(config('site.files.video.formats'))->max(100 * 1024)],
         ];
     }
 }
