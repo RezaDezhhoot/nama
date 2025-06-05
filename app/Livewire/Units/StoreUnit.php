@@ -9,6 +9,23 @@ use App\Models\Unit;
 
 class StoreUnit extends BaseComponent
 {
+    public $qtype , $qregion , $qunit;
+
+    public function queryString()
+    {
+        return [
+            'qtype' => [
+                'as' => 'type'
+            ],
+            'qregion' => [
+                'as' => 'region'
+            ],
+            'qunit' => [
+                'as' => 'unit'
+            ]
+        ];
+    }
+
     public $title , $type , $sub_type , $parent , $city , $region , $neighborhood , $area , $auto_accept;
     public $lat , $lng;
     public $regionAjax , $neighborhoodAjax , $areaAjax;
@@ -186,6 +203,10 @@ class StoreUnit extends BaseComponent
         $model = $this->model ?: new Unit();
         $model->fill($data)->save();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
-        redirect()->route('admin.units.index');
+        redirect()->route('admin.units.index' , [
+            'type' => $this->qtype,
+            'region' => $this->qregion,
+            'unit' => $this->qunit,
+        ]);
     }
 }

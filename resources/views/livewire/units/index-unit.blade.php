@@ -10,7 +10,7 @@
                 <x-admin.forms.dropdown width="4"  id="type" :data="$data['type']" label="نوع" wire:model.live="type"/>
                 <x-admin.forms.select2
                     id="region"
-                    :data="$region ?? []"
+                    :data="$regionModel ?? []"
                     text="title"
                     label="منظقه"
                     width="4"
@@ -18,7 +18,7 @@
                     wire:model.defer="region"/>
                 <x-admin.forms.select2
                     id="unit"
-                    :data="[]"
+                    :data="$unitModel ?? []"
                     text="title"
                     label="مرکز محوری"
                     width="4"
@@ -59,8 +59,8 @@
                                        @endforeach
                                    </ul>
                                 </td>
-                                <td>
-                                    <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                <td >
+                                    <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}?type={{$type}}&region={{$region}}&unit={{$unit}}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>

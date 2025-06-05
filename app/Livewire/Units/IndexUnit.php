@@ -5,6 +5,7 @@ namespace App\Livewire\Units;
 use App\Enums\UnitType;
 use App\Exports\ExportUnits;
 use App\Livewire\BaseComponent;
+use App\Models\Region;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
@@ -14,6 +15,8 @@ class IndexUnit extends BaseComponent
     use WithPagination;
 
     public $type , $region , $unit;
+
+    public $regionModel , $unitModel;
 
     public function queryString()
     {
@@ -33,7 +36,12 @@ class IndexUnit extends BaseComponent
     public function mount()
     {
         $this->data['type'] = UnitType::labels();
-
+        if ($this->region) {
+            $this->regionModel = Region::query()->find($this->region)?->toArray();
+        }
+        if ($this->unit) {
+            $this->unitModel = Unit::query()->find($this->unit)?->toArray();
+        }
     }
 
     public function render()
