@@ -6,25 +6,25 @@
 
     <div class="card card-custom">
         <div class="card-body">
-            <div class="row">
-                <x-admin.forms.dropdown width="4" id="role" :data="$data['role']" label="فیلتر نقش" wire:model.live="role"/>
-                <x-admin.forms.select2
-                    id="region"
-                    :data="$region ?? []"
-                    text="title"
-                    label="منظقه"
-                    width="4"
-                    :ajaxUrl="route('admin.feed.regions')"
-                    wire:model.defer="region"/>
-                <x-admin.forms.select2
-                    id="unit"
-                    :data="[]"
-                    text="title"
-                    label="مرکز "
-                    width="4"
-                    :ajaxUrl="route('admin.feed.units',0)"
-                    wire:model.defer="unit"/>
-            </div>
+{{--            <div class="row">--}}
+{{--                <x-admin.forms.dropdown width="4" id="role" :data="$data['role']" label="فیلتر نقش" wire:model.live="role"/>--}}
+{{--                <x-admin.forms.select2--}}
+{{--                    id="region"--}}
+{{--                    :data="$region ?? []"--}}
+{{--                    text="title"--}}
+{{--                    label="منظقه"--}}
+{{--                    width="4"--}}
+{{--                    :ajaxUrl="route('admin.feed.regions')"--}}
+{{--                    wire:model.defer="region"/>--}}
+{{--                <x-admin.forms.select2--}}
+{{--                    id="unit"--}}
+{{--                    :data="[]"--}}
+{{--                    text="title"--}}
+{{--                    label="مرکز "--}}
+{{--                    width="4"--}}
+{{--                    :ajaxUrl="route('admin.feed.units',0)"--}}
+{{--                    wire:model.defer="unit"/>--}}
+{{--            </div>--}}
             @include('livewire.includes.advance-table')
             <div class="row">
                 <div class="col-12  table-responsive">
