@@ -6,6 +6,25 @@
 
     <div class="card card-custom">
         <div class="card-body">
+            <div class="row">
+                <x-admin.forms.dropdown width="4" id="role" :data="$data['role']" label="فیلتر نقش" wire:model.live="role"/>
+                <x-admin.forms.select2
+                    id="region"
+                    :data="$region ?? []"
+                    text="title"
+                    label="منظقه"
+                    width="4"
+                    :ajaxUrl="route('admin.feed.regions')"
+                    wire:model.defer="region"/>
+                <x-admin.forms.select2
+                    id="unit"
+                    :data="[]"
+                    text="title"
+                    label="مرکز "
+                    width="4"
+                    :ajaxUrl="route('admin.feed.units',0)"
+                    wire:model.defer="unit"/>
+            </div>
             @include('livewire.includes.advance-table')
             <div class="row">
                 <div class="col-12  table-responsive">
@@ -18,11 +37,12 @@
                             <th>شماره همراه</th>
 {{--                            <th>تعداد نقش در نما</th>--}}
                             <th>نقش  در ارمان</th>
+                            <th>نقش ها</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($items as $item)
+                        @foreach($items as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
@@ -31,14 +51,19 @@
 {{--                                <td>{{ $item->roles_count }}</td>--}}
                                 <td>{{ $item->role?->label() }}</td>
                                 <td>
+                                    <ul>
+                                        @foreach($item->roles as $role)
+                                            <li>
+                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">{{ $role->user?->name }} : {{ $role->role?->label() }} - {{ $role?->unit?->full }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>
                                     <x-admin.edit-btn href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->id]) }}"/>
                                 </td>
                             </tr>
-                        @empty
-                            <td class="text-center" colspan="17">
-                                اطلاعاتی جهت نمایش وجود ندارد
-                            </td>
-                        @endforelse
+                        @endforeach
                         </tbody>
                         <tbody wire:loading >
                         <x-admin.big-loader :table="true" width="20" height="20" />
@@ -46,9 +71,7 @@
                     </table>
                 </div>
             </div>
-            @if(sizeof($items) > 0)
-                {{$items->links('livewire.layouts.paginate')}}
-            @endif
+            {{$items?->links('livewire.layouts.paginate')}}
         </div>
     </div>
 </div>

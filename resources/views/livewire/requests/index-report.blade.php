@@ -96,9 +96,7 @@
                     </table>
                 </div>
             </div>
-            @if(sizeof($items) > 0)
-                {{$items->links('livewire.layouts.paginate')}}
-            @endif
+            {{$items?->links('livewire.layouts.paginate')}}
         </div>
     </div>
 </div>
