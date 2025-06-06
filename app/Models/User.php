@@ -64,6 +64,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function generateToken($name = 'user-token')
+    {
+        return $this->createToken($name)->plainTextToken;
+    }
+
     public function requests(): HasMany
     {
         return $this->hasMany(Request::class,'user_id');

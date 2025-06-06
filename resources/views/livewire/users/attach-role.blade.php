@@ -61,6 +61,7 @@
                                 </td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                    <button wire:click="generateToken('{{$item->id}}')" class="btn btn-sm btn-outline-danger">ایجاد توکن</button>
                                 </td>
                             </tr>
                         @endforeach

@@ -61,8 +61,8 @@
 <script src="{{asset('admin/js/sweetalert2@11.js')}}"></script>
 <script src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/plugins/global/plugins.bundle.js?v=7.2.9"></script>
 <script src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/js/scripts.bundle.js?v=7.2.9"></script>
-{{--<script src="{{asset('admin/plugins/custom/datepicker/persian-date.min.js')}}"></script>--}}
-{{--<script src="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.js')}}"></script>--}}
+<script src="{{asset('admin/plugins/custom/datepicker/persian-date.min.js')}}"></script>
+<script src="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.js')}}"></script>
 
 
 <script src="{{asset('admin/js/select2.min.js')}}"></script>
@@ -101,6 +101,9 @@
                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
+        })
+        Livewire.on('message', ([data]) => {
+            Swal.fire( data);
         })
     })
 

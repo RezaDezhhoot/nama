@@ -11,7 +11,7 @@
     <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/header/menu/dark.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
     <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/themes/layout/aside/dark.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
 
-    {{--    <link rel="stylesheet" href="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.css')}}"/>--}}
+    <link rel="stylesheet" href="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.css')}}"/>
 
     <link rel="stylesheet" href="/admin/persianDatepicker-master/css/persianDatepicker-default.css" />
 

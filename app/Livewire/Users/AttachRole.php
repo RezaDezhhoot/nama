@@ -49,6 +49,15 @@ class AttachRole extends BaseComponent
         return view('livewire.users.attach-role' , get_defined_vars())->extends('livewire.layouts.admin');
     }
 
+    public function generateToken($id)
+    {
+        $user = User::query()->find($id);
+        if ($user) {
+            $token = $user->generateToken();
+            $this->dispatch('message',$token);
+        }
+    }
+
     public function deleteItem($id)
     {
         User::query()->where('id', $id)->update([

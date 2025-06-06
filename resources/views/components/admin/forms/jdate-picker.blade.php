@@ -19,6 +19,6 @@
         <small class="text-info">{{$help}}</small>
     @endif
     @error($id)
-        <small class="text-danger d-block">{{ $message }}</small>
+    <small class="text-danger d-block">{{ $message }}</small>
     @enderror
 </div>
