@@ -68,12 +68,12 @@
                             <td>{{ persian_date($request->date) }}</td>
                             <td>
                                 @if($request->imamLetter)
-                                    <button wire:click="download({{ $request->imamLetter?->id }})" class="btn btn-outline-success">بارگیری فایل</button>
+                                    <a target="_blank" href="{{ $request->imamLetter?->url }}" class="btn btn-outline-success">مشاهده فایل</a>
                                 @endif
                             </td>
                             <td>
                                 @if($request->areaInterfaceLetter)
-                                    <button wire:click="download({{ $request->areaInterfaceLetter?->id }})" class="btn btn-outline-success">بارگیری فایل</button>
+                                    <a target="_blank" href="{{ $request->areaInterfaceLetter?->url }}"  class="btn btn-outline-success">مشاهده فایل</a>
                                 @endif
                             </td>
                             <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
@@ -143,15 +143,15 @@
                             <td>{{ persian_date($report->date) }}</td>
                             <td>
                                 @foreach($report->images as $image)
-                                    <button wire:click="download({{ $image->id }})" class="btn btn-outline-success">
-                                        بارگیری تصویر
+                                    <a target="_blank" href="{{ $image->url }}" class="btn btn-outline-success">
+                                        مشاهده تصویر
                                         ({{ $loop->iteration }})
-                                    </button>
+                                    </a>
                                 @endforeach
                             </td>
                             <td>
                                 @if($report->video)
-                                    <button wire:click="download({{ $report->video->id }})" class="btn btn-outline-warning">بارگیری ویدیو</button>
+                                    <a target="_blank"  href="{{ $report->video->url }}"  class="btn btn-outline-warning">مشاهده ویدیو</a>
                                 @endif
                             </td>
                         </tr>
