@@ -10,15 +10,15 @@
                 <x-admin.forms.dropdown width="3" id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
                 <x-admin.forms.select2
                     id="region"
-                    :data="$region ?? []"
+                    :data="$regionModel ?? []"
                     text="title"
-                    label="منظقه"
+                    label="منطقه"
                     width="3"
                     :ajaxUrl="route('admin.feed.regions')"
                     wire:model.defer="region"/>
                 <x-admin.forms.select2
                     id="unit"
-                    :data="[]"
+                    :data="$unitModel ?? []"
                     text="title"
                     label="مرکز"
                     width="3"
@@ -26,7 +26,7 @@
                     wire:model.defer="unit"/>
                 <x-admin.forms.select2
                     id="plan"
-                    :data="[]"
+                    :data="$planModel ?? []"
                     text="title"
                     label="اکشن پلن"
                     width="3"
@@ -90,7 +90,7 @@
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
-                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}"/>
+                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}?status={{$status}}&type={{$type}}&region={{$region}}&plan={{$plan}}&unit={{$unit}}&step={{$step}}&search={{$search}}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>
@@ -102,7 +102,7 @@
                         @endif
                         </tbody>
                         <tbody wire:loading >
-                        <x-admin.big-loader :table="true" width="20" height="20" />
+                            <x-admin.big-loader :table="true" width="20" height="20" />
                         </tbody>
                     </table>
                 </div>

@@ -27,7 +27,7 @@
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="expires_at" label="تاریخ پایان مهلت زمانی این پلن" wire:model.defer="expires_at"/>
 
                 <x-admin.forms.checkbox  id="letter_required" label="فایل نامه امام اجباری باشد" wire:model.defer="letter_required"/>
-                <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منظقه اجباری باشد" wire:model.defer="letter2_required"/>
+                <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد" wire:model.defer="letter2_required"/>
 
                 <x-admin.forms.text-area dir="rtl" id="body" label="توضیحات" wire:model.defer="body"/>
             </x-admin.form-section>

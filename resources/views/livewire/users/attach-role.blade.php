@@ -12,7 +12,7 @@
 {{--                    id="region"--}}
 {{--                    :data="$region ?? []"--}}
 {{--                    text="title"--}}
-{{--                    label="منظقه"--}}
+{{--                    label="منطقه"--}}
 {{--                    width="4"--}}
 {{--                    :ajaxUrl="route('admin.feed.regions')"--}}
 {{--                    wire:model.defer="region"/>--}}

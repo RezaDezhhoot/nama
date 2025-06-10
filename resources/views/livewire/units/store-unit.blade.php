@@ -44,7 +44,7 @@
                     id="region"
                     :data="$region ?? []"
                     text="title"
-                    label="منظقه"
+                    label="منطقه"
                     :required="true"
                     width="3"
                     :ajaxUrl="$regionAjax"

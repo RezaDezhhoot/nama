@@ -21,6 +21,38 @@ class StoreReport extends BaseComponent
 
     public $step;
 
+    public $qitem , $qstatus , $qtype , $qregion , $qplan , $qunit , $qstep , $qsearch;
+
+    protected function queryString()
+    {
+        return [
+            'qitem' => [
+                'as' => 'item'
+            ],
+            'qstatus' => [
+                'as' => 'status'
+            ],
+            'qtype' => [
+                'as' => 'type'
+            ],
+            'qregion' => [
+                'as' => 'region'
+            ],
+            'qplan' => [
+                'as' => 'plan'
+            ],
+            'qunit' => [
+                'as' => 'unit'
+            ],
+            'qstep' => [
+                'as' => 'step'
+            ],
+            'qsearch' => [
+                'as' => 'search'
+            ]
+        ];
+    }
+
     public function mount($type , $action , $id)
     {
         $this->type = $type;
@@ -52,6 +84,8 @@ class StoreReport extends BaseComponent
         ) {
             return;
         }
+        $step = $this->report->step;
+        $from_status = $this->report->status;
         if (RequestStatus::tryFrom($this->status) !== $this->report->status) {
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
@@ -92,6 +126,9 @@ class StoreReport extends BaseComponent
                 'user_id' => auth()->id(),
                 'body' => $this->comment,
                 'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
+                'from_status' => $from_status,
+                'to_status' => $this->status,
+                'step' => $step
              ]);
             if ($this->message) {
                 $this->report->fill([
@@ -100,8 +137,15 @@ class StoreReport extends BaseComponent
             }
             $this->report->save();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
-            $this->reset(['message','comment','status']);
-            redirect()->route('admin.reports.index',[$this->type]);
+            redirect()->route('admin.reports.index',[
+                'type' => $this->type,
+                'status' => $this->qstatus,
+                'region' => $this->qregion,
+                'plan' => $this->qplan,
+                'unit' => $this->qunit,
+                'step' => $this->qstep,
+                'search' => $this->qsearch,
+            ]);
         }
     }
 

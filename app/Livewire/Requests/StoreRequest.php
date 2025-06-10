@@ -21,6 +21,38 @@ class StoreRequest extends BaseComponent
 
     public $type , $step;
 
+    public $qitem , $qstatus , $qtype , $qregion , $qplan , $qunit , $qstep , $qsearch;
+
+    protected function queryString()
+    {
+        return [
+            'qitem' => [
+                'as' => 'item'
+            ],
+            'qstatus' => [
+                'as' => 'status'
+            ],
+            'qtype' => [
+                'as' => 'type'
+            ],
+            'qregion' => [
+                'as' => 'region'
+            ],
+            'qplan' => [
+                'as' => 'plan'
+            ],
+            'qunit' => [
+                'as' => 'unit'
+            ],
+            'qstep' => [
+                'as' => 'step'
+            ],
+            'qsearch' => [
+                'as' => 'search'
+            ]
+        ];
+    }
+
     public function mount($type , $action , $id)
     {
         $this->type = $type;
@@ -57,6 +89,8 @@ class StoreRequest extends BaseComponent
         ) {
             return;
         }
+        $step = $this->request->step;
+        $from_status = $this->request->status;
         if (RequestStatus::tryFrom($this->status) !== $this->request->status) {
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
@@ -98,6 +132,9 @@ class StoreRequest extends BaseComponent
                 'user_id' => auth()->id(),
                 'body' => $this->comment,
                 'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
+                'from_status' => $from_status,
+                'to_status' => $this->status,
+                'step' => $step
             ]);
             $messages = $this->request->messages;
             $messages[$this->request->step->value] = $this->comment;
@@ -109,8 +146,15 @@ class StoreRequest extends BaseComponent
             }
             $this->request->save();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
-            $this->reset(['message','comment','status']);
-            redirect()->route('admin.requests.index',[$this->type]);
+            redirect()->route('admin.requests.index',[
+                'type' => $this->type,
+                'status' => $this->qstatus,
+                'region' => $this->qregion,
+                'plan' => $this->qplan,
+                'unit' => $this->qunit,
+                'step' => $this->qstep,
+                'search' => $this->qsearch,
+            ]);
         }
     }
 

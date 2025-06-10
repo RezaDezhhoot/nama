@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
                     <x-admin.forms.select2 id="city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
-                    <x-admin.forms.select2 id="region" :required="true" :data="$region ?? []" text="title" label="منظقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
+                    <x-admin.forms.select2 id="region" :required="true" :data="$region ?? []" text="title" label="منطقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
                     <x-admin.forms.select2 id="neighborhood" :data="$neighborhood ?? []" text="title" label="محله" width="3" :ajaxUrl="$neighborhoodAjax" wire:model.live="neighborhood"/>
                     <x-admin.forms.select2 id="area" :data="$area ?? []" text="title" label="ناحیه" width="3" :ajaxUrl="$areaAjax" wire:model.live="area"/>
                     <div class="col-12" x-data="{map: null , marker: null}">
@@ -194,7 +194,7 @@
 
             <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
                 <x-admin.forms.select2 id="edit_city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
-                <x-admin.forms.select2 id="edit_region" :required="true" :data="$region ?? []" text="title" label="منظقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
+                <x-admin.forms.select2 id="edit_region" :required="true" :data="$region ?? []" text="title" label="منطقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
                 <x-admin.forms.select2 id="edit_neighborhood" :data="$neighborhood ?? []" text="title" label="محله" width="3" :ajaxUrl="$neighborhoodAjax" wire:model.live="neighborhood"/>
                 <x-admin.forms.select2 id="edit_area" :data="$area ?? []" text="title" label="ناحیه" width="3" :ajaxUrl="$areaAjax" wire:model.live="area"/>
                 <div class="col-12" x-data="{map: null , marker: null}">

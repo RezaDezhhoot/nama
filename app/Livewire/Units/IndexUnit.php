@@ -29,6 +29,9 @@ class IndexUnit extends BaseComponent
             ],
             'unit' => [
                 'as' => 'unit'
+            ],
+            'search' => [
+                'as' => 'search'
             ]
         ];
     }

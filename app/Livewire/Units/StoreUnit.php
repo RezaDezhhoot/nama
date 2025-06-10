@@ -9,7 +9,7 @@ use App\Models\Unit;
 
 class StoreUnit extends BaseComponent
 {
-    public $qtype , $qregion , $qunit;
+    public $qtype , $qregion , $qunit , $qsearch;
 
     public function queryString()
     {
@@ -22,6 +22,9 @@ class StoreUnit extends BaseComponent
             ],
             'qunit' => [
                 'as' => 'unit'
+            ],
+            'qsearch' => [
+                'as' => 'search'
             ]
         ];
     }
@@ -207,6 +210,7 @@ class StoreUnit extends BaseComponent
             'type' => $this->qtype,
             'region' => $this->qregion,
             'unit' => $this->qunit,
+            'search' => $this->qsearch,
         ]);
     }
 }

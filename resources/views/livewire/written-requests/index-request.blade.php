@@ -12,7 +12,7 @@
                     id="region"
                     :data="$region ?? []"
                     text="title"
-                    label="منظقه"
+                    label="منطقه"
                     :required="true"
                     width="6"
                     :ajaxUrl="route('admin.feed.regions')"

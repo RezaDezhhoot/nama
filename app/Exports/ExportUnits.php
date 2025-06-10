@@ -34,7 +34,7 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
             'نوع فرعی',
             'مسجد محوری',
             'شهر',
-            'منظقه',
+            'منطقه',
             'محله',
             'ناحیه',
             'lat',

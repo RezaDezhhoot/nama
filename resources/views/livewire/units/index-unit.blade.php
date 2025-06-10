@@ -12,7 +12,7 @@
                     id="region"
                     :data="$regionModel ?? []"
                     text="title"
-                    label="منظقه"
+                    label="منطقه"
                     width="4"
                     :ajaxUrl="route('admin.feed.regions')"
                     wire:model.defer="region"/>
@@ -60,7 +60,7 @@
                                    </ul>
                                 </td>
                                 <td >
-                                    <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}?type={{$type}}&region={{$region}}&unit={{$unit}}"/>
+                                    <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}?type={{$type}}&region={{$region}}&unit={{$unit}}&search={{$search}}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>

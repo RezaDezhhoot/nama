@@ -6,7 +6,10 @@ use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Exports\ExportReports;
 use App\Livewire\BaseComponent;
+use App\Models\Region;
 use App\Models\Report;
+use App\Models\RequestPlan;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
@@ -18,21 +21,53 @@ class IndexReport extends BaseComponent
     public $status , $item ,$type , $region;
     public $plan , $unit , $step;
 
+    public $unitModel , $regionModel , $planModel;
+
     protected function queryString()
     {
         return [
             'item' => [
                 'as' => 'item'
+            ],
+            'status' => [
+                'as' => 'status'
+            ],
+            'type' => [
+                'as' => 'type'
+            ],
+            'region' => [
+                'as' => 'region'
+            ],
+            'plan' => [
+                'as' => 'plan'
+            ],
+            'unit' => [
+                'as' => 'unit'
+            ],
+            'step' => [
+                'as' => 'step'
+            ],
+            'search' => [
+                'as' => 'search'
             ]
         ];
     }
-
 
     public function mount($type)
     {
         $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
         $this->data['step'] = RequestStep::labels();
+
+        if ($this->unit) {
+            $this->unitModel = Unit::query()->find($this->unit)?->toArray();
+        }
+        if ($this->region) {
+            $this->regionModel = Region::query()->find($this->region)?->toArray();
+        }
+        if ($this->plan) {
+            $this->planModel = RequestPlan::query()->find($this->plan)?->toArray();
+        }
     }
 
     public function exportXLSX()
