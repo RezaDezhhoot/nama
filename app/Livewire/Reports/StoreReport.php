@@ -19,6 +19,8 @@ class StoreReport extends BaseComponent
 
     public $offer_amount , $final_amount , $type;
 
+    public $step;
+
     public function mount($type , $action , $id)
     {
         $this->type = $type;
@@ -54,8 +56,8 @@ class StoreReport extends BaseComponent
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
-                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
-                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000'],
+                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:1'],
+                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1'],
                 'step' => ['nullable',Rule::enum(RequestStep::class)]
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
