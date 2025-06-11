@@ -8,7 +8,6 @@ use App\Models\DashboardItem;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\WithPagination;
 
@@ -36,10 +35,6 @@ class AttachRole extends BaseComponent
         $db = config('database.connections.mysql.database');
         $items = User::query()
             ->with(['roles','roles.unit'])
-            ->addSelect([
-                'role2' => DB::table('user_roles AS ur')
-                ->whereColumn('ur.user_id','=','users.id')
-            ])
 //            ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
 //            ->select('ur.role as role2','ur.region_id','ur.unit_id','users.*')
 //            ->when($this->role , function (Builder $builder) {
