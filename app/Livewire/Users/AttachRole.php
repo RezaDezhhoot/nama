@@ -18,6 +18,12 @@ class AttachRole extends BaseComponent
     public $role;
     public $users = [] , $item , $region , $unit;
 
+    protected $queryString = [
+        'search' => [
+            'as' => 'search'
+        ]
+    ];
+
     public function mount()
     {
         $this->data['role'] = OperatorRole::labels();

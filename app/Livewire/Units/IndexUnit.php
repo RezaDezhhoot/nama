@@ -67,7 +67,7 @@ class IndexUnit extends BaseComponent
 
     public function export()
     {
-        return (new ExportUnits($this->type))->download('units.xlsx');
+        return (new ExportUnits($this->type,$this->region,$this->unit))->download('units.xlsx');
     }
 
     public function deleteItem($id)

@@ -31,7 +31,13 @@ class StoreUser extends BaseComponent
     public $sheba7 , $sheba7_title;
     public $sheba8 , $sheba8_title;
 
-    public $roleToEdit;
+    public $roleToEdit , $qsearch;
+
+    protected $queryString = [
+        'qsearch' => [
+            'as' => 'search'
+        ]
+    ];
 
     public function mount($action , $id)
     {

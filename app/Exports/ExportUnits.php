@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 use App\Models\Unit;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -10,13 +11,17 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSize
 {
     use Exportable;
-    public function __construct(public $type)
+    public function __construct(public $type= null , public $region = null , public $unit = null)
     {
     }
 
     public function query()
     {
-        return Unit::query()->with(['city','region','area','parent','neighborhood'])->when($this->type , function ($q){
+        return Unit::query()->with(['city','region','area','parent','neighborhood'])->when($this->region , function (Builder $builder) {
+            $builder->where('region_id' , $this->region);
+        })->when($this->unit , function (Builder $builder) {
+            $builder->where('parent_id' , $this->unit);
+        })->when($this->type , function ($q){
             $q->where('type' , $this->type);
         });
     }
