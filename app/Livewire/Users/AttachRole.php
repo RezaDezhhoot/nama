@@ -35,17 +35,17 @@ class AttachRole extends BaseComponent
         $db = config('database.connections.mysql.database');
         $items = User::query()
             ->with(['roles','roles.unit'])
-            ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
-            ->select('ur.role as role2','ur.region_id','ur.unit_id','users.*')
-            ->when($this->role , function (Builder $builder) {
-                $builder->where('ur.role' , $this->role);
-            })
-            ->when($this->region , function (Builder $builder){
-                $builder->where("ur.region_id" , $this->region);
-            })
-            ->when($this->unit , function (Builder $builder){
-                $builder->where("ur.unit_id" , $this->unit);
-            })
+//            ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
+//            ->select('ur.role as role2','ur.region_id','ur.unit_id','users.*')
+//            ->when($this->role , function (Builder $builder) {
+//                $builder->where('ur.role' , $this->role);
+//            })
+//            ->when($this->region , function (Builder $builder){
+//                $builder->where("ur.region_id" , $this->region);
+//            })
+//            ->when($this->unit , function (Builder $builder){
+//                $builder->where("ur.unit_id" , $this->unit);
+//            })
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })
