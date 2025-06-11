@@ -13,9 +13,7 @@ class UnitController extends Controller
     public function __invoke(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $units = Unit::query()
-            ->whereHas('requests' , function (Builder $builder) use ($request) {
-                $builder->item(\request()->get('item_id'))->role(\request()->get('role'));
-            })->paginate($request->get('per_page' , 10));
+            ->paginate($request->get('per_page' , 10));
 
         return UnitResource::collection($units);
     }
