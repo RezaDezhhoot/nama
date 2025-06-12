@@ -31,8 +31,8 @@ class RequestPlanResource extends JsonResource
             'completed_cycle' => $this->completed_cycle,
             'imam_letter' => $this->letter_required,
             'area_interface_letter' => $this->letter2_required,
-            'requirements' => RequestPlanResource::collection($this->whenLoaded('requirements')),
-            'active' => sizeof($this->requirements->filter(fn ($v) => $v->completed_cycle == 0 )) == 0
+            'requirements' => RequestPlanResource::collection($this->whenLoaded('requirementsv')),
+            'active' => sizeof($this->requirementsv->filter(fn ($v) => $v->completed_cycle == 0 )) == 0
         ];
     }
 }

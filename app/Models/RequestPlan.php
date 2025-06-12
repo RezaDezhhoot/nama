@@ -23,6 +23,8 @@ class RequestPlan extends Model
 
     protected $guarded = ['id'];
 
+    protected $with = 'requirementsv';
+
     protected $casts = [
         'status' => RequestPlanStatus::class,
         'bold' => 'boolean',
@@ -82,5 +84,10 @@ class RequestPlan extends Model
     public function requirements(): BelongsToMany
     {
         return $this->belongsToMany(self::class,'request_plan_requirements','request_plan_id','requirement_id');
+    }
+
+    public function requirementsv(): BelongsToMany
+    {
+        return $this->requirements()->with(['requirements']);
     }
 }

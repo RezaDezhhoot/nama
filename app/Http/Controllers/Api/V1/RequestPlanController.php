@@ -14,7 +14,7 @@ class RequestPlanController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         return RequestPlanResource::collection(
-            RequestPlan::query()->with(['requirements'])->where('item_id',\request()->get('item_id'))->orderByDesc('bold')->where(function (Builder $builder) {
+            RequestPlan::query()->where('item_id',\request()->get('item_id'))->orderByDesc('bold')->where(function (Builder $builder) {
                 $builder->where('starts_at' ,'<=' ,now())->orWhereNull('starts_at');
             })->where(function (Builder $builder) {
                 $builder->where('expires_at' ,'>=' ,now())->orWhereNull('expires_at');
@@ -29,7 +29,7 @@ class RequestPlanController extends Controller
     public function show($id): RequestPlanResource
     {
         return RequestPlanResource::make(
-            RequestPlan::query()->with(['requirements'])->withCount(['requests' => function ($q) {
+            RequestPlan::query()->withCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }])->published()->findOrFail($id)
         );
