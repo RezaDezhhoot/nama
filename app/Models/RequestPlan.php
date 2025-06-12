@@ -78,7 +78,7 @@ class RequestPlan extends Model
 
     public function scopeSelect2($q)
     {
-        return $q->selectRaw("CONCAT(id,'-> ',title) as text , id");
+        return $q->selectRaw("CONCAT(id,'-> ',title) as text , request_plans.id");
     }
 
     public function requirements(): BelongsToMany

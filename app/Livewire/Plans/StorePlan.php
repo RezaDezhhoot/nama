@@ -26,7 +26,9 @@ class StorePlan extends BaseComponent
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
-            $this->model = RequestPlan::query()->with(['requirements'])->findOrFail($id);
+            $this->model = RequestPlan::query()->with(['requirements' => function ($q) {
+                $q->select2();
+            }])->findOrFail($id);
             $this->title = $this->model->title;
             $this->sub_title = $this->model->sub_title;
             $this->image = $this->model->image;

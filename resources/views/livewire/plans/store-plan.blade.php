@@ -33,7 +33,7 @@
                     <x-admin.forms.select2
                         id="requirements"
                         :data="$requirements ?? []"
-                        text="title"
+                        text="text"
                         :multiple="true"
                         label="پیشنیاز ها"
                         :ajaxUrl="route('admin.feed.plans',[$model?->item?->type,$model?->id])"
