@@ -29,7 +29,7 @@
                 <x-admin.forms.checkbox  id="letter_required" label="فایل نامه امام اجباری باشد" wire:model.defer="letter_required"/>
                 <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد" wire:model.defer="letter2_required"/>
 
-                <div wire:ignore class="{{ $item ? '' : 'd-none' }}">
+                <div wire:ignore class="{{ $item ? '' : 'd-none' }} col-12 row">
                     <x-admin.forms.select2
                         id="requirements"
                         :data="$requirements ?? []"
