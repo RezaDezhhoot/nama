@@ -84,7 +84,7 @@ class StorePlan extends BaseComponent
             'version' => ['required',Rule::enum(RequestPlanVersion::class)],
             'item' => ['required'],
             'requirements' => ['nullable','array'],
-            'requirements.*' => ['required',Rule::exists('request_plans','id')],
+//            'requirements.*' => ['required',Rule::exists('request_plans','id')],
         ]);
         $data = [
             'title' => $this->title,
