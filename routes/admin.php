@@ -26,7 +26,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         Route::group(['prefix' => 'feed' , 'as' => 'feed.','middleware' => 'is_admin'] , function () {
             Route::get('users' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');
             Route::get('units/{parent?}' , \App\Http\Controllers\Feed\UnitFeedController::class)->name('units');
-            Route::get('plans/{type?}' , \App\Http\Controllers\Feed\PlanFeedController::class)->name('plans');
+            Route::get('plans/{type?}/{ignore?}' , \App\Http\Controllers\Feed\PlanFeedController::class)->name('plans');
             Route::get('cities' , \App\Http\Controllers\Feed\CityFeedController::class)->name('cities');
             Route::get('regions/{city?}' , \App\Http\Controllers\Feed\RegionFeedController::class)->name('regions');
             Route::get('neighborhoods/{region?}' , \App\Http\Controllers\Feed\NeighborhoodFeedController::class)->name('neighborhoods');

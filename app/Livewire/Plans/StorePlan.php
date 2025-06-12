@@ -20,14 +20,17 @@ class StorePlan extends BaseComponent
 
     public $letter_required , $letter2_required;
 
+    public $requirements = [];
+
     public function mount($action , $id = null)
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
-            $this->model = RequestPlan::query()->findOrFail($id);
+            $this->model = RequestPlan::query()->with(['requirements'])->findOrFail($id);
             $this->title = $this->model->title;
             $this->sub_title = $this->model->sub_title;
             $this->image = $this->model->image;
+            $this->requirements = $this->model->requirements?->toArray();
             $this->status = $this->model->status?->value;
             $this->max_number_people_supported = $this->model->max_number_people_supported;
             $this->support_for_each_person_amount = $this->model->support_for_each_person_amount;
@@ -51,6 +54,13 @@ class StorePlan extends BaseComponent
 
     }
 
+    public function updatedItem($v)
+    {
+        $i = DashboardItem::query()->find($v);
+        $planAjaxRequest = route('admin.feed.plans',[$i?->type?->value]);
+        $this->dispatch('reloadAjaxURL#requirements' , $planAjaxRequest);
+    }
+
     public function store()
     {
         $this->starts_at = emptyToNull($this->starts_at);
@@ -72,7 +82,9 @@ class StorePlan extends BaseComponent
             'letter_required' => ['nullable','boolean'],
             'letter2_required' => ['nullable','boolean'],
             'version' => ['required',Rule::enum(RequestPlanVersion::class)],
-            'item' => ['required']
+            'item' => ['required'],
+            'requirements' => ['nullable','array'],
+            'requirements.*' => ['required',Rule::exists('request_plans','id')],
         ]);
         $data = [
             'title' => $this->title,
@@ -92,6 +104,7 @@ class StorePlan extends BaseComponent
             'letter2_required' => emptyToNull($this->letter2_required) ?? false,
         ];
         $model->fill($data)->save();
+        $model->requirements()->{$model->wasRecentlyCreated ? "attach" : "sync"}($this->requirements);
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         redirect()->route('admin.plans.index');
     }

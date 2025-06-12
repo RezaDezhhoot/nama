@@ -96,9 +96,17 @@ class RequestController extends Controller
     {
         $itemId = \request()->get('item_id');
         $requestPlan = RequestPlan::query()
+            ->with(['requirements'])
             ->where('item_id' , $itemId)
             ->published()
             ->findOrFail($submitRequest->request_plan_id);
+
+        $isActive = $requestPlan->isActive();
+        if (! $isActive) {
+            return response()->json([
+                'error' => 'پیشنیاز های این اکشن پلن رعایت نشده است'
+            ] , 403);
+        }
 
         $validRole = UserRole::query()
             ->where('user_id' , auth()->id())

@@ -4,11 +4,14 @@ namespace App\Models;
 
 use App\Enums\RequestPlanStatus;
 use App\Enums\RequestPlanVersion;
+use App\Enums\RequestStatus;
+use App\Enums\RequestStep;
 use App\Enums\UnitType;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -36,6 +39,13 @@ class RequestPlan extends Model
                 return $q->where('user_id' , auth()->id());
             }]);
         });
+        static::addGlobalScope('requirements' , function (Builder $builder) {
+            $builder->withCount(['requests AS completed_cycle' => function ($q) {
+                return $q->where('status',RequestStatus::DONE->value)->where('user_id' , auth()->id())->whereHas('report' , function ($q) {
+                    $q->where('status' , RequestStatus::DONE->value);
+                });
+            }]);
+        });
     }
 
     public function scopePublished(Builder $builder): Builder
@@ -53,6 +63,12 @@ class RequestPlan extends Model
         return $this->hasMany(Request::class,'request_plan_id');
     }
 
+    public function isActive(): bool
+    {
+        return sizeof($this->requirements->filter(fn ($v) => $v->completed_cycle == 0 )) == 0;
+    }
+
+
     public function item(): BelongsTo
     {
         return $this->belongsTo(DashboardItem::class,'item_id');
@@ -60,6 +76,11 @@ class RequestPlan extends Model
 
     public function scopeSelect2($q)
     {
-        return $q->selectRaw("title as text , id");
+        return $q->selectRaw("CONCAT(id,'-> ',title) as text , id");
+    }
+
+    public function requirements(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class,'request_plan_requirements','request_plan_id','requirement_id');
     }
 }

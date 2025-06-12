@@ -20,7 +20,9 @@
                             <th>عنوان</th>
                             <th>زیر عنوان</th>
                             <th>وضعیت</th>
+                            <th>پروژه</th>
                             <th>نسخه آرمان</th>
+                            <th>پیشنیاز ها</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -32,7 +34,15 @@
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->sub_title ?? '-' }}</td>
                                 <td>{{ $item->status?->label() }}</td>
+                                <td>{{ $item->item?->title ?? "-" }}</td>
                                 <td>{{ $item->version?->value ?? "-" }}</td>
+                                <td>
+                                    @foreach($item->requirements as $requirement)
+                                        <a href="{{ route('admin.plans.store',[PageAction::UPDATE , $requirement->id]) }}" target="_blank" class="badge badge-primary">
+                                            {{ $requirement->title }}
+                                        </a>
+                                    @endforeach
+                                </td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.plans.store',[PageAction::UPDATE , $item->id]) }}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />

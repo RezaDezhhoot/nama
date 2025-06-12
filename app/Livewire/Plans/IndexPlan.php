@@ -21,6 +21,7 @@ class IndexPlan extends BaseComponent
     public function render()
     {
         $items = RequestPlan::query()
+            ->with(['requirements'])
             ->latest()
             ->when($this->status , function ($q) {
                 $q->where('status' , $this->status);
