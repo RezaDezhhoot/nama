@@ -44,6 +44,10 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('{type}' , \App\Livewire\Reports\IndexReport::class)->name('index');
             Route::get('{type}/{action}/{id}' , \App\Livewire\Reports\StoreReport::class)->name('store');
         });
+        Route::group(['prefix' => 'rings' , 'as' => 'rings.' , 'middleware' => 'is_admin'] , function () {
+            Route::get('' , \App\Livewire\Ring\IndexRing::class)->name('index');
+            Route::get('/{action}/{id}' , \App\Livewire\Ring\StoreRing::class)->name('store');
+        });
         Route::group(['prefix' => 'cities' , 'as' => 'cities.' , 'middleware' => 'is_admin'] , function () {
             Route::get('' , \App\Livewire\Cities\IndexCity::class)->name('index');
             Route::get('{action}/{id}' , \App\Livewire\Cities\StoreCity::class)->name('store');

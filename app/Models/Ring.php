@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OperatorRole;
 use App\Enums\UnitType;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Ring extends Model
 {
     use SimpleSearchable , SoftDeletes;
+
+    public array $searchAbleColumns = ['name','national_code','postal_code','phone','id','address','description','level_of_education','field_of_study','job','sheba_number'];
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -54,5 +58,10 @@ class Ring extends Model
         return Attribute::get(function () {
             return $this->image ? "storage/".$this->image : null;
         });
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(UserRole::class,'user_role_id')->where('role',OperatorRole::MOSQUE_HEAD_COACH->value);
     }
 }

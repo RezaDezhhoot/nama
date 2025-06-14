@@ -20,7 +20,7 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
 {
     use Exportable;
 
-    public function __construct(public $owner = null , public $type = null  , public $id = null)
+    public function __construct(public $owner = null , public $type = null  , public $id = null , public $q = null)
     {
 
     }
@@ -62,6 +62,9 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                    $builder->where('type' , $this->type);
                 });
             })
+            ->when($this->q , function (Builder $builder) {
+                $builder->search($this->q);
+            })
             ->when($this->id , function (Builder $builder) {
                 $builder->where('id' , $this->id);
             });
@@ -85,6 +88,8 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
             'آدرس',
             'شماره تلفن',
             'تصویر پرسنلی',
+            'تاریخ ثبت',
+            'تاریخ آخرین بروزرسانی',
             'نام پدر',
             'میزان تحصیلات',
             'رشته تحصیلی',
@@ -111,6 +116,8 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                 'address' => $row->address,
                 'phone' => $row->phone,
                 'image' => $row->image?->url,
+                'created_at' => persian_date($row->created_at),
+                'updated_at' => persian_date($row->updated_at),
                 'father_name' => 'none',
                 'level_of_education' => $row->level_of_education,
                 'field_of_study' => $row->field_of_study,
@@ -132,6 +139,8 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                     'address' => $member->address,
                     'phone' => $member->phone,
                     'image' => $member->image?->url,
+                    'created_at' => persian_date($member->created_at),
+                    'updated_at' => persian_date($member->updated_at),
                     'father_name' => $member->father_name,
                     'level_of_education' => 'none',
                     'field_of_study' => 'none',

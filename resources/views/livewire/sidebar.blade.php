@@ -105,6 +105,12 @@
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                     </li>
                     <x-admin.menu-item
+                        href="{{route('admin.rings.index')}}"
+                        icon="fas fa-ring"
+                        :active="request()->routeIs(['admin.rings.index','admin.rings.store'])"
+                        label="حلقه ها" />
+
+                    <x-admin.menu-item
                         href="{{route('admin.cities.index')}}"
                         icon="fas fa-city"
                         :active="request()->routeIs(['admin.cities.index','admin.cities.store'])"

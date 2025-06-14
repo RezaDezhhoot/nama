@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\OperatorRole;
 use App\Exports\RingExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\SubmitRingRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\Api\V1\RingResource;
 use App\Models\Ring;
 use App\Models\RingMember;
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,8 +27,26 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RingController extends Controller
 {
-    public function index(Request $request): AnonymousResourceCollection
+    private function getRole()
     {
+        return UserRole::query()
+            ->where('user_id' , auth()->id())
+            ->where('item_id' , \request()->query('item_id'))
+            ->where('role' , OperatorRole::MOSQUE_HEAD_COACH)
+            ->where('ring' , true)
+            ->whereHas('unit')
+            ->first();
+
+    }
+    public function index(Request $request): JsonResponse|AnonymousResourceCollection
+    {
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
+
         $items = Ring::query()
             ->withCount(['members'])
             ->latest()
@@ -40,8 +60,15 @@ class RingController extends Controller
         return RingResource::collection($items);
     }
 
-    public function show($ring): RingResource
+    public function show($ring): JsonResponse|RingResource
     {
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
+
         $item = Ring::query()
             ->with(['members','owner','image','members.image'])
             ->findOrFail($ring);
@@ -54,6 +81,12 @@ class RingController extends Controller
         $data = $request->except(['image','birthdate']);
         $now = now();
         $disk = config('site.default_disk');
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
 
         try {
             DB::beginTransaction();
@@ -61,6 +94,7 @@ class RingController extends Controller
             $r = new Ring;
             $r->owner()->associate(Auth::user());
             $r->item()->associate($request->query('item_id'));
+            $r->role()->associate($validRole);
             if ($user = User::query()->where('national_id',$data['national_code'])->first()) {
                 $r->user()->associate($user);
             }
@@ -119,6 +153,13 @@ class RingController extends Controller
 
     public function update(UpdateRingRequest $request): JsonResponse|RingResource
     {
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
+
         $data = $request->except(['image','birthdate']);
         $now = now();
         $disk = config('site.default_disk');
@@ -186,6 +227,13 @@ class RingController extends Controller
 
     public function destroy($ring): JsonResponse|RingResource
     {
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
+
         $r = Ring::query()->with(['members'])->where('owner_id' , \auth()->id())->find($ring);
 
         try {
@@ -209,8 +257,15 @@ class RingController extends Controller
     }
 
 
-    public function destroyMember($ring , $member): RingMemberResource
+    public function destroyMember($ring , $member): JsonResponse|RingMemberResource
     {
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
+
         $r = RingMember::query()
             ->with(['image'])
             ->whereHas('ring' , function ($q) use ($ring) {
@@ -225,8 +280,15 @@ class RingController extends Controller
     }
 
 
-    public function export(): Response|BinaryFileResponse
+    public function export(): Response|BinaryFileResponse|JsonResponse
     {
+        $validRole = $this->getRole();
+        if (! $validRole) {
+            return \response()->json([
+                'message' => 'عدم درسترسی'
+            ] , 403);
+        }
+
         return (new RingExport(
             owner: \auth()->id(),
             type: \request()->query('type')
