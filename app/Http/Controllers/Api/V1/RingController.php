@@ -43,7 +43,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
@@ -65,7 +65,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
@@ -84,7 +84,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
@@ -156,7 +156,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
@@ -230,7 +230,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
@@ -262,7 +262,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
@@ -285,7 +285,7 @@ class RingController extends Controller
         $validRole = $this->getRole();
         if (! $validRole) {
             return \response()->json([
-                'message' => 'عدم درسترسی'
+                'message' => 'عدم دسترسی'
             ] , 403);
         }
 
