@@ -20,6 +20,7 @@ class RoleResurce extends JsonResource
             'role' => $this->role->label(),
             'role_en' => $this->role,
             'item_id' => DashboardItemResource::make($this->whenLoaded('item')),
+            'ring' => $this->ring
         ];
     }
 }

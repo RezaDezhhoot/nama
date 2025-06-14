@@ -67,6 +67,9 @@
                     <x-admin.forms.input type="text" width="6" :required="true" id="lng" label="طول جغرافیایی X" wire:model.defer="lng" />
                 </div>
                 <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست/گزارش ها" wire:model.defer="auto_accept"/>
+                @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
+                    <x-admin.forms.checkbox id="ring" label="درسترسی حلقه ها" wire:model.defer="ring"/>
+                @endif
 
                 <x-admin.forms.input type="text" width="6"  id="sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
                 <x-admin.forms.input type="text" width="6"  id="sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />
@@ -116,6 +119,7 @@
                                             <th>ناحیه</th>
                                             <th>نوع مربی</th>
                                             <th>تایید خودکار</th>
+                                            <th>دسترسی حلقه ها</th>
                                             <th>شبا 1</th>
                                             <th>شبا 2</th>
                                             <th>شبا 3</th>
@@ -139,6 +143,7 @@
                                                 <td>{{ $r?->area?->title ?? '-' }}</td>
                                                 <td>{{ $r?->school_coach_type?->label() ?? '-' }}</td>
                                                 <td>{{ $r?->auto_accept ? 'بله' : '-' }}</td>
+                                                <td>{{ $r?->ring ? 'بله' : '-' }}</td>
                                                 <td>{{ $r->sheba1.' : '.$r->sheba1_title }}</td>
                                                 <td>{{ $r->sheba2.' : '.$r->sheba2_title }}</td>
                                                 <td>{{ $r->sheba3.' : '.$r->sheba3_title }}</td>
@@ -217,6 +222,9 @@
                 <x-admin.forms.input type="text" width="6" :required="true" id="edit_lat" label="عرض جغرافیایی Y" wire:model.defer="lat" />
                 <x-admin.forms.input type="text" width="6" :required="true" id="edit_lng" label="طول جغرافیایی X" wire:model.defer="lng" />
             </div>
+            @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
+                <x-admin.forms.checkbox id="edit_ring" label="درسترسی حلقه ها" wire:model.defer="ring"/>
+            @endif
 
             <x-admin.forms.input type="text" width="6"  id="edit_sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
             <x-admin.forms.input type="text" width="6"  id="edit_sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />

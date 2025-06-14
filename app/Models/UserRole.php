@@ -19,6 +19,7 @@ class UserRole extends Model
             'password' => 'hashed',
             'role' => OperatorRole::class,
             'auto_accept' => 'boolean',
+            'ring' => 'boolean',
             'school_coach_type' => SchoolCoachType::class
         ];
     }

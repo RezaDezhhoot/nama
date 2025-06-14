@@ -33,6 +33,8 @@ class StoreUser extends BaseComponent
 
     public $roleToEdit , $qsearch;
 
+    public $ring = false;
+
     protected $queryString = [
         'qsearch' => [
             'as' => 'search'
@@ -79,7 +81,6 @@ class StoreUser extends BaseComponent
             $this->data['units'] = [];
         }
 
-
         return view('livewire.users.store-user' , get_defined_vars())->extends('livewire.layouts.admin');
     }
 
@@ -96,6 +97,7 @@ class StoreUser extends BaseComponent
             'neighborhood' => [ 'nullable'],
             'area' => ['nullable'],
             'auto_accept' => ['nullable','boolean'],
+            'ring' => ['nullable','boolean'],
             'sheba1' => ['nullable','string','max:100'],
             'sheba1_title' => ['nullable','string','max:100'],
             'sheba2' => ['nullable','string','max:100'],
@@ -151,15 +153,9 @@ class StoreUser extends BaseComponent
                 'sheba7_title' => $this->sheba7_title,
                 'sheba8' => $this->sheba8,
                 'sheba8_title' => $this->sheba8_title,
+                'ring' => emptyToNull($this->ring) ?? false,
             ]);
-            $this->reset(['role','unit','sheba1','sheba1_title',
-                'sheba2','sheba2_title',
-                'sheba3','sheba3_title',
-                'sheba4','sheba4_title',
-                'sheba5','sheba5_title',
-                'sheba6','sheba6_title',
-                'sheba7','sheba7_title',
-                'sheba8','sheba8_title','lat','lng']);
+            $this->resetRole();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         }
     }
@@ -198,6 +194,7 @@ class StoreUser extends BaseComponent
         $this->unit = $this->roleToEdit->unit_id;
         $this->lat = $this->roleToEdit->lat;
         $this->lng = $this->roleToEdit->lng;
+        $this->ring = $this->roleToEdit->ring;
 
         $this->city = $this->roleToEdit->city?->toArray();
         $this->region = $this->roleToEdit->region?->toArray();
@@ -250,6 +247,7 @@ class StoreUser extends BaseComponent
             'neighborhood' => [ 'nullable'],
             'area' => ['nullable'],
             'auto_accept' => ['nullable','boolean'],
+            'ring' => ['nullable','boolean'],
             'sheba1' => ['nullable','string','max:100'],
             'sheba1_title' => ['nullable','string','max:100'],
             'sheba2' => ['nullable','string','max:100'],
@@ -292,7 +290,15 @@ class StoreUser extends BaseComponent
             'sheba7_title' => $this->sheba7_title,
             'sheba8' => $this->sheba8,
             'sheba8_title' => $this->sheba8_title,
+            'ring' => emptyToNull($this->ring) ?? false,
         ])->save();
+        $this->resetRole();
+        $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
+        $this->emitHideModal("role");
+    }
+
+    public function resetRole()
+    {
         $this->reset(['role','unit',
             'sheba1','sheba1_title',
             'sheba2','sheba2_title',
@@ -301,8 +307,6 @@ class StoreUser extends BaseComponent
             'sheba5','sheba5_title',
             'sheba6','sheba6_title',
             'sheba7','sheba7_title',
-            'sheba8','sheba8_title','lat','lng']);
-        $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
-        $this->emitHideModal("role");
+            'sheba8','sheba8_title','lat','lng','ring']);
     }
 }
