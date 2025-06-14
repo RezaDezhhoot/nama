@@ -68,7 +68,7 @@
                 </div>
                 <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست/گزارش ها" wire:model.defer="auto_accept"/>
                 @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
-                    <x-admin.forms.checkbox id="ring" label="درسترسی حلقه ها" wire:model.defer="ring"/>
+                    <x-admin.forms.checkbox id="ring" label="دسترسی حلقه ها" wire:model.defer="ring"/>
                 @endif
 
                 <x-admin.forms.input type="text" width="6"  id="sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
@@ -223,7 +223,7 @@
                 <x-admin.forms.input type="text" width="6" :required="true" id="edit_lng" label="طول جغرافیایی X" wire:model.defer="lng" />
             </div>
             @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
-                <x-admin.forms.checkbox id="edit_ring" label="درسترسی حلقه ها" wire:model.defer="ring"/>
+                <x-admin.forms.checkbox id="edit_ring" label="دسترسی حلقه ها" wire:model.defer="ring"/>
             @endif
 
             <x-admin.forms.input type="text" width="6"  id="edit_sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
