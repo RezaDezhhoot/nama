@@ -143,7 +143,7 @@
                             </tr>
                         @endforeach
                         @if(sizeof($items) == 0)
-                            <td class="text-center" colspan="17">
+                            <td class="text-center" colspan="100">
                                 اطلاعاتی برای نمایش وجود ندارد
                             </td>
                         @endif
