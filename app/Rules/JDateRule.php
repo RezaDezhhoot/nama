@@ -24,7 +24,7 @@ class JDateRule implements ValidationRule
             $fail("تاریخ نامعتبر");
             return;
         }
-        if (ceil(log10($data[0])) != 4) {
+        if (ceil(log10($data[0])) != 4 || $data[0] < 1250 || $data[0] > 1450) {
             $fail("تاریخ نامعتبر");
             return;
         }
