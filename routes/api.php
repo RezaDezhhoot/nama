@@ -36,7 +36,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::patch('{id}' , 'update');
     });
     Route::group(['middleware' => ["auth:sanctum",'has_item','has_role']] , function () {
-        Route::post('rings/export' , [\App\Http\Controllers\Api\V1\RingController::class,'export']);
+        Route::get('rings/export' , [\App\Http\Controllers\Api\V1\RingController::class,'export']);
         Route::apiResource("rings" , \App\Http\Controllers\Api\V1\RingController::class);
         Route::delete('rings/{ring}/{member}' , [\App\Http\Controllers\Api\V1\RingController::class,'destroyMember']);
     });

@@ -32,7 +32,8 @@ class RingResource extends JsonResource
             'birthdate' => $this->birthdate,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
-            'members' => RingMemberResource::collection($this->whenLoaded('members'))
+            'members' => RingMemberResource::collection($this->whenLoaded('members')),
+            'members_count' => $this->whenCounted('members')
         ];
     }
 }

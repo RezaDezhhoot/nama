@@ -70,6 +70,7 @@ class RingController extends Controller
         }
 
         $item = Ring::query()
+            ->withCount(['members'])
             ->with(['members','owner','image','members.image'])
             ->findOrFail($ring);
 
