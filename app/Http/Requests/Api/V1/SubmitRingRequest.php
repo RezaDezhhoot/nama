@@ -11,6 +11,7 @@ class SubmitRingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['required','string','max:252'],
             'name' => ['required','string','max:50'],
             'national_code' => ['required','string','size:10'],
             'birthdate' => ['required',new JDateRule],

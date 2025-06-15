@@ -16,7 +16,7 @@ class Ring extends Model
 {
     use SimpleSearchable , SoftDeletes;
 
-    public array $searchAbleColumns = ['name','national_code','postal_code','phone','id','address','description','level_of_education','field_of_study','job','sheba_number'];
+    public array $searchAbleColumns = ['title','name','national_code','postal_code','phone','id','address','description','level_of_education','field_of_study','job','sheba_number'];
 
     protected $guarded = ['id'];
 

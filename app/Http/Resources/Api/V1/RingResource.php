@@ -16,6 +16,7 @@ class RingResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'name' => $this->name,
             'national_code' => $this->national_code,
             'postal_code' => $this->postal_code,

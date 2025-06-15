@@ -16,6 +16,7 @@ class UpdateRingRequest extends FormRequest
     {
         return [
             'ring' => ['required'],
+            'title' => ['sometimes','required','string','max:252'],
             'name' => ['sometimes','required','string','max:50'],
             'national_code' => ['sometimes','required','string','size:10'],
             'birthdate' => ['sometimes','required',new JDateRule],

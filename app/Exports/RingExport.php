@@ -80,6 +80,7 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
         return [
             'شناسه',
             'نوع ردیف',
+            'عنوان',
             'نام',
             'کد ملی',
             'تاریخ تولد-میلادی',
@@ -108,6 +109,7 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
             $data[] = [
                 'id' => $row->id,
                 'type' => 'مربی حلقه',
+                'title' => $row->title,
                 'name' => $row->name,
                 'national_code' => $row->national_code,
                 'birthdate' => $row->birthdate,
@@ -131,6 +133,7 @@ class RingExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                 $data[] = [
                     'id' => $member->id,
                     'type' => 'عضو حلقه',
+                    'title' => $row->title,
                     'name' => $member->name,
                     'national_code' => $member->national_code,
                     'birthdate' => $member->birthdate,

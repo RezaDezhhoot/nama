@@ -18,6 +18,7 @@
                             <th>#</th>
                             <th>شناسه</th>
                             <th>نوع حلقه</th>
+                            <th>عنوان حلقه</th>
                             <th>مشخصات سازنده</th>
                             <th>نام مربی</th>
                             <th>کد ملی مربی</th>
@@ -44,6 +45,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->item?->type?->label() ?? '-' }}</td>
+                                <td>{{ $item->title }}</td>
                                 <td>
                                     <span class="d-block">نام:<a target="_blank" href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->owner->id]) }}"> {{ $item->owner->name ?? '-' }}</a></span>
                                     <span class="d-block">شماره:<a target="_blank" href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->owner->id]) }}"> {{ $item->owner->phone ?? '-' }}</a></span>
