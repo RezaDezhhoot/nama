@@ -20,6 +20,7 @@ class SubmitRingRequest extends FormRequest
             'phone' => ['required','string','min:10','max:12'],
             'level_of_education' => ['required','max:100'],
             'field_of_study' => ['required','max:100'],
+            'description' => ['nullable','max:10000'],
             'job' => ['nullable','string','max:100'],
             'sheba_number' => ['nullable','string','max:100'],
             'skill_area' => ['nullable','array','min:1','max:100'],

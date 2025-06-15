@@ -26,6 +26,7 @@ class UpdateRingRequest extends FormRequest
             'level_of_education' => ['sometimes','required','max:100'],
             'field_of_study' => ['sometimes','required','max:100'],
             'job' => ['sometimes','nullable','string','max:100'],
+            'description' => ['sometimes','nullable','max:10000'],
             'sheba_number' => ['sometimes','nullable','string','max:100'],
             'skill_area' => ['sometimes','nullable','array','min:1','max:100'],
             'skill_area.*' => ['sometimes','required','string','max:100'],
