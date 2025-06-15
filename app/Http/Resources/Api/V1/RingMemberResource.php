@@ -20,6 +20,7 @@ class RingMemberResource extends JsonResource
             'father_name' => $this->father_name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'birthdate' => $this->birthdate,
             'image' => MediaResource::make($this->whenLoaded('image')),
         ];
     }
