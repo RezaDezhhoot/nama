@@ -190,24 +190,28 @@ class RingController extends Controller
             $memImage = $request->file('members');
             if ($request->filled('members')) {
                 foreach ($request->input('members') ?? []  as $k => $member) {
-                    $m = ! empty($member['id']) ? RingMember::query()->with(['image'])->find($member['id']) : new RingMember;
-                    if (! empty($member['birthdate'])) {
-                        $member['birthdate'] =  dateConverter($member['birthdate'] ,'m');
-                    }
-                    $m->fill($member);
-                    $m->ring()->associate($r);
-                    $m->save();
-                    if (! empty($memImage[$k]['image']) && $memImage[$k]['image'] instanceof UploadedFile) {
-                        $path =  '/rings/'.$now->year.'/'.$now->month.'/'.$now->day;
-                        $m->image()->create([
-                            'path' => $memImage[$k]['image']->store($path,$disk),
-                            'mime_type' => $memImage[$k]['image']->getMimeType(),
-                            'size' => $memImage[$k]['image']->getSize(),
-                            'disk' => $disk,
-                            'subject' => $m::FILE_IMAGE_SUBJECT
-                        ]);
-                        if ($m->image) {
-                            $m->image->delete();
+                    $m = ! empty($member['id']) ? RingMember::query()->with(['image'])->findOr($member['id'] , function () {
+                        return new RingMember;
+                    }) : new RingMember;
+                    if ($m) {
+                        if (! empty($member['birthdate'])) {
+                            $member['birthdate'] =  dateConverter($member['birthdate'] ,'m');
+                        }
+                        $m->fill($member);
+                        $m->ring()->associate($r);
+                        $m->save();
+                        if (! empty($memImage[$k]['image']) && $memImage[$k]['image'] instanceof UploadedFile) {
+                            $path =  '/rings/'.$now->year.'/'.$now->month.'/'.$now->day;
+                            $m->image()->create([
+                                'path' => $memImage[$k]['image']->store($path,$disk),
+                                'mime_type' => $memImage[$k]['image']->getMimeType(),
+                                'size' => $memImage[$k]['image']->getSize(),
+                                'disk' => $disk,
+                                'subject' => $m::FILE_IMAGE_SUBJECT
+                            ]);
+                            if ($m->image) {
+                                $m->image->delete();
+                            }
                         }
                     }
                 }
