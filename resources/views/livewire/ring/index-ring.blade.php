@@ -24,15 +24,6 @@
                             <th>کد ملی مربی</th>
                             <th>تاریخ تولد </th>
                             <th>کد پستی </th>
-                            <th>آدرس </th>
-                            <th>شماره تلفن </th>
-                            <th>سطح تحصیلات </th>
-                            <th>رشته تحصیلی </th>
-                            <th>حوزه عملکردی</th>
-                            <th>حوزه مهارتی</th>
-                            <th>توضیحات</th>
-                            <th>شغل</th>
-                            <th>شماره شبا</th>
                             <th>تعداد اعضا</th>
                             <th>تاریخ ثبت</th>
                             <th>تاریخ آخرین بروزرسانی</th>
@@ -55,23 +46,6 @@
                                 <td>{{ $item->national_code }}</td>
                                 <td>{{ persian_date($item->birthdate) }}</td>
                                 <td>{{ $item->postal_code }}</td>
-                                <td>{{ $item->address }}</td>
-                                <td>{{ $item->phone }}</td>
-                                <td>{{ $item->level_of_education }}</td>
-                                <td>{{ $item->field_of_study }}</td>
-                                <td>
-                                    @foreach($item->functional_area as $f)
-                                        <span class="badge badge-primary">{{ $f }}</span>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach($item->skill_area as $s)
-                                        <span class="badge badge-warning">{{ $s }}</span>
-                                    @endforeach
-                                </td>
-                                <td>{{ $item->description }}</td>
-                                <td>{{ $item->job }}</td>
-                                <td>{{ $item->sheba_number }}</td>
                                 <td><strong>{{ number_format($item->members_count) }}</strong> <sub class="text-info">(برای مشاهده اعضا کلیک کنید)</sub></td>
                                 <td>
                                     {{ persian_date($item->created_at) }}
@@ -93,6 +67,43 @@
                             <tr >
                                 <td wire:ignore.self colspan="100" class="hiddenRow">
                                     <div  wire:ignore.self class="accordian-body collapse" id="row{{$key}}">
+                                        <h4>سایر اطلاعات حلقه</h4>
+                                        <table class="table table-bordered table-info table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>آدرس </th>
+                                                <th>شماره تلفن </th>
+                                                <th>سطح تحصیلات </th>
+                                                <th>رشته تحصیلی </th>
+                                                <th>حوزه عملکردی</th>
+                                                <th>حوزه مهارتی</th>
+                                                <th>توضیحات</th>
+                                                <th>شغل</th>
+                                                <th>شماره شبا</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ $item->address }}</td>
+                                                <td>{{ $item->phone }}</td>
+                                                <td>{{ $item->level_of_education }}</td>
+                                                <td>{{ $item->field_of_study }}</td>
+                                                <td>
+                                                    @foreach($item->functional_area as $f)
+                                                        <span class="badge badge-primary">{{ $f }}</span>
+                                                    @endforeach
+                                                </td>
+                                                <td>
+                                                    @foreach($item->skill_area as $s)
+                                                        <span class="badge badge-warning">{{ $s }}</span>
+                                                    @endforeach
+                                                </td>
+                                                <td>{{ $item->description }}</td>
+                                                <td>{{ $item->job }}</td>
+                                                <td>{{ $item->sheba_number }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                         <h4>اعضا</h4>
                                         <table class="table table-bordered table-info table-striped">
                                             <thead>
