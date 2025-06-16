@@ -93,6 +93,7 @@
                             <tr >
                                 <td wire:ignore.self colspan="100" class="hiddenRow">
                                     <div  wire:ignore.self class="accordian-body collapse" id="row{{$key}}">
+                                        <h4>اعضا</h4>
                                         <table class="table table-bordered table-info table-striped">
                                             <thead>
                                             <tr>
