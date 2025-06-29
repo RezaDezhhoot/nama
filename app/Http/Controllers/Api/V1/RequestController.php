@@ -84,7 +84,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit','otherImamLetter','otherAreaInterfaceLetter'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.otherVideos','report.video','unit','otherImamLetter','otherAreaInterfaceLetter'])
             ->findOrFail($request);
 
         return RequestResource::make($request)->additional([
