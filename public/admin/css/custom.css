@@ -136,3 +136,7 @@ html , body{
 .select2-container {
     width: 100% !important;
 }
+
+.datepicker-plot-area .datepicker-day-view .month-grid-box .header {
+    background: #fff;
+}

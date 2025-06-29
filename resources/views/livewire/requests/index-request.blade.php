@@ -69,9 +69,9 @@
                                 <td>{{ $item->plan->title }}</td>
                                 <td>
                                     <ul>
-                                        <li>{{ $item->user->name }}</li>
-                                        <li>{{ $item->user->phone }}</li>
-                                        <li>{{ $item->user->national_id }}</li>
+                                        <li>{{ $item->user?->name }}</li>
+                                        <li>{{ $item->user?->phone }}</li>
+                                        <li>{{ $item->user?->national_id }}</li>
                                     </ul>
                                 </td>
                                 <td>{{ $item->status->label() }}</td>

@@ -1,8 +1,8 @@
 @use('App\Enums\PageAction')
 <div wire:init="init" class="h-100">
     <x-admin.big-loader :loading="$loading"/>
-    @section('title', 'اکشن پلن'.(' '.$header ?? '') )
-    <x-admin.form-control deleteAble="{{$mode === PageAction::UPDATE}}" title="اکشن پلن"/>
+    @section('title', 'بنر'.(' '.$header ?? '') )
+    <x-admin.form-control deleteAble="{{$mode === PageAction::UPDATE}}" title="بنر"/>
     <div class="card card-custom h-100 gutter-b example example-compact">
         <div class="card-header">
             <h3 class="card-title">{{ $header }}</h3>

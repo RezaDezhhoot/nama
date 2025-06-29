@@ -33,7 +33,6 @@ class RingController extends Controller
             ->where('user_id' , auth()->id())
             ->where('item_id' , \request()->query('item_id'))
             ->where('role' , OperatorRole::MOSQUE_HEAD_COACH)
-            ->where('ring' , true)
             ->whereHas('unit')
             ->first();
 

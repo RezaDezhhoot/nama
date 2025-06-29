@@ -20,10 +20,20 @@ class SubmitRequest extends FormRequest
             'amount' => ['required','integer','between:1000,10000000000000'],
             'date' => ['required'],
             'body' => ['nullable','max:10000'],
-            'imam_letter' => ['nullable',Rule::file()->max(100 * 1024)],
-            'area_interface_letter' => ['nullable',Rule::file()->max(100 * 1024)],
+            'imam_letter' => $this->fileRules(),
+            'area_interface_letter' => $this->fileRules(),
             'request_plan_id' => ['required','integer','min:1',Rule::exists('request_plans','id')->where('status',RequestPlanStatus::PUBLISHED)],
-            'sheba' => ['nullable',new ShebaNumberRule]
+            'sheba' => ['nullable',new ShebaNumberRule],
+            'other_imam_letter' => ['nullable','array','max:10'],
+            'other_imam_letter.*' => $this->fileRules(),
+
+            'other_area_interface_letter' => ['nullable','array','max:10'],
+            'other_area_interface_letter.*' => $this->fileRules(),
         ];
+    }
+
+    private function fileRules(): array
+    {
+        return ['nullable',Rule::file()->max(100 * 1024)];
     }
 }

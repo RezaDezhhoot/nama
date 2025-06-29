@@ -63,13 +63,13 @@
                                 <td>{{ $item->id }}</td>
                                 <td>
                                     <ul>
-                                        <li>{{ $item->request->user->name }}</li>
-                                        <li>{{ $item->request->user->phone }}</li>
-                                        <li>{{ $item->request->user->national_id }}</li>
+                                        <li>{{ $item->request->user?->name }}</li>
+                                        <li>{{ $item->request->user?->phone }}</li>
+                                        <li>{{ $item->request->user?->national_id }}</li>
                                     </ul>
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
-                                <td>{{ $item->request->plan->title }}</td>
+                                <td>{{ $item->request?->plan?->title }}</td>
                                 <td>{{ $item->step->label() }}</td>
                                 <td>{{ $item->request?->unit?->title ?? '-' }}</td>
                                 <td>

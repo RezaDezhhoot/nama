@@ -10,8 +10,10 @@ use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
 use App\Http\Resources\Api\V1\CommentResource;
+use App\Http\Resources\Api\V1\MediaResource;
 use App\Http\Resources\Api\V1\RequestResource;
 use App\Models\Comment;
+use App\Models\File;
 use App\Models\RequestPlan;
 use App\Models\User;
 use App\Models\UserRole;
@@ -82,7 +84,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit','otherImamLetter','otherAreaInterfaceLetter'])
             ->findOrFail($request);
 
         return RequestResource::make($request)->additional([
@@ -159,8 +161,30 @@ class RequestController extends Controller
                     'subject' => $request::FILE_AREA_INTERFACE_LETTER_SUBJECT
                 ]);
             }
+            if ($submitRequest->hasFile('other_imam_letter')) {
+                foreach ($submitRequest->file('other_imam_letter') ?? [] as $f) {
+                    $request->otherImamLetter()->create([
+                        'path' => $f->store($path,$disk),
+                        'mime_type' => $f->getMimeType(),
+                        'size' => $f->getSize(),
+                        'disk' => $disk,
+                        'subject' => $request::FILE_OTHER_IMAM_LETTER_SUBJECT
+                    ]);
+                }
+            }
+            if ($submitRequest->hasFile('other_area_interface_letter')) {
+                foreach ($submitRequest->file('other_area_interface_letter') ?? [] as $f) {
+                    $request->otherAreaInterfaceLetter()->create([
+                        'path' => $f->store($path,$disk),
+                        'mime_type' => $f->getMimeType(),
+                        'size' => $f->getSize(),
+                        'disk' => $disk,
+                        'subject' => $request::FILE_OTHER_AREA_INTERFACE_LETTER_SUBJECT
+                    ]);
+                }
+            }
             DB::commit();
-            $request->load(['areaInterfaceLetter','imamLetter','plan','unit']);
+            $request->load(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter']);
             $request->plan->loadCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }]);
@@ -179,7 +203,7 @@ class RequestController extends Controller
     {
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','unit'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter'])
             ->where('user_id' , auth()->id())
             ->where('confirm' , false)
             ->findOrFail($request);
@@ -194,7 +218,7 @@ class RequestController extends Controller
     {
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','unit'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter'])
             ->whereHas('plan')
             ->where('user_id' , auth()->id())
             ->confirmed()
@@ -242,6 +266,30 @@ class RequestController extends Controller
                     'subject' => $request::FILE_AREA_INTERFACE_LETTER_SUBJECT
                 ]);
             }
+
+            if ($updateRequest->hasFile('other_imam_letter')) {
+                foreach ($updateRequest->file('other_imam_letter') ?? [] as $f) {
+                    $request->otherImamLetter()->create([
+                        'path' => $f->store($path,$disk),
+                        'mime_type' => $f->getMimeType(),
+                        'size' => $f->getSize(),
+                        'disk' => $disk,
+                        'subject' => $request::FILE_OTHER_IMAM_LETTER_SUBJECT
+                    ]);
+                }
+            }
+            if ($updateRequest->hasFile('other_area_interface_letter')) {
+                foreach ($updateRequest->file('other_area_interface_letter') ?? [] as $f) {
+                    $request->otherAreaInterfaceLetter()->create([
+                        'path' => $f->store($path,$disk),
+                        'mime_type' => $f->getMimeType(),
+                        'size' => $f->getSize(),
+                        'disk' => $disk,
+                        'subject' => $request::FILE_OTHER_AREA_INTERFACE_LETTER_SUBJECT
+                    ]);
+                }
+            }
+
             DB::commit();
             $request->refresh();
             $request->load(['areaInterfaceLetter','imamLetter','plan']);
@@ -263,7 +311,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit'])
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit','otherImamLetter','otherAreaInterfaceLetter'])
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
@@ -348,5 +396,13 @@ class RequestController extends Controller
             ->paginate(\request()->get('per_page' , 10));
 
         return CommentResource::collection($items);
+    }
+
+    public function deleteFile($file): MediaResource
+    {
+        $f = File::query()->findOrFail($file);
+        $f->delete();
+
+        return MediaResource::make($f);
     }
 }

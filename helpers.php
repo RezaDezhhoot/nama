@@ -61,11 +61,11 @@ function mimeTypeToExtension($mimeType): bool|string
 }
 
 
-function dateConverter($date = null,$mode = 'j' , $fromFormat = 'Y-m-d'): ?string
+function dateConverter($date = null,$mode = 'j' , $fromFormat = 'Y-m-d' , $toFormat = "Y-m-d H:i:s"): ?string
 {
     if (!empty($date)) {
-        return $mode == 'j' ? Jalalian::fromDateTime(Carbon::make($date))->format('Y-m-d H:i:s')
-            : Jalalian::fromFormat($fromFormat, convert2english($date))->toCarbon()->format('Y-m-d H:i:s');
+        return $mode == 'j' ? Jalalian::fromDateTime(Carbon::make($date))->format($toFormat)
+            : Jalalian::fromFormat($fromFormat, convert2english($date))->toCarbon()->format($toFormat);
     }
     return null;
 }

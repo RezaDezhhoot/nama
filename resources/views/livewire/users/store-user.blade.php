@@ -16,8 +16,8 @@
         </x-admin.nav-tabs-list>
         <div class="card-body ">
             <x-admin.form-section label="تنطیمات نقش کاربر">
-                <x-admin.forms.dropdown  id="role" :data="$data['role']" label="نقش" wire:model.live="role"/>
-                <div class="col-12 {{$role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value ? '' :"d-none"}}" >
+                <x-admin.forms.dropdown :required="true" id="role" :data="$data['role']" label="نقش" wire:model.live="role"/>
+                <div class="col-12 row {{$role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value ? '' :"d-none"}}" >
                     <x-admin.forms.select2
                         id="unit"
                         :data="[]"
@@ -27,7 +27,7 @@
                         ajaxUrl="{{route('admin.feed.units')}}"
                         wire:model.live="unit"/>
                 </div>
-                <div class="col-12 {{ $role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item ? '' : 'd-none' }}">
+                <div class="col-12 row {{ $role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item ? '' : 'd-none' }}">
                     <x-admin.forms.select2
                         id="main_unit"
                         :data="[]"
@@ -67,26 +67,39 @@
                     <x-admin.forms.input type="text" width="6" :required="true" id="lng" label="طول جغرافیایی X" wire:model.defer="lng" />
                 </div>
                 <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست/گزارش ها" wire:model.defer="auto_accept"/>
-                @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
-                    <x-admin.forms.checkbox id="ring" label="دسترسی حلقه ها" wire:model.defer="ring"/>
-                @endif
 
-                <x-admin.forms.input type="text" width="6"  id="sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
-                <x-admin.forms.input type="text" width="6"  id="sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba2" label="شماره شبا 2" wire:model.defer="sheba2" />
-                <x-admin.forms.input type="text" width="6"  id="sheba2_title" label="عنوان شماره شبا 2" wire:model.defer="sheba2_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba3" label="شماره شبا 3" wire:model.defer="sheba3" />
-                <x-admin.forms.input type="text" width="6"  id="sheba3_title" label="عنوان شماره شبا 3" wire:model.defer="sheba3_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba4" label="شماره شبا 4" wire:model.defer="sheba4" />
-                <x-admin.forms.input type="text" width="6"  id="sheba4_title" label="عنوان شماره شبا 4" wire:model.defer="sheba4_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba5" label="شماره شبا 5" wire:model.defer="sheba5" />
-                <x-admin.forms.input type="text" width="6"  id="sheba5_title" label="عنوان شماره شبا 5" wire:model.defer="sheba5_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba6" label="شماره شبا 6" wire:model.defer="sheba6" />
-                <x-admin.forms.input type="text" width="6"  id="sheba6_title" label="عنوان شماره شبا 6" wire:model.defer="sheba6_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba7" label="شماره شبا 7" wire:model.defer="sheba7" />
-                <x-admin.forms.input type="text" width="6"  id="sheba7_title" label="عنوان شماره شبا 7" wire:model.defer="sheba7_title" />
-                <x-admin.forms.input type="text" width="6"  id="sheba8" label="شماره شبا 8" wire:model.defer="sheba8" />
-                <x-admin.forms.input type="text" width="6"  id="sheba8_title" label="عنوان شماره شبا 8" wire:model.defer="sheba8_title" />
+               <div class="row col-12 col-md-6 border-bottom mb-2">
+                   <x-admin.forms.input type="text" width="6"  id="sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
+                   <x-admin.forms.input type="text" width="6"  id="sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />
+               </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba2" label="شماره شبا 2" wire:model.defer="sheba2" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba2_title" label="عنوان شماره شبا 2" wire:model.defer="sheba2_title" />
+                </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba3" label="شماره شبا 3" wire:model.defer="sheba3" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba3_title" label="عنوان شماره شبا 3" wire:model.defer="sheba3_title" />
+                </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba4" label="شماره شبا 4" wire:model.defer="sheba4" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba4_title" label="عنوان شماره شبا 4" wire:model.defer="sheba4_title" />
+                </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba5" label="شماره شبا 5" wire:model.defer="sheba5" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba5_title" label="عنوان شماره شبا 5" wire:model.defer="sheba5_title" />
+                </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba6" label="شماره شبا 6" wire:model.defer="sheba6" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba6_title" label="عنوان شماره شبا 6" wire:model.defer="sheba6_title" />
+                </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba7" label="شماره شبا 7" wire:model.defer="sheba7" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba7_title" label="عنوان شماره شبا 7" wire:model.defer="sheba7_title" />
+                </div>
+                <div class="row col-12 col-md-6 border-bottom mb-2">
+                    <x-admin.forms.input type="text" width="6"  id="sheba8" label="شماره شبا 8" wire:model.defer="sheba8" />
+                    <x-admin.forms.input type="text" width="6"  id="sheba8_title" label="عنوان شماره شبا 8" wire:model.defer="sheba8_title" />
+                </div>
 
                 <div class="col-12">
                     <button class="btn w-100 my-2 btn-outline-primary" type="button" wire:click="attachRole">ارسال نقش</button>
@@ -119,7 +132,6 @@
                                             <th>ناحیه</th>
                                             <th>نوع مربی</th>
                                             <th>تایید خودکار</th>
-                                            <th>دسترسی حلقه ها</th>
                                             <th>شبا 1</th>
                                             <th>شبا 2</th>
                                             <th>شبا 3</th>
@@ -143,7 +155,6 @@
                                                 <td>{{ $r?->area?->title ?? '-' }}</td>
                                                 <td>{{ $r?->school_coach_type?->label() ?? '-' }}</td>
                                                 <td>{{ $r?->auto_accept ? 'بله' : '-' }}</td>
-                                                <td>{{ $r?->ring ? 'بله' : '-' }}</td>
                                                 <td>{{ $r->sheba1.' : '.$r->sheba1_title }}</td>
                                                 <td>{{ $r->sheba2.' : '.$r->sheba2_title }}</td>
                                                 <td>{{ $r->sheba3.' : '.$r->sheba3_title }}</td>
@@ -222,9 +233,6 @@
                 <x-admin.forms.input type="text" width="6" :required="true" id="edit_lat" label="عرض جغرافیایی Y" wire:model.defer="lat" />
                 <x-admin.forms.input type="text" width="6" :required="true" id="edit_lng" label="طول جغرافیایی X" wire:model.defer="lng" />
             </div>
-            @if($role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value)
-                <x-admin.forms.checkbox id="edit_ring" label="دسترسی حلقه ها" wire:model.defer="ring"/>
-            @endif
 
             <x-admin.forms.input type="text" width="6"  id="edit_sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
             <x-admin.forms.input type="text" width="6"  id="edit_sheba1_title" label="عنوان شماره شبا 1" wire:model.defer="sheba1_title" />

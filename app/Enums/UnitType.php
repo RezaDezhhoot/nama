@@ -11,13 +11,15 @@ enum UnitType: string
     case MOSQUE = 'mosque';
     case SCHOOL = 'school';
     case CENTER = 'center';
+    case UNIVERSITY = 'university';
 
     public function label()
     {
         return match ($this) {
             self::SCHOOL => 'مدرسه',
             self::MOSQUE => 'مسجد',
-            self::CENTER => 'مرکز تعالی'
+            self::CENTER => 'مرکز تعالی',
+            self::UNIVERSITY => 'دانشگاه',
         };
     }
 }

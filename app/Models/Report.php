@@ -5,15 +5,23 @@ namespace App\Models;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use function Symfony\Component\Translation\t;
 
 class Report extends Model
 {
+    use SoftDeletes , SimpleSearchable;
+
+    public array $searchAbleColumns = ['id','body'];
+
     protected $guarded = ['id'];
     protected $casts = [
         'confirm' => 'boolean',
@@ -25,6 +33,7 @@ class Report extends Model
 
     const FILE_IMAGES_SUBJECT = 'report_images';
     const FILE_VIDEOS_SUBJECT = 'report_videos';
+    const FILE_OTHER_VIDEOS_SUBJECT = 'report_other_videos';
 
     public function request(): BelongsTo
     {
@@ -39,6 +48,11 @@ class Report extends Model
     public function video(): MorphOne
     {
         return $this->morphOne(File::class,'fileable')->subject(self::FILE_VIDEOS_SUBJECT);
+    }
+
+    public function otherVideos(): MorphMany
+    {
+        return $this->morphMany(File::class,'fileable')->subject(self::FILE_OTHER_VIDEOS_SUBJECT);
     }
 
     public function files(): MorphMany
@@ -108,5 +122,12 @@ class Report extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(DashboardItem::class,'item_id');
+    }
+
+    public function date(): Attribute
+    {
+        return Attribute::get(function (){
+            return Carbon::make($this->created_at)->format('Y-m-d');
+        });
     }
 }

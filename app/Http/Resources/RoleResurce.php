@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\OperatorRole;
 use App\Http\Resources\Api\V1\DashboardItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,7 +21,7 @@ class RoleResurce extends JsonResource
             'role' => $this->role->label(),
             'role_en' => $this->role,
             'item_id' => DashboardItemResource::make($this->whenLoaded('item')),
-            'ring' => $this->ring
+            'ring' => $this->role === OperatorRole::MOSQUE_HEAD_COACH
         ];
     }
 }

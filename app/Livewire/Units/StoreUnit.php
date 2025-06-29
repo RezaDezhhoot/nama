@@ -34,6 +34,8 @@ class StoreUnit extends BaseComponent
     public $regionAjax , $neighborhoodAjax , $areaAjax;
     public $code;
 
+    public $numbers = [];
+
     public $phone1 , $phone1_title;
     public $phone2 , $phone2_title;
     public $phone3 , $phone3_title;
@@ -78,6 +80,7 @@ class StoreUnit extends BaseComponent
             $this->phone7_title = $this->model->phone7_title;
             $this->phone8 = $this->model->phone8;
             $this->phone8_title = $this->model->phone8_title;
+            $this->numbers = $this->model->number_list ?? [];
             $this->code = $this->model->code;
             $this->updatedCity($this->model->city_id);
             $this->updatedRegion($this->model->region_id);
@@ -133,6 +136,12 @@ class StoreUnit extends BaseComponent
         $this->dispatch('reloadAjaxURL#area' , $this->areaAjax);
     }
 
+    public function updatedParent($v)
+    {
+        $data = Unit::query()->find($v)?->numbers ?? [];
+        $this->dispatch('reloadData#numbers',$data);
+    }
+
     public function deleteItem()
     {
         if ($this->isUpdatingMode()) {
@@ -153,7 +162,7 @@ class StoreUnit extends BaseComponent
             'lng'=> ['required','numeric'],
             'type' => ['required','string','max:150'],
             'sub_type' => ['nullable','string','max:150'],
-            'parent' => [$this->type == UnitType::MOSQUE->value ? 'nullable' : 'required','exists:units,id'],
+            'parent' => [in_array($this->type ,[ UnitType::MOSQUE->value  ,  UnitType::UNIVERSITY->value ]) ? 'nullable' : 'required','exists:units,id'],
             'auto_accept' => ['nullable','boolean'],
             'phone1' => ['nullable','string','max:100'],
             'phone1_title' => ['nullable','string','max:100'],
@@ -171,7 +180,8 @@ class StoreUnit extends BaseComponent
             'phone7_title' => ['nullable','string','max:100'],
             'phone8' => ['nullable','string','max:100'],
             'phone8_title' => ['nullable','string','max:100'],
-            'code' => ['nullable','string','max:150']
+            'code' => ['nullable','string','max:150'],
+            'numbers' => ['nullable','array']
         ]);
         $data = [
             'title' => $this->title,
@@ -187,7 +197,7 @@ class StoreUnit extends BaseComponent
             'lng' => $this->lng,
             'code' => $this->code,
             'phone1' => $this->phone1,
-            'phone1_title' => $this->phone1,
+            'phone1_title' => $this->phone1_title,
             'phone2' => $this->phone2,
             'phone2_title' => $this->phone2_title,
             'phone3' => $this->phone3,
@@ -202,6 +212,7 @@ class StoreUnit extends BaseComponent
             'phone7_title' => $this->phone7_title,
             'phone8' => $this->phone8,
             'phone8_title' => $this->phone8_title,
+            'number_list' => $this->numbers,
         ];
         $model = $this->model ?: new Unit();
         $model->fill($data)->save();

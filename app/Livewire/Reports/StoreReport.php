@@ -59,7 +59,7 @@ class StoreReport extends BaseComponent
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->report = Report::query()
-                ->with(['request','request.user','images','video','request.imamLetter','request.areaInterfaceLetter'])
+                ->with(['request','request.user','images','otherVideos','video','request.imamLetter','request.areaInterfaceLetter','request.otherImamLetter','request.otherAreaInterfaceLetter'])
                 ->withCount('comments')
                 ->whereHas('request')
                 ->roleFilter()
@@ -86,7 +86,8 @@ class StoreReport extends BaseComponent
         }
         $step = $this->report->step;
         $from_status = $this->report->status;
-        if (RequestStatus::tryFrom($this->status) !== $this->report->status) {
+        $this->step = emptyToNull($this->step);
+        if (RequestStatus::tryFrom($this->status) !== $this->report->status || $this->step) {
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],

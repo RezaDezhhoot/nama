@@ -48,7 +48,8 @@ class ReportResource extends JsonResource
             'video' => MediaResource::make($this->whenLoaded('video')),
             'need_offer_amount' => $this->step === RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,
             'need_final_amount' => $this->step === RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,
-            'last_updated_by' => $this->last_updated_by?->title() ?? null
+            'last_updated_by' => $this->last_updated_by?->title() ?? null,
+            'other_videos' => MediaResource::collection($this->whenLoaded('otherVideos')),
         ];
     }
 }

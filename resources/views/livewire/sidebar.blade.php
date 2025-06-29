@@ -52,12 +52,12 @@
                     </li>
                     <x-admin.menu-item
                         href="{{route('admin.requests.index',[\App\Enums\UnitType::MOSQUE])}}"
-                        icon="fas fa-ticket-alt"
+                        icon="fas fa-mosque"
                         :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
                         label="درخواست های مساجد({{ $mosque_requests }})" />
                     <x-admin.menu-item
                         href="{{route('admin.reports.index',[\App\Enums\UnitType::MOSQUE])}}"
-                        icon="fas fa-ticket-alt"
+                        icon="fas fa-mosque"
                         :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
                         label="گزارش های مساجد({{ $mosque_reports }})" />
 
@@ -67,14 +67,30 @@
                     </li>
                     <x-admin.menu-item
                         href="{{route('admin.requests.index',[\App\Enums\UnitType::SCHOOL])}}"
-                        icon="fas fa-ticket-alt"
+                        icon="fas fa-school"
                         :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
                         label="درخواست های مدارس({{ $school_requests }})" />
                     <x-admin.menu-item
                         href="{{route('admin.reports.index',[\App\Enums\UnitType::SCHOOL])}}"
-                        icon="fas fa-ticket-alt"
+                        icon="fas fa-school"
                         :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
                         label="گزارش های مدارس({{ $school_reports }})" />
+
+                    <li class="menu-section">
+                        <h4 class="menu-text">دانشگاه</h4>
+                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                    </li>
+                    <x-admin.menu-item
+                        href="{{route('admin.requests.index',[\App\Enums\UnitType::UNIVERSITY])}}"
+                        icon="fas fa-university"
+                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
+                        label="درخواست های دانشگاه({{ $university_requests }})" />
+                    <x-admin.menu-item
+                        href="{{route('admin.reports.index',[\App\Enums\UnitType::UNIVERSITY])}}"
+                        icon="fas fa-university"
+                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
+                        label="گزارش های دانشگاه({{ $university_reports }})" />
+
                     <li class="menu-section">
                         <h4 class="menu-text">مرکز تعالی</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -91,6 +107,10 @@
                         :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
                         label="گزارش های مرکز تعالی({{ $center_reports }})" />
 
+                    <li class="menu-section">
+                        <h4 class="menu-text">سایر</h4>
+                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                    </li>
                     <x-admin.menu-item
                         href="{{route('admin.written-requests.index')}}"
                         icon="fas fa-ticket-alt"

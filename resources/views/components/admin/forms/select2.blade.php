@@ -1,4 +1,4 @@
-@props(['id', 'label','hidden' => false,'data' => null,'width' => 12, 'value' => false ,'ajaxUrl' => '' ,'multiple' => false , 'key' => 'id' , 'text' => 'text','required' => false])
+@props(['id', 'label','hidden' => false,'data' => null,'width' => 12, 'value' => false ,'ajaxUrl' => '' ,'multiple' => false , 'key' => 'id' , 'text' => 'text','required' => false,'options' => []])
 <div {{ $hidden ? 'hidden' : '' }} class="form-group  col-12 col-md-{{$width}}">
     <div  >
         <label for="{{$id}}"> {{$label}} <span {{ ! $required ? 'hidden' : '' }} class="text-danger">*</span></label>
@@ -29,7 +29,8 @@
                             placeholder: 'select',
                             allowClear: true,
                             multiple: '{{$multiple}}',
-                            ajax: {
+                            data: JSON.parse('{{ json_encode($options) }}'),
+                            ajax: JSON.parse('{{ json_encode($ajaxUrl) }}') ? {
                                 url:  '{{$ajaxUrl}}',
                                 data: function (params) {
                                     var query = {
@@ -43,7 +44,7 @@
                                         results: data
                                     };
                                 }
-                            }
+                            } : null
                         })
                         $('#{{$id}}').on('change', function (e) {
                             var data = $('#{{$id}}').select2('val');
@@ -55,7 +56,15 @@
                             $('#{{$id}}').empty();
                             @this.set('{{$attributes->wire("model")->value}}', null);
                         });
-
+                        Livewire.on('reloadData#{{$id}}' , function ([data]) {
+                            $('#{{$id}}').empty();
+                            $('#{{$id}}').select2({
+                                placeholder: 'select',
+                                allowClear: true,
+                                multiple: '{{$multiple}}',
+                                data: data,
+                            })
+                        })
                         Livewire.on('reloadAjaxURL#{{$id}}' , function ([url]) {
                             $('#{{$id}}').select2({
                                 placeholder: 'select',

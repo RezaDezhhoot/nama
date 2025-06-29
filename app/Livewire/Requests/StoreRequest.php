@@ -59,7 +59,7 @@ class StoreRequest extends BaseComponent
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->request = Request::query()
-                ->with(['plan','user','comments','unit'])
+                ->with(['plan','user','comments','unit','otherImamLetter','otherAreaInterfaceLetter','areaInterfaceLetter','imamLetter'])
                 ->withCount('comments')
                 ->whereHas('plan')
                 ->roleFilter()
@@ -91,7 +91,8 @@ class StoreRequest extends BaseComponent
         }
         $step = $this->request->step;
         $from_status = $this->request->status;
-        if (RequestStatus::tryFrom($this->status) !== $this->request->status) {
+        $this->step = emptyToNull($this->step);
+        if (RequestStatus::tryFrom($this->status) !== $this->request->status || $this->step) {
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
@@ -99,7 +100,6 @@ class StoreRequest extends BaseComponent
                 'final_amount' => [$this->request->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000'],
                 'step' => ['nullable',Rule::enum(RequestStep::class)]
             ]);
-            $this->step = emptyToNull($this->step);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
                 $this->request->status = RequestStatus::IN_PROGRESS;
                 switch ($this->request->step) {

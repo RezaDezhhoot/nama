@@ -7,6 +7,7 @@ use App\Enums\UnitType;
 use App\Models\Report;
 use App\Models\Request;
 use App\Models\WrittenRequest;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Sidebar extends Component
@@ -30,6 +31,15 @@ class Sidebar extends Component
             ->roleFilter()
             ->confirmed()
             ->count();
+        $university_requests = Request::query()
+            ->where('status' , RequestStatus::IN_PROGRESS)
+            ->whereHas('item' , function ($q){
+                $q->where('type' , UnitType::UNIVERSITY);
+            })
+            ->roleFilter()
+            ->confirmed()
+            ->count();
+
 
         $center_requests = Request::query()
             ->where('status' , RequestStatus::IN_PROGRESS)
@@ -55,6 +65,16 @@ class Sidebar extends Component
             ->where('status' , RequestStatus::IN_PROGRESS)
             ->whereHas('item' , function ($q){
                 $q->where('type' , UnitType::SCHOOL);
+            })
+            ->roleFilter()
+            ->confirmed()
+            ->count();
+
+        $university_reports = Report::query()
+            ->whereHas('request')
+            ->where('status' , RequestStatus::IN_PROGRESS)
+            ->whereHas('item' , function ($q){
+                $q->where('type' , UnitType::UNIVERSITY);
             })
             ->roleFilter()
             ->confirmed()

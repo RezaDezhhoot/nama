@@ -7,12 +7,14 @@ use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Request extends Model
 {
@@ -24,7 +26,9 @@ class Request extends Model
     protected $with = ['item','user','unit'];
 
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
+    const FILE_OTHER_IMAM_LETTER_SUBJECT = 'request_other_imam_letter';
     const FILE_AREA_INTERFACE_LETTER_SUBJECT = 'request_area_interface_letter';
+    const FILE_OTHER_AREA_INTERFACE_LETTER_SUBJECT = 'request_other_area_interface_letter';
 
     protected $casts = [
         'confirm' => 'boolean',
@@ -53,6 +57,16 @@ class Request extends Model
     public function areaInterfaceLetter(): MorphOne
     {
         return $this->morphOne(File::class,'fileable')->subject(self::FILE_AREA_INTERFACE_LETTER_SUBJECT);
+    }
+
+    public function otherImamLetter(): MorphMany
+    {
+        return $this->morphMany(File::class,'fileable')->subject(self::FILE_OTHER_IMAM_LETTER_SUBJECT);
+    }
+
+    public function otherAreaInterfaceLetter(): MorphMany
+    {
+        return $this->morphMany(File::class,'fileable')->subject(self::FILE_OTHER_AREA_INTERFACE_LETTER_SUBJECT);
     }
 
     public function comments(): MorphMany
@@ -116,6 +130,13 @@ class Request extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function date(): Attribute
+    {
+        return Attribute::get(function (){
+            return Carbon::make($this->created_at)->format('Y-m-d');
+        });
     }
 
     public function item(): BelongsTo

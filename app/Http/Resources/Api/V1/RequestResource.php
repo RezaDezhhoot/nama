@@ -56,6 +56,8 @@ class RequestResource extends JsonResource
             'unit' => UnitResource::make($this->whenLoaded('unit')),
             'item' => DashboardItemResource::make($this->whenLoaded('item')),
             'user' => UserResource::make($this->whenLoaded('user')),
+            'other_imam_letter' => MediaResource::collection($this->whenLoaded('otherImamLetter')),
+            'other_area_interface_letter' => MediaResource::collection($this->whenLoaded('otherAreaInterfaceLetter')),
         ];
     }
 }

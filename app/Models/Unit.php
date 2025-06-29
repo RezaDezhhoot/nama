@@ -25,7 +25,8 @@ class Unit extends Model
     protected $casts = [
         'auto_accept' => 'boolean',
         'type' => UnitType::class,
-        'sub_type' => UnitSubType::class
+        'sub_type' => UnitSubType::class,
+        'number_list' => "array"
     ];
 
 //    public function title(): Attribute
@@ -89,6 +90,53 @@ class Unit extends Model
     public function roles(): HasMany
     {
         return $this->hasMany(UserRole::class,'unit_id');
+    }
+
+    public function numberListSelect2(): Attribute
+    {
+        return Attribute::get(function () {
+            $data = [];
+            foreach ($this->number_list ?? [] as $l) {
+                $data[] = [
+                    'text' => $l,
+                    'id' => $l
+                ];
+            }
+
+            return $data;
+        });
+    }
+
+    public function numbers(): Attribute
+    {
+        return Attribute::get(function () {
+            return [
+                [
+                    'id' => $this->phone1 , 'text' => $this->phone1 ? $this->phone1_title.'-'.$this->phone1 : null,
+                ],
+                [
+                    'id' => $this->phone2 , 'text' => $this->phone2 ?$this->phone2_title.'-'.$this->phone2 : null,
+                ],
+                [
+                    'id' => $this->phone3 , 'text' => $this->phone3 ?$this->phone3_title.'-'.$this->phone3 : null,
+                ],
+                [
+                    'id' => $this->phone4 , 'text' => $this->phone4 ?$this->phone4_title.'-'.$this->phone4 : null,
+                ],
+                [
+                    'id' => $this->phone5 , 'text' => $this->phone5 ? $this->phone5_title.'-'.$this->phone5 : null,
+                ],
+                [
+                    'id' => $this->phone6 , 'text' => $this->phone6 ? $this->phone6_title.'-'.$this->phone6 : null,
+                ],
+                [
+                    'id' => $this->phone7 , 'text' => $this->phone7 ? $this->phone7_title.'-'.$this->phone7 : null,
+                ],
+                [
+                    'id' => $this->phone8 , 'text' => $this->phone8 ? $this->phone8_title.'-'.$this->phone8 : null,
+                ],
+            ];
+        });
     }
 
     public function requests(): HasMany

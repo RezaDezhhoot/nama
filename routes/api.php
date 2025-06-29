@@ -18,6 +18,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::post('{request}/admin-submit' , 'adminStore');
         Route::patch('{request}' , 'update');
         Route::get('{request}/comments' , 'getComments');
+        Route::delete('remove-file/{file}' , 'deleteFile');
     });
     Route::controller(\App\Http\Controllers\Api\V1\ReportController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('reports')->group(function () {
         Route::get('' , 'index');

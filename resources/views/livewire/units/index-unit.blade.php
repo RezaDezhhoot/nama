@@ -49,7 +49,7 @@
                                 <td>{{ $item->title }} - {{ $item->text }}</td>
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ $item->sub_type?->label() ?? '-' }}</td>
-                                <td>{{ $item->parent?->title ?? "مرکز محوری" }}</td>
+                                <td>{{ $item->parent?->title ?? "محوری" }}</td>
                                 <td>
                                    <ul>
                                        @foreach($item->roles as $role)

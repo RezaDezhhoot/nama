@@ -2,7 +2,7 @@
 <div class="form-group col-md-{{$with}} col-12">
     <label  for="{{$id}}"> {{$label}} </label>
     <input id="{{$id}}" {{ $attributes }} {!! $attributes->merge(['class'=> 'form-control']) !!} list="searchable-dropdown-{{$id}}">
-    <datalist id="searchable-dropdown-{{$id}}">
+    <datalist multiple id="searchable-dropdown-{{$id}}">
         <option value="">انتخاب</option>
         @foreach($data as $key => $item)
             <option value="{{ $value ? $item : $key }}">{{$item}}</option>

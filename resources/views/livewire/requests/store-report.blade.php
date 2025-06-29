@@ -68,13 +68,33 @@
                             <td>{{ persian_date($request->date) }}</td>
                             <td>
                                 @if($request->imamLetter)
-                                    <a target="_blank" href="{{ $request->imamLetter?->url }}" class="btn btn-outline-success">مشاهده فایل</a>
+                                    <div class="d-flex">
+                                        <button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                        <a target="_blank" href="{{ $request->imamLetter->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                    </div>
                                 @endif
+                                    @foreach($request->otherImamLetter ?? [] as $f)
+                                        <hr>
+                                        <div class=" d-flex">
+                                            <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                            <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                        </div>
+                                    @endforeach
                             </td>
                             <td>
                                 @if($request->areaInterfaceLetter)
-                                    <a target="_blank" href="{{ $request->areaInterfaceLetter?->url }}"  class="btn btn-outline-success">مشاهده فایل</a>
+                                    <div class="d-flex">
+                                        <button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-sm btn-outline-success">بارگیری فایل</button>
+                                        <a target="_blank" href="{{ $request->areaInterfaceLetter->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                    </div>
                                 @endif
+                                @foreach($request->otherAreaInterfaceLetter ?? [] as $f)
+                                    <hr>
+                                    <div class=" d-flex">
+                                        <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                        <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                    </div>
+                                @endforeach
                             </td>
                             <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
                             <td><strong>{{ number_format($request->offer_amount) }} ریال </strong></td>
@@ -153,6 +173,9 @@
                                 @if($report->video)
                                     <a target="_blank"  href="{{ $report->video->url }}"  class="btn btn-outline-warning">مشاهده ویدیو</a>
                                 @endif
+                                @foreach($report->otherVideos ?? [] as $v)
+                                        <a target="_blank"  href="{{ $v->url }}"  class="btn btn-outline-warning">مشاهده ویدیو</a>
+                                @endforeach
                             </td>
                         </tr>
                         </tbody>

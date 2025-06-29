@@ -15,8 +15,19 @@ class UpdateRequest extends FormRequest
             'amount' => ['sometimes','required','integer','between:1000,10000000000000'],
             'date' => ['sometimes','required','date'],
             'body' => ['sometimes','nullable','max:10000'],
-            'imam_letter' => ['sometimes','required',Rule::file()->extensions([...config('site.files.image.formats'),...config('site.files.document.formats')])->max(100 * 1024)],
-            'area_interface_letter' => ['sometimes','required',Rule::file()->extensions([...config('site.files.image.formats'),...config('site.files.document.formats')])->max(100 * 1024)],
+            'imam_letter' => $this->fileRules(),
+            'area_interface_letter' => $this->fileRules(),
+
+            'other_imam_letter' => ['nullable','array','max:10'],
+            'other_imam_letter.*' => $this->fileRules(),
+
+            'other_area_interface_letter' => ['nullable','array','max:10'],
+            'other_area_interface_letter.*' => $this->fileRules(),
         ];
+    }
+
+    private function fileRules(): array
+    {
+        return ['sometimes','nullable',Rule::file()->max(100 * 1024)];
     }
 }
