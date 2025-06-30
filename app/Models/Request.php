@@ -32,12 +32,12 @@ class Request extends Model
 
     protected $casts = [
         'confirm' => 'boolean',
+        'single_step' => 'boolean',
         'status' => RequestStatus::class,
         'step' => RequestStep::class,
         'last_updated_by' => RequestStep::class,
         'messages' => 'array',
     ];
-
 
     public function user(): BelongsTo
     {

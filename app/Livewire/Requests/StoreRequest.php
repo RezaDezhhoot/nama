@@ -120,12 +120,29 @@ class StoreRequest extends BaseComponent
                         $this->request->step = $this->step ?? RequestStep::FINISH;
                         $this->request->status = RequestStatus::DONE;
                         $this->request->final_amount = $this->final_amount;
+
+                        $this->request->report()->create([
+                            'step' => $this->request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                            'status' => $this->request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
+                            'amount' => 0,
+                            'confirm' => true,
+                            'item_id' => $this->request->item_id
+                        ]);
                         break;
                 }
             } else {
                 $this->request->status = RequestStatus::tryFrom($this->status);
                 if ($this->step) {
                     $this->request->step = $this->step;
+                    if (RequestStep::tryFrom($this->step) === RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING && ! $this->request->report()->exists()) {
+                        $this->request->report()->create([
+                            'step' => $this->request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                            'status' => $this->request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
+                            'amount' => 0,
+                            'confirm' => true,
+                            'item_id' => $this->request->item_id
+                        ]);
+                    }
                 }
             }
             $this->request->comments()->create([

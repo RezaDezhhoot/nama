@@ -47,6 +47,7 @@
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>اکشن پلن</th>
+                            <th>درخواست تک مرحله ای</th>
                             <th>مرحله</th>
                             <th>مرکز</th>
                             <th>شهر/منطقه</th>
@@ -70,6 +71,7 @@
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->request?->plan?->title }}</td>
+                                <td>{{ $item->request?->single_step ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->step->label() }}</td>
                                 <td>{{ $item->request?->unit?->title ?? '-' }}</td>
                                 <td>

@@ -45,6 +45,7 @@
                             <th>#</th>
                             <th>شناسه</th>
                             <th>پلن</th>
+                            <th>درخواست تک مرحله ای</th>
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
@@ -67,6 +68,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->plan->title }}</td>
+                                <td>{{ $item->single_step ? 'بله' : 'خیر' }}</td>
                                 <td>
                                     <ul>
                                         <li>{{ $item->user?->name }}</li>

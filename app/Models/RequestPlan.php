@@ -31,6 +31,7 @@ class RequestPlan extends Model
         'version' => RequestPlanVersion::class,
         'letter_required' => 'boolean',
         'letter2_required' => 'boolean',
+        'single_step' => 'boolean',
     ];
 
     protected static function booted()

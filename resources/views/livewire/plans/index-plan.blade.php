@@ -18,6 +18,7 @@
                             <th>#</th>
                             <th>شناسه</th>
                             <th>عنوان</th>
+                            <th>درخواست تک مرحله ای</th>
                             <th>زیر عنوان</th>
                             <th>وضعیت</th>
                             <th>پروژه</th>
@@ -32,6 +33,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->single_step ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->sub_title ?? '-' }}</td>
                                 <td>{{ $item->status?->label() }}</td>
                                 <td>{{ $item->item?->title ?? "-" }}</td>

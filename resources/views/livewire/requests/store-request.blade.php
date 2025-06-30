@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{{ $request->plan?->title }}</td>
+                            <td>{{ $request->plan?->title }} {{ $request->single_step ? 'درخواست تک مرحله ای' : '' }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
                             <td>{{ $request->step->label2() }}</td>
                             <td>
@@ -128,7 +128,11 @@
                         @if($request->step === \App\Enums\RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES)
                             <x-admin.forms.input type="number"  id="offer_amount" label=" قیمت پیشنهادی توسط {{ \App\Enums\OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->label() }}  مرحله اول(ریال)" wire:model.defer="offer_amount"/>
                         @elseif($request->step === \App\Enums\RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING)
-                            <x-admin.forms.input help="پس از تایید پنجاه درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی  تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label() }} مرحله اول(ریال)" wire:model.defer="final_amount"/>
+                            @if($request->single_step)
+                                <x-admin.forms.input help="پس از تایید صد درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی  تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label() }} مرحله اول(ریال)" wire:model.defer="final_amount"/>
+                            @else
+                                <x-admin.forms.input help="پس از تایید پنجاه درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی  تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label() }} مرحله اول(ریال)" wire:model.defer="final_amount"/>
+                            @endif
                         @endif
                         <x-admin.forms.text-area dir="rtl" id="comment" :required="true" label="کامنت" wire:model.defer="comment"/>
                         <x-admin.forms.dropdown :data="$data['status']" :required="true" id="status" label="وضعیت درخواست" wire:model.live="status"/>

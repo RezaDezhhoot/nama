@@ -78,6 +78,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
         return [
             'ID',
             'پلن',
+            'درخواست تک مرحله ای',
             'نام مربی',
             'شماره مربی',
             'کد ملی مربی',
@@ -102,6 +103,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
             return [
                 'id' => $row->id,
                 'plan' => $row->request?->plan?->title,
+                'single_step' => $row->request?->single_step ? 'بله' : 'خیر',
                 'name' => $row->request?->user->name,
                 'phone' => $row->request?->user->phone,
                 'national_id' => $row->request?->user->national_id,

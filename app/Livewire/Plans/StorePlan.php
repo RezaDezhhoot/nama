@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 class StorePlan extends BaseComponent
 {
     public $title , $sub_title , $image , $status , $max_number_people_supported = 10 , $support_for_each_person_amount = 1000;
-    public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false;
+    public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false , $single_step = false;
 
     public $version;
 
@@ -32,6 +32,7 @@ class StorePlan extends BaseComponent
             $this->title = $this->model->title;
             $this->sub_title = $this->model->sub_title;
             $this->image = $this->model->image;
+            $this->single_step = $this->model->single_step ?? false;
             $this->requirements = $this->model->requirements?->toArray();
             $this->status = $this->model->status?->value;
             $this->max_number_people_supported = $this->model->max_number_people_supported;
@@ -83,6 +84,7 @@ class StorePlan extends BaseComponent
             'bold' => ['nullable','boolean'],
             'letter_required' => ['nullable','boolean'],
             'letter2_required' => ['nullable','boolean'],
+            'single_step' => ['nullable','boolean'],
             'version' => ['required',Rule::enum(RequestPlanVersion::class)],
             'item' => ['required'],
             'requirements' => ['nullable','array'],
@@ -104,6 +106,7 @@ class StorePlan extends BaseComponent
             'version' => $this->version,
             'letter_required' => emptyToNull($this->letter_required) ?? false,
             'letter2_required' => emptyToNull($this->letter2_required) ?? false,
+            'single_step' => emptyToNull($this->single_step) ?? false,
         ];
         $model->fill($data)->save();
         $model->requirements()->{$model->wasRecentlyCreated ? "attach" : "sync"}($this->requirements);

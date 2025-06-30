@@ -135,7 +135,8 @@ class RequestController extends Controller
                 'step' => RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER,
                 'confirm' => true,
                 'item_id' => $itemId,
-                'unit_id' => $validRole->unit_id
+                'unit_id' => $validRole->unit_id,
+                'single_step' => $requestPlan->single_step
             ]);
             $disk = config('site.default_disk');
             $now = now();
@@ -339,9 +340,10 @@ class RequestController extends Controller
                     $request->step = RequestStep::FINISH;
                     $request->status = RequestStatus::DONE;
                     $request->final_amount = $adminStoreRequest->final_amount;
+
                     $request->report()->create([
-                        'step' => RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
-                        'status' => RequestStatus::PENDING,
+                        'step' => $request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                        'status' => $request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                         'amount' => 0,
                         'confirm' => true,
                         'item_id' => $request->item_id

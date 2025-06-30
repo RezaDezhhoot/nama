@@ -67,6 +67,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
         return [
             'ID',
             'پلن',
+            'درخواست تک مرحله ای',
             'نام مربی',
             'شماره مربی',
             'کد ملی مربی',
@@ -85,7 +86,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
             'تاریخ برگزاری',
             'فایل پیوست نامه امام جماعت',
             'فایل نامه رابط منطقه',
-            'توضیحات تکمیلی'
+            'توضیحات تکمیلی',
         ];
     }
     public function prepareRows($rows)
@@ -94,6 +95,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
             return [
                 'id' => $row->id,
                 'plan' => $row->plan->title,
+                'single_step' => $row->single_step ? 'بله' : 'خیر',
                 'name' => $row->user->name,
                 'phone' => $row->user->phone,
                 'national_id' => $row->user->national_id,
