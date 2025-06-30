@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -104,7 +105,7 @@ class Request extends Model
 
     public function scopeItem($q , $id)
     {
-        return $q->where('item_id' , $id);
+        return $q->where('requests.item_id' , $id);
     }
 
     public function scopeRole(Builder $builder , $role = null): Builder
@@ -126,7 +127,7 @@ class Request extends Model
                             });
                         });
                     } elseif ($role === OperatorRole::AREA_INTERFACE) {
-                        [$cities , $regions] = auth()->user()->getAreaInterfaceLocations();
+                        [$cities , $regions] = auth()->user()->getAreaInterfaceLocations(request()->get('item_id'));
                         $builder
                                     ->whereIn('city_id' , $cities)
                                     ->whereIn('region_id' , $regions)
@@ -149,6 +150,11 @@ class Request extends Model
         return Attribute::get(function (){
             return Carbon::make($this->created_at)->format('Y-m-d');
         });
+    }
+
+    public function roles(): HasMany
+    {
+        return $this->hasMany(UserRole::class,'user_id','user_id')->whereColumn('user_roles.item_id','=','requests.item_id');
     }
 
     public function item(): BelongsTo

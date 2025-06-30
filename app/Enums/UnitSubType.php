@@ -26,5 +26,21 @@ enum UnitSubType: string
         };
     }
 
+    public static function classed(): array
+    {
+        return [
+            UnitType::MOSQUE->value => [
+                self::BROTHERS->value => self::BROTHERS->label(),
+                self::SISTERS->value => self::SISTERS->label(),
+            ],
+            UnitType::SCHOOL->value => [
+                self::MALE->value => self::MALE->label(),
+                self::FEMALE->value => self::FEMALE->label(),
+                self::SUPPORT->value => self::SUPPORT->label(),
+            ],
+            UnitType::CENTER->value => [],
+            UnitType::UNIVERSITY->value => [],
+        ];
+    }
 
 }

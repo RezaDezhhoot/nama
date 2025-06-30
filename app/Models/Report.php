@@ -109,11 +109,13 @@ class Report extends Model
                                 });
                             });
                         } elseif ($role === OperatorRole::AREA_INTERFACE) {
-                            [$cities , $regions] = auth()->user()->getAreaInterfaceLocations();
+                            [$cities , $regions] = auth()->user()->getAreaInterfaceLocations(request()->get('item_id'));
                             $builder
                                 ->whereIn('city_id' , $cities)
                                 ->whereIn('region_id' , $regions)
                             ;
+                        } elseif ($role === OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES) {
+
                         }
                         return $builder;
                     });

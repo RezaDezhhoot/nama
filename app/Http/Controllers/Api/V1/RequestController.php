@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Enums\SchoolCoachType;
+use App\Enums\UnitSubType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitRequest;
@@ -38,6 +40,16 @@ class RequestController extends Controller
         $role = OperatorRole::from(request()->get('role'));
 
         $requests = RequestModel::query()
+            ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
+                $builder->whereHas('unit' , function (Builder $builder) use ($request) {
+                   $builder->where('sub_type' , $request->get('sub_type'));
+                });
+            })
+            ->when($request->filled('school_coach_type') , function (Builder $builder) use ($request) {
+                $builder->whereHas('roles' , function (Builder $builder) use ($request) {
+                    $builder->where('school_coach_type' , $request->get('school_coach_type'));
+                });
+            })
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
@@ -75,7 +87,9 @@ class RequestController extends Controller
 
         return RequestResource::collection($requests)->additional([
             'statuses' => RequestStatus::values(),
-            'steps' => RequestStep::values()
+            'steps' => RequestStep::values(),
+            'sub_types' => UnitSubType::classed(),
+            'school_coach_type' => SchoolCoachType::labels()
         ]);
     }
 
@@ -90,7 +104,9 @@ class RequestController extends Controller
         return RequestResource::make($request)->additional([
             'statuses' => RequestStatus::values(),
             'steps' => RequestStep::values(),
-            'back_steps' => $request->step->backSteps()
+            'back_steps' => $request->step->backSteps(),
+            'sub_types' => UnitSubType::classed(),
+            'school_coach_type' => SchoolCoachType::values()
         ]);
     }
 
@@ -339,6 +355,7 @@ class RequestController extends Controller
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
+        dd($request);
         $from_status = $request->status;
         $step = $request->step;
         $request->last_updated_by = $request->step;

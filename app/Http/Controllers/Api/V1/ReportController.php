@@ -6,6 +6,8 @@ use App\Enums\FileStatus;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Enums\SchoolCoachType;
+use App\Enums\UnitSubType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminStoreReportRequest;
 use App\Http\Requests\Api\V1\AdminStoreRequest;
@@ -38,7 +40,23 @@ class ReportController extends Controller
         ]);
         $role = OperatorRole::from(request()->get('role'));
         return ReportResource::collection(
-            Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
+            Report::query()
+                ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
+                    $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                        $builder->whereHas('unit' , function (Builder $builder) use ($request) {
+                            $builder->where('sub_type' , $request->get('sub_type'));
+                        });
+                    });
+                })
+                ->when($request->filled('school_coach_type') , function (Builder $builder) use ($request) {
+                    $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                        $builder->whereHas('roles' , function (Builder $builder) use ($request) {
+                            $builder->where('school_coach_type' , $request->get('school_coach_type'));
+                        });
+                    });
+                })
+
+                ->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
                 $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
                         $builder->search($request->get('q'));
@@ -73,7 +91,9 @@ class ReportController extends Controller
             })->paginate((int)$request->get('per_page' , 10))
         )->additional([
             'statuses' => RequestStatus::values(),
-            'steps' => RequestStep::values()
+            'steps' => RequestStep::values(),
+            'sub_types' => UnitSubType::classed(),
+            'school_coach_type' => SchoolCoachType::labels()
         ]);
     }
 
@@ -87,7 +107,9 @@ class ReportController extends Controller
         )->additional([
             'statuses' => RequestStatus::values(),
             'steps' => RequestStep::values(),
-            'back_steps' => $report->step->backSteps()
+            'back_steps' => $report->step->backSteps(),
+            'sub_types' => UnitSubType::classed(),
+            'school_coach_type' => SchoolCoachType::labels()
         ]);
     }
 
