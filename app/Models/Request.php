@@ -26,6 +26,7 @@ class Request extends Model
     protected $with = ['item','user','unit'];
 
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
+    const FILE_IMAGES_SUBJECT = 'request_images';
     const FILE_OTHER_IMAM_LETTER_SUBJECT = 'request_other_imam_letter';
     const FILE_AREA_INTERFACE_LETTER_SUBJECT = 'request_area_interface_letter';
     const FILE_OTHER_AREA_INTERFACE_LETTER_SUBJECT = 'request_other_area_interface_letter';
@@ -57,6 +58,17 @@ class Request extends Model
     public function areaInterfaceLetter(): MorphOne
     {
         return $this->morphOne(File::class,'fileable')->subject(self::FILE_AREA_INTERFACE_LETTER_SUBJECT);
+    }
+
+    public function scopeRelations($q)
+    {
+        return $q
+            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.otherVideos','report.video','unit','otherImamLetter','otherAreaInterfaceLetter','images','report.images2']);
+    }
+
+    public function images(): MorphMany
+    {
+        return $this->morphMany(File::class,'fileable')->subject(self::FILE_IMAGES_SUBJECT);
     }
 
     public function otherImamLetter(): MorphMany

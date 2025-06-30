@@ -50,6 +50,7 @@ class ReportResource extends JsonResource
             'need_final_amount' => $this->step === RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,
             'last_updated_by' => $this->last_updated_by?->title() ?? null,
             'other_videos' => MediaResource::collection($this->whenLoaded('otherVideos')),
+            'images2' => MediaResource::collection($this->whenLoaded('images2')),
         ];
     }
 }

@@ -84,7 +84,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.otherVideos','report.video','unit','otherImamLetter','otherAreaInterfaceLetter'])
+            ->relations()
             ->findOrFail($request);
 
         return RequestResource::make($request)->additional([
@@ -184,8 +184,19 @@ class RequestController extends Controller
                     ]);
                 }
             }
+            if ($submitRequest->hasFile('images')) {
+                foreach ($submitRequest->file('images') ?? [] as $f) {
+                    $request->images()->create([
+                        'path' => $f->store($path,$disk),
+                        'mime_type' => $f->getMimeType(),
+                        'size' => $f->getSize(),
+                        'disk' => $disk,
+                        'subject' => $request::FILE_IMAGES_SUBJECT
+                    ]);
+                }
+            }
             DB::commit();
-            $request->load(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter']);
+            $request->load(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter','images']);
             $request->plan->loadCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }]);
@@ -204,7 +215,7 @@ class RequestController extends Controller
     {
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter'])
+            ->relations()
             ->where('user_id' , auth()->id())
             ->where('confirm' , false)
             ->findOrFail($request);
@@ -219,7 +230,7 @@ class RequestController extends Controller
     {
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter'])
+            ->relations()
             ->whereHas('plan')
             ->where('user_id' , auth()->id())
             ->confirmed()
@@ -290,10 +301,21 @@ class RequestController extends Controller
                     ]);
                 }
             }
+            if ($updateRequest->hasFile('images')) {
+                foreach ($updateRequest->file('images') ?? [] as $f) {
+                    $request->images()->create([
+                        'path' => $f->store($path,$disk),
+                        'mime_type' => $f->getMimeType(),
+                        'size' => $f->getSize(),
+                        'disk' => $disk,
+                        'subject' => $request::FILE_IMAGES_SUBJECT
+                    ]);
+                }
+            }
 
             DB::commit();
             $request->refresh();
-            $request->load(['areaInterfaceLetter','imamLetter','plan']);
+            $request->load(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter','images']);
             $request->plan->loadCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }]);
@@ -312,7 +334,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
-            ->with(['areaInterfaceLetter','imamLetter','plan','report','report.images','report.video','unit','otherImamLetter','otherAreaInterfaceLetter'])
+            ->relations()
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)

@@ -32,6 +32,7 @@ class Report extends Model
     ];
 
     const FILE_IMAGES_SUBJECT = 'report_images';
+    const FILE_IMAGES2_SUBJECT = 'report_images2';
     const FILE_VIDEOS_SUBJECT = 'report_videos';
     const FILE_OTHER_VIDEOS_SUBJECT = 'report_other_videos';
 
@@ -43,6 +44,11 @@ class Report extends Model
     public function images(): MorphMany
     {
         return $this->morphMany(File::class,'fileable')->subject(self::FILE_IMAGES_SUBJECT);
+    }
+
+    public function images2(): MorphMany
+    {
+        return $this->morphMany(File::class,'fileable')->subject(self::FILE_IMAGES2_SUBJECT);
     }
 
     public function video(): MorphOne

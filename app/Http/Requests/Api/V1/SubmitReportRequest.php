@@ -18,7 +18,10 @@ class SubmitReportRequest extends FormRequest
             'images.*' => ['required',Rule::file()->max(200 * 1024)],
             'video' => $this->fileRules(),
             'otherVideos' => ['nullable','array','max:10'],
-            'otherVideos.*' => $this->fileRules()
+            'otherVideos.*' => $this->fileRules(),
+
+            'images2' => ['nullable','array','max:10'],
+            'images2.*' => $this->fileRules(),
         ];
     }
 

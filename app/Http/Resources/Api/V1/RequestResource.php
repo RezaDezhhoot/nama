@@ -58,6 +58,7 @@ class RequestResource extends JsonResource
             'user' => UserResource::make($this->whenLoaded('user')),
             'other_imam_letter' => MediaResource::collection($this->whenLoaded('otherImamLetter')),
             'other_area_interface_letter' => MediaResource::collection($this->whenLoaded('otherAreaInterfaceLetter')),
+            'images' => MediaResource::collection($this->whenLoaded('images')),
             'single_step' => $this->single_step ?? false,
         ];
     }

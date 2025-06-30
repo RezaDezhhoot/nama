@@ -80,7 +80,7 @@ class ReportController extends Controller
     public function show($report): ReportResource
     {
         $report = Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))
-            ->with(['request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter'])
+            ->with(['request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter','request.images','images2'])
             ->findOrFail($report);
         return ReportResource::make(
             $report
@@ -160,6 +160,24 @@ class ReportController extends Controller
                     $report->otherVideos()->insert($videos);
                 }
             }
+            if ($submitReportRequest->hasFile('images2')) {
+                $images2 = [];
+                foreach ($submitReportRequest->file('images2') as $v) {
+                    $images2[] = [
+                        'path' => $v->store($path,$disk),
+                        'mime_type' => $v->getMimeType(),
+                        'size' => $v->getSize(),
+                        'disk' => $disk,
+                        'subject' => $report::FILE_IMAGES2_SUBJECT,
+                        'fileable_type' => $report->getMorphClass(),
+                        'fileable_id' => $report->id,
+                        'status' => FileStatus::PROCESSED
+                    ];
+                }
+                if (sizeof($images2) > 0) {
+                    $report->images2()->insert($images2);
+                }
+            }
             $report->images()->insert($images);
             DB::commit();
             $report->load(['request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan']);
@@ -177,7 +195,7 @@ class ReportController extends Controller
     {
         $report = Report::query()
             ->item(\request()->get('item_id'))
-            ->with(['request','images','video','otherVideos','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter'])
+            ->with(['request','images','video','otherVideos','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter','images2','request.images'])
             ->whereHas('request' , function (Builder $builder)  {
                 $builder->where('user_id' , auth()->id());
             })->where('confirm' , false)
@@ -265,9 +283,28 @@ class ReportController extends Controller
                 }
             }
 
+            if ($updateReportRequest->hasFile('images2')) {
+                $images2 = [];
+                foreach ($updateReportRequest->file('images2') as $v) {
+                    $images2[] = [
+                        'path' => $v->store($path,$disk),
+                        'mime_type' => $v->getMimeType(),
+                        'size' => $v->getSize(),
+                        'disk' => $disk,
+                        'subject' => $report::FILE_IMAGES2_SUBJECT,
+                        'fileable_type' => $report->getMorphClass(),
+                        'fileable_id' => $report->id,
+                        'status' => FileStatus::PROCESSED
+                    ];
+                }
+                if (sizeof($images2) > 0) {
+                    $report->images2()->insert($images2);
+                }
+            }
+
             DB::commit();
             $report->refresh();
-            $report->load(['images','otherVideos','video']);
+            $report->load(['images','otherVideos','video','images2']);
             return ReportResource::make($report);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -288,7 +325,7 @@ class ReportController extends Controller
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
-            ->with(['request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter'])
+            ->with(['request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter','images2','request.images'])
             ->findOrFail($report);
         $report->last_updated_by = $report->step;
         $from_status = $report->status;

@@ -23,6 +23,9 @@ class UpdateRequest extends FormRequest
 
             'other_area_interface_letter' => ['nullable','array','max:10'],
             'other_area_interface_letter.*' => $this->fileRules(),
+
+            'images' => ['nullable','array','max:10'],
+            'images.*' => $this->fileRules(),
         ];
     }
 

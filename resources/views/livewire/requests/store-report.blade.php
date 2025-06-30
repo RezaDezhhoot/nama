@@ -56,6 +56,7 @@
                             <th>تاریخ برگزاری</th>
                             <th>فایل پیوست نامه امام جماعت</th>
                             <th>فایل نامه رابط منطقه</th>
+                            <th>تصاویر پیوست شده</th>
                             <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
                             <th>هزینه پیشنهادی مرحله اول توسط معاونت اجرایی مساجد</th>
                             <th>هزینه نهایی تایید شده مرحله اول توسط معاونت طرح و برنامه</th>
@@ -89,6 +90,15 @@
                                     </div>
                                 @endif
                                 @foreach($request->otherAreaInterfaceLetter ?? [] as $f)
+                                    <hr>
+                                    <div class=" d-flex">
+                                        <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                        <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                    </div>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($request->images ?? [] as $f)
                                     <hr>
                                     <div class=" d-flex">
                                         <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
@@ -155,6 +165,7 @@
                             <th>تاریخ برگزاری</th>
                             <th>تصاویر</th>
                             <th>ویدیو</th>
+                            <th>تصاویر بیشتر</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -175,6 +186,14 @@
                                 @endif
                                 @foreach($report->otherVideos ?? [] as $v)
                                         <a target="_blank"  href="{{ $v->url }}"  class="btn btn-outline-warning">مشاهده ویدیو</a>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($report->images2 ?? [] as $image)
+                                    <a target="_blank" href="{{ $image->url }}" class="btn btn-outline-success">
+                                        مشاهده تصویر
+                                        ({{ $loop->iteration }})
+                                    </a>
                                 @endforeach
                             </td>
                         </tr>

@@ -59,7 +59,7 @@ class StoreRequest extends BaseComponent
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->request = Request::query()
-                ->with(['plan','user','comments','unit','otherImamLetter','otherAreaInterfaceLetter','areaInterfaceLetter','imamLetter'])
+                ->relations()
                 ->withCount('comments')
                 ->whereHas('plan')
                 ->roleFilter()

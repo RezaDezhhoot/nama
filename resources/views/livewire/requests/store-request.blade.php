@@ -57,6 +57,7 @@
                             <th>شماره شبا</th>
                             <th>فایل پیوست نامه امام جماعت</th>
                             <th>فایل نامه رابط منطقه</th>
+                            <th>تصاویر پیوست شده</th>
                             <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
                             <th>هزینه پیشنهادی توسط معاونت اجرایی مساجد</th>
                             <th>هزینه نهایی تایید شده توسط معاونت طرح و برنامه</th>
@@ -97,6 +98,15 @@
                                             <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
                                         </div>
                                     @endforeach
+                            </td>
+                            <td>
+                                @foreach($request->images ?? [] as $f)
+                                    <hr>
+                                    <div class=" d-flex">
+                                        <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                        <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                    </div>
+                                @endforeach
                             </td>
                             <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
                             <td><strong>{{ number_format($request->offer_amount) }} ریال </strong></td>

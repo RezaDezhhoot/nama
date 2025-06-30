@@ -59,7 +59,7 @@ class StoreReport extends BaseComponent
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->report = Report::query()
-                ->with(['request','request.user','images','otherVideos','video','request.imamLetter','request.areaInterfaceLetter','request.otherImamLetter','request.otherAreaInterfaceLetter'])
+                ->with(['request','request.user','images','otherVideos','video','request.imamLetter','request.areaInterfaceLetter','request.otherImamLetter','request.otherAreaInterfaceLetter','request.images','images2'])
                 ->withCount('comments')
                 ->whereHas('request')
                 ->roleFilter()
