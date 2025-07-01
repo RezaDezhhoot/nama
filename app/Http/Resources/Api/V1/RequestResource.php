@@ -60,6 +60,8 @@ class RequestResource extends JsonResource
             'other_area_interface_letter' => MediaResource::collection($this->whenLoaded('otherAreaInterfaceLetter')),
             'images' => MediaResource::collection($this->whenLoaded('images')),
             'single_step' => $this->single_step ?? false,
+            'auto_accept_at' => $this->auto_accept_at,
+            'next_notify_at' => $this->next_notify_at,
         ];
     }
 }

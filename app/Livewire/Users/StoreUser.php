@@ -33,6 +33,8 @@ class StoreUser extends BaseComponent
 
     public $roleToEdit , $qsearch;
 
+    public $auto_accept_period , $notify_period;
+
     public $ring = false;
 
     protected $queryString = [
@@ -87,6 +89,8 @@ class StoreUser extends BaseComponent
     public function attachRole()
     {
         $itemModel  = DashboardItem::query()->findOrFail($this->item);
+        $this->auto_accept_period = emptyToNull($this->auto_accept_period);
+        $this->notify_period = emptyToNull($this->notify_period);
         $this->validate([
             'role' => ['required',Rule::enum(OperatorRole::class)],
             'item' => ['required'],
@@ -114,6 +118,9 @@ class StoreUser extends BaseComponent
             'sheba7_title' => ['nullable','string','max:100'],
             'sheba8' => ['nullable','string','max:100'],
             'sheba8_title' => ['nullable','string','max:100'],
+
+            'auto_accept_period' => ['nullable','integer','min:1'],
+            'notify_period' => ['nullable','integer','min:1'],
         ]);
         if ($this->role == OperatorRole::MOSQUE_HEAD_COACH->value && UserRole::query()->where(
             [
@@ -154,6 +161,8 @@ class StoreUser extends BaseComponent
                 'sheba8' => $this->sheba8,
                 'sheba8_title' => $this->sheba8_title,
                 'ring' => emptyToNull($this->ring) ?? false,
+                'auto_accept_period' => $this->auto_accept_period,
+                'notify_period' => $this->notify_period,
             ]);
             $this->resetRole();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
@@ -218,6 +227,8 @@ class StoreUser extends BaseComponent
         $this->sheba7_title = $this->roleToEdit->sheba7_title;
         $this->sheba8 = $this->roleToEdit->sheba8;
         $this->sheba8_title = $this->roleToEdit->sheba8_title;
+        $this->auto_accept_period = $this->roleToEdit->auto_accept_period;
+        $this->notify_period = $this->roleToEdit->notify_period;
 
         $this->updatedCity($this->roleToEdit->city_id);
         $this->updatedRegion($this->roleToEdit->region_id);
@@ -238,6 +249,8 @@ class StoreUser extends BaseComponent
 
     public function updateRole()
     {
+        $this->auto_accept_period = emptyToNull($this->auto_accept_period);
+        $this->notify_period = emptyToNull($this->notify_period);
         $itemModel  = DashboardItem::query()->findOrFail($this->item);
         $this->validate([
             'unit' => [in_array($this->role,[OperatorRole::MOSQUE_HEAD_COACH->value,OperatorRole::MOSQUE_CULTURAL_OFFICER->value]) ? 'required' : 'nullable'],
@@ -264,6 +277,9 @@ class StoreUser extends BaseComponent
             'sheba7_title' => ['nullable','string','max:100'],
             'sheba8' => ['nullable','string','max:100'],
             'sheba8_title' => ['nullable','string','max:100'],
+
+            'auto_accept_period' => ['nullable','integer','min:1'],
+            'notify_period' => ['nullable','integer','min:1'],
         ]);
         $this->roleToEdit->fill([
             'unit_id' => emptyToNull($this->unit),
@@ -291,6 +307,8 @@ class StoreUser extends BaseComponent
             'sheba8' => $this->sheba8,
             'sheba8_title' => $this->sheba8_title,
             'ring' => emptyToNull($this->ring) ?? false,
+            'auto_accept_period' => $this->auto_accept_period,
+            'notify_period' => $this->notify_period,
         ])->save();
         $this->resetRole();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
@@ -307,6 +325,6 @@ class StoreUser extends BaseComponent
             'sheba5','sheba5_title',
             'sheba6','sheba6_title',
             'sheba7','sheba7_title',
-            'sheba8','sheba8_title','lat','lng','ring']);
+            'sheba8','sheba8_title','lat','lng','ring','auto_accept_period','notify_period']);
     }
 }

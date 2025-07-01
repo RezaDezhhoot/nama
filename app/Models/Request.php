@@ -161,4 +161,55 @@ class Request extends Model
     {
         return $this->belongsTo(DashboardItem::class,'item_id');
     }
+
+    public function toNextStep($offer_amount = null , $final_amount = null): static
+    {
+        switch ($this->step) {
+//                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+//                    $request->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+//                    break;
+            case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
+                $this->step = RequestStep::APPROVAL_AREA_INTERFACE;
+
+                if ($this->notify_period) {
+                    $this->next_notify_at =  now()->addHours($this->notify_period);
+                } else if ($this->unit && $this->unit->city_id && $this->unit->region_id) {
+                    $area_interface = UserRole::query()
+                        ->where('item_id' , $this->item_id)
+                        ->where('city_id' , $this->unit->city_id)
+                        ->where('region_id' , $this->unit->region_id)
+                        ->where('role' , OperatorRole::AREA_INTERFACE)
+                        ->whereNotNull('notify_period')
+                        ->first();
+                    if ($area_interface && $area_interface->notify_period) {
+                        $this->next_notify_at =  now()->addHours($area_interface->notify_period);
+                        $this->notify_period = $area_interface->notify_period;
+                    }
+                }
+                break;
+            case RequestStep::APPROVAL_AREA_INTERFACE:
+                $this->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
+                break;
+            case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
+                $this->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                $this->offer_amount = $offer_amount;
+                break;
+            case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
+                $this->step = RequestStep::FINISH;
+                $this->status = RequestStatus::DONE;
+                $this->final_amount = $final_amount;
+
+                $this->report()->create([
+                    'step' => $this->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
+                    'status' => $this->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
+                    'amount' => 0,
+                    'confirm' => true,
+                    'item_id' => $this->item_id,
+                    'auto_accept_period' => $this->auto_accept_period,
+                    'notify_period' => $this->notify_period,
+                ]);
+                break;
+        }
+        return $this;
+    }
 }

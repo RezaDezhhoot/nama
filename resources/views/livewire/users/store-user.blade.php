@@ -26,6 +26,7 @@
                         label="مرکز محوری"
                         ajaxUrl="{{route('admin.feed.units')}}"
                         wire:model.live="unit"/>
+                    <x-admin.forms.input type="number" help="برحسب ساعت"  id="auto_accept_period" label="تایید خودکار درخواست/گزارش ها بعد از گذشت" wire:model.defer="auto_accept_period" />
                 </div>
                 <div class="col-12 row {{ $role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item ? '' : 'd-none' }}">
                     <x-admin.forms.select2
@@ -42,6 +43,7 @@
                     @endif
                 </div>
                 <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
+                    <x-admin.forms.input type="number" help="برحسب ساعت"  id="notify_period" label="ارسال پیامک یاداوری پس از گذشت" wire:model.defer="notify_period" />
                     <x-admin.forms.select2 id="city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
                     <x-admin.forms.select2 id="region" :required="true" :data="$region ?? []" text="title" label="منطقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
                     <x-admin.forms.select2 id="neighborhood" :data="$neighborhood ?? []" text="title" label="محله" width="3" :ajaxUrl="$neighborhoodAjax" wire:model.live="neighborhood"/>
@@ -66,7 +68,7 @@
                     <x-admin.forms.input type="text" width="6" :required="true" id="lat" label="عرض جغرافیایی Y" wire:model.defer="lat" />
                     <x-admin.forms.input type="text" width="6" :required="true" id="lng" label="طول جغرافیایی X" wire:model.defer="lng" />
                 </div>
-                <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست/گزارش ها" wire:model.defer="auto_accept"/>
+{{--                <x-admin.forms.checkbox id="auto_accept" label="تایید خودکار درخواست/گزارش ها" wire:model.defer="auto_accept"/>--}}
 
                <div class="row col-12 col-md-6 border-bottom mb-2">
                    <x-admin.forms.input type="text" width="6"  id="sheba1" label="شماره شبا 1" wire:model.defer="sheba1" />
@@ -132,6 +134,7 @@
                                             <th>ناحیه</th>
                                             <th>نوع مربی</th>
                                             <th>تایید خودکار</th>
+                                            <th>ارسال پیامک یاداوری</th>
                                             <th>شبا 1</th>
                                             <th>شبا 2</th>
                                             <th>شبا 3</th>
@@ -154,7 +157,8 @@
                                                 <td>{{ $r?->neighborhood?->title ?? '-' }}</td>
                                                 <td>{{ $r?->area?->title ?? '-' }}</td>
                                                 <td>{{ $r?->school_coach_type?->label() ?? '-' }}</td>
-                                                <td>{{ $r?->auto_accept ? 'بله' : '-' }}</td>
+                                                <td>{{ $r?->auto_accept_period ? $r?->auto_accept_period.' ساعت ' : '-' }}</td>
+                                                <td>{{ $r?->notify_period ? $r?->notify_period.' ساعت ' : '-' }}</td>
                                                 <td>{{ $r->sheba1.' : '.$r->sheba1_title }}</td>
                                                 <td>{{ $r->sheba2.' : '.$r->sheba2_title }}</td>
                                                 <td>{{ $r->sheba3.' : '.$r->sheba3_title }}</td>
@@ -192,6 +196,7 @@
                     label="مرکز محوری"
                     ajaxUrl="{{route('admin.feed.units')}}"
                     wire:model.live="unit"/>
+                <x-admin.forms.input type="number" help="برحسب ساعت"  id="edit_auto_accept_period" label="تایید خودکار درخواست/گزارش ها بعد از گذشت" wire:model.defer="auto_accept_period" />
             </div>
             <div class="col-12 {{ $role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value && $item ? '' : 'd-none' }}">
                 <x-admin.forms.select2
@@ -209,6 +214,7 @@
             </div>
 
             <div class="col-12 row {{ $role == \App\Enums\OperatorRole::AREA_INTERFACE->value ? '' : 'd-none' }}">
+                <x-admin.forms.input type="number" help="برحسب ساعت"  id="edit_notify_period" label="ارسال پیامک یاداوری پس از گذشت" wire:model.defer="notify_period" />
                 <x-admin.forms.select2 id="edit_city" :required="true" :data="$city ?? []" text="title" label="شهر" width="3" ajaxUrl="{{route('admin.feed.cities')}}" wire:model.live="city"/>
                 <x-admin.forms.select2 id="edit_region" :required="true" :data="$region ?? []" text="title" label="منطقه"  width="3" :ajaxUrl="$regionAjax" wire:model.live="region"/>
                 <x-admin.forms.select2 id="edit_neighborhood" :data="$neighborhood ?? []" text="title" label="محله" width="3" :ajaxUrl="$neighborhoodAjax" wire:model.live="neighborhood"/>

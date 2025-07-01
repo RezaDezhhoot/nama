@@ -246,10 +246,18 @@ class ReportController extends Controller
         }
         try {
             DB::beginTransaction();
-            $report->update([...$data , 'step' => $report->last_updated_by ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER]);
+            $report->step = $report->last_updated_by ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+            $report->fill($data);
             $disk = config('site.default_disk');
             $now = now();
             $path =  'reports/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$report->id;
+
+            if ($report->step === RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER && $report->auto_accept_period) {
+                $report->auto_accept_at = now()->addHours($report->auto_accept_period);
+            } else if ($report->last_updated_by === RequestStep::APPROVAL_AREA_INTERFACE && $report->notify_period) {
+                $report->next_notify_at = now()->addHours($report->notify_period);
+            }
+            $report->save();
 
             if ($updateReportRequest->hasFile('video') || ($updateReportRequest->filled('remove_video') && $updateReportRequest->remove_video) ) {
                 if ($report->video) {
@@ -355,26 +363,7 @@ class ReportController extends Controller
 
         if ($adminStoreReportRequest->action == "accept") {
             $report->status = RequestStatus::IN_PROGRESS;
-            switch ($report->step) {
-//                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
-//                    $report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
-//                    break;
-                case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
-                    $report->step = RequestStep::APPROVAL_AREA_INTERFACE;
-                    break;
-                case RequestStep::APPROVAL_AREA_INTERFACE:
-                    $report->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
-                    break;
-                case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
-                    $report->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
-                    $report->offer_amount = $adminStoreReportRequest->offer_amount;
-                    break;
-                case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
-                    $report->step = RequestStep::FINISH;
-                    $report->status = RequestStatus::DONE;
-                    $report->final_amount = $adminStoreReportRequest->final_amount;
-                    break;
-            }
+            $report->toNextStep($adminStoreReportRequest->offer_amount , $adminStoreReportRequest->final_amount);
         } else if ($adminStoreReportRequest->action == "reject") {
             $report->status = RequestStatus::REJECTED->value;
         } else  {

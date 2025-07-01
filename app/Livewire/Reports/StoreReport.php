@@ -100,9 +100,15 @@ class StoreReport extends BaseComponent
                 switch ($this->report->step) {
                     case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
                         $this->report->step = $this->step ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+                        if ($this->report->auto_accept_period) {
+                            $this->report->auto_accept_at = now()->addHours($this->report->auto_accept_period);
+                        }
                         break;
                     case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                         $this->report->step = $this->step ?? RequestStep::APPROVAL_AREA_INTERFACE;
+                        if ($this->report->notify_period) {
+                            $this->report->next_notify_at = now()->addHours($this->report->notify_period);
+                        }
                         break;
                     case RequestStep::APPROVAL_AREA_INTERFACE:
                         $this->report->step = $this->step ?? RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;

@@ -127,6 +127,7 @@ class RequestController extends Controller
         }
 
         $validRole = UserRole::query()
+            ->with(['unit'])
             ->where('user_id' , auth()->id())
             ->where('item_id' , $itemId)
             ->where('role' , OperatorRole::MOSQUE_HEAD_COACH)
@@ -141,6 +142,20 @@ class RequestController extends Controller
 
         $data = $submitRequest->only(['students','amount','body','sheba']);
         $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students']) * $requestPlan->support_for_each_person_amount;
+        $auto_accept_at = null;
+
+        if ($validRole->unit->parent_id) {
+            $cultural_officer = UserRole::query()
+                ->where('item_id' , $itemId)
+                ->where('role' , OperatorRole::MOSQUE_CULTURAL_OFFICER)
+                ->where('unit_id' , $validRole->unit->parent_id)
+                ->whereNotNull('auto_accept_period')
+                ->first();
+            if ($cultural_officer && $cultural_officer->auto_accept_period) {
+                $auto_accept_at = now()->addHours($cultural_officer->auto_accept_period);
+            }
+        }
+
         try {
             DB::beginTransaction();
             $request = $requestPlan->requests()->create([
@@ -152,7 +167,9 @@ class RequestController extends Controller
                 'confirm' => true,
                 'item_id' => $itemId,
                 'unit_id' => $validRole->unit_id,
-                'single_step' => $requestPlan->single_step
+                'single_step' => $requestPlan->single_step,
+                'auto_accept_at' => $auto_accept_at,
+                'auto_accept_period' => $cultural_officer?->auto_accept_period ?? null,
             ]);
             $disk = config('site.default_disk');
             $now = now();
@@ -262,10 +279,17 @@ class RequestController extends Controller
         $data['status'] = RequestStatus::IN_PROGRESS;
         try {
             DB::beginTransaction();
-            $request->update([...$data , 'step' => $request->last_updated_by]);
+            $request->fill([...$data , 'step' => $request->last_updated_by]);
             $disk = config('site.default_disk');
             $now = now();
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;
+
+            if ($request->last_updated_by === RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER && $request->auto_accept_period) {
+                $request->auto_accept_at = now()->addHours($request->auto_accept_period);
+            } else if ($request->last_updated_by === RequestStep::APPROVAL_AREA_INTERFACE && $request->notify_period) {
+                $request->next_notify_at = now()->addHours($request->notify_period);
+            }
+            $request->save();
 
             if ($updateRequest->hasFile('imam_letter')) {
                 if ($request->imamLetter) {
@@ -347,48 +371,21 @@ class RequestController extends Controller
 
     public function adminStore(AdminStoreRequest $adminStoreRequest , $request): RequestResource
     {
+        $itemID = \request()->get('item_id');
         $request = RequestModel::query()
-            ->item(\request()->get('item_id'))
+            ->item($itemID)
             ->role(\request()->get('role'))
             ->relations()
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
-        dd($request);
         $from_status = $request->status;
         $step = $request->step;
         $request->last_updated_by = $request->step;
         if ($adminStoreRequest->action == "accept") {
             $request->status = RequestStatus::IN_PROGRESS;
-            switch ($request->step) {
-//                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
-//                    $request->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
-//                    break;
-                case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
-                    $request->step = RequestStep::APPROVAL_AREA_INTERFACE;
-                    break;
-                case RequestStep::APPROVAL_AREA_INTERFACE:
-                    $request->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
-                    break;
-                case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
-                    $request->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
-                    $request->offer_amount = $adminStoreRequest->offer_amount;
-                    break;
-                case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
-                    $request->step = RequestStep::FINISH;
-                    $request->status = RequestStatus::DONE;
-                    $request->final_amount = $adminStoreRequest->final_amount;
-
-                    $request->report()->create([
-                        'step' => $request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
-                        'status' => $request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
-                        'amount' => 0,
-                        'confirm' => true,
-                        'item_id' => $request->item_id
-                    ]);
-                    break;
-            }
+            $request->toNextStep($adminStoreRequest->offer_amount , $adminStoreRequest->final_amount);
         } else if ($adminStoreRequest->action == "reject") {
             $request->status = RequestStatus::REJECTED->value;
         } else  {

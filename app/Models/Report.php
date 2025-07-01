@@ -138,4 +138,32 @@ class Report extends Model
             return Carbon::make($this->created_at)->format('Y-m-d');
         });
     }
+
+    public function toNextStep($offer_amount = null , $final_amount = null): static
+    {
+        switch ($this->step) {
+//                case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
+//                    $report->step = RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+//                    break;
+            case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
+                $this->step = RequestStep::APPROVAL_AREA_INTERFACE;
+                if ($this->notify_period) {
+                    $this->next_notify_at = now()->addHours($this->notify_period);
+                }
+                break;
+            case RequestStep::APPROVAL_AREA_INTERFACE:
+                $this->step = RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
+                break;
+            case RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES:
+                $this->step = RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING;
+                $this->offer_amount = $offer_amount;
+                break;
+            case RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING:
+                $this->step = RequestStep::FINISH;
+                $this->status = RequestStatus::DONE;
+                $this->final_amount = $final_amount;
+                break;
+        }
+        return $this;
+    }
 }

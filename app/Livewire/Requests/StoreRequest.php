@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Requests;
 
+use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Livewire\BaseComponent;
 use App\Models\File;
 use App\Models\Request;
+use App\Models\UserRole;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -105,9 +107,27 @@ class StoreRequest extends BaseComponent
                 switch ($this->request->step) {
                     case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
                         $this->request->step = $this->step ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
+                        if ($this->request->auto_accept_period) {
+                            $this->request->auto_accept_at = now()->addHours($this->request->auto_accept_period);
+                        }
                         break;
                     case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                         $this->request->step = $this->step ?? RequestStep::APPROVAL_AREA_INTERFACE;
+                        if ($this->request->notify_period) {
+                            $this->request->next_notify_at =  now()->addHours($this->request->notify_period);
+                        } else if ($this->request->unit && $this->request->unit->city_id && $this->request->unit->region_id) {
+                            $area_interface = UserRole::query()
+                                ->where('item_id' , $this->request->item_id)
+                                ->where('city_id' , $this->request->unit->city_id)
+                                ->where('region_id' , $this->request->unit->region_id)
+                                ->where('role' , OperatorRole::AREA_INTERFACE)
+                                ->whereNotNull('notify_period')
+                                ->first();
+                            if ($area_interface && $area_interface->notify_period) {
+                                $this->request->next_notify_at =  now()->addHours($area_interface->notify_period);
+                                $this->request->notify_period = $area_interface->notify_period;
+                            }
+                        }
                         break;
                     case RequestStep::APPROVAL_AREA_INTERFACE:
                         $this->request->step = $this->step ?? RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES;
@@ -126,7 +146,9 @@ class StoreRequest extends BaseComponent
                             'status' => $this->request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                             'amount' => 0,
                             'confirm' => true,
-                            'item_id' => $this->request->item_id
+                            'item_id' => $this->request->item_id,
+                            'auto_accept_period' => $this->request->auto_accept_period,
+                            'notify_period' => $this->request->notify_period,
                         ]);
                         break;
                 }
@@ -134,13 +156,15 @@ class StoreRequest extends BaseComponent
                 $this->request->status = RequestStatus::tryFrom($this->status);
                 if ($this->step) {
                     $this->request->step = $this->step;
-                    if (RequestStep::tryFrom($this->step) === RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING && ! $this->request->report()->exists()) {
+                    if (RequestStep::tryFrom($this->step) === RequestStep::FINISH && ! $this->request->report()->exists()) {
                         $this->request->report()->create([
                             'step' => $this->request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                             'status' => $this->request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                             'amount' => 0,
                             'confirm' => true,
-                            'item_id' => $this->request->item_id
+                            'item_id' => $this->request->item_id,
+                            'auto_accept_period' => $this->request->auto_accept_period,
+                            'notify_period' => $this->request->notify_period,
                         ]);
                     }
                 }
