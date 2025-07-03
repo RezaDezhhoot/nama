@@ -33,6 +33,14 @@
                     width="3"
                     :ajaxUrl="route('admin.feed.plans',[$type])"
                     wire:model.defer="plan"/>
+                <x-admin.forms.select2
+                    id="user"
+                    :data="[]"
+                    text="name"
+                    label="مربی"
+                    width="4"
+                    :ajaxUrl="route('admin.feed.users')"
+                    wire:model.defer="user"/>
                 <x-admin.forms.dropdown width="3" id="step" :data="$data['step']" label="نقش / مرحله" wire:model.live="step"/>
 
             </div>
@@ -67,13 +75,25 @@
                                         <li>{{ $item->request->user?->name }}</li>
                                         <li>{{ $item->request->user?->phone }}</li>
                                         <li>{{ $item->request->user?->national_id }}</li>
+                                        <li>{{ $item->request?->coach?->school_coach_type?->label() }}</li>
                                     </ul>
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
-                                <td>{{ $item->request?->plan?->title }}</td>
+                                <td>
+                                    <ul>
+                                        <li>عنوان:{{ $item->request?->plan?->title }}</li>
+                                        <li>نسخه: {{ $item->request?->plan?->version?->value }}</li>
+                                    </ul>
+                                </td>
                                 <td>{{ $item->request?->single_step ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->step->label() }}</td>
-                                <td>{{ $item->request?->unit?->title ?? '-' }}</td>
+                                <td>
+                                    {{ $item->request?->unit?->full ?? '-' }}
+                                    @if($item->request?->unit?->parent)
+                                        <hr>
+                                        {{$item->request->unit->parent->full}}
+                                    @endif
+                                </td>
                                 <td>
                                     {{ $item->request?->unit?->city?->title }} / {{ $item->request?->unit?->region?->title }}
                                 </td>

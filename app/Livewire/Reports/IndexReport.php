@@ -19,7 +19,7 @@ class IndexReport extends BaseComponent
     use WithPagination;
 
     public $status , $item ,$type , $region;
-    public $plan , $unit , $step;
+    public $plan , $unit , $step , $user;
 
     public $unitModel , $regionModel , $planModel;
 
@@ -78,9 +78,12 @@ class IndexReport extends BaseComponent
     public function render()
     {
         $items = Report::query()
-            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan'])
+            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan','request.unit.parent','request.unit.coach'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
+            })
+            ->when($this->user , function (Builder $builder) {
+                $builder->where('user_id' , $this->user);
             })
             ->withCount('comments')
             ->when($this->region , function (Builder   $builder) {

@@ -154,7 +154,12 @@ class Request extends Model
 
     public function roles(): HasMany
     {
-        return $this->hasMany(UserRole::class,'user_id','user_id')->whereColumn('user_roles.item_id','=','requests.item_id');
+        return $this->hasMany(UserRole::class,'user_id','user_id')->whereColumn('user_roles.item_id','=','item_id');
+    }
+
+    public function coach(): HasOne
+    {
+        return $this->roles()->one()->where('role',OperatorRole::MOSQUE_HEAD_COACH);
     }
 
     public function item(): BelongsTo

@@ -22,7 +22,7 @@ class IndexRequest extends BaseComponent
 
     public $status , $item  , $type , $region;
 
-    public $plan , $unit , $step ;
+    public $plan , $unit , $step , $user;
 
     public $unitModel , $regionModel , $planModel;
 
@@ -82,9 +82,12 @@ class IndexRequest extends BaseComponent
     public function render()
     {
         $items = Request::query()
-            ->with(['plan','user','unit','unit.city','unit.region'])
+            ->with(['plan','user','unit','unit.city','unit.region','unit.parent','coach'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
+            })
+            ->when($this->user , function (Builder $builder) {
+                $builder->where('user_id' , $this->user);
             })
             ->withCount('comments')
             ->when($this->plan , function (Builder $builder){

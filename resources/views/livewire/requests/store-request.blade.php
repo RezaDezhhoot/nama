@@ -29,20 +29,24 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{{ $request->plan?->title }} {{ $request->single_step ? 'درخواست تک مرحله ای' : '' }}</td>
+                            <td>{{ $request->plan?->title }} #{{ $request->plan?->version?->value }} {{ $request->single_step ? 'درخواست تک مرحله ای' : '' }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
                             <td>{{ $request->step->label2() }}</td>
                             <td>
                                 <ul>
-                                    <li>{{ $request->user->name ?? "-" }}</li>
-                                    <li>{{ $request->user->phone }}</li>
-                                    <li>{{ $request->user->email ?? '-' }}</li>
-                                    <li>{{ $request->user->national_id  ?? '-' }}</li>
+                                    <li>{{ $request->user?->name ?? "-" }}</li>
+                                    <li>{{ $request->user?->phone }}</li>
+                                    <li>{{ $request->user?->email ?? '-' }}</li>
+                                    <li>{{ $request->user?->national_id  ?? '-' }}</li>
                                 </ul>
                             </td>
                            <td>{{ persian_date($request->created_at) }}</td>
                            <td>{{ persian_date($request->updated_at) }}</td>
-                            <td>{{ $request->unit?->title ?? "-" }}</td>
+                            <td>
+                                {{ $request->unit?->full ?? "-" }}
+                                <hr>
+                                {{ $request->unit?->parent?->full ?? "-" }}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
