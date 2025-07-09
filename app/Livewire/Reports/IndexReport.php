@@ -78,7 +78,7 @@ class IndexReport extends BaseComponent
     public function render()
     {
         $items = Report::query()
-            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan','request.unit.parent','request.unit.coach'])
+            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan','request.unit.parent','request.coach'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
             })
