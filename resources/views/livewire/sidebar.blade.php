@@ -122,13 +122,24 @@
                 @if(isAdmin())
                     <li class="menu-section">
                         <h4 class="menu-text">تنظیمات</h4>
-                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                        <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
                     </li>
                     <x-admin.menu-item
                         href="{{route('admin.rings.index')}}"
                         icon="fas fa-ring"
                         :active="request()->routeIs(['admin.rings.index','admin.rings.store'])"
                         label="حلقه ها" />
+
+                    <x-admin.menu-item
+                        href="{{route('admin.forms.index')}}"
+                        icon="flaticon2-file"
+                        :active="request()->routeIs(['admin.forms.index','admin.forms.store'])"
+                        label="فرم ها" />
+                    <x-admin.menu-item
+                        href="{{route('admin.form-reports.index')}}"
+                        icon="fas fa-ticket-alt"
+                        :active="request()->routeIs(['admin.form-reports.index','admin.form-reports.store'])"
+                        label="گزارش گیر({{ number_format($reports) }})" />
 
                     <x-admin.menu-item
                         href="{{route('admin.cities.index')}}"

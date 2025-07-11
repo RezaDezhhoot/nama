@@ -20,6 +20,13 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::get('{request}/comments' , 'getComments');
         Route::delete('remove-file/{file}' , 'deleteFile');
     });
+
+    Route::controller(\App\Http\Controllers\Api\V1\FormController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('forms')->group(function () {
+        Route::get('' , 'index');
+        Route::get('show/{form}' , 'show');
+        Route::post('submit/{form}' , 'submit');
+    });
+
     Route::controller(\App\Http\Controllers\Api\V1\ReportController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('reports')->group(function () {
         Route::get('' , 'index');
         Route::get('{report}' , 'show');

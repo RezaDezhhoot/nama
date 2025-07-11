@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/admin/persianDatepicker-master/css/persianDatepicker-default.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-    <script src="{{asset('admin/js/jquery.min.js')}}" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{--    <script src="{{asset('admin/js/jquery.min.js')}}" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{asset('admin/css/custom.css')}}" rel="stylesheet" type="text/css"/>
@@ -24,5 +24,10 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.1/ckeditor5.css" />
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5-premium-features/42.0.1/ckeditor5-premium-features.css" />
     <script src="//cdn.ckeditor.com/4.22.0/full/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 </head>

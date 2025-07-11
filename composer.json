@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
+        "mavinoo/laravel-batch": "^2.4",
         "morilog/jalali": "3.*",
         "opcodesio/log-viewer": "^3.14"
     },

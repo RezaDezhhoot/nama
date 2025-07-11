@@ -56,6 +56,14 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('' , \App\Livewire\Units\IndexUnit::class)->name('index');
             Route::get('{action}/{id?}' , \App\Livewire\Units\StoreUnit::class)->name('store');
         });
+        Route::group(['prefix' => 'forms' , 'as' => 'forms.' , 'middleware' => 'is_admin'] , function () {
+            Route::get('' , \App\Livewire\Forms\IndexForm::class)->name('index');
+            Route::get('{action}/{id?}' , \App\Livewire\Forms\StoreForm::class)->name('store');
+        });
+        Route::group(['prefix' => 'form-reports' , 'as' => 'form-reports.' , 'middleware' => 'is_admin'] , function () {
+            Route::get('' , \App\Livewire\FormReports\IndexFormReport::class)->name('index');
+            Route::get('{action}/{id}' , \App\Livewire\FormReports\StoreFormReport::class)->name('store');
+        });
     });
     Route::group(['prefix' => 'auth' , 'as' => 'auth.'],function (){
         Route::middleware('guest')->get('/auth', \App\Livewire\Auth\Auth::class)->name('login');

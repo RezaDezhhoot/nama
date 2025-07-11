@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Enums\FormReportEnum;
 use App\Enums\RequestStatus;
 use App\Enums\UnitType;
+use App\Models\FormReport;
 use App\Models\Report;
 use App\Models\Request;
 use App\Models\WrittenRequest;
@@ -93,6 +95,10 @@ class Sidebar extends Component
         $writtenRequests = WrittenRequest::query()
             ->where('status' , RequestStatus::IN_PROGRESS)
             ->roleFilter()
+            ->count();
+
+        $reports = FormReport::query()
+            ->where('status' , FormReportEnum::PENDING)
             ->count();
 
         return view('livewire.sidebar' , get_defined_vars());
