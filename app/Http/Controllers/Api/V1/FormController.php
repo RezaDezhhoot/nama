@@ -167,7 +167,7 @@ class FormController extends Controller
                             $v->errors()->add($item->id,'اجباری می باشد');
                             throw new ValidationException($v);
                         }
-                        if ($value) {
+                        if ($value instanceof UploadedFile) {
                             if (! empty($item->max) && ($item->max * 1000 * 1000) < $value->getSize()) {
                                 $v->errors()->add($item->id,'حداکثر سایز فیلد رعایت نشده است');
                                 throw new ValidationException($v);
