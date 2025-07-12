@@ -49,7 +49,7 @@ class StoreForm extends BaseComponent
             $this->sort = $this->form->sort;
             $this->body = $this->form->body;
             $this->item = $this->form->item_id;
-            $this->header = $this->title;
+            $this->header = $this->title ?? $this->form->id;
             $this->status = $this->form->status?->value;
         } elseif ($this->isCreatingMode()) {
             $this->form = Form::query()->create();
