@@ -2,7 +2,7 @@
 <div wire:init="init">
     <x-admin.big-loader :loading="$loading" />
     @section('title', 'لیست ادمین ها')
-    <x-admin.form-control :store="false" export="export" link="{{ route('admin.plans.store',[PageAction::CREATE] ) }}" title="لیست ادمین ها"/>
+    <x-admin.form-control :store="false" exportable="export" link="{{ route('admin.plans.store',[PageAction::CREATE] ) }}" title="لیست ادمین ها"/>
 
     <div class="card card-custom">
         <div class="card-body">
