@@ -87,7 +87,7 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
         ];
     }
 
-    public function prepareRows($rows): array
+    public function prepareRows($rows)
     {
         return $rows->transform(function ($row) {
             return [
