@@ -3,6 +3,7 @@
 namespace App\Livewire\Users;
 
 use App\Enums\OperatorRole;
+use App\Exports\RoleExport;
 use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
 use App\Models\User;
@@ -35,6 +36,7 @@ class AttachRole extends BaseComponent
         $db = config('database.connections.mysql.database');
         $items = User::query()
             ->with(['roles','roles.unit'])
+            ->whereNotNull('name')
             ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
             ->select('ur.role as role2','ur.region_id','ur.unit_id','users.*')
             ->when($this->role , function (Builder $builder) {
@@ -53,6 +55,11 @@ class AttachRole extends BaseComponent
             ->paginate($this->per_page);
 
         return view('livewire.users.attach-role' , get_defined_vars())->extends('livewire.layouts.admin');
+    }
+
+    public function export()
+    {
+        return (new RoleExport($this->role,$this->region,$this->unit,$this->search))->download('rolex.xlsx');
     }
 
     public function generateToken($id)
