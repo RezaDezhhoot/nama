@@ -83,20 +83,21 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
             'نام',
             'کد ملی',
             'شماره تماس',
-            'نقش ها',
         ];
     }
 
     public function prepareRows($rows)
     {
         return $rows->transform(function ($row) {
+            $roles = [];
+            foreach ($row->roles as $role) {
+                $roles[] = $role->role?->label().'-'.$role->unit?->full.'-'.$role->region?->title;
+            }
             return [
                 'name' => $row->name,
                 'national_id' => $row->national_id,
                 'phone' => $row->phone,
-                'roles' => collect($row->roles)->map(function ($r){
-                    return $r->role?->label().'-'.$r?->unit?->full.'-'.$r->region?->title;
-                })->toJson()
+                ... $roles,
             ];
         });
     }
