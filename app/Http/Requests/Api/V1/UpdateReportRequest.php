@@ -23,8 +23,8 @@ class UpdateReportRequest extends FormRequest
             'images_to_remove.*' => ['required','integer','min:1',Rule::exists('files','id')->where('fileable_id' , $id)->where('fileable_type' , $report->getMorphClass())],
             'remove_video' => ['sometimes','boolean'],
             'images' => [ 'sometimes','required','array'],
-            'images.*' => ['required',Rule::file()->extensions(config('site.files.image.formats'))->max(100 * 1024)],
-            'video' => ['sometimes','nullable',Rule::file()->extensions(config('site.files.video.formats'))->max(100 * 1024)],
+            'images.*' => ['required',Rule::file()->max(100 * 1024 * 5)],
+            'video' => ['sometimes','nullable',Rule::file()->max(100 * 1024 * 5)],
         ];
     }
 }
