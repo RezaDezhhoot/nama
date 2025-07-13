@@ -7,6 +7,9 @@ use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Enums\SchoolCoachType;
 use App\Enums\UnitSubType;
+use App\Events\ActionNeededRequestEvent;
+use App\Events\ConfirmationRequestEvent;
+use App\Events\RejectRequestEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminStoreRequest;
 use App\Http\Requests\Api\V1\SubmitRequest;
@@ -390,8 +393,12 @@ class RequestController extends Controller
         if ($adminStoreRequest->action == "accept") {
             $request->status = RequestStatus::IN_PROGRESS;
             $request->toNextStep($adminStoreRequest->offer_amount , $adminStoreRequest->final_amount);
+            if ($request->status === RequestStatus::DONE) {
+                event(new ConfirmationRequestEvent($request));
+            }
         } else if ($adminStoreRequest->action == "reject") {
             $request->status = RequestStatus::REJECTED->value;
+            event(new RejectRequestEvent($request));
         } else  {
             if (
                 ! in_array(
@@ -401,6 +408,7 @@ class RequestController extends Controller
             ) abort(422);
             $request->step = $adminStoreRequest->to;
             $request->status = RequestStatus::ACTION_NEEDED->value;
+            event(new ActionNeededRequestEvent($request));
         }
 
         if ($adminStoreRequest->filled('comment')) {

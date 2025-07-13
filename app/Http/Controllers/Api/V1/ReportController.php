@@ -8,6 +8,9 @@ use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Enums\SchoolCoachType;
 use App\Enums\UnitSubType;
+use App\Events\ActionNeededReportEvent;
+use App\Events\ConfirmationReportEvent;
+use App\Events\RejectReportEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminStoreReportRequest;
 use App\Http\Requests\Api\V1\AdminStoreRequest;
@@ -368,8 +371,12 @@ class ReportController extends Controller
         if ($adminStoreReportRequest->action == "accept") {
             $report->status = RequestStatus::IN_PROGRESS;
             $report->toNextStep($adminStoreReportRequest->offer_amount , $adminStoreReportRequest->final_amount);
+            if ($report->status === RequestStatus::DONE) {
+                event(new ConfirmationReportEvent($report));
+            }
         } else if ($adminStoreReportRequest->action == "reject") {
             $report->status = RequestStatus::REJECTED->value;
+            event(new RejectReportEvent($report));
         } else  {
             if (
                 ! in_array(
@@ -379,6 +386,7 @@ class ReportController extends Controller
             ) abort(422);
             $report->step = $adminStoreReportRequest->to;
             $report->status = RequestStatus::ACTION_NEEDED->value;
+            event(new ActionNeededReportEvent($report));
         }
         if ($adminStoreReportRequest->filled('comment')) {
             $report->message = $adminStoreReportRequest->input('comment');

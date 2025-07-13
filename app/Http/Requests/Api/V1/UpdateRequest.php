@@ -31,6 +31,6 @@ class UpdateRequest extends FormRequest
 
     private function fileRules(): array
     {
-        return ['sometimes','nullable',Rule::file()->max(100 * 1024)];
+        return ['sometimes','nullable',Rule::file()->max(100 * 1024 * 5)];
     }
 }
