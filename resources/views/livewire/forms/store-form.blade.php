@@ -70,7 +70,7 @@
                 <x-admin.forms.input type="text" id="iMimeTypes" help="فرمت هارا با کاما (,) از هم جدا کنید" label="فرمت های مجاز" wire:model.defer="iMimeTypes"/>
             @endif
             @if(in_array($iType,[FormItemType::TEXT->value,FormItemType::NUMBER->value,FormItemType::TEXTAREA->value,FormItemType::FILE->value]))
-                <x-admin.forms.input width="6" type="number" id="iMax" label="حداقل مقدار" wire:model.defer="iMax"/>
+                <x-admin.forms.input width="6" type="number" id="iMax" label="حداکثر مقدار" wire:model.defer="iMax"/>
                 <x-admin.forms.input width="6" type="number" id="iMin" label="حداقل مقدار" wire:model.defer="iMin"/>
             @endif
             @if(in_array($iType,[FormItemType::CHECKBOX->value,FormItemType::RADIO->value,FormItemType::SELECT->value,FormItemType::SELECT2->value]))
