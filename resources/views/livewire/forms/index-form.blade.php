@@ -26,17 +26,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($items as $item)
+                        @foreach($items as $i)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->required ? 'بله' : 'خیر' }}</td>
-                                <td>{{ $item->title }}</td>
-                                <td>{{ $item->item?->title }}</td>
-                                <td>{{ $item->status?->label() }}</td>
+                                <td>{{ $i->id }}</td>
+                                <td>{{ $i->required ? 'بله' : 'خیر' }}</td>
+                                <td>{{ $i->title }}</td>
+                                <td>{{ $i->item?->title }}</td>
+                                <td>{{ $i->status?->label() }}</td>
                                 <td>
-                                    <x-admin.edit-btn href="{{ route('admin.forms.store',[PageAction::UPDATE , $item->id]) }}?status={{$status}}&item={{$item?->id}}&search={{$search}}"/>
-                                    <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
+                                    <x-admin.edit-btn href="{{ route('admin.forms.store',[PageAction::UPDATE , $i->id]) }}?status={{$status}}&item={{$item}}&search={{$search}}"/>
+                                    <x-admin.delete-btn onclick="deleteItem('{{$i->id}}')"  />
                                 </td>
                             </tr>
                         @endforeach
