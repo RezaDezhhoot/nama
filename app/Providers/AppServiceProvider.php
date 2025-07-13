@@ -33,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         File::observe(FileObserver::class);
+        if ($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
         Event::listen(
             [
                 ActionNeededRequestEvent::class,
