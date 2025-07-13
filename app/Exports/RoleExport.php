@@ -22,7 +22,8 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
 
     public function __construct(public $role = null , public $region = null  , public $unit = null , public $search  = null)
     {
-
+        ini_set('max_execution_time', '300');
+        ini_set('memory_limit', '-1');
     }
 
     public function defaultStyles(Style $defaultStyle)
