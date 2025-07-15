@@ -20,6 +20,7 @@ return [
         'template4' => env('KAVEH_NEGAR_TEMPLATE4'),
         'template5' => env('KAVEH_NEGAR_TEMPLATE5'),
         'template6' => env('KAVEH_NEGAR_TEMPLATE6'),
+        'template7' => env('KAVEH_NEGAR_TEMPLATE7'),
     ],
     'default_driver' => \App\Services\Notification\Channels\SMS\Drivers\KavehNegarDriver::class
 ];

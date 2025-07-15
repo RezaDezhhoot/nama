@@ -46,7 +46,7 @@ class Request extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    public function plan()
+    public function plan(): BelongsTo
     {
         return $this->belongsTo(RequestPlan::class,'request_plan_id')->withTrashed();
     }
@@ -175,11 +175,11 @@ class Request extends Model
 //                    break;
             case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                 $this->step = RequestStep::APPROVAL_AREA_INTERFACE;
-
                 if ($this->notify_period) {
                     $this->next_notify_at =  now()->addHours($this->notify_period);
                 } else if ($this->unit && $this->unit->city_id && $this->unit->region_id) {
                     $area_interface = UserRole::query()
+                        ->with('user')
                         ->where('item_id' , $this->item_id)
                         ->where('city_id' , $this->unit->city_id)
                         ->where('region_id' , $this->unit->region_id)
@@ -189,6 +189,9 @@ class Request extends Model
                     if ($area_interface && $area_interface->notify_period) {
                         $this->next_notify_at =  now()->addHours($area_interface->notify_period);
                         $this->notify_period = $area_interface->notify_period;
+                        if ($area_interface->user) {
+                            $this->controller2()->associate($area_interface->user);
+                        }
                     }
                 }
                 break;
@@ -212,9 +215,21 @@ class Request extends Model
                     'item_id' => $this->item_id,
                     'auto_accept_period' => $this->auto_accept_period,
                     'notify_period' => $this->notify_period,
+                    'controller_id' => $this->controller_id,
+                    'controller2_id' => $this->controller2_id,
                 ]);
                 break;
         }
         return $this;
+    }
+
+    public function controller(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'controller_id');
+    }
+
+    public function controller2(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'controller2_id');
     }
 }

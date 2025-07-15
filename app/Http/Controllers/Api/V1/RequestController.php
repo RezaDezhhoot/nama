@@ -150,9 +150,12 @@ class RequestController extends Controller
         $data = $submitRequest->only(['students','amount','body','sheba']);
         $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students']) * $requestPlan->support_for_each_person_amount;
         $auto_accept_at = null;
+        $request = new \App\Models\Request();
+        $request->plan()->associate($requestPlan);
 
         if ($validRole->unit->parent_id) {
             $cultural_officer = UserRole::query()
+                ->with('user')
                 ->where('item_id' , $itemId)
                 ->where('role' , OperatorRole::MOSQUE_CULTURAL_OFFICER)
                 ->where('unit_id' , $validRole->unit->parent_id)
@@ -160,12 +163,15 @@ class RequestController extends Controller
                 ->first();
             if ($cultural_officer && $cultural_officer->auto_accept_period) {
                 $auto_accept_at = now()->addHours($cultural_officer->auto_accept_period);
+                if ($cultural_officer->user) {
+                    $request->controller()->associate($cultural_officer->user);
+                }
             }
         }
 
         try {
             DB::beginTransaction();
-            $request = $requestPlan->requests()->create([
+            $request->fill([
                 ... $data,
                 'date' => dateConverter($submitRequest->date ,'m'),
                 'user_id' => auth()->id(),
@@ -177,7 +183,7 @@ class RequestController extends Controller
                 'single_step' => $requestPlan->single_step,
                 'auto_accept_at' => $auto_accept_at,
                 'auto_accept_period' => $cultural_officer?->auto_accept_period ?? null,
-            ]);
+            ])->save();
             $disk = config('site.default_disk');
             $now = now();
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;

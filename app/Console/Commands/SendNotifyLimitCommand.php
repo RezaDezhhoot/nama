@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\RequestStep;
 use App\Models\Report;
 use App\Models\Request;
+use App\Services\Notification\Send;
 use Illuminate\Console\Command;
 
 class SendNotifyLimitCommand extends Command
@@ -28,31 +29,56 @@ class SendNotifyLimitCommand extends Command
      */
     public function handle()
     {
+        $template = config('sms.kaveh_negar.template7');
         switch ($this->option('target')) {
             case "reports":
                 $reports = Report::query()
+                    ->with('controller2')
                     ->whereNotNull(['next_notify_at','notify_period'])
                     ->where('next_notify_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_AREA_INTERFACE)
                     ->take(3)
                     ->get();
                 foreach ($reports as $report) {
-//                    $report->update([
-//                        'next_notify_at' => now()->addHours($report->notify_period)
-//                    ]);
+                    $user = $report->controller2;
+                    if ($user) {
+                        try {
+                            Send::sendOTPSMS($user->phone, $template, [
+                                'token' => "نما",
+                                'token20' => $user->name ?? 'کاربر گرامی'
+                            ]);
+                            $report->update([
+                                'next_notify_at' => now()->addHours($report->notify_period)
+                            ]);
+                        } catch (\Exception $exception) {
+                            report($exception);
+                        }
+                    }
                 }
                 break;
             default:
                 $requests = Request::query()
+                    ->with('controller2')
                     ->whereNotNull(['next_notify_at','notify_period'])
                     ->where('next_notify_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_AREA_INTERFACE)
                     ->take(3)
                     ->get();
                 foreach ($requests as $request) {
-//                    $request->update([
-//                        'next_notify_at' => now()->addHours($request->notify_period)
-//                    ]);
+                    $user = $request->controller2;
+                    if ($user) {
+                        try {
+                            Send::sendOTPSMS($user->phone, $template, [
+                                'token' => "نما",
+                                'token20' => $user->name ?? 'کاربر گرامی'
+                            ]);
+                            $request->update([
+                                'next_notify_at' => now()->addHours($request->notify_period)
+                            ]);
+                        } catch (\Exception $exception) {
+                            report($exception);
+                        }
+                    }
                 }
         }
     }

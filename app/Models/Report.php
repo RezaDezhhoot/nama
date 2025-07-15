@@ -166,4 +166,14 @@ class Report extends Model
         }
         return $this;
     }
+
+    public function controller(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'controller_id');
+    }
+
+    public function controller2(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'controller2_id');
+    }
 }
