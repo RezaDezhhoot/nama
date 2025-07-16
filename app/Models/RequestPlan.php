@@ -32,6 +32,7 @@ class RequestPlan extends Model
         'letter_required' => 'boolean',
         'letter2_required' => 'boolean',
         'single_step' => 'boolean',
+        'images_required' => 'boolean',
     ];
 
     protected static function booted()

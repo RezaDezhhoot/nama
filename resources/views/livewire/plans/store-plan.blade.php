@@ -27,6 +27,7 @@
 
                 <x-admin.forms.checkbox  id="letter_required" label="فایل نامه امام اجباری باشد" wire:model.defer="letter_required"/>
                 <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد" wire:model.defer="letter2_required"/>
+                <x-admin.forms.checkbox  id="images_required" label="تصاویر بیشتر اجباری باشد" wire:model.defer="images_required"/>
                 <x-admin.forms.checkbox  id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
 
                 <div wire:ignore class="{{ $item ? '' : 'd-none' }} col-12 row">

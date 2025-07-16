@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 class StorePlan extends BaseComponent
 {
     public $title , $sub_title , $image , $status , $max_number_people_supported = 10 , $support_for_each_person_amount = 1000;
-    public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false , $single_step = false;
+    public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false , $single_step = false , $images_required = false;
 
     public $version;
 
@@ -44,6 +44,7 @@ class StorePlan extends BaseComponent
             $this->bold = $this->model->bold;
             $this->letter_required = $this->model->letter_required ?? false;
             $this->letter2_required = $this->model->letter2_required ?? false;
+            $this->images_required = $this->model->images_required ?? false;
             $this->version = $this->model->version->value ?? null;
             $this->header = $this->title;
             $this->item = $this->model->item_id;
@@ -84,6 +85,7 @@ class StorePlan extends BaseComponent
             'bold' => ['nullable','boolean'],
             'letter_required' => ['nullable','boolean'],
             'letter2_required' => ['nullable','boolean'],
+            'images_required' => ['nullable','boolean'],
             'single_step' => ['nullable','boolean'],
             'version' => ['required',Rule::enum(RequestPlanVersion::class)],
             'item' => ['required'],
@@ -106,6 +108,7 @@ class StorePlan extends BaseComponent
             'version' => $this->version,
             'letter_required' => emptyToNull($this->letter_required) ?? false,
             'letter2_required' => emptyToNull($this->letter2_required) ?? false,
+            'images_required' => emptyToNull($this->images_required) ?? false,
             'single_step' => emptyToNull($this->single_step) ?? false,
         ];
         $model->fill($data)->save();
