@@ -6,9 +6,12 @@ use App\Enums\OperatorRole;
 use App\Enums\SchoolCoachType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserRole extends Model
 {
+    use SoftDeletes;
+
     protected $guarded = ['id'];
     protected $table = 'user_roles';
     protected $connection = 'mysql';
