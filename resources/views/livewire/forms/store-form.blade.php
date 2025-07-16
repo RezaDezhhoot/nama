@@ -1,7 +1,7 @@
 @use('App\Enums\PageAction')
 @use('App\Enums\FormItemType')
-<div wire:init="init" class="h-100">
-    <x-admin.big-loader :loading="$loading"/>
+<div  class="h-100">
+{{--    <x-admin.big-loader :loading="$loading"/>--}}
     @section('title', $header )
     <x-admin.form-control deleteAble="{{$mode === PageAction::UPDATE}}" store="store" title="فرم ها"/>
     <div class="card card-custom h-100 gutter-b example example-compact">
