@@ -117,7 +117,6 @@
         }
         var updateIndex = function(e, ui) {
             let newSort = {}
-            let Package = null
             $('td.sortable-handler', ui.item.parent()).each(function (i) {
                 $(this).html(i+1);
                 newSort[$(this)[0].getAttribute('data-index')] = i
