@@ -211,6 +211,8 @@ class Request extends Model
                     'step' => $this->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                     'status' => $this->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                     'amount' => 0,
+                    'offer_amount' => 0,
+                    'final_amount' => 0,
                     'confirm' => true,
                     'item_id' => $this->item_id,
                     'auto_accept_period' => $this->auto_accept_period,
