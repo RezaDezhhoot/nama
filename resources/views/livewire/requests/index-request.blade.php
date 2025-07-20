@@ -93,10 +93,10 @@
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label2() }}</td>
                                 <td>
-                                    {{ $item->unit->full ?? "-" }}
-                                    @if($item->unit->parent)
+                                    {{ $item?->unit?->full ?? "-" }}
+                                    @if($item?->unit?->parent)
                                         <hr>
-                                        {{$item->unit->parent->full}}
+                                        {{$item?->unit?->parent?->full}}
                                     @endif
                                 </td>
                                 <td>

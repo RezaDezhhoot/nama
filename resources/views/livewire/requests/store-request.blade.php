@@ -170,12 +170,12 @@
                                     <div class="d-flex flex-column mb-5 {{ $reply->user_id == auth()->id() ? " align-items-start" : " align-items-end" }}">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <a class="text-dark-75 text-hover-primary font-weight-bold font-size-h6"><strong>{{$reply->display_name}} :</strong> {{ $reply->user->name }}  </a>
+                                                <a class="text-dark-75 text-hover-primary font-weight-bold font-size-h6"><strong>{{$reply?->display_name}} :</strong> {{ $reply?->user?->name }}  </a>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <div class="symbol symbol-circle symbol-35 mr-3">
-                                                <img alt="avatar" src="{{ asset($reply->user->avatar ?? null) }}" />
+                                                <img alt="avatar" src="{{ asset($reply?->user?->avatar ?? null) }}" />
                                             </div>
                                             <div>
                                                 <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-100%">
