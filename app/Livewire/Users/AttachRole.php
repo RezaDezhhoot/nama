@@ -35,7 +35,6 @@ class AttachRole extends BaseComponent
     {
         $db = config('database.connections.mysql.database');
         $items = User::query()
-            ->whereNotNull('deleted_at')
             ->with(['roles','roles.unit','roles.region'])
             ->whereNotNull('name')
             ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
