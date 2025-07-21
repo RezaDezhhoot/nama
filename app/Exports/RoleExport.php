@@ -55,6 +55,7 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
     {
         $db = config('database.connections.mysql.database');
         return User::query()
+            ->whereNotNull('deleted_at')
             ->with(['roles','roles.unit','roles.region'])
             ->whereNotNull('name')
             ->leftJoin(sprintf("%s.user_roles AS  ur", $db),"user_id",'=','users.id')

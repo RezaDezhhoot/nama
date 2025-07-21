@@ -19,6 +19,8 @@ class StoreReport extends BaseComponent
 
     public $offer_amount , $final_amount , $type;
 
+    public $qversion;
+
     public $step;
 
     public $qitem , $qstatus , $qtype , $qregion , $qplan , $qunit , $qstep , $qsearch;
@@ -49,6 +51,9 @@ class StoreReport extends BaseComponent
             ],
             'qsearch' => [
                 'as' => 'search'
+            ],
+            'qversion' => [
+                'as' => 'version'
             ]
         ];
     }
@@ -152,6 +157,7 @@ class StoreReport extends BaseComponent
                 'unit' => $this->qunit,
                 'step' => $this->qstep,
                 'search' => $this->qsearch,
+                'version' => $this->qversion,
             ]);
         }
     }

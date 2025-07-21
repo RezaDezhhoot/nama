@@ -23,7 +23,7 @@ class StoreRequest extends BaseComponent
 
     public $type , $step;
 
-    public $qitem , $qstatus , $qtype , $qregion , $qplan , $qunit , $qstep , $qsearch;
+    public $qitem , $qstatus , $qtype , $qregion , $qplan , $qunit , $qstep , $qsearch , $qversion;
 
     protected function queryString()
     {
@@ -51,6 +51,9 @@ class StoreRequest extends BaseComponent
             ],
             'qsearch' => [
                 'as' => 'search'
+            ],
+            'qversion' => [
+                'as' => 'version'
             ]
         ];
     }
@@ -195,6 +198,7 @@ class StoreRequest extends BaseComponent
                 'unit' => $this->qunit,
                 'step' => $this->qstep,
                 'search' => $this->qsearch,
+                'version' => $this->qversion,
             ]);
         }
     }

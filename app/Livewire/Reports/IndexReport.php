@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Reports;
 
+use App\Enums\RequestPlanVersion;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Exports\ExportReports;
@@ -21,6 +22,7 @@ class IndexReport extends BaseComponent
     public $status , $item ,$type , $region;
     public $plan , $unit , $step , $user;
 
+    public $version;
     public $unitModel , $regionModel , $planModel;
 
     protected function queryString()
@@ -49,6 +51,9 @@ class IndexReport extends BaseComponent
             ],
             'search' => [
                 'as' => 'search'
+            ],
+            'version' => [
+                'as' => 'version'
             ]
         ];
     }
@@ -58,6 +63,7 @@ class IndexReport extends BaseComponent
         $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
         $this->data['step'] = RequestStep::labels();
+        $this->data['version'] = RequestPlanVersion::values();
 
         if ($this->unit) {
             $this->unitModel = Unit::query()->find($this->unit)?->toArray();
@@ -104,6 +110,13 @@ class IndexReport extends BaseComponent
                 $builder->whereHas('request' , function (Builder $builder) {
                     $builder->whereHas('plan' , function (Builder $builder){
                         $builder->where('id',$this->plan);
+                    });
+                });
+            })
+            ->when($this->version , function (Builder   $builder) {
+                $builder->whereHas('request' , function (Builder $builder) {
+                    $builder->whereHas('plan' , function (Builder $builder){
+                        $builder->where('version',$this->version);
                     });
                 });
             })

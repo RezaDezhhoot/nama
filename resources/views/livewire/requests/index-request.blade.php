@@ -42,6 +42,7 @@
                     wire:model.defer="user"/>
 
                 <x-admin.forms.dropdown width="3" id="step" :data="$data['step']" label="نقش / مرحله" wire:model.live="step"/>
+                <x-admin.forms.dropdown width="3" :data="$data['version']" id="version" label="نسخه آرمان" wire:model.live="version"/>
 
             </div>
             @include('livewire.includes.advance-table')
@@ -110,7 +111,7 @@
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
-                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}?status={{$status}}&type={{$type}}&region={{$region}}&plan={{$plan}}&unit={{$unit}}&step={{$step}}&search={{$search}}"/>
+                                    <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}?version={{$version}}&status={{$status}}&type={{$type}}&region={{$region}}&plan={{$plan}}&unit={{$unit}}&step={{$step}}&search={{$search}}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
                                 </td>
                             </tr>

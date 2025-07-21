@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Requests;
 
+use App\Enums\RequestPlanVersion;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Exports\ExportRequests;
@@ -24,7 +25,7 @@ class IndexRequest extends BaseComponent
 
     public $plan , $unit , $step , $user;
 
-    public $unitModel , $regionModel , $planModel;
+    public $unitModel , $regionModel , $planModel , $version;
 
     protected function queryString()
     {
@@ -52,6 +53,9 @@ class IndexRequest extends BaseComponent
             ],
             'search' => [
                 'as' => 'search'
+            ],
+            'version' => [
+                'as' => 'version'
             ]
         ];
     }
@@ -62,6 +66,7 @@ class IndexRequest extends BaseComponent
         $this->data['status'] = RequestStatus::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
         $this->data['step'] = RequestStep::labels();
+        $this->data['version'] = RequestPlanVersion::values();
 
         if ($this->unit) {
             $this->unitModel = Unit::query()->find($this->unit)?->toArray();
@@ -93,6 +98,11 @@ class IndexRequest extends BaseComponent
             ->when($this->plan , function (Builder $builder){
                 $builder->whereHas('plan' , function (Builder $builder){
                     $builder->where('id',$this->plan);
+                });
+            })
+            ->when($this->version , function (Builder $builder) {
+                $builder->whereHas('plan' , function (Builder $builder) {
+                    $builder->where('version' , $this->version);
                 });
             })
             ->when($this->unit , function (Builder $builder){
