@@ -84,14 +84,12 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                         break;
                 };
             })
-            ->when($this->region , function (Builder $builder){
-                ->when($this->region && ! $this->role , function (Builder $builder){
-                    $builder->where(function (Builder $builder) {
-                        $builder->where("ur.region_id" , $this->region)
-                            ->orWhere('u.region_id' , $this->region);
-                        ;
-                    });
-                })
+            ->when($this->region && ! $this->role , function (Builder $builder){
+                $builder->where(function (Builder $builder) {
+                    $builder->where("ur.region_id" , $this->region)
+                        ->orWhere('u.region_id' , $this->region);
+                    ;
+                });
             })
             ->when($this->unit , function (Builder $builder){
                 $builder->where("ur.unit_id" , $this->unit);
