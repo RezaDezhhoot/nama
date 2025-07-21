@@ -41,27 +41,15 @@ class AttachRole extends BaseComponent
             ->leftJoin(sprintf("%s.units AS u",$db),'u.id','=','ur.unit_id')
             ->select('ur.role as role2','ur.region_id','ur.unit_id','u.id AS unit_pkey','u.region_id AS unit_region_id','users.*')
             ->when($this->role , function (Builder $builder) {
-                switch ($this->role) {
-                    case OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->value:
-                    case OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value:
-                        $builder->where('ur.role' , $this->role);
-                        break;
-                    case OperatorRole::AREA_INTERFACE->value:
-                    case OperatorRole::MOSQUE_CULTURAL_OFFICER->value:
-                    case OperatorRole::MOSQUE_HEAD_COACH->value:
-                        $builder->where(function (Builder $builder) {
-                            if ($this->region) {
-                                $builder
-                                    ->where(function (Builder $builder) {
-                                        $builder
-                                            ->where('ur.region_id' , $this->region)
-                                            ->orWhere('u.region_id' , $this->region);
-                                    });
-                            }
-                            $builder->where('ur.role' , $this->role);
+                $builder->where('ur.role' , $this->role);
+                if ($this->region) {
+                    $builder
+                        ->where(function (Builder $builder) {
+                            $builder
+                                ->where('ur.region_id' , $this->region)
+                                ->orWhere('u.region_id' , $this->region);
                         });
-                        break;
-                };
+                }
             })
             ->when($this->region && ! $this->role , function (Builder $builder){
                 $builder->where(function (Builder $builder) {
