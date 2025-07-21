@@ -49,7 +49,7 @@ class Unit extends Model
     public function full(): Attribute
     {
         return Attribute::get(function ($v) {
-            return sprintf("%s- %s",$this->title,$this->text);
+            return sprintf("%s - %s - %s",$this->title,$this->text , $this->region?->title);
         });
     }
 

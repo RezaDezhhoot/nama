@@ -51,7 +51,7 @@ class IndexUnit extends BaseComponent
     {
         $items = Unit::query()
             ->latest()
-            ->with(['roles','roles.user'])
+            ->with(['roles','roles.user','roles.region'])
             ->when($this->region , function (Builder $builder) {
                 $builder->where('region_id' , $this->region);
             })->when($this->unit , function (Builder $builder) {

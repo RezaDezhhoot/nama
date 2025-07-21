@@ -54,7 +54,9 @@
                                     <ul>
                                         @foreach($item->roles as $role)
                                             <li>
-                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">{{ $role->user?->name }} : {{ $role->role?->label() }} - {{ $role?->unit?->full }}</span>
+                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">
+                                                   {{ $role->role?->label() }} - {{ $role?->region?->title }} : {{ $role?->unit?->full }}
+                                                </span>
                                             </li>
                                         @endforeach
                                     </ul>
