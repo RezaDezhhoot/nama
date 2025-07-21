@@ -44,11 +44,11 @@ class AttachRole extends BaseComponent
                 switch ($this->role) {
                     case OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->value:
                     case OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value:
-                    case OperatorRole::MOSQUE_HEAD_COACH->value:
                         $builder->where('ur.role' , $this->role);
                         break;
                     case OperatorRole::AREA_INTERFACE->value:
                     case OperatorRole::MOSQUE_CULTURAL_OFFICER->value:
+                    case OperatorRole::MOSQUE_HEAD_COACH->value:
                         $builder->where(function (Builder $builder) {
                             if ($this->region) {
                                 $builder
@@ -56,10 +56,7 @@ class AttachRole extends BaseComponent
                                         $builder
                                             ->where('ur.region_id' , $this->region)
                                             ->orWhere('u.region_id' , $this->region);
-                                    });
-                            } else {
-                                $builder
-                                    ->where('ur.role' , $this->role);
+                                    })->where('ur.role' , $this->role);
                             }
                         });
                         break;
