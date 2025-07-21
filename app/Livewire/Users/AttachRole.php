@@ -50,15 +50,16 @@ class AttachRole extends BaseComponent
                     case OperatorRole::AREA_INTERFACE->value:
                     case OperatorRole::MOSQUE_CULTURAL_OFFICER->value:
                         $builder->where(function (Builder $builder) {
-                            $builder
-                                ->where('ur.role' , $this->role);
                             if ($this->region) {
                                 $builder
-                                    ->orWhere(function (Builder $builder) {
+                                    ->where(function (Builder $builder) {
                                         $builder
                                             ->where('ur.region_id' , $this->region)
                                             ->orWhere('u.region_id' , $this->region);
                                     });
+                            } else {
+                                $builder
+                                    ->where('ur.role' , $this->role);
                             }
                         });
                         break;
