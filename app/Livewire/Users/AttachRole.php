@@ -56,8 +56,9 @@ class AttachRole extends BaseComponent
                                         $builder
                                             ->where('ur.region_id' , $this->region)
                                             ->orWhere('u.region_id' , $this->region);
-                                    })->where('ur.role' , $this->role);
+                                    });
                             }
+                            $builder->where('ur.role' , $this->role);
                         });
                         break;
                 };
