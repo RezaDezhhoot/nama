@@ -94,12 +94,12 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
         return $rows->transform(function ($row) {
             return [
                 'id' => $row->id,
-                'plan' => $row->plan->title,
+                'plan' => $row?->plan?->title,
                 'single_step' => $row->single_step ? 'بله' : 'خیر',
-                'name' => $row->user->name,
-                'phone' => $row->user->phone,
-                'national_id' => $row->user->national_id,
-                'status' => $row->status->label(),
+                'name' => $row?->user?->name,
+                'phone' => $row?->user?->phone,
+                'national_id' => $row?->user?->national_id,
+                'status' => $row?->status->label(),
                 'step' => $row->step->label(),
                 'unit' => sprintf("%s - %s",$row?->unit?->title , $row?->unit?->text),
                 'city' => $row->unit?->city?->title,
