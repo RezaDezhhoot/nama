@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Enums\OperatorRole;
 use App\Models\Ring;
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -53,38 +54,31 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
 
     public function query()
     {
-        $db = config('database.connections.mysql.database');
-        return User::query()
-            ->with(['roles','roles.unit','roles.region'])
-            ->whereNotNull('name')
-            ->leftJoin(sprintf("%s.user_roles AS  ur", $db),"user_id",'=','users.id')
-            ->leftJoin(sprintf("%s.units AS u",$db),'u.id','=','ur.unit_id')
-            ->select('ur.role as role2','ur.region_id','ur.unit_id','u.id AS unit_pkey','u.region_id AS unit_region_id','users.*')
-            ->when($this->role , function (Builder $builder) {
-                $builder->where('ur.role' , $this->role);
-                if ($this->region) {
-                    $builder
-                        ->where(function (Builder $builder) {
-                            $builder
-                                ->where('ur.region_id' , $this->region)
-                                ->orWhere('u.region_id' , $this->region);
-                        });
-                }
-            })
-            ->when($this->region && ! $this->role , function (Builder $builder){
+        $db = config('database.connections.arman.database');
+
+        return UserRole::query()
+            ->latest('user_roles.created_at')
+            ->select("u.id","u.name","u.phone","u.national_id","user_roles.*")
+            ->with(['item','city','region','neighborhood','unit','unit.parent'])
+            ->join($db.".users as u","u.id",'=','user_roles.user_id')
+            ->when($this->unit , function (Builder $builder) {
+                $builder->where('unit_id' , $this->unit);
+            })->when($this->search , function (Builder $builder) {
+                $builder->whereAny(['u.id','u.name','u.phone','u.national_id'],'LIKE','%'.$this->search.'%');
+            })->when($this->unit , function (Builder $builder){
+                $builder->where("user_roles.unit_id" , $this->unit);
+            })->when($this->region , function (Builder $builder) {
                 $builder->where(function (Builder $builder) {
-                    $builder->where("ur.region_id" , $this->region)
-                        ->orWhere('u.region_id' , $this->region);
-                    ;
+                    $builder->where('region_id' , $this->region)
+                        ->orWhereHas('region' , function (Builder $builder) {
+                            $builder->where('id' , $this->region);
+                        })->orWhereHas('unit' , function (Builder $builder) {
+                            $builder->where('region_id' , $this->region);
+                        });
                 });
-            })
-            ->when($this->unit , function (Builder $builder){
-                $builder->where("ur.unit_id" , $this->unit);
-            })
-            ->when($this->search , function ($q) {
-                $q->search($this->search);
-            })
-            ->groupBy("users.id");
+            })->when($this->role , function (Builder $builder) {
+                $builder->where('role' , $this->role);
+            });
     }
 
     public function headingRow(): int
@@ -98,21 +92,28 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
             'نام',
             'کد ملی',
             'شماره تماس',
+            'نقش',
+            'منطقه',
+            'محله',
+            'نوع واحد حقوقی',
+            'واحد حقوقی',
+            'مرکز محوری بالادستی',
         ];
     }
 
     public function prepareRows($rows)
     {
         return $rows->transform(function ($row) {
-            $roles = [];
-            foreach ($row->roles as $role) {
-                $roles[] = $role->role?->label().'-'.$role->unit?->full.'-'.$role->region?->title;
-            }
             return [
                 'name' => $row->name,
                 'national_id' => $row->national_id,
                 'phone' => $row->phone,
-                ... $roles,
+                'role' => $row->role->label(),
+                'region' => $row->region?->title ?? $row->unit?->region?->title ?? 'none',
+                'neighborhood' => $row->neighborhood?->title ?? $row->unit?->neighborhood?->title ?? 'none',
+                'item' => $row->unit?->type?->label() ?? 'none',
+                'unit' => $row->unit?->full ?? 'none',
+                'parent_unit' => $row->unit?->parent?->full ?? 'none',
             ];
         });
     }
