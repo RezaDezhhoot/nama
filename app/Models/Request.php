@@ -224,6 +224,9 @@ class Request extends Model
                     'notify_period' => $this->notify_period,
                     'controller_id' => $this->controller_id,
                     'controller2_id' => $this->controller2_id,
+                    'students' => $this->students,
+                    'date' => $this->date,
+                    'body' => $this->body,
                 ]);
                 break;
         }
