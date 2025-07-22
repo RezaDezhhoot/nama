@@ -29,10 +29,26 @@ class RequestPlan extends Model
         'status' => RequestPlanStatus::class,
         'bold' => 'boolean',
         'version' => RequestPlanVersion::class,
+
         'letter_required' => 'boolean',
         'letter2_required' => 'boolean',
-        'single_step' => 'boolean',
         'images_required' => 'boolean',
+
+        'single_step' => 'boolean',
+
+        'show_letter' => 'boolean',
+        'show_area_interface' => 'boolean',
+        'show_images' => 'boolean',
+
+        'report_video_required' => 'boolean',
+        'report_other_video_required' => 'boolean',
+        'report_images2_required' => 'boolean',
+        'report_images_required' => 'boolean',
+
+        'show_report_video' => 'boolean',
+        'show_report_other_video' => 'boolean',
+        'show_report_images2' => 'boolean',
+        'show_report_images' => 'boolean',
     ];
 
     protected static function booted()

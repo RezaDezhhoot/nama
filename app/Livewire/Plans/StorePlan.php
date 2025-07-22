@@ -22,6 +22,10 @@ class StorePlan extends BaseComponent
 
     public $requirements = [];
 
+    public $show_letter = true, $show_area_interface = true, $show_images = true;
+    public $report_video_required = true, $report_other_video_required = true , $report_images_required = true, $report_images2_required = true;
+    public $show_report_video = true, $show_report_other_video = true , $show_report_images = true, $show_report_images2 = true;
+
     public function mount($action , $id = null)
     {
         $this->setMode($action);
@@ -42,9 +46,25 @@ class StorePlan extends BaseComponent
             $this->max_allocated_request = $this->model->max_allocated_request;
             $this->body = $this->model->body;
             $this->bold = $this->model->bold;
-            $this->letter_required = $this->model->letter_required ?? false;
-            $this->letter2_required = $this->model->letter2_required ?? false;
-            $this->images_required = $this->model->images_required ?? false;
+
+            $this->letter_required = $this->model->letter_required ;
+            $this->letter2_required = $this->model->letter2_required;
+            $this->images_required = $this->model->images_required ;
+
+            $this->report_video_required = $this->model->report_video_required ;
+            $this->report_other_video_required = $this->model->report_other_video_required ;
+            $this->report_images2_required = $this->model->report_images2_required ;
+            $this->report_images_required = $this->model->report_images_required ;
+
+            $this->show_report_video = $this->model->show_report_video ;
+            $this->show_report_other_video = $this->model->show_report_other_video ;
+            $this->show_report_images2 = $this->model->show_report_images2 ;
+            $this->show_report_images = $this->model->show_report_images ;
+
+            $this->show_letter = $this->model->show_letter ;
+            $this->show_area_interface = $this->model->show_area_interface;
+            $this->show_images = $this->model->show_images;
+
             $this->version = $this->model->version->value ?? null;
             $this->header = $this->title;
             $this->item = $this->model->item_id;
@@ -83,13 +103,29 @@ class StorePlan extends BaseComponent
             'expires_at' => ['nullable'],
             'body' => ['nullable','string','max:1500000'],
             'bold' => ['nullable','boolean'],
-            'letter_required' => ['nullable','boolean'],
-            'letter2_required' => ['nullable','boolean'],
-            'images_required' => ['nullable','boolean'],
             'single_step' => ['nullable','boolean'],
             'version' => ['required',Rule::enum(RequestPlanVersion::class)],
             'item' => ['required'],
             'requirements' => ['nullable','array'],
+
+            'letter_required' => ['nullable','boolean'],
+            'letter2_required' => ['nullable','boolean'],
+            'images_required' => ['nullable','boolean'],
+
+            'show_letter' => ['nullable','boolean'],
+            'show_area_interface' => ['nullable','boolean'],
+            'show_images' => ['nullable','boolean'],
+
+            'report_video_required' => ['nullable','boolean'],
+            'report_other_video_required' => ['nullable','boolean'],
+            'report_images2_required' => ['nullable','boolean'],
+            'report_images_required' => ['nullable','boolean'],
+
+            'show_report_video' => ['nullable','boolean'],
+            'show_report_other_video' => ['nullable','boolean'],
+            'show_report_images2' => ['nullable','boolean'],
+            'show_report_images' => ['nullable','boolean'],
+
 //            'requirements.*' => ['required',Rule::exists('request_plans','id')],
         ]);
         $data = [
@@ -106,9 +142,25 @@ class StorePlan extends BaseComponent
             'bold' => $this->bold,
             'item_id' => $this->item,
             'version' => $this->version,
+
             'letter_required' => emptyToNull($this->letter_required) ?? false,
             'letter2_required' => emptyToNull($this->letter2_required) ?? false,
             'images_required' => emptyToNull($this->images_required) ?? false,
+
+            'show_letter' => emptyToNull($this->show_letter) ?? false,
+            'show_area_interface' => emptyToNull($this->show_area_interface) ?? false,
+            'show_images' => emptyToNull($this->show_images) ?? false,
+
+            'report_video_required' => emptyToNull($this->report_video_required) ?? false,
+            'report_other_video_required' => emptyToNull($this->report_other_video_required) ?? false,
+            'report_images2_required' => emptyToNull($this->report_images2_required) ?? false,
+            'report_images_required' => emptyToNull($this->report_images_required) ?? false,
+
+            'show_report_video' => emptyToNull($this->show_report_video) ?? false,
+            'show_report_other_video' => emptyToNull($this->show_report_other_video) ?? false,
+            'show_report_images2' => emptyToNull($this->show_report_images2) ?? false,
+            'show_report_images' => emptyToNull($this->show_report_images) ?? false,
+
             'single_step' => emptyToNull($this->single_step) ?? false,
         ];
         $model->fill($data)->save();

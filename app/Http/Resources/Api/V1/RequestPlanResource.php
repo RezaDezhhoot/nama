@@ -29,12 +29,27 @@ class RequestPlanResource extends JsonResource
             'image' => asset($this->image),
             'previous_requests' => $this->whenCounted('requests'),
             'completed_cycle' => $this->completed_cycle,
+            'single_step' => $this->single_step ?? false,
+            'requirements' => RequestPlanResource::collection($this->whenLoaded('requirementsv')),
+            'active' => sizeof($this->requirementsv->filter(fn ($v) => $v->completed_cycle == 0 )) == 0,
+
             'imam_letter' => $this->letter_required,
             'area_interface_letter' => $this->letter2_required,
             'images_required' => $this->images_required,
-            'single_step' => $this->single_step ?? false,
-            'requirements' => RequestPlanResource::collection($this->whenLoaded('requirementsv')),
-            'active' => sizeof($this->requirementsv->filter(fn ($v) => $v->completed_cycle == 0 )) == 0
+
+            'show_letter' => $this->show_letter,
+            'show_area_interface' => $this->show_area_interface,
+            'show_images' => $this->show_images,
+
+            'report_video_required' => $this->report_video_required,
+            'report_other_video_required' => $this->report_other_video_required,
+            'report_images2_required' => $this->report_images2_required,
+            'report_images_required' => $this->report_images_required,
+
+            'show_report_video' => $this->show_report_video,
+            'show_report_other_video' => $this->show_report_other_video,
+            'show_report_images2' => $this->show_report_images2,
+            'show_report_images' => $this->show_report_images,
         ];
     }
 }

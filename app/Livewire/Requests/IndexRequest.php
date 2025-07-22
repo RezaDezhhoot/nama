@@ -125,12 +125,14 @@ class IndexRequest extends BaseComponent
             ->when($this->status , function (Builder $builder) {
                 $builder->where('status' , $this->status);
             })->when($this->search , function (Builder $builder) {
-                $builder->search($this->search )->orWhereHas('plan' , function (Builder $builder) {
-                    $builder->search($this->search);
-                })->orWhere(function (Builder $builder) {
-                    $builder->whereIn('user_id' , User::query()->search($this->search )->take(30)->get()->pluck('id')->toArray());
-                })->orWhereHas('unit' , function (Builder $builder)  {
-                    $builder->search($this->search );
+                $builder->where(function (Builder $builder) {
+                    $builder->search($this->search )->orWhereHas('plan' , function (Builder $builder) {
+                        $builder->search($this->search);
+                    })->orWhere(function (Builder $builder) {
+                        $builder->whereIn('user_id' , User::query()->search($this->search )->take(30)->get()->pluck('id')->toArray());
+                    })->orWhereHas('unit' , function (Builder $builder)  {
+                        $builder->search($this->search );
+                    });
                 });
             })->paginate($this->per_page);
 

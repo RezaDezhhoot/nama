@@ -25,9 +25,34 @@
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="starts_at" label="تاریخ شروع مهلت زمانی این پلن" wire:model.defer="starts_at"/>
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="expires_at" label="تاریخ پایان مهلت زمانی این پلن" wire:model.defer="expires_at"/>
 
-                <x-admin.forms.checkbox  id="letter_required" label="فایل نامه امام اجباری باشد" wire:model.defer="letter_required"/>
-                <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد" wire:model.defer="letter2_required"/>
-                <x-admin.forms.checkbox  id="images_required" label="تصاویر بیشتر اجباری باشد" wire:model.defer="images_required"/>
+                <div class="col-12 row table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td> <x-admin.forms.checkbox width="4" id="letter_required" label="فایل نامه امام اجباری باشد(درخواست)" wire:model.defer="letter_required"/></td>
+                            <td> <x-admin.forms.checkbox width="4" id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد(درخواست)" wire:model.defer="letter2_required"/></td>
+                            <td> <x-admin.forms.checkbox width="4" id="images_required" label="تصاویر بیشتر اجباری باشد(درخواست)" wire:model.defer="images_required"/></td>
+                        </tr>
+                        <tr>
+                            <td><x-admin.forms.checkbox width="4" id="show_letter" label="نمایش فایل نامه امام(درخواست)" wire:model.defer="show_letter"/></td>
+                            <td><x-admin.forms.checkbox width="4" id="show_area_interface" label="نمایش فایل نامه رابط منطقه(درخواست)" wire:model.defer="show_area_interface"/></td>
+                            <td><x-admin.forms.checkbox width="4" id="show_images" label="نمایش تصاویر بیشتر (درخواست)" wire:model.defer="show_images"/></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><x-admin.forms.checkbox width="3" id="report_video_required" label="فایل ویدئویی اجباری باشد(گزارش)" wire:model.defer="report_video_required"/></td>
+                            <td><x-admin.forms.checkbox width="3" id="report_other_video_required" label="فایل های ویدئویی بیشتر اجباری باشد(گزارش)" wire:model.defer="report_other_video_required"/></td>
+                            <td><x-admin.forms.checkbox width="3" id="report_images_required" label="فایل های پیوست تصویری اجباری باشد(گزارش)" wire:model.defer="report_images_required"/></td>
+                            <td><x-admin.forms.checkbox width="3" id="report_images2_required" label="فایل  های پیوست تصویری بیشتر اجباری باشد(گزارش)" wire:model.defer="report_images2_required"/></td>
+                        </tr>
+                        <tr>
+                            <td><x-admin.forms.checkbox width="3" id="show_report_video" label="نمایش فایل ویدئویی (گزارش)" wire:model.defer="show_report_video"/></td>
+                            <td><x-admin.forms.checkbox width="3" id="show_report_other_video" label="نمایش فایل های ویدئویی بیشتر(گزارش)" wire:model.defer="show_report_other_video"/></td>
+                            <td><x-admin.forms.checkbox width="3" id="show_report_images" label="نمایش فایل های پیوست تصویری(گزارش)" wire:model.defer="show_report_images"/></td>
+                            <td><x-admin.forms.checkbox width="3" id="show_report_images2" label="نمایش فایل های پیوست تصویری بیشتر(گزارش)" wire:model.defer="show_report_images2"/></td>
+                        </tr>
+                    </table>
+                </div>
                 <x-admin.forms.checkbox  id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
 
                 <div wire:ignore class="{{ $item ? '' : 'd-none' }} col-12 row">

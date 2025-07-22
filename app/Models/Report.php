@@ -99,28 +99,28 @@ class Report extends Model
                         $builder->whereIn('step' ,$role->step())->orWhereIn('step',$role->history());
                     }
                 })->whereHas('request' , function (Builder $builder) use ($role) {
-                    $builder->whereHas('unit' , function (Builder $builder) use ($role) {
-                        if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
-                            return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
-                                $builder->where('role' , $role)->where('user_id' , auth()->id());
-                            })->orWhereHas('parent' , function (Builder $builder) use ($role) {
-                                $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                    if (! in_array($role,[ OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES, OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING])) {
+                        $builder->whereHas('unit' , function (Builder $builder) use ($role) {
+                            if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
+                                return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
                                     $builder->where('role' , $role)->where('user_id' , auth()->id());
+                                })->orWhereHas('parent' , function (Builder $builder) use ($role) {
+                                    $builder->whereHas('roles' , function (Builder $builder) use ($role) {
+                                        $builder->where('role' , $role)->where('user_id' , auth()->id());
+                                    });
                                 });
-                            });
-                        } elseif ($role === OperatorRole::AREA_INTERFACE) {
-                            [$cities , $regions] = auth()->user()->getAreaInterfaceLocations(request()->get('item_id'));
-                            $builder
-                                ->whereIn('city_id' , $cities)
-                                ->whereIn('region_id' , $regions)
-                            ;
-                        } elseif ($role === OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES) {
-
-                        }
-                        return $builder;
-                    });
+                            } elseif ($role === OperatorRole::AREA_INTERFACE) {
+                                [$cities , $regions] = auth()->user()->getAreaInterfaceLocations(request()->get('item_id'));
+                                $builder
+                                    ->whereIn('city_id' , $cities)
+                                    ->whereIn('region_id' , $regions)
+                                ;
+                            }
+                            return $builder;
+                        });
+                    }
+                    return $builder;
                 });
-
             }
             return $builder->whereHas('request' , function ($q) {
                 $q->where('user_id',auth()->id());
