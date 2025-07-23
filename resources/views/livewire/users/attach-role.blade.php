@@ -7,13 +7,13 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown width="4" id="role" :data="$data['role']" label="فیلتر نقش" wire:model.live="role"/>
+                <x-admin.forms.dropdown width="12" id="role" :data="$data['role']" label="فیلتر نقش" wire:model.live="role"/>
                 <x-admin.forms.select2
                     id="region"
                     :data="$region ?? []"
                     text="title"
                     label="منطقه"
-                    width="4"
+                    width="3"
                     :ajaxUrl="route('admin.feed.regions')"
                     wire:model.defer="region"/>
                 <x-admin.forms.select2
@@ -21,9 +21,12 @@
                     :data="[]"
                     text="title"
                     label="مرکز "
-                    width="4"
+                    width="3"
                     :ajaxUrl="route('admin.feed.units',0)"
                     wire:model.defer="unit"/>
+                <x-admin.forms.input width="3" type="number"  id="min_roles" label="حداقل تعداد نقش" wire:model.live="min_roles"/>
+                <x-admin.forms.input width="3" type="number"  id="max_roles" label="حداکثر تعداد نقش" wire:model.live="max_roles"/>
+
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -35,7 +38,7 @@
                             <th>نام</th>
                             <th>کدملی</th>
                             <th>شماره همراه</th>
-{{--                            <th>تعداد نقش در نما</th>--}}
+                            <th>تعداد نقش</th>
                             <th>نقش  در ارمان</th>
                             <th>نقش ها</th>
                             <th>اقدامات</th>
@@ -48,7 +51,7 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->national_id }}</td>
                                 <td>{{ $item->phone }}</td>
-{{--                                <td>{{ $item->roles_count }}</td>--}}
+                                <td>{{ sizeof($item->roles) }}</td>
                                 <td>{{ $item->role?->label() }}</td>
                                 <td>
                                     <ul>

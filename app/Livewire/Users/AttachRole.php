@@ -9,6 +9,7 @@ use App\Models\DashboardItem;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\WithPagination;
 
@@ -18,6 +19,8 @@ class AttachRole extends BaseComponent
 
     public $role;
     public $users = [] , $item , $region , $unit;
+
+    public $min_roles , $max_roles;
 
     protected $queryString = [
         'search' => [
@@ -37,9 +40,16 @@ class AttachRole extends BaseComponent
         $items = User::query()
             ->with(['roles','roles.unit','roles.region'])
             ->whereNotNull('name')
+            ->withCount('roles')
             ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
             ->leftJoin(sprintf("%s.units AS u",$db),'u.id','=','ur.unit_id')
-            ->select('ur.role as role2','ur.region_id','ur.unit_id','u.id AS unit_pkey','u.region_id AS unit_region_id','users.*')
+            ->select('ur.role as role2','ur.region_id','ur.unit_id','u.id AS unit_pkey','u.region_id AS unit_region_id','users.*' ,  DB::raw('COUNT(ur.id) AS roles_count'))
+            ->when($this->min_roles , function (Builder $builder) {
+                $builder->having('roles_count','>=',$this->min_roles);
+            })
+            ->when($this->max_roles , function (Builder $builder) {
+                $builder->having('roles_count','<=',$this->max_roles);
+            })
             ->when($this->role , function (Builder $builder) {
                 $builder->where('ur.role' , $this->role);
                 if ($this->region) {
