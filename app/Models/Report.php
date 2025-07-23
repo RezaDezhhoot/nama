@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -18,7 +19,7 @@ use function Symfony\Component\Translation\t;
 
 class Report extends Model
 {
-    use SoftDeletes , SimpleSearchable;
+    use SoftDeletes , SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['id','body'];
 

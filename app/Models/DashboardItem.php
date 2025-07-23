@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Enums\UnitType;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 
 class DashboardItem extends Model
 {
-    use SimpleSearchable;
+    use SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['title','link','body'];
     protected $guarded = ['id'];

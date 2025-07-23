@@ -12,6 +12,7 @@ use App\Listeners\RequestListener;
 use App\Models\File;
 use App\Models\PersonalAccessToken;
 use App\Observers\FileObserver;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
@@ -48,5 +49,32 @@ class AppServiceProvider extends ServiceProvider
             ],
             RequestListener::class
         );
+
+        Relation::enforceMorphMap([
+            'area' => 'App\Models\Area',
+            'banner' => 'App\Models\Banner',
+            'city' => 'App\Models\City',
+            'comment' => 'App\Models\Comment',
+            'dashboard_item' => 'App\Models\DashboardItem',
+            'file' => 'App\Models\File',
+            'form' => 'App\Models\Form',
+            'form_item' => 'App\Models\FormItem',
+            'form_report' => 'App\Models\FormReport',
+            'log_activity' => 'App\Models\LogActivity',
+            'neighborhood' => 'App\Models\Neighborhood',
+            'personal_access_token' => 'App\Models\PersonalAccessToken',
+            'region' => 'App\Models\Region',
+            'report' => 'App\Models\Report',
+            'request' => 'App\Models\Request',
+            'request_plan' => 'App\Models\RequestPlan',
+            'ring' => 'App\Models\Ring',
+            'ring_member' => 'App\Models\RingMember',
+            'settings' => 'App\Models\Settings',
+            'statistic' => 'App\Models\Statistic',
+            'unit' => 'App\Models\Unit',
+            'user' => 'App\Models\User',
+            'user_role' => 'App\Models\UserRole',
+            'written_request' => 'App\Models\WrittenRequest',
+        ]);
     }
 }

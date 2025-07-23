@@ -7,6 +7,7 @@ use App\Enums\RequestPlanVersion;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Enums\UnitType;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RequestPlan extends Model
 {
-    use SoftDeletes , SimpleSearchable;
+    use SoftDeletes , SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['title','max_number_people_supported','support_for_each_person_amount','body'];
 

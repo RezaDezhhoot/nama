@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FormReportEnum;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FormReport extends Model
 {
-    use SoftDeletes , SimpleSearchable;
+    use SoftDeletes , SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['user_id','form_id','id'];
 

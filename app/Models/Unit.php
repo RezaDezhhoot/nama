@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\UnitSubType;
 use App\Enums\UnitType;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unit extends Model
 {
-    use SimpleSearchable , SoftDeletes;
+    use SimpleSearchable , SoftDeletes , Loggable;
 
     public array $searchAbleColumns = ['title'];
 

@@ -2,7 +2,7 @@
 
 use App\Enums\OperatorRole;
 use App\Enums\UserRole;
-use App\Models\Setttings;
+use App\Models\Settings;
 use Illuminate\Support\Carbon;
 use Morilog\Jalali\Jalalian;
 
@@ -136,10 +136,10 @@ function persian_date($date): ?string
 function getSetting(...$name)
 {
     if (sizeof($name) == 1) {
-        return Setttings::getSingleRow($name[0]);
+        return Settings::getSingleRow($name[0]);
     }
 
-    return Setttings::query()->whereIn('name',$name)->pluck('value','name');
+    return Settings::query()->whereIn('name',$name)->pluck('value','name');
 }
 
 

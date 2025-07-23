@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OperatorRole;
 use App\Enums\UnitType;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ring extends Model
 {
-    use SimpleSearchable , SoftDeletes;
+    use SimpleSearchable , SoftDeletes , Loggable;
 
     public array $searchAbleColumns = ['title','name','national_code','postal_code','phone','id','address','description','level_of_education','field_of_study','job','sheba_number'];
 

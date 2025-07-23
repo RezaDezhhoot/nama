@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Neighborhood extends Model
 {
-    use SimpleSearchable;
+    use SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['title'];
 

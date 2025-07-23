@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\WrittenRequestStep;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class WrittenRequest extends Model
 {
-    use SimpleSearchable;
+    use SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['title','id'];
     protected $guarded = ['id'];

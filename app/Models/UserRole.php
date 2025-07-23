@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Enums\OperatorRole;
 use App\Enums\SchoolCoachType;
+use App\Traits\Loggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserRole extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes , Loggable;
 
     protected $guarded = ['id'];
     protected $table = 'user_roles';

@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Enums\FormItemType;
+use App\Traits\Loggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FormItem extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes , Loggable;
     protected $guarded = ['id'];
 
     protected $casts = [

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Area extends Model
 {
-    use SimpleSearchable;
+    use SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['title'];
 

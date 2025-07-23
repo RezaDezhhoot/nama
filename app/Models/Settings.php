@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Loggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
-class Setttings extends Model
+class Settings extends Model
 {
+    use Loggable;
+
     protected $table = 'settings';
 
     protected $guarded = ['id'];

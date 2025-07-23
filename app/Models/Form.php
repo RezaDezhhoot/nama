@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\FormStatus;
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Form extends Model
 {
-    use SoftDeletes , SimpleSearchable;
+    use SoftDeletes , SimpleSearchable , Loggable;
 
     public array $searchAbleColumns = ['id','title'];
 
