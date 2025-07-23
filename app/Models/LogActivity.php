@@ -2,12 +2,22 @@
 
 namespace App\Models;
 
+use App\Enums\Events;
+use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\Activitylog\Models\Activity;
 
 class LogActivity extends Activity
 {
+    use SimpleSearchable;
+
+    public array $searchAbleColumns = ['id'];
+
+    protected $casts = [
+        'event' => Events::class
+    ];
+
     public function subject(): MorphTo
     {
         if (config('activitylog.subject_returns_soft_deleted_models')) {

@@ -32,7 +32,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->event }}</td>
+                                <td>{{ $item->event?->label() }}</td>
                                 <td>{{ $data['subject'][$item->subject_type] ?? $item->subject_type }} # {{ $item->subject_id }}</td>
                                 <td>{{ $item->description }}</td>
                                 <td class="jdate">{{ persian_date($item->created_at) }}</td>
@@ -72,8 +72,8 @@
                         <tbody >
                         <tr>
                             <td>{{ $log->id }}</td>
-                            <td>{{ $log->event }}</td>
-                            <td>{{ $data['subject'][$log->subject_type] ?? $log->subject_type }} # {{ $log->subject_id }}</td>
+                            <td>{{ $log->event?->label() }}</td>
+                            <td>{{ $data['subject      '][$log->subject_type] ?? $log->subject_type }} # {{ $log->subject_id }}</td>
                             <td>{{ $log->description }}</td>
                             <td class="jdate">{{ persian_date($log->created_at) }}</td>
                             <td><span>{{ ($log->causer->name ?? '').' | '.($log->causer->phone ?? '').' | '.($log->causer->email ?? '') }}</span></td>
@@ -91,7 +91,7 @@
                         از
                     </h6>
                     <pre style="text-align: left" class="text-white p-2 bg-dark ">
-                      {{ json_encode($log?->properties['old'] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE ) }}
+                      {{ json_encode($log?->properties['old'] ?? [] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE ) }}
                     </pre>
                 </div>
                 <div class="col-12">

@@ -24,7 +24,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('roles/{action}/{id}' , \App\Livewire\Users\StoreUser::class)->name('roles.store');
         });
         Route::group(['prefix' => 'feed' , 'as' => 'feed.','middleware' => 'is_admin'] , function () {
-            Route::get('users' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');
+            Route::get('users/{withRoles?}' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');
             Route::get('units/{parent?}' , \App\Http\Controllers\Feed\UnitFeedController::class)->name('units');
             Route::get('plans/{type?}/{ignore?}' , \App\Http\Controllers\Feed\PlanFeedController::class)->name('plans');
             Route::get('cities' , \App\Http\Controllers\Feed\CityFeedController::class)->name('cities');
@@ -66,6 +66,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         });
         Route::group(['prefix' => 'log-activities' , 'as' => 'log-activities.' , 'middleware' => 'is_admin'] , function () {
             Route::get('' , \App\Livewire\Logs\Activities\IndexLogs::class)->name('index');
+            Route::get('roles' , \App\Livewire\Logs\Activities\IndexOtherRolesLogs::class)->name('roles');
         });
     });
     Route::group(['prefix' => 'auth' , 'as' => 'auth.'],function (){

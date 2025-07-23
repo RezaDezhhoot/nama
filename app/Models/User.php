@@ -25,7 +25,6 @@ class User extends Authenticatable
 
     public array $searchAbleColumns = ['name','phone','email','national_id'];
 
-
     protected $hidden = [
         'password',
         'remember_token',
@@ -48,7 +47,7 @@ class User extends Authenticatable
 
     public function scopeSelect2($q)
     {
-        return $q->selectRaw("CONCAT(name,' - کدملی: ',national_id, ' - شماره همراه:  ',phone) as text , id");
+        return $q->selectRaw("CONCAT(name,' - کدملی: ',national_id, ' - شماره همراه:  ',phone) as text , users.id");
     }
 
     public function roles(): \Illuminate\Database\Eloquent\Relations\HasMany
