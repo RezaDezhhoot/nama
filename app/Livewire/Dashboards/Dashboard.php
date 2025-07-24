@@ -16,7 +16,6 @@ class Dashboard extends BaseComponent
 
     public function mount()
     {
-        dd(auth()->user()->unitIds());
         $this->from_date = dateConverter(now()->subDays(15)->startOfDay()->format('Y-m-d H:i:s'),'j','Y-m-d H:i:s');
         $this->to_date = dateConverter(now()->endOfDay()->format('Y-m-d H:i:s'),'j','Y-m-d H:i:s');
 
