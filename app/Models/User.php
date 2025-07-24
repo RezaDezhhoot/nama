@@ -55,6 +55,16 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\UserRole::class,'user_id');
     }
 
+    public function unitIds()
+    {
+        return $this->roles()
+            ->where('role',OperatorRole::MOSQUE_HEAD_COACH)
+            ->whereNotNull('unit_id')
+            ->select("unit_id")
+            ->pluck('unit_id')
+            ->toArray();
+    }
+
     public function getAreaInterfaceLocations($item = null): array
     {
         $roles = $this->roles()->when($item , function ($q) use ($item) {
