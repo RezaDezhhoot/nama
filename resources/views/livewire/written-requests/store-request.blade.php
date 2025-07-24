@@ -2,7 +2,7 @@
 <div wire:init="init" class="h-100">
     <x-admin.big-loader :loading="$loading"/>
     @section('title', 'درخواست های مکتوب'.(' '.$header ?? '') )
-    <x-admin.form-control :store="false"  title="درخواست های مکتوب"/>
+    <x-admin.form-control :store="false"  exportable="pdfExport" exportTitle="خروجی pdf" title="درخواست های مکتوب"/>
     <div class="card card-custom h-100 gutter-b example example-compact">
         <div class="card-header">
             <h3 class="card-title">{{ $header }}</h3>

@@ -9,6 +9,7 @@ use App\Models\File;
 use App\Models\WrittenRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use misterspelik\LaravelPdf\Facades\Pdf;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StoreRequest extends BaseComponent
@@ -90,6 +91,15 @@ class StoreRequest extends BaseComponent
             $this->reset(['message','comment','status']);
             redirect()->route('admin.written-requests.index');
         }
+    }
+
+    public function pdfExport($id)
+    {
+        $r = WrittenRequest::query()->with(['sign'])->find($id);
+        $pdf = Pdf::loadView('pdf.written-requests', ['r' => $r]);
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'written-request.pdf');
     }
 
     public function render()
