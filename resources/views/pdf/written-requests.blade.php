@@ -97,7 +97,9 @@
     </div>
 
     <div class="signature">
-        <img src="{{ asset($r->sign->url) }}" alt="">
+        @if($r->sign)
+            <img src="{{ asset($r->sign->url) }}" alt="">
+        @endif
         <span class="sign-name">{{ $r->user->name }}</span>
     </div>
     <hr>
