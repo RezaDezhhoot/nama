@@ -7,6 +7,7 @@ use App\Livewire\BaseComponent;
 use App\Models\WrittenRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\WithPagination;
+use misterspelik\LaravelPdf\Facades\Pdf;
 
 class IndexRequest extends BaseComponent
 {
@@ -45,5 +46,14 @@ class IndexRequest extends BaseComponent
             })->paginate($this->per_page);
 
         return view('livewire.written-requests.index-request' , get_defined_vars())->extends('livewire.layouts.admin');
+    }
+
+    public function pdfExport($id)
+    {
+        $r = WrittenRequest::query()->with(['sign'])->find($id);
+        $pdf = Pdf::loadView('pdf.written-requests', ['r' => $r]);
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'written-request.pdf');
     }
 }

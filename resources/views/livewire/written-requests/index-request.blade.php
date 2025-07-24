@@ -31,10 +31,8 @@
                             <th>وضعیت</th>
                             <th>مرحله</th>
                             <th>جز درخواست های کاربر شمرده شود</th>
-
                             <th>مرکز</th>
                             <th>شهر/منطقه</th>
-
                             <th>تاریخ ارسال</th>
                             <th>تاریخ اخرین بروزرسانی</th>
                             <th>تعداد گفتوگو</th>
@@ -66,6 +64,11 @@
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
                                     <x-admin.edit-btn target="_blank" href="{{ route('admin.written-requests.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                    <button wire:click="pdfExport({{$item->id}})" title="خروجی pdf" type="button" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" >
+                                        <span class="svg-icon svg-icon-md">
+                                            <i class="fa text-danger fa-file-pdf"></i>
+                                        </span>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
