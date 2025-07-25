@@ -94,6 +94,14 @@ class StoreRequest extends BaseComponent
         ) {
             return;
         }
+        $amount = null;
+        if ($this->request->staff && $this->request->staff_amount !== null) {
+            $amount = $this->request->staff_amount / 2;
+        }
+        if ($this->request->single_step) {
+            $amount = 0;
+        }
+
         $step = $this->request->step;
         $from_status = $this->request->status;
         $this->step = emptyToNull($this->step);
@@ -148,6 +156,8 @@ class StoreRequest extends BaseComponent
                             'step' => $this->request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                             'status' => $this->request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                             'amount' => 0,
+                            'offer_amount' => $amount,
+                            'final_amount' => $amount,
                             'confirm' => true,
                             'item_id' => $this->request->item_id,
                             'auto_accept_period' => $this->request->auto_accept_period,
@@ -164,6 +174,8 @@ class StoreRequest extends BaseComponent
                             'step' => $this->request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                             'status' => $this->request->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                             'amount' => 0,
+                            'offer_amount' => $amount,
+                            'final_amount' => $amount,
                             'confirm' => true,
                             'item_id' => $this->request->item_id,
                             'auto_accept_period' => $this->request->auto_accept_period,

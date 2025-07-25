@@ -26,6 +26,8 @@ class StorePlan extends BaseComponent
     public $report_video_required = true, $report_other_video_required = true , $report_images_required = true, $report_images2_required = true;
     public $show_report_video = true, $show_report_other_video = true , $show_report_images = true, $show_report_images2 = true;
 
+    public $golden = false , $staff = false , $staff_amount ;
+
     public function mount($action , $id = null)
     {
         $this->setMode($action);
@@ -67,6 +69,11 @@ class StorePlan extends BaseComponent
 
             $this->version = $this->model->version->value ?? null;
             $this->header = $this->title;
+
+            $this->golden = $this->model->golden;
+            $this->staff = $this->model->staff;
+            $this->staff_amount = $this->model->staff_amount;
+
             $this->item = $this->model->item_id;
         } elseif ($this->isCreatingMode()) {
             $this->header = 'اکشن پلن جدید';
@@ -126,6 +133,10 @@ class StorePlan extends BaseComponent
             'show_report_images2' => ['nullable','boolean'],
             'show_report_images' => ['nullable','boolean'],
 
+            'golden' => ['nullable','boolean'],
+            'staff' => ['nullable','boolean'],
+            'staff_amount' => [ $this->staff ? 'required' : 'nullable' , 'numeric','min:0'],
+
 //            'requirements.*' => ['required',Rule::exists('request_plans','id')],
         ]);
         $data = [
@@ -162,6 +173,9 @@ class StorePlan extends BaseComponent
             'show_report_images' => emptyToNull($this->show_report_images) ?? false,
 
             'single_step' => emptyToNull($this->single_step) ?? false,
+            'golden' => emptyToNull($this->golden) ?? false,
+            'staff' => emptyToNull($this->staff) ?? false,
+            'staff_amount' => emptyToNull($this->staff_amount) ,
         ];
         $model->fill($data)->save();
         $model->requirements()->{$model->wasRecentlyCreated ? "attach" : "sync"}($this->requirements);

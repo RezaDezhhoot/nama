@@ -24,7 +24,12 @@
 
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="starts_at" label="تاریخ شروع مهلت زمانی این پلن" wire:model.defer="starts_at"/>
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="expires_at" label="تاریخ پایان مهلت زمانی این پلن" wire:model.defer="expires_at"/>
-
+                <x-admin.forms.checkbox  id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
+                <x-admin.forms.checkbox id="staff" label="ستادی" wire:model.live="staff"/>
+                @if($staff)
+                    <x-admin.forms.input type="number" :required="true" id="staff_amount" label="مبلغ ثابت اکشن پلن" wire:model.defer="staff_amount"/>
+                @endif
+                <x-admin.forms.checkbox  id="golden" label="طلایی" wire:model.defer="golden"/>
                 <div class="col-12 row table-responsive">
                     <table class="table table-bordered">
                         <tr>
@@ -53,7 +58,6 @@
                         </tr>
                     </table>
                 </div>
-                <x-admin.forms.checkbox  id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
 
                 <div wire:ignore class="{{ $item ? '' : 'd-none' }} col-12 row">
                     <x-admin.forms.select2

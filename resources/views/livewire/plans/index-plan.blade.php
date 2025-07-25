@@ -7,7 +7,10 @@
     <div class="card card-custom">
         <div class="card-body">
             <div class="row">
-                <x-admin.forms.dropdown  id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.dropdown id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
+                <x-admin.forms.checkbox width="4" id="single_step" label="درخواست تک مرحله ای" wire:model.live="single_step"/>
+                <x-admin.forms.checkbox width="4" id="staff" label="ستادی" wire:model.live="staff"/>
+                <x-admin.forms.checkbox width="4" id="golden" label="طلایی" wire:model.live="golden"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -19,6 +22,8 @@
                             <th>شناسه</th>
                             <th>عنوان</th>
                             <th>درخواست تک مرحله ای</th>
+                            <th>ستادی</th>
+                            <th>طلایی</th>
                             <th>زیر عنوان</th>
                             <th>وضعیت</th>
                             <th>پروژه</th>
@@ -34,6 +39,8 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->single_step ? 'بله' : 'خیر' }}</td>
+                                <td>{{ $item->staff ? 'بله' : 'خیر' }}</td>
+                                <td>{{ $item->golden ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->sub_title ?? '-' }}</td>
                                 <td>{{ $item->status?->label() }}</td>
                                 <td>{{ $item->item?->title ?? "-" }}</td>

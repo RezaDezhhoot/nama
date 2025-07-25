@@ -50,6 +50,9 @@ class RequestPlan extends Model
         'show_report_other_video' => 'boolean',
         'show_report_images2' => 'boolean',
         'show_report_images' => 'boolean',
+
+        'golden' => "boolean",
+        'staff' => "boolean",
     ];
 
     protected static function booted()
@@ -108,5 +111,10 @@ class RequestPlan extends Model
     public function requirementsv(): BelongsToMany
     {
         return $this->requirements()->with(['requirements']);
+    }
+
+    public function limits(): HasMany
+    {
+        return $this->hasMany(RequestPlanLimit::class,'request_plan_id');
     }
 }

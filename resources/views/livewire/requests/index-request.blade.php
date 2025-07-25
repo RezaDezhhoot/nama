@@ -55,6 +55,7 @@
                             <th>شناسه</th>
                             <th>پلن</th>
                             <th>درخواست تک مرحله ای</th>
+                            <th>درخواست ستادی</th>
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
@@ -83,6 +84,7 @@
                                     </ul>
                                 </td>
                                 <td>{{ $item->single_step ? 'بله' : 'خیر' }}</td>
+                                <td>{{ $item->staff ? 'بله' : 'خیر' }}</td>
                                 <td>
                                     <ul>
                                         <li>{{ $item->user?->name }}</li>

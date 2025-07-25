@@ -150,8 +150,17 @@ class RequestController extends Controller
         $data = $submitRequest->only(['students','amount','body','sheba']);
         $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students']) * $requestPlan->support_for_each_person_amount;
         $auto_accept_at = null;
-        $request = new \App\Models\Request();
+        $request = new RequestModel;
         $request->plan()->associate($requestPlan);
+
+        if ($requestPlan->staff && $requestPlan->staff_amount !== null) {
+            $data['offer_amount'] = $requestPlan->single_step ? $requestPlan->staff_amount : $requestPlan->staff_amount / 2;
+            $data['final_amount'] = $requestPlan->single_step ? $requestPlan->staff_amount : $requestPlan->staff_amount / 2;
+
+            $data['staff'] = true;
+            $data['staff_amount'] = $requestPlan->staff_amount;
+        }
+
 
         if ($validRole->unit->parent_id) {
             $cultural_officer = UserRole::query()
@@ -430,7 +439,7 @@ class RequestController extends Controller
             if (! $request->messages) {
                 $request->messages = [];
             }
-            $messages =  $request->messages;
+            $messages = $request->messages;
             $messages[\request()->get('role')] = $adminStoreRequest->comment;
             $request->messages = $messages;
         }

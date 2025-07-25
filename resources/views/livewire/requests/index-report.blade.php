@@ -56,6 +56,7 @@
                             <th>وضعیت</th>
                             <th>اکشن پلن</th>
                             <th>درخواست تک مرحله ای</th>
+                            <th>درخواست ستادی</th>
                             <th>مرحله</th>
                             <th>مرکز</th>
                             <th>شهر/منطقه</th>
@@ -86,6 +87,7 @@
                                     </ul>
                                 </td>
                                 <td>{{ $item->request?->single_step ? 'بله' : 'خیر' }}</td>
+                                <td>{{ $item->request?->staff ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->step->label() }}</td>
                                 <td>
                                     {{ $item->request?->unit?->full ?? '-' }}

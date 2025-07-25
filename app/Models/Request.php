@@ -36,6 +36,8 @@ class Request extends Model
     protected $casts = [
         'confirm' => 'boolean',
         'single_step' => 'boolean',
+        'golden' => 'boolean',
+        'staff' => 'boolean',
         'status' => RequestStatus::class,
         'step' => RequestStep::class,
         'last_updated_by' => RequestStep::class,
@@ -212,13 +214,20 @@ class Request extends Model
                 $this->step = RequestStep::FINISH;
                 $this->status = RequestStatus::DONE;
                 $this->final_amount = $final_amount;
+                $amount = null;
+                if ($this->staff && $this->staff_amount !== null) {
+                    $amount = $this->staff_amount / 2;
+                }
+                if ($this->single_step) {
+                    $amount = 0;
+                }
 
                 $this->report()->create([
                     'step' => $this->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
                     'status' => $this->single_step ? RequestStatus::DONE : RequestStatus::PENDING,
                     'amount' => 0,
-                    'offer_amount' => 0,
-                    'final_amount' => 0,
+                    'offer_amount' => $amount,
+                    'final_amount' => $amount,
                     'confirm' => true,
                     'item_id' => $this->item_id,
                     'auto_accept_period' => $this->auto_accept_period,
