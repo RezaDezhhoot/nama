@@ -52,7 +52,10 @@ class RequestController extends Controller
                 });
             })
             ->when($request->filled('invoice') , function (Builder $builder) {
-                $builder->leftJoin('reports AS r',"r.request_id",'=','requests.id');
+                $builder->leftJoin('reports AS r',"r.request_id",'=','requests.id')
+                    ->whereHas('report' , function (Builder $builder) {
+                        $builder->where('status' , RequestStatus::DONE);
+                    });
             })
             ->when($request->filled('school_coach_type') , function (Builder $builder) use ($request) {
                 $builder->whereHas('roles' , function (Builder $builder) use ($request) {
