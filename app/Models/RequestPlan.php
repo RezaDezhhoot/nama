@@ -53,6 +53,9 @@ class RequestPlan extends Model
 
         'golden' => "boolean",
         'staff' => "boolean",
+
+        'ring_member_required' => "boolean",
+        'show_ring_member' => "boolean",
     ];
 
     protected static function booted()

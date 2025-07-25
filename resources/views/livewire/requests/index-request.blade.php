@@ -56,6 +56,7 @@
                             <th>پلن</th>
                             <th>درخواست تک مرحله ای</th>
                             <th>درخواست ستادی</th>
+                            <th>درخواست طلایی</th>
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
@@ -85,6 +86,7 @@
                                 </td>
                                 <td>{{ $item->single_step ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->staff ? 'بله' : 'خیر' }}</td>
+                                <td>{{ $item->golden ? 'بله' : 'خیر' }}</td>
                                 <td>
                                     <ul>
                                         <li>{{ $item->user?->name }}</li>

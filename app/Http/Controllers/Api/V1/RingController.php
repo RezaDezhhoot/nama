@@ -122,6 +122,7 @@ class RingController extends Controller
                     'address' => $member['address'],
                     'phone' => $member['phone'],
                     'father_name' => $member['father_name'],
+                    'user_id' => \auth()->id(),
                 ]);
                 $m->ring()->associate($r);
                 $m->save();

@@ -19,6 +19,8 @@
                         <thead>
                         <tr>
                             <th>اکشن پلن</th>
+                            <th>درخواست ستادی</th>
+                            <th>درخواست طلایی</th>
                             <th>وضعیت</th>
                             <th>مرحله کار</th>
                             <th>مشخصات کاربر</th>
@@ -30,6 +32,8 @@
                         <tbody>
                         <tr>
                             <td>{{ $request->plan?->title }} #{{ $request->plan?->version?->value }} {{ $request->single_step ? 'درخواست تک مرحله ای' : '' }}</td>
+                            <td>{{ $request?->staff ? 'بله' : 'خیر' }}</td>
+                            <td>{{ $request?->golden ? 'بله' : 'خیر' }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
                             <td>{{ $request->step->label2() }}</td>
                             <td>
@@ -51,6 +55,55 @@
                         </tbody>
                     </table>
                 </div>
+                @if($request?->golden && sizeof($request->members) > 0)
+                    <div class="col-12">
+                        <h4>اعضای حلقه</h4>
+                        <table class="table table-bordered table-info table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>شناسه</th>
+                                <th>نام عضو</th>
+                                <th>کد ملی عضو</th>
+                                <th>تاریخ تولد </th>
+                                <th>کد پستی </th>
+                                <th>آدرس </th>
+                                <th>شماره تلفن </th>
+                                <th>نام پدر </th>
+                                <th>تاریخ ثبت</th>
+                                <th>تاریخ آخرین بروزرسانی</th>
+                                <th>-</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($request->members as $member)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $member->id }}</td>
+                                    <td>{{ $member->name }}</td>
+                                    <td>{{ $member->national_code }}</td>
+                                    <td>{{ persian_date($member->birthdate) }}</td>
+                                    <td>{{ $member->postal_code }}</td>
+                                    <td>{{ $member->address }}</td>
+                                    <td>{{ $member->phone }}</td>
+                                    <td>{{ $member->father_name }}</td>
+                                    <td>
+                                        {{ persian_date($member->created_at) }}
+                                    </td>
+                                    <td>
+                                        {{ persian_date($member->updated_at) }}
+                                    </td>
+                                    <td >
+                                        @if( $member->trashed())
+                                            <span class="badge badge-danger">حذف شده</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
                 <div class="col-12">
                     <table class="table table-striped table-bordered">
                         <thead>

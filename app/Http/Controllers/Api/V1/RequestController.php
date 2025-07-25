@@ -160,7 +160,9 @@ class RequestController extends Controller
             $data['staff'] = true;
             $data['staff_amount'] = $requestPlan->staff_amount;
         }
-
+        if ($requestPlan->golden) {
+            $data['golden'] = true;
+        }
 
         if ($validRole->unit->parent_id) {
             $cultural_officer = UserRole::query()
@@ -193,6 +195,11 @@ class RequestController extends Controller
                 'auto_accept_at' => $auto_accept_at,
                 'auto_accept_period' => $cultural_officer?->auto_accept_period ?? null,
             ])->save();
+
+            $members = $submitRequest->array('members');
+            if ($requestPlan->golden && sizeof($members) > 0) {
+                $request->members()->attach($members);
+            }
             $disk = config('site.default_disk');
             $now = now();
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;
@@ -252,6 +259,7 @@ class RequestController extends Controller
             }
             DB::commit();
             $request->load(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter','images']);
+            $request->load(['members','members.image']);
             $request->plan->loadCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }]);
@@ -304,6 +312,11 @@ class RequestController extends Controller
             $request->fill([...$data , 'step' => $request->last_updated_by]);
             $disk = config('site.default_disk');
             $now = now();
+
+            if ($request->golden) {
+                $request->limits()->sync($updateRequest->array("members"));
+            }
+
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;
 
             if ($request->last_updated_by === RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER && $request->auto_accept_period) {
@@ -378,6 +391,7 @@ class RequestController extends Controller
             DB::commit();
             $request->refresh();
             $request->load(['areaInterfaceLetter','imamLetter','plan','unit','otherImamLetter','otherAreaInterfaceLetter','images']);
+            $request->load(['members','members.image']);
             $request->plan->loadCount(['requests' => function ($q) {
                 return $q->where('user_id' , auth()->id());
             }]);

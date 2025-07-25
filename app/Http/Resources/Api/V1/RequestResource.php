@@ -64,6 +64,7 @@ class RequestResource extends JsonResource
             'staff' => $this->staff ?? false,
             'auto_accept_at' => $this->auto_accept_at,
             'next_notify_at' => $this->next_notify_at,
+            'members' => RingMemberResource::collection($this->whenLoaded('members')),
         ];
     }
 }

@@ -67,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
             'report' => 'App\Models\Report',
             'request' => 'App\Models\Request',
             'request_plan' => 'App\Models\RequestPlan',
+            'request_plan_limit' => 'App\Models\RequestPlanLimit',
             'ring' => 'App\Models\Ring',
             'ring_member' => 'App\Models\RingMember',
             'settings' => 'App\Models\Settings',

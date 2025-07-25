@@ -53,6 +53,9 @@ class RequestPlanResource extends JsonResource
             'show_report_other_video' => $this->show_report_other_video,
             'show_report_images2' => $this->show_report_images2,
             'show_report_images' => $this->show_report_images,
+
+            'ring_member_required' =>  $this->golden ? ($this->ring_member_required) : false,
+            'show_ring_member' => $this->golden ? ($this->show_ring_member) : false,
         ];
     }
 }

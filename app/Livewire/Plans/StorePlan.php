@@ -4,13 +4,22 @@ namespace App\Livewire\Plans;
 
 use App\Enums\RequestPlanStatus;
 use App\Enums\RequestPlanVersion;
+use App\Imports\AreaImport;
+use App\Imports\PlanLimitImport;
 use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
 use App\Models\RequestPlan;
+use App\Models\RequestPlanLimit;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StorePlan extends BaseComponent
 {
+    use WithPagination , WithFileUploads;
+
     public $title , $sub_title , $image , $status , $max_number_people_supported = 10 , $support_for_each_person_amount = 1000;
     public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false , $single_step = false , $images_required = false;
 
@@ -27,6 +36,10 @@ class StorePlan extends BaseComponent
     public $show_report_video = true, $show_report_other_video = true , $show_report_images = true, $show_report_images2 = true;
 
     public $golden = false , $staff = false , $staff_amount ;
+
+    public $ring_member_required = false , $show_ring_member = false;
+
+    public $limitValue , $limitFile;
 
     public function mount($action , $id = null)
     {
@@ -74,10 +87,18 @@ class StorePlan extends BaseComponent
             $this->staff = $this->model->staff;
             $this->staff_amount = $this->model->staff_amount;
 
+            $this->ring_member_required = $this->model->ring_member_required;
+            $this->show_ring_member = $this->model->show_ring_member;
+
             $this->item = $this->model->item_id;
         } elseif ($this->isCreatingMode()) {
             $this->header = 'اکشن پلن جدید';
             $this->status = RequestPlanStatus::PUBLISHED->value;
+            $this->model = RequestPlan::query()->create([
+                'title' => 'بدون عنوان',
+                'status' => RequestPlanStatus::DRAFT->value,
+                'image' => ""
+            ]);
         } else abort(404);
         $this->data['status'] = RequestPlanStatus::labels();
         $this->data['version'] = RequestPlanVersion::values();
@@ -137,6 +158,9 @@ class StorePlan extends BaseComponent
             'staff' => ['nullable','boolean'],
             'staff_amount' => [ $this->staff ? 'required' : 'nullable' , 'numeric','min:0'],
 
+            'ring_member_required' => ['nullable','boolean'],
+            'show_ring_member' => ['nullable','boolean'],
+
 //            'requirements.*' => ['required',Rule::exists('request_plans','id')],
         ]);
         $data = [
@@ -176,6 +200,9 @@ class StorePlan extends BaseComponent
             'golden' => emptyToNull($this->golden) ?? false,
             'staff' => emptyToNull($this->staff) ?? false,
             'staff_amount' => emptyToNull($this->staff_amount) ,
+
+            'ring_member_required' => emptyToNull($this->ring_member_required) ?? false,
+            'show_ring_member' => emptyToNull($this->show_ring_member) ?? false,
         ];
         $model->fill($data)->save();
         $model->requirements()->{$model->wasRecentlyCreated ? "attach" : "sync"}($this->requirements);
@@ -191,8 +218,44 @@ class StorePlan extends BaseComponent
         }
     }
 
+    public function showLimits()
+    {
+        $this->resetPage();
+        $this->emitShowModal("limits");
+    }
+
+    public function addLimit()
+    {
+        $this->validate([
+            'limitValue' => ['nullable','string','max:11'],
+            'limitFile' => ['nullable',Rule::file()->extensions('xlsx')]
+        ]);
+        if ($this->limitValue) {
+            $data = [
+                'value' => $this->limitValue,
+                'request_plan_id' => $this->model->id
+            ];
+            RequestPlanLimit::query()->create($data);
+            $this->reset('limitValue');
+        }
+        if ($this->limitFile instanceof UploadedFile) {
+            Excel::import(new PlanLimitImport($this->model),$this->limitFile);
+            $this->reset('limitFile');
+        }
+        $this->emitNotify("اطلاعات با موفقیت ذخیره شد");
+    }
+
+    public function deleteLimit($id)
+    {
+        RequestPlanLimit::destroy($id);
+    }
+
     public function render()
     {
-        return view('livewire.plans.store-plan')->extends('livewire.layouts.admin');
+        $limits = $this->model->limits()->when($this->search , function ($q) {
+            $q->search($this->search);
+        })->latest()->paginate($this->per_page);
+
+        return view('livewire.plans.store-plan' , get_defined_vars())->extends('livewire.layouts.admin');
     }
 }

@@ -26,6 +26,9 @@ class UpdateRequest extends FormRequest
 
             'images' => ['nullable','array','max:10'],
             'images.*' => $this->fileRules(),
+
+            'members' => ['array','nullable','max:1000'],
+            'members.*' => ['required',Rule::exists('ring_members','id')->where('user_id',auth()->id())]
         ];
     }
 

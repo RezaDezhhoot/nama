@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -25,7 +26,7 @@ class Request extends Model
     public array $searchAbleColumns = ['id','body'];
     protected $guarded = ['id'];
 
-    protected $with = ['item','user','unit'];
+    protected $with = ['item','user','unit','members','members.image'];
 
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
     const FILE_IMAGES_SUBJECT = 'request_images';
@@ -251,5 +252,10 @@ class Request extends Model
     public function controller2(): BelongsTo
     {
         return $this->belongsTo(User::class,'controller2_id');
+    }
+
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(RingMember::class,'request_ring_member','request_id','ring_member_id')->withTrashed();
     }
 }
