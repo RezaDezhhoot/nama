@@ -32,6 +32,7 @@ class RequestPlanResource extends JsonResource
             'single_step' => $this->single_step ?? false,
             'golden' => $this->golden ?? false,
             'staff' => $this->staff ?? false,
+            'version' => $this->version,
             'staff_amount' => $this->staff_amount ?? false,
             'requirements' => RequestPlanResource::collection($this->whenLoaded('requirementsv')),
             'active' => sizeof($this->requirementsv->filter(fn ($v) => $v->completed_cycle == 0 )) == 0,
