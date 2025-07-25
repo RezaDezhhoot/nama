@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\OperatorRole;
+use App\Enums\RequestPlanVersion;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Enums\SchoolCoachType;
@@ -43,15 +44,37 @@ class RequestController extends Controller
         $role = OperatorRole::from(request()->get('role'));
 
         $requests = RequestModel::query()
+            ->with(['report'])
+            ->select("requests.*","r.final_amount as report_final_amount")
             ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
                 $builder->whereHas('unit' , function (Builder $builder) use ($request) {
                    $builder->where('sub_type' , $request->get('sub_type'));
                 });
             })
+            ->when($request->filled('invoice') , function (Builder $builder) {
+                $builder->leftJoin('reports AS r',"r.request_id",'=','requests.id');
+            })
             ->when($request->filled('school_coach_type') , function (Builder $builder) use ($request) {
                 $builder->whereHas('roles' , function (Builder $builder) use ($request) {
                     $builder->where('school_coach_type' , $request->get('school_coach_type'));
                 });
+            })
+            ->when($request->filled('version') , function (Builder $builder) use ($request) {
+                $builder->whereHas('plan' , function (Builder $builder) use ($request) {
+                    $builder->where('version' , $request->get('version'));
+                });
+            })
+            ->when($request->filled('normal_request') , function (Builder $builder) use ($request) {
+                $builder->where('single_step' , false);
+            })
+            ->when($request->filled('from_date') , function (Builder $builder) use ($request) {
+                $builder->where('created_at' , ">=",dateConverter(convert2english($request->get('from_date')),'g'));
+            })
+            ->when($request->filled('to_date') , function (Builder $builder) use ($request) {
+                $builder->where('created_at' , "<=",dateConverter(convert2english($request->get('to_date')),'g'));
+            })
+            ->when($request->filled('single_request') , function (Builder $builder) use ($request) {
+                $builder->where('single_step' , true);
             })
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
@@ -60,6 +83,8 @@ class RequestController extends Controller
                 })->orWhere(function (Builder $builder) use ($request){
                     $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
                 })->orWhereHas('unit' , function (Builder $builder) use ($request) {
+                    $builder->search($request->get('q'));
+                })->orWhereHas('report' , function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'));
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
@@ -89,14 +114,24 @@ class RequestController extends Controller
                 $builder->where('step' , $request->get('step'));
             })
             ->with(['plan','unit','report'])
-            ->role(\request()->get('role'))
-            ->paginate((int)$request->get('per_page' , 10));
+            ->role(\request()->get('role'));
 
+        $total_request_amount = 0;
+        $total_report_amount = 0;
+        if ($request->filled('invoice')) {
+            $total_request_amount = (int)$requests->sum('requests.final_amount');
+            $total_report_amount = (int)$requests->sum('r.final_amount');
+        }
+        $requests = $requests->paginate((int)$request->get('per_page' , 10));
         return RequestResource::collection($requests)->additional([
             'statuses' => RequestStatus::values(),
             'steps' => RequestStep::values(),
             'sub_types' => UnitSubType::classed(),
-            'school_coach_type' => SchoolCoachType::labels()
+            'school_coach_type' => SchoolCoachType::labels(),
+            'versions' => RequestPlanVersion::values(),
+            'total_request_amount' => $total_request_amount ,
+            'total_report_amount' => $total_report_amount ,
+            'request_and_report_total_amount' =>  $total_request_amount + $total_report_amount
         ]);
     }
 

@@ -21,7 +21,7 @@ class Report extends Model
 {
     use SoftDeletes , SimpleSearchable , Loggable;
 
-    public array $searchAbleColumns = ['id','body'];
+    public array $searchAbleColumns = ['id','body','amount','final_amount','offer_amount'];
 
     protected $guarded = ['id'];
     protected $casts = [

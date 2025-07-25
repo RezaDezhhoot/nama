@@ -28,7 +28,10 @@ class RequestResource extends JsonResource
                 $status = null;
             }
         }
-
+        $request_and_report_total_amount = $this->final_amount;
+        if ($this->report) {
+            $request_and_report_total_amount += $this->report->final_amount;
+        }
         return [
             'id' => $this->id,
             'request_plan' => RequestPlanResource::make($this->whenLoaded('plan')),
@@ -65,6 +68,7 @@ class RequestResource extends JsonResource
             'auto_accept_at' => $this->auto_accept_at,
             'next_notify_at' => $this->next_notify_at,
             'members' => RingMemberResource::collection($this->whenLoaded('members')),
+            'request_and_report_total_amount' => $request_and_report_total_amount
         ];
     }
 }

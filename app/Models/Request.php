@@ -23,7 +23,7 @@ class Request extends Model
 {
     use SoftDeletes , SimpleSearchable , Loggable;
 
-    public array $searchAbleColumns = ['id','body'];
+    public array $searchAbleColumns = ['id','body','amount','total_amount','final_amount','offer_amount'];
     protected $guarded = ['id'];
 
     protected $with = ['item','user','unit','members','members.image'];
