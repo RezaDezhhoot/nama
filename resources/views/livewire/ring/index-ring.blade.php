@@ -142,7 +142,7 @@
                                                     </td>
                                                     <td >
                                                         @if(! $member->trashed())
-                                                            <x-admin.delete-btn onclick="deleteMember('{{$item->id}}')"  />
+                                                            <x-admin.delete-btn onclick="deleteMember('{{$member->id}}')"  />
                                                         @else
                                                             <span class="badge badge-danger">حذف شده</span>
                                                             <button wire:click="restoreMember({{$member->id}})" class="btn btn-sm btn-outline-primary">بازنشانی</button>
