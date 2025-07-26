@@ -68,16 +68,16 @@ class RequestController extends Controller
                 });
             })
             ->when($request->filled('normal_request') , function (Builder $builder) use ($request) {
-                $builder->where('single_step' , false);
+                $builder->where('requests.single_step' , false);
             })
             ->when($request->filled('from_date') , function (Builder $builder) use ($request) {
-                $builder->where('created_at' , ">=",dateConverter(convert2english($request->get('from_date')),'g'));
+                $builder->where('requests.created_at' , ">=",dateConverter(convert2english($request->get('from_date')),'g'));
             })
             ->when($request->filled('to_date') , function (Builder $builder) use ($request) {
-                $builder->where('created_at' , "<=",dateConverter(convert2english($request->get('to_date')),'g'));
+                $builder->where('requests.created_at' , "<=",dateConverter(convert2english($request->get('to_date')),'g'));
             })
             ->when($request->filled('single_request') , function (Builder $builder) use ($request) {
-                $builder->where('single_step' , true);
+                $builder->where('requests.single_step' , true);
             })
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
@@ -91,30 +91,30 @@ class RequestController extends Controller
                     $builder->search($request->get('q'));
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
-                $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
+                $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
             })->when(! $request->filled('sort') , function (Builder $builder) {
-                $builder->orderBy('confirm');
+                $builder->orderBy('requests.confirm');
             })
             ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
-                $builder->where('request_plan_id' , $request->get('plan_id'));
+                $builder->where('requests.request_plan_id' , $request->get('plan_id'));
             })
             ->when($request->filled('unit_id') , function (Builder $builder) use ($request) {
-                $builder->where('unit_id' , $request->get('unit_id'));
+                $builder->where('requests.unit_id' , $request->get('unit_id'));
             })
             ->when($request->filled('status') , function (Builder $builder) use ($request , $role) {
                 $builder->where(function (Builder $builder) use ($request , $role) {
                     if ( $request->get('status') == "done_temp") {
-                        $builder->whereIn('step' , $role->next());
+                        $builder->whereIn('requests.step' , $role->next());
                     } else {
                         if ($request->query('role') == OperatorRole::MOSQUE_HEAD_COACH->value) {
-                            $builder->where('status' , $request->get('status'));
+                            $builder->where('requests.status' , $request->get('status'));
                         } else {
-                            $builder->where('status' , $request->get('status'))->whereNotIn('step' , $role->next());
+                            $builder->where('requests.status' , $request->get('status'))->whereNotIn('requests.step' , $role->next());
                         }
                     }
                 });
             })->when($request->filled('step') , function (Builder $builder) use ($request) {
-                $builder->where('step' , $request->get('step'));
+                $builder->where('requests.step' , $request->get('step'));
             })
             ->with(['plan','unit','report'])
             ->role(\request()->get('role'));
