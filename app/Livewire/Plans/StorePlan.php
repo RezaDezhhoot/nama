@@ -232,7 +232,7 @@ class StorePlan extends BaseComponent
         ]);
         if ($this->limitValue) {
             $data = [
-                'value' => $this->limitValue,
+                'value' => convert2english(trim($this->limitValue)),
                 'request_plan_id' => $this->model->id
             ];
             RequestPlanLimit::query()->create($data);

@@ -20,7 +20,7 @@ class PlanLimitImport implements ToCollection
             return ! empty($v[0]);
         })->map(function ($v) {
             return [
-                'value' => $v[0],
+                'value' => convert2english(trim($v[0])),
                 'request_plan_id' => $this->model->id
             ];
         })->toArray();
