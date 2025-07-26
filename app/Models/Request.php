@@ -120,7 +120,7 @@ class Request extends Model
             if ($role && $role !== OperatorRole::MOSQUE_HEAD_COACH) {
                 $builder->where(function (Builder $builder) use ($role) {
                     if (in_array($role,[OperatorRole::MOSQUE_CULTURAL_OFFICER,OperatorRole::AREA_INTERFACE]) || request()->filled('status')) {
-                        $builder->whereIn('requires.step' ,$role->step())->orWhereIn('requires.step',$role->history());
+                        $builder->whereIn('requests.step' ,$role->step())->orWhereIn('requests.step',$role->history());
                     }
                 });
                 if (! in_array($role,[ OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES, OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING])) {
