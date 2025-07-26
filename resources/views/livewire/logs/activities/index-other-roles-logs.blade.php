@@ -12,6 +12,18 @@
                 <x-admin.forms.select2 width="3"  id="causer" label="{{__('general.user')}}" ajaxUrl="{{route('admin.feed.users',true)}}" wire:model.live="causer"/>
                 <x-admin.forms.jdate-picker width="3" :timer="false" id="from_date" label="{{ __('general.from_date') }}" wire:model.live="from_date"/>
                 <x-admin.forms.jdate-picker width="3" :timer="false" id="to_date" label="{{ __('general.to_date') }}" wire:model.live="to_date"/>
+
+                <x-admin.forms.dropdown width="4" id="role" :data="$data['roles']" label="نقش" wire:model.live="role"/>
+                <x-admin.forms.dropdown width="4" id="type" :data="$data['type']" label="نوع واحد حقوقی" wire:model.live="type"/>
+                <x-admin.forms.select2
+                    id="unit"
+                    :data="[]"
+                    text="title"
+                    label="مرکز"
+                    width="4"
+                    :ajaxUrl="route('admin.feed.units',[0])"
+                    wire:model.defer="unit"/>
+
             </div>
             @include('livewire.includes.advance-table')
 

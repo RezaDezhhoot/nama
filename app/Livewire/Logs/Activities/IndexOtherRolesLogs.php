@@ -3,7 +3,9 @@
 namespace App\Livewire\Logs\Activities;
 
 use App\Enums\Events;
+use App\Enums\OperatorRole;
 use App\Enums\Subjects;
+use App\Enums\UnitType;
 use App\Livewire\BaseComponent;
 use App\Models\LogActivity;
 use App\Models\User;
@@ -17,7 +19,7 @@ class IndexOtherRolesLogs extends BaseComponent
     public $subject, $from_date , $to_data, $causer;
     public $log , $tab = 'table';
     public $boxes = [];
-    public $event;
+    public $event , $role , $unit , $type;
 
     public function queryString()
     {
@@ -43,6 +45,8 @@ class IndexOtherRolesLogs extends BaseComponent
         ];
         $this->data['subject'] = $this->subjects;
         $this->data['event'] = Events::labels();
+        $this->data['roles'] = OperatorRole::labels();
+        $this->data['type'] = UnitType::labels();
     }
 
     public function render()
@@ -59,6 +63,16 @@ class IndexOtherRolesLogs extends BaseComponent
             ->select("activity_log.*")
             ->join(sprintf("%s.%s AS u",$db, "users"),'u.id','=','causer_id')
             ->join("user_roles AS ur",'ur.user_id','=','u.id')
+            ->leftJoin("units AS un",'un.id','=','ur.unit_id')
+            ->when($this->role , function (Builder $builder) {
+                $builder->where('ur.role' , $this->role);
+            })
+            ->when($this->unit , function (Builder $builder) {
+                $builder->where('ur.unit_id' , $this->unit);
+            })
+            ->when($this->type , function (Builder $builder) {
+                $builder->where('un.type' , $this->type);
+            })
             ->when($this->subject , function (Builder $builder) {
                 $builder->where('subject_type' , $this->subject);
             })->when($this->causer , function (Builder $builder) {
