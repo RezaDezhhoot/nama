@@ -73,7 +73,7 @@
                         <tr>
                             <td>{{ $log->id }}</td>
                             <td>{{ $log->event?->label() }}</td>
-                            <td>{{ $data['subject      '][$log->subject_type] ?? $log->subject_type }} # {{ $log->subject_id }}</td>
+                            <td>{{ $data['subject'][$log->subject_type] ?? $log->subject_type }} # {{ $log->subject_id }}</td>
                             <td>{{ $log->description }}</td>
                             <td class="jdate">{{ persian_date($log->created_at) }}</td>
                             <td><span>{{ ($log->causer->name ?? '').' | '.($log->causer->phone ?? '').' | '.($log->causer->email ?? '') }}</span></td>
