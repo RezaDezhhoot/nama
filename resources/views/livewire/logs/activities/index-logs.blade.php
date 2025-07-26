@@ -99,7 +99,7 @@
                         به
                     </h6>
                     <pre style="text-align: left" class="text-white p-2 bg-dark">
-                      {{ json_encode($log?->properties['attributes'] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE) }}
+                      {{ json_encode($log?->properties['attributes'] ?? [] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE) }}
                     </pre>
                 </div>
             </div>

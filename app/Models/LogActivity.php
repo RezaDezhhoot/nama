@@ -15,7 +15,8 @@ class LogActivity extends Activity
     public array $searchAbleColumns = ['id'];
 
     protected $casts = [
-        'event' => Events::class
+        'event' => Events::class,
+        'properties' => "array"
     ];
 
     public function subject(): MorphTo
