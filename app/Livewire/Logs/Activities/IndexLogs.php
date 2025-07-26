@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Logs\Activities;
 
+use App\Enums\Events;
 use App\Enums\Subjects;
 use App\Livewire\BaseComponent;
 use App\Models\LogActivity;
@@ -15,15 +16,21 @@ class IndexLogs extends BaseComponent
     public $subject, $from_date , $to_data, $causer;
     public $log;
 
+    public $event;
+
     public function mount()
     {
         $this->data['subject'] = Subjects::labels();
+        $this->data['event'] = Events::labels();
     }
 
     public function render()
     {
         $items = LogActivity::query()
             ->latest()
+            ->when($this->event , function (Builder $builder) {
+                $builder->where('event' , $this->event);
+            })
             ->when($this->subject , function (Builder $builder) {
                 $builder->where('subject_type' , $this->subject);
             })->when($this->causer , function (Builder $builder) {

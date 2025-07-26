@@ -7,6 +7,7 @@
 
         <div class="card-body">
             <div class="row">
+                <x-admin.forms.dropdown  id="event" :data="$data['event']" label="رویداد" wire:model.live="event"/>
                 <x-admin.forms.dropdown width="3" id="subject" :data="$data['subject']" label="موجودیت" wire:model.live="subject"/>
                 <x-admin.forms.select2 width="3"  id="causer" label="{{__('general.user')}}" ajaxUrl="{{route('admin.feed.users',true)}}" wire:model.live="causer"/>
                 <x-admin.forms.jdate-picker width="3" :timer="false" id="from_date" label="{{ __('general.from_date') }}" wire:model.live="from_date"/>

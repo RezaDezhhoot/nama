@@ -17,6 +17,7 @@ class IndexOtherRolesLogs extends BaseComponent
     public $subject, $from_date , $to_data, $causer;
     public $log , $tab = 'table';
     public $boxes = [];
+    public $event;
 
     public function queryString()
     {
@@ -41,6 +42,7 @@ class IndexOtherRolesLogs extends BaseComponent
             Subjects::RING_MEMBER->value => Subjects::RING_MEMBER->label(),
         ];
         $this->data['subject'] = $this->subjects;
+        $this->data['event'] = Events::labels();
     }
 
     public function render()
@@ -50,6 +52,9 @@ class IndexOtherRolesLogs extends BaseComponent
         $q = LogActivity::query()
             ->latest("activity_log.created_at")
             ->with(['causer.roles'])
+            ->when($this->event , function (Builder $builder) {
+                $builder->where('event' , $this->event);
+            })
             ->whereIn('subject_type',array_keys($this->subjects))
             ->select("activity_log.*")
             ->join(sprintf("%s.%s AS u",$db, "users"),'u.id','=','causer_id')
