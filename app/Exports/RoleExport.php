@@ -57,7 +57,7 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
         $db = config('database.connections.arman.database');
 
         return UserRole::query()
-            ->latest('user_roles.created_at')
+            ->latest('user_roles.user_id')
             ->select("u.id","u.name","u.phone","u.national_id","user_roles.*")
             ->with(['item','city','region','neighborhood','unit','unit.parent'])
             ->join($db.".users as u","u.id",'=','user_roles.user_id')
