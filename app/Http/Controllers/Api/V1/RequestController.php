@@ -36,7 +36,7 @@ class RequestController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([
-            'sort' => ['nullable','in:created_at,confirm'],
+            'sort' => ['nullable','in:created_at,confirm,id'],
             'direction' => ['nullable','in:desc,asc'],
             'step' => ['nullable',Rule::enum(RequestStep::class)],
             'q' => ['nullable','string','max:50']
@@ -46,14 +46,14 @@ class RequestController extends Controller
         $requests = RequestModel::query()
             ->with(['report'])
             ->select("requests.*","r.final_amount as report_final_amount")
+            ->leftJoin('reports AS r',"r.request_id",'=','requests.id')
             ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
                 $builder->whereHas('unit' , function (Builder $builder) use ($request) {
                    $builder->where('sub_type' , $request->get('sub_type'));
                 });
             })
             ->when($request->filled('invoice') , function (Builder $builder) {
-                $builder->leftJoin('reports AS r',"r.request_id",'=','requests.id')
-                    ->whereHas('report' , function (Builder $builder) {
+                $builder->whereHas('report' , function (Builder $builder) {
                         $builder->where('status' , RequestStatus::DONE);
                     });
             })
@@ -217,7 +217,9 @@ class RequestController extends Controller
                 }
             }
         }
-
+        if ($requestPlan->image) {
+            $requestPlan->image = asset($requestPlan->image);
+        }
         try {
             DB::beginTransaction();
             $request->fill([
@@ -232,6 +234,7 @@ class RequestController extends Controller
                 'single_step' => $requestPlan->single_step,
                 'auto_accept_at' => $auto_accept_at,
                 'auto_accept_period' => $cultural_officer?->auto_accept_period ?? null,
+                'plan_data' => $requestPlan
             ])->save();
 
             $members = $submitRequest->array('members');

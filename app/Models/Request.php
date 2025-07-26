@@ -43,6 +43,7 @@ class Request extends Model
         'step' => RequestStep::class,
         'last_updated_by' => RequestStep::class,
         'messages' => 'array',
+        'plan_data' => 'array',
     ];
 
     public function user(): BelongsTo

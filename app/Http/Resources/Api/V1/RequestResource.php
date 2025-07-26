@@ -6,6 +6,7 @@ use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Http\Resources\UnitResource;
+use App\Models\RequestPlan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -34,7 +35,7 @@ class RequestResource extends JsonResource
         }
         return [
             'id' => $this->id,
-            'request_plan' => RequestPlanResource::make($this->whenLoaded('plan')),
+            'request_plan' => $this->plan_data ? RequestPlanResource::make(new RequestPlan($this->plan_data)): RequestPlanResource::make($this->whenLoaded('plan')),
             'step' => $this->step,
             'role' => $this->step->role(),
             'status' => $status,

@@ -22,7 +22,7 @@ class RequestPlan extends Model
 
     public array $searchAbleColumns = ['title','max_number_people_supported','support_for_each_person_amount','body'];
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     protected $with = 'requirementsv';
 
