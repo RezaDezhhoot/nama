@@ -13,6 +13,7 @@ class RingMemberResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'ring_id' => $this->ring_id,
             'national_code' => $this->national_code,
             'postal_code' => $this->postal_code,
             'address' => $this->address,

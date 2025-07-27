@@ -355,7 +355,7 @@ class RequestController extends Controller
             $now = now();
 
             if ($request->golden) {
-                $request->limits()->sync($updateRequest->array("members"));
+                $request->members()->sync($updateRequest->array("members"));
             }
 
             $path =  'requests/'.$now->year.'/'.$now->month.'/'.$now->day.'/'.$request->id;
