@@ -85,7 +85,7 @@ class StoreReport extends BaseComponent
     public function store()
     {
         if (
-            in_array($this->report->status , [RequestStatus::DONE,RequestStatus::REJECTED])
+            $this->report->status === RequestStatus::DONE
         ) {
             return;
         }
@@ -96,7 +96,7 @@ class StoreReport extends BaseComponent
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
-                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:1'],
+                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','min:1'],
                 'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1'],
                 'step' => ['nullable',Rule::enum(RequestStep::class)]
             ]);

@@ -90,7 +90,7 @@ class StoreRequest extends BaseComponent
     public function store()
     {
         if (
-            in_array($this->request->status , [RequestStatus::DONE,RequestStatus::REJECTED])
+            $this->request->status === RequestStatus::DONE
         ) {
             return;
         }

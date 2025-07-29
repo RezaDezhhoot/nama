@@ -188,7 +188,7 @@
                         </tbody>
                     </table>
                 </div>
-                @if(! in_array($request->status , [\App\Enums\RequestStatus::DONE,\App\Enums\RequestStatus::REJECTED]))
+                @if($request->status !== \App\Enums\RequestStatus::DONE))
                     <hr>
                     <div class="col-12">
                         <x-admin.forms.validation-errors/>

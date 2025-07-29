@@ -177,7 +177,7 @@ class RingController extends Controller
                     'mime_type' => $image->getMimeType(),
                     'size' => $image->getSize(),
                     'disk' => $disk,
-                    'subject' => $r::FILE_IMAGE_SUBJECT
+                    'subject' => $r::FILE_IMAGE_SUBJECT,
                 ]);
                 if ($r->image) {
                     $r->image->delete();
