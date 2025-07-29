@@ -36,7 +36,10 @@ class RequestPlanResource extends JsonResource
             'staff_amount' => $this->staff_amount,
             'requirements' => RequestPlanResource::collection($this->whenLoaded('requirementsv')),
             'active' => sizeof(collect($this->requirementsv)?->filter(function ($v) {
-                return $v?->completed_cycle == 0;
+                if (is_array($v)) {
+                    return ($v['completed_cycle'] ?? false) === 0;
+                }
+                return  $v?->completed_cycle == 0;
             } )) == 0,
             'imam_letter' => $this->letter_required,
             'area_interface_letter' => $this->letter2_required,
