@@ -188,7 +188,7 @@
                         </tbody>
                     </table>
                 </div>
-                @if($request->status !== \App\Enums\RequestStatus::DONE))
+                @if($request->status !== \App\Enums\RequestStatus::DONE)
                     <hr>
                     <div class="col-12">
                         <x-admin.forms.validation-errors/>

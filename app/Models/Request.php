@@ -186,7 +186,7 @@ class Request extends Model
             case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                 $this->step = RequestStep::APPROVAL_AREA_INTERFACE;
                 if ($this->notify_period) {
-                    $this->next_notify_at =  now()->addHours($this->notify_period);
+                    $this->next_notify_at = now()->addHours($this->notify_period);
                 } else if ($this->unit && $this->unit->city_id && $this->unit->region_id) {
                     $area_interface = UserRole::query()
                         ->with('user')

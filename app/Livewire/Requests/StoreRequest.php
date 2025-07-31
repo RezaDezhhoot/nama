@@ -169,6 +169,23 @@ class StoreRequest extends BaseComponent
                 $this->request->status = RequestStatus::tryFrom($this->status);
                 if ($this->step) {
                     $this->request->step = $this->step;
+                    if (RequestStep::tryFrom($this->step) === RequestStep::APPROVAL_AREA_INTERFACE) {
+                        if ($this->request->notify_period) {
+                            $this->request->next_notify_at = now()->addHours($this->request->notify_period);
+                        } else if ($this->request->unit && $this->request->unit->city_id && $this->request->unit->region_id) {
+                            $area_interface = UserRole::query()
+                                ->where('item_id' , $this->request->item_id)
+                                ->where('city_id' , $this->request->unit->city_id)
+                                ->where('region_id' , $this->request->unit->region_id)
+                                ->where('role' , OperatorRole::AREA_INTERFACE)
+                                ->whereNotNull('notify_period')
+                                ->first();
+                            if ($area_interface && $area_interface->notify_period) {
+                                $this->request->next_notify_at = now()->addHours($area_interface->notify_period);
+                                $this->request->notify_period = $area_interface->notify_period;
+                            }
+                        }
+                    }
                     if (RequestStep::tryFrom($this->step) === RequestStep::FINISH && ! $this->request->report()->exists()) {
                         $this->request->report()->create([
                             'step' => $this->request->single_step ? RequestStep::FINISH : RequestStep::APPROVAL_MOSQUE_HEAD_COACH,
