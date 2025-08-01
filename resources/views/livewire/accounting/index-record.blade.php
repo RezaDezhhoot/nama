@@ -35,8 +35,8 @@
                             <th></th>
                             @if($batchModel)
                                 @foreach($batchModel->plans['records'] as $r)
-                                    <th class="bg-primary text-white">مبلغ کل{{ number_format($r['totalFinalAmount']) }} </th>
                                     <th class="bg-danger text-white">عنوان برنامه</th>
+                                    <th class="bg-primary text-white">مبلغ کل{{ number_format($r['totalFinalAmount']) }} </th>
                                     <th class="bg-warning">{{ number_format($r['count']) }} برنامه</th>
                                     <th class="bg-success">{{ number_format($r['students']) }} نفر</th>
                                 @endforeach
@@ -53,8 +53,8 @@
                             <th>تاریخ</th>
                             @if($batchModel)
                                 @foreach($batchModel->plans['records'] as $r)
-                                    <th class="bg-primary text-white">مبلغ کل </th>
                                     <th class="bg-danger text-white">{{ $r['plan'] }}</th>
+                                    <th class="bg-primary text-white">مبلغ کل </th>
                                     <th class="bg-warning"> برنامه</th>
                                     <th class="bg-success"> نفرات</th>
                                 @endforeach
@@ -73,8 +73,8 @@
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ persian_date($item->created_at, "%A, %d %B %Y H:i:s") }}</td>
                                 @foreach($item->records['records'] as $key => $record)
-                                    <td class="bg-primary text-white">{{ number_format($record['totalFinalAmount']) }}</td>
                                     <td class="bg-danger text-white">{{ $record['plan'] }}</td>
+                                    <td class="bg-primary text-white">{{ number_format($record['totalFinalAmount']) }}</td>
                                     <td class="bg-warning">{{ number_format($record['count']) }}</td>
                                     <td class="bg-success">{{ number_format($record['students']) }}</td>
                                 @endforeach

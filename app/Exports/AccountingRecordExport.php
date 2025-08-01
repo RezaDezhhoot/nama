@@ -46,7 +46,8 @@ class AccountingRecordExport implements FromQuery , WithHeadings,WithHeadingRow,
             'تاریخ',
         ];
         foreach ($this->batch->plans['records'] as $r) {
-            $headings[] =  sprintf("%d %s",$r['totalFinalAmount'],$r['plan']);
+            $headings[] = $r['plan'];
+            $headings[] =  sprintf("%d %s",$r['totalFinalAmount'],'مبلغ کل');
             $headings[] = sprintf("%d %s",$r['count'],"برنامه");
             $headings[] = sprintf("%d %s",$r['students'],"نفرات");
         }
@@ -62,6 +63,7 @@ class AccountingRecordExport implements FromQuery , WithHeadings,WithHeadingRow,
         return $rows->transform(function ($row) {
             $records = [];
             foreach ($row->records['records'] as $r) {
+                $records[] = $r['plan'];
                 $records[] = (string)$r['totalFinalAmount'];
                 $records[] = (string)$r['count'];
                 $records[] = (string)$r['students'];
