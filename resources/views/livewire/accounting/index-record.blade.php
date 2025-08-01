@@ -74,9 +74,9 @@
                                 <td>{{ persian_date($item->created_at, "%A, %d %B %Y H:i:s") }}</td>
                                 @foreach($item->records['records'] as $key => $record)
                                     <td style="min-width: 240px" class="bg-danger text-white">{{ $record['plan'] }}</td>
-                                    <td style="min-width: 240px"class="bg-primary text-white">{{ number_format($record['totalFinalAmount']) }}</td>
-                                    <td style="min-width: 140px" class="bg-warning">{{ number_format($record['count']) }}</td>
-                                    <td style="min-width: 140px" class="bg-success">{{ number_format($record['students']) }}</td>
+                                    <td class="bg-primary text-white">{{ number_format($record['totalFinalAmount']) }}</td>
+                                    <td class="bg-warning">{{ number_format($record['count']) }}</td>
+                                    <td class="bg-success">{{ number_format($record['students']) }}</td>
                                 @endforeach
                                 <td>{{ number_format($item->requests_and_reports) }}</td>
                                 <td>{{ number_format($item->students) }}</td>
