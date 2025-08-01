@@ -127,6 +127,7 @@
                     <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-book" :active="false" label="Telescope" />
                     <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />
                     <x-admin.menu-item href="{{ route('admin.log-activities.roles') }}" :active="request()->routeIs(['admin.log-activities.roles'])" icon="fas fa-history" label="فعالیت سایر نقش ها" />
+                    <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
 
                     <li class="menu-section">
                         <h4 class="menu-text">تنظیمات</h4>

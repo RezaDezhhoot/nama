@@ -22,4 +22,18 @@ enum UnitType: string
             self::UNIVERSITY => 'دانشگاه',
         };
     }
+
+    public static function subTypes($v)
+    {
+        $v = $v instanceof UnitType ? $v : UnitType::tryFrom($v);
+        return match ($v) {
+            self::MOSQUE => [
+                UnitSubType::BROTHERS, UnitSubType::SISTERS
+            ],
+            self::SCHOOL => [
+                UnitSubType::MALE, UnitSubType::FEMALE , UnitSubType::SUPPORT
+            ],
+            default => []
+        };
+    }
 }

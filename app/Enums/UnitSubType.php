@@ -26,6 +26,15 @@ enum UnitSubType: string
         };
     }
 
+    public function parent(): ?UnitType
+    {
+        return match ($this){
+            self::BROTHERS, self::SISTERS => UnitType::MOSQUE,
+            self::MALE, self::FEMALE, self::SUPPORT => UnitType::SCHOOL,
+            default => null,
+        };
+    }
+
     public static function classed(): array
     {
         return [

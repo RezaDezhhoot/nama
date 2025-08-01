@@ -127,9 +127,9 @@ function convert2english($string): array|string
     return str_replace($persian, $newNumbers, $string);
 }
 
-function persian_date($date): ?string
+function persian_date($date , $format = '%A, %d %B %Y'): ?string
 {
-    return $date ? Jalalian::forge($date)->format('%A, %d %B %Y') : null;
+    return $date ? Jalalian::forge($date)->format($format) : null;
 }
 
 

@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Area extends Model
 {
-    use SimpleSearchable , Loggable;
+    use SimpleSearchable , Loggable , SoftDeletes;
 
     public array $searchAbleColumns = ['title'];
 

@@ -6,10 +6,11 @@ use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Neighborhood extends Model
 {
-    use SimpleSearchable , Loggable;
+    use SimpleSearchable , Loggable , SoftDeletes;
 
     public array $searchAbleColumns = ['title'];
 

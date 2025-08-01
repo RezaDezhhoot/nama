@@ -35,27 +35,27 @@ class UserRole extends Model
 
     public function unit(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class)->withTrashed();
     }
 
     public function city(): BelongsTo
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class)->withTrashed();
     }
 
     public function region(): BelongsTo
     {
-        return $this->belongsTo(Region::class);
+        return $this->belongsTo(Region::class)->withTrashed();
     }
 
     public function neighborhood(): BelongsTo
     {
-        return $this->belongsTo(Neighborhood::class);
+        return $this->belongsTo(Neighborhood::class)->withTrashed();
     }
 
     public function area(): BelongsTo
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Area::class)->withTrashed();
     }
 
     public function user(): BelongsTo

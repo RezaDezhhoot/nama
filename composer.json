@@ -19,7 +19,9 @@
         "mavinoo/laravel-batch": "^2.4",
         "misterspelik/laravel-pdf": "^2.2",
         "morilog/jalali": "3.*",
+        "myclabs/deep-copy": "^1.13",
         "opcodesio/log-viewer": "^3.14",
+        "ramsey/uuid": "^4.9",
         "spatie/laravel-activitylog": "^4.10"
     },
     "require-dev": {

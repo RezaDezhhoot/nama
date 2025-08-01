@@ -28,6 +28,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('units/{parent?}' , \App\Http\Controllers\Feed\UnitFeedController::class)->name('units');
             Route::get('plans/{type?}/{ignore?}' , \App\Http\Controllers\Feed\PlanFeedController::class)->name('plans');
             Route::get('cities' , \App\Http\Controllers\Feed\CityFeedController::class)->name('cities');
+            Route::get('batches/{type}/{subType?}' , \App\Http\Controllers\Feed\AccountingBatchFeedController::class)->name('batches');
             Route::get('regions/{city?}' , \App\Http\Controllers\Feed\RegionFeedController::class)->name('regions');
             Route::get('neighborhoods/{region?}' , \App\Http\Controllers\Feed\NeighborhoodFeedController::class)->name('neighborhoods');
             Route::get('areas/{neighborhood?}' , \App\Http\Controllers\Feed\AreaFeedController::class)->name('areas');
@@ -67,6 +68,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         Route::group(['prefix' => 'log-activities' , 'as' => 'log-activities.' , 'middleware' => 'is_admin'] , function () {
             Route::get('' , \App\Livewire\Logs\Activities\IndexLogs::class)->name('index');
             Route::get('roles' , \App\Livewire\Logs\Activities\IndexOtherRolesLogs::class)->name('roles');
+        });
+        Route::group(['prefix' => 'accounting' , 'as' => 'accounting.' , 'middleware' => 'is_admin'] , function () {
+            Route::get('records' , \App\Livewire\Accounting\IndexRecord::class)->name('records');
         });
     });
     Route::group(['prefix' => 'auth' , 'as' => 'auth.'],function (){

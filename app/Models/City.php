@@ -7,10 +7,11 @@ use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class City extends Model
 {
-    use SimpleSearchable , Loggable;
+    use SimpleSearchable , Loggable , SoftDeletes;
 
     public array $searchAbleColumns = ['title'];
 

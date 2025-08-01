@@ -7,10 +7,11 @@ use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Region extends Model
 {
-    use SimpleSearchable , Loggable;
+    use SimpleSearchable , Loggable , SoftDeletes;
 
     public array $searchAbleColumns = ['title'];
 
@@ -24,7 +25,7 @@ class Region extends Model
 
     public function city(): BelongsTo
     {
-        return $this->belongsTo(City::class,'city_id');
+        return $this->belongsTo(City::class,'city_id')->withTrashed();
     }
 
     public function scopeSelect2($q)
