@@ -62,9 +62,9 @@ class AccountingRecordExport implements FromQuery , WithHeadings,WithHeadingRow,
         return $rows->transform(function ($row) {
             $records = [];
             foreach ($row->records['records'] as $r) {
-                $records[] = $r['totalFinalAmount'];
-                $records[] = $r['count'];
-                $records[] = $r['students'];
+                $records[] = (string)$r['totalFinalAmount'];
+                $records[] = (string)$r['count'];
+                $records[] = (string)$r['students'];
             }
             return [
                 'id' => $row->id,
@@ -75,8 +75,8 @@ class AccountingRecordExport implements FromQuery , WithHeadings,WithHeadingRow,
                 'type' => $row->type->label(),
                 'created_at' => persian_date($row->created_at, "%A, %d %B %Y H:i:s"),
                 ... $records,
-                'requests_and_reports' => $row->requests_and_reports,
-                'students' => $row->students,
+                'requests_and_reports' => (string)$row->requests_and_reports,
+                'students' => (string)$row->students,
             ];
         });
     }
