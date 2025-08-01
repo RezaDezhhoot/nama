@@ -53,7 +53,7 @@
                             <th>تاریخ</th>
                             @if($batchModel)
                                 @foreach($batchModel->plans['records'] as $r)
-                                    <th class="bg-danger text-white">{{ $r['plan'] }}</th>
+                                    <th style="min-width: 70px" class="bg-danger text-white">{{ $r['plan'] }}</th>
                                     <th class="bg-primary text-white">مبلغ کل </th>
                                     <th class="bg-warning"> برنامه</th>
                                     <th class="bg-success"> نفرات</th>
@@ -74,7 +74,7 @@
                                 <td>{{ persian_date($item->created_at, "%A, %d %B %Y H:i:s") }}</td>
                                 @foreach($item->records['records'] as $key => $record)
                                     <td class="bg-danger text-white">{{ $record['plan'] }}</td>
-                                    <td class="bg-primary text-white">{{ number_format($record['totalFinalAmount']) }}</td>
+                                    <td style="min-width: 70px" class="bg-primary text-white">{{ number_format($record['totalFinalAmount']) }}</td>
                                     <td class="bg-warning">{{ number_format($record['count']) }}</td>
                                     <td class="bg-success">{{ number_format($record['students']) }}</td>
                                 @endforeach
