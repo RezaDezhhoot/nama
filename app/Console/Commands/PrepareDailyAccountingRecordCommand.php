@@ -38,6 +38,8 @@ class PrepareDailyAccountingRecordCommand extends Command
      */
     public function handle()
     {
+        ini_set('max_execution_time', '800');
+        ini_set('memory_limit', '-1');
         $unitType = UnitType::tryFrom($this->argument('type'));
         if (! $unitType) {
             return;
