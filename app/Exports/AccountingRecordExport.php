@@ -17,6 +17,8 @@ class AccountingRecordExport implements FromQuery , WithHeadings,WithHeadingRow,
 
     public function __construct(public AccountingBatch $batch)
     {
+        ini_set('max_execution_time', '800');
+        ini_set('memory_limit', '-1');
     }
     public function query()
     {
@@ -68,8 +70,8 @@ class AccountingRecordExport implements FromQuery , WithHeadings,WithHeadingRow,
                 'id' => $row->id,
                 'accounting_batch_id' => $row->accounting_batch_id,
                 'sheba' => $row->sheba ?? '-',
-                'unit' => $row->unit->title,
-                'region' => $row->region->title,
+                'unit' => $row->unit?->title ?? '-',
+                'region' => $row->region?->title ?? '-',
                 'type' => $row->type->label(),
                 'created_at' => persian_date($row->created_at, "%A, %d %B %Y H:i:s"),
                 ... $records,
