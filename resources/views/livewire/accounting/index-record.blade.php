@@ -68,8 +68,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->sheba ?? '-' }}</td>
-                                <td>{{ $item->unit->title }}</td>
-                                <td>{{ $item->region->title }}</td>
+                                <td>{{ $item->unit?->title ?? '-' }}</td>
+                                <td>{{ $item->region?->title ?? '-' }}</td>
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ persian_date($item->created_at, "%A, %d %B %Y H:i:s") }}</td>
                                 @foreach($item->records['records'] as $key => $record)
