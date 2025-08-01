@@ -118,24 +118,24 @@ class PrepareDailyAccountingRecordCommand extends Command
                     $rsrRep = $repSubRecords->add(new AccountingPlanRecord($planData['title'] ?? 'u',$request->request_plan_id));
 
                 $rsrReq->addCount()->addIds($request->id)
-                    ->addStudents($request->students)
-                    ->addTotalFinalAmount($request->final_amount);
+                    ->addStudents($request->students ?? 0)
+                    ->addTotalFinalAmount($request->final_amount ?? 0);
 
                 $tSubRecords->addCount()->addIds($request->id)
-                    ->addStudents($request->students)
-                    ->addTotalFinalAmount($request->final_amount);
+                    ->addStudents($request->students ?? 0)
+                    ->addTotalFinalAmount($request->final_amount ?? 0);
 
                 $requestsAndReports++;
                 $students += $rsrReq->getStudents();
 
                 if ($request->report) {
                     $rsrRep->addCount()->addIds($request->report->id)
-                        ->addStudents($request->report->students)
-                        ->addTotalFinalAmount($request->report->final_amount);
+                        ->addStudents($request->report->students ?? 0)
+                        ->addTotalFinalAmount($request->report->final_amount ?? 0);
 
                     $tSubRecords->addCount()->addIds($request->report->id)
-                        ->addStudents($request->report->students)
-                        ->addTotalFinalAmount($request->report->final_amount);
+                        ->addStudents($request->report->students ?? 0)
+                        ->addTotalFinalAmount($request->report->final_amount ?? 0);
 
                     $requestsAndReports++;
 
