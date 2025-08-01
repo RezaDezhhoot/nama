@@ -160,7 +160,7 @@ class PrepareDailyAccountingRecordCommand extends Command
         $batch->fill([
             'plans' => $totalSubRecords->toArray()
         ])->save();
-        $chunkedRows = array_chunk($records , 100);
+        $chunkedRows = array_chunk($records , 400);
         foreach ($chunkedRows as $row) {
             AccountingRecord::query()->insert($row);
         }
