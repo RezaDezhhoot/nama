@@ -64,7 +64,7 @@ class IndexRecord extends BaseComponent
                 })
                 ->when($this->subType , function (Builder $builder) {
                     $builder->where('unit_sub_type' , $this->subType);
-                })->paginate(15);
+                })->paginate(5);
         }
         return view('livewire.accounting.index-record' , get_defined_vars())->extends('livewire.layouts.admin');
     }
