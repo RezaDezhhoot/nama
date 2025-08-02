@@ -93,7 +93,7 @@ class PrepareDailyAccountingRecordCommand extends Command
                 'region_id' => $unit->region_id,
                 'type' => AccountingType::REQUEST->value,
                 'unit_type' => $unitType->value,
-                'unit_sub_type' => $unitSubType->value,
+                'unit_sub_type' => $unitSubType?->value,
                 'created_at' => $now,
                 'updated_at' => $now,
                 'accounting_batch_id' => $batch->id,
