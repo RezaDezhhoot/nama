@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
         return [
             'students' => ['sometimes','required','integer','between:1,1000000000'],
             'amount' => ['sometimes','required','integer','between:1000,10000000000000'],
-            'date' => ['sometimes','required','date'],
+            'date' => ['sometimes','required'],
             'body' => ['sometimes','nullable','max:10000'],
             'imam_letter' => $this->fileRules(),
             'area_interface_letter' => $this->fileRules(),

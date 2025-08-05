@@ -16,7 +16,7 @@ class UpdateReportRequest extends FormRequest
         $images_to_remove = sizeof($this->get('images_to_remove' , []));
         return [
             'students' => ['sometimes','required','integer','between:1,1000000000'],
-            'date' => ['sometimes','required','date'],
+            'date' => ['sometimes','required'],
             'body' => ['sometimes','nullable','max:10000'],
             'images_to_remove' => ['sometimes','array'],
             'amount' => ['sometimes','nullable','numeric','min:0'],
