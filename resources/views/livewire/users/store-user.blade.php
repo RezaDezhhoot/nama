@@ -37,7 +37,15 @@
                         label="مرکز محوری"
                         ajaxUrl="{{route('admin.feed.units')}}"
                         wire:model.live="main_unit"/>
-                    <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
+
+                    <x-admin.forms.select2
+                        id="unit2"
+                        :data="[]"
+                        text="title"
+                        :required="true"
+                        label="مرکز"
+                        ajaxUrl="{{route('admin.feed.units')}}"
+                        wire:model.live="unit"/>
                     @if($itemModel->type === \App\Enums\UnitType::SCHOOL)
                         <x-admin.forms.dropdown :required="true" id="coach_type" :data="$data['coach_type']" label="نوع مربی" wire:model.defer="coach_type"/>
                     @endif
@@ -207,7 +215,15 @@
                     label="مرکز محوری"
                     ajaxUrl="{{route('admin.feed.units')}}"
                     wire:model.live="main_unit"/>
-                <x-admin.forms.dropdown :required="true" id="unit" :data="$data['units']" label="مرکز" wire:model.defer="unit"/>
+
+                <x-admin.forms.select2
+                    id="edit_unit2"
+                    :data="[]"
+                    text="title"
+                    :required="true"
+                    label="مرکز"
+                    ajaxUrl="{{route('admin.feed.units')}}"
+                    wire:model.live="unit"/>
                 @if($itemModel->type === \App\Enums\UnitType::SCHOOL)
                     <x-admin.forms.dropdown :required="true" id="coach_type" :data="$data['coach_type']" label="نوع مربی" wire:model.defer="coach_type"/>
                 @endif

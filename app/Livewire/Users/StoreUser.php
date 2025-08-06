@@ -69,21 +69,32 @@ class StoreUser extends BaseComponent
         $roles = UserRole::query()->with(['unit'])
             ->with(['city','region','neighborhood','area'])
             ->where('user_id',$this->user->id)->get()->groupBy('item_id');
+        $this->data['units'] = [];
 
         if ($this->item) {
             $itemModel = DashboardItem::query()->findOrFail($this->item);
-            $this->data['units'] = Unit::query()
-                ->when($this->main_unit , function ($q) {
-                    $q->where('parent_id' , $this->main_unit);
-                })
-                ->whereNotNull('parent_id')
-                ->where('type',$itemModel->type)
-                ->latest()->get()->pluck('full','id');
-        } else {
-            $this->data['units'] = [];
         }
 
         return view('livewire.users.store-user' , get_defined_vars())->extends('livewire.layouts.admin');
+    }
+
+    public function updatedItem($v)
+    {
+        if (! empty($v)) {
+            $itemModel = DashboardItem::query()->findOrFail($v);
+            $this->dispatch('reloadAjaxURL#unit2' ,route('admin.feed.units',[0 , $itemModel->type , $this->main_unit]));
+        }
+        $this->dispatch('clear#unit');
+        $this->dispatch('clear#main_unit');
+        $this->dispatch('clear#unit2');
+    }
+
+    public function updatedMainUnit($v)
+    {
+        if (! empty($this->item)) {
+            $itemModel = DashboardItem::query()->findOrFail($this->item);
+        }
+        $this->dispatch('reloadAjaxURL#unit2' ,route('admin.feed.units',[0 , $itemModel?->type ?? null , $v]));
     }
 
     public function attachRole()
@@ -197,6 +208,10 @@ class StoreUser extends BaseComponent
 
     public function editRole($id)
     {
+        $this->dispatch('clear#edit_main_unit');
+        $this->dispatch('clear#edit_unit2');
+        $this->dispatch('clear#edit_unit');
+
         $this->roleToEdit = UserRole::query()->with(['city','region','neighborhood','area','unit','unit.parent'])->findOrFail($id);
 
         $this->role = $this->roleToEdit->role?->value;
@@ -244,6 +259,7 @@ class StoreUser extends BaseComponent
             $this->dispatch('reloadSelect2#edit_unit',$this->roleToEdit->unit?->toArray());
         } elseif ($this->role == \App\Enums\OperatorRole::MOSQUE_HEAD_COACH->value) {
             $this->dispatch('reloadSelect2#edit_main_unit',$this->roleToEdit->unit?->parent?->toArray());
+            $this->dispatch('reloadSelect2#edit_unit2',$this->roleToEdit->unit?->toArray());
         }
     }
 
@@ -313,6 +329,9 @@ class StoreUser extends BaseComponent
         $this->resetRole();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         $this->emitHideModal("role");
+        $this->dispatch('clear#edit_main_unit');
+        $this->dispatch('clear#edit_unit2');
+        $this->dispatch('clear#edit_unit');
     }
 
     public function resetRole()
