@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1'] , function () {
+    Route::group(['prefix' => "inquiry"] , function () {
+        Route::get("units" , \App\Http\Controllers\Api\V1\Inquiry\UnitController::class);
+    });
+
     Route::get('users/profile' , \App\Http\Controllers\Api\V1\UserController::class)->middleware(['auth:sanctum']);
     Route::get('info' , \App\Http\Controllers\Api\V1\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::get('units' , \App\Http\Controllers\Api\V1\UnitController::class)->middleware(['auth:sanctum','has_item','has_role']);

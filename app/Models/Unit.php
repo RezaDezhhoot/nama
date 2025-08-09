@@ -28,7 +28,9 @@ class Unit extends Model
         'auto_accept' => 'boolean',
         'type' => UnitType::class,
         'sub_type' => UnitSubType::class,
-        'number_list' => "array"
+        'number_list' => "array",
+        "lat" => "float",
+        "lng" => "float"
     ];
 
 //    public function title(): Attribute

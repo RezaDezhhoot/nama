@@ -44,5 +44,8 @@ return [
             'token' => env('ARMAN_OAUTH_TOKEN'),
             'api_endpoint' => env('ARMAN_OAUTH_API_ENDPOINT')
         ]
+    ],
+    'pusheh' => [
+        'api_key' => env("PUSHEH_X_API_KEY")
     ]
 ];
