@@ -44,6 +44,8 @@ class Request extends Model
         'last_updated_by' => RequestStep::class,
         'messages' => 'array',
         'plan_data' => 'array',
+        'date' => 'datetime',
+        'staff_amount' => 'float'
     ];
 
     public function user(): BelongsTo
@@ -155,12 +157,12 @@ class Request extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function date(): Attribute
-    {
-        return Attribute::get(function (){
-            return Carbon::make($this->created_at)->format('Y-m-d');
-        });
-    }
+//    public function date(): Attribute
+//    {
+//        return Attribute::get(function (){
+//            return Carbon::make($this->created_at)->format('Y-m-d');
+//        });
+//    }
 
     public function roles(): HasMany
     {

@@ -30,6 +30,7 @@ class Report extends Model
         'last_updated_by' => RequestStep::class,
         'status' => RequestStatus::class,
         'messages' => 'array',
+        'date' => "datetime"
     ];
 
     const FILE_IMAGES_SUBJECT = 'report_images';
@@ -133,12 +134,12 @@ class Report extends Model
         return $this->belongsTo(DashboardItem::class,'item_id');
     }
 
-    public function date(): Attribute
-    {
-        return Attribute::get(function (){
-            return Carbon::make($this->created_at)->format('Y-m-d');
-        });
-    }
+//    public function date(): Attribute
+//    {
+//        return Attribute::get(function (){
+//            return Carbon::make($this->created_at)->format('Y-m-d');
+//        });
+//    }
 
     public function toNextStep($offer_amount = null , $final_amount = null): static
     {

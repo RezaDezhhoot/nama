@@ -44,7 +44,7 @@ class RequestResource extends JsonResource
             'total_amount' => $this->whenHas('total_amount'),
             'final_amount' => $this->whenHas('final_amount'),
             'offer_amount' => $this->whenHas('offer_amount'),
-            'date' => $this->whenHas('date'),
+            'date' => $this->date?->format('Y-m-d H:i:s'),
             'confirm' => $this->confirm ?? false,
             'body' => $this->whenHas('body'),
             'imam_letter' => MediaResource::make($this->whenLoaded('imamLetter')),

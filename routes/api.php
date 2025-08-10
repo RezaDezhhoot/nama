@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'] , function () {
     Route::group(['prefix' => "inquiry"] , function () {
         Route::get("units" , \App\Http\Controllers\Api\V1\Inquiry\UnitController::class);
+        Route::get("requests" , \App\Http\Controllers\Api\V1\Inquiry\RequestController::class);
+        Route::get("reports" , \App\Http\Controllers\Api\V1\Inquiry\ReportController::class);
     });
-
     Route::get('users/profile' , \App\Http\Controllers\Api\V1\UserController::class)->middleware(['auth:sanctum']);
     Route::get('info' , \App\Http\Controllers\Api\V1\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::get('units' , \App\Http\Controllers\Api\V1\UnitController::class)->middleware(['auth:sanctum','has_item','has_role']);
@@ -24,13 +25,11 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::get('{request}/comments' , 'getComments');
         Route::delete('remove-file/{file}' , 'deleteFile');
     });
-
     Route::controller(\App\Http\Controllers\Api\V1\FormController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('forms')->group(function () {
         Route::get('' , 'index');
         Route::get('show/{form}' , 'show');
         Route::post('submit/{form}' , 'submit');
     });
-
     Route::controller(\App\Http\Controllers\Api\V1\ReportController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('reports')->group(function () {
         Route::get('' , 'index');
         Route::get('{report}' , 'show');

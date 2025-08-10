@@ -36,7 +36,7 @@ class ReportResource extends JsonResource
             'students' => $this->students,
             'confirm' => $this->confirm ?? false,
             'body' => $this->whenHas('body'),
-            'date' => $this->whenHas('date'),
+            'date' => $this->date?->format('Y-m-d H:i:s'),
             'amount' => $this->amount,
             'offer_amount' => $this->offer_amount,
             'final_amount' => $this->final_amount,
