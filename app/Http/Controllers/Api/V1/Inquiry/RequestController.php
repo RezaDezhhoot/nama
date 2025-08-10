@@ -26,7 +26,7 @@ class RequestController extends Controller
             ->select(['requests.*','rp.title as plan_title','u.national_id AS user_national_id'])
             ->chunkById(300 , function ($reqs) use(&$items) {
                 $items[] = $reqs;
-            });
+            },'requests.id');
         return response()->json($items);
     }
 }
