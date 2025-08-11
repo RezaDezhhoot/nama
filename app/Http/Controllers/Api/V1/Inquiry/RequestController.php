@@ -20,6 +20,7 @@ class RequestController extends Controller
         $db = config('database.connections.arman.database');
         \App\Models\Request::query()
             ->without(['item','user','unit','members','members.image','plan'])
+            ->with(['imamLetter','areaInterfaceLetter','images','otherImamLetter','otherAreaInterfaceLetter'])
             ->where('step',RequestStep::FINISH)
             ->join('request_plans AS rp','rp.id','=','requests.request_plan_id')
             ->join($db.'.users AS u','u.id','=','requests.user_id')
