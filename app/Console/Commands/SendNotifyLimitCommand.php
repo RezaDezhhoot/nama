@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Models\Report;
 use App\Models\Request;
@@ -36,6 +37,7 @@ class SendNotifyLimitCommand extends Command
                     ->with('controller2')
                     ->whereNotNull(['next_notify_at','notify_period'])
                     ->where('next_notify_at','<=',now())
+                    ->where('status',RequestStatus::PENDING)
                     ->where('step' , RequestStep::APPROVAL_AREA_INTERFACE)
                     ->take(3)
                     ->get();
@@ -61,6 +63,7 @@ class SendNotifyLimitCommand extends Command
                     ->with('controller2')
                     ->whereNotNull(['next_notify_at','notify_period'])
                     ->where('next_notify_at','<=',now())
+                    ->where('status',RequestStatus::PENDING)
                     ->where('step' , RequestStep::APPROVAL_AREA_INTERFACE)
                     ->take(3)
                     ->get();
