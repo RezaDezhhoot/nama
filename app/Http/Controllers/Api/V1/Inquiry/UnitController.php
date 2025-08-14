@@ -18,6 +18,7 @@ class UnitController extends Controller
 
         $units = [];
         Unit::query()
+            ->with(['roles'])
             ->chunkById(200 , function ($items) use (&$units) {
                 $units[] = $items;
             });
