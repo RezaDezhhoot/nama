@@ -60,6 +60,8 @@
                             <th>کاربر</th>
                             <th>وضعیت</th>
                             <th>مرحله</th>
+                            <th>کنترلر شماره 1(تایید خودکار)</th>
+                            <th>کنترلر شماره 2(یادداوری)</th>
                             <th>مرکز</th>
                             <th>شهر/منطقه</th>
 
@@ -97,6 +99,8 @@
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
                                 <td>{{ $item->step->label2() }}</td>
+                                <td>{{ $item->controller?->name ?? '-' }}</td>
+                                <td>{{ $item->controller2?->name ?? '-' }}</td>
                                 <td>
                                     {{ $item?->unit?->full ?? "-" }}
                                     @if($item?->unit?->parent)

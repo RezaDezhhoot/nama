@@ -87,7 +87,7 @@ class IndexRequest extends BaseComponent
     public function render()
     {
         $items = Request::query()
-            ->with(['plan','user','unit','unit.city','unit.region','unit.parent','coach'])
+            ->with(['plan','user','unit','unit.city','unit.region','unit.parent','coach','controller','controller2'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
             })
