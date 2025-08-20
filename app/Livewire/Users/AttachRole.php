@@ -71,6 +71,9 @@ class AttachRole extends BaseComponent
             ->when($this->unit , function (Builder $builder){
                 $builder->where("ur.unit_id" , $this->unit);
             })
+            ->when($this->item , function (Builder $builder){
+                $builder->where("ur.item_id" , $this->item);
+            })
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })

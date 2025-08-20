@@ -26,6 +26,7 @@
                     wire:model.defer="unit"/>
                 <x-admin.forms.input width="3" type="number"  id="min_roles" label="حداقل تعداد نقش" wire:model.live="min_roles"/>
                 <x-admin.forms.input width="3" type="number"  id="max_roles" label="حداکثر تعداد نقش" wire:model.live="max_roles"/>
+                <x-admin.forms.dropdown width="12" id="item" :data="$data['items']" label="پروژه" wire:model.live="item"/>
 
             </div>
             @include('livewire.includes.advance-table')
