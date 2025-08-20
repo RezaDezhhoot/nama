@@ -22,7 +22,7 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
 {
     use Exportable;
 
-    public function __construct(public $role = null , public $region = null  , public $unit = null , public $search  = null)
+    public function __construct(public $role = null , public $region = null  , public $unit = null , public $search  = null , public $item = null)
     {
         ini_set('max_execution_time', '300');
         ini_set('memory_limit', '-1');
@@ -67,7 +67,11 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                 $builder->whereAny(['u.id','u.name','u.phone','u.national_id'],'LIKE','%'.$this->search.'%');
             })->when($this->unit , function (Builder $builder){
                 $builder->where("user_roles.unit_id" , $this->unit);
-            })->when($this->region , function (Builder $builder) {
+            })
+            ->when($this->item , function (Builder $builder){
+                $builder->where("user_roles.item_id" , $this->item);
+            })
+            ->when($this->region , function (Builder $builder) {
                 $builder->where(function (Builder $builder) {
                     $builder->where('region_id' , $this->region)
                         ->orWhereHas('region' , function (Builder $builder) {

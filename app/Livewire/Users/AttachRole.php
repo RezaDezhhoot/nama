@@ -85,7 +85,7 @@ class AttachRole extends BaseComponent
 
     public function export()
     {
-        return (new RoleExport($this->role,$this->region,$this->unit,$this->search))->download('rolex.xlsx');
+        return (new RoleExport($this->role,$this->region,$this->unit,$this->search , $this->item))->download('rolex.xlsx');
     }
 
     public function generateToken($id)
