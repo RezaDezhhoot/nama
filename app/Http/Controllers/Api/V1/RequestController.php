@@ -37,7 +37,6 @@ class RequestController extends Controller
     {
         $request->validate([
             'sort' => ['nullable','in:created_at,confirm,id'],
-            'direction' => ['nullable','in:desc,asc'],
             'step' => ['nullable',Rule::enum(RequestStep::class)],
             'q' => ['nullable','string','max:50']
         ]);
@@ -91,7 +90,8 @@ class RequestController extends Controller
                     $builder->search($request->get('q'));
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
-                $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
+                $dir = emptyToNull( $request->get('direction')) ?? "asc";
+                $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $dir);
             })->when(! $request->filled('sort') , function (Builder $builder) {
                 $builder->orderBy('requests.confirm');
             })

@@ -92,7 +92,8 @@ class ReportController extends Controller
                     $builder->where('unit_id' , $request->get('unit_id'));
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
-                $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $request->get('direction' , 'asc'));
+                    $dir = emptyToNull( $request->get('direction')) ?? "asc";
+                $builder->orderBy(emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $dir);
             })->when(! $request->filled('sort') , function (Builder $builder) {
                 $builder->orderBy('confirm');
             })->paginate((int)$request->get('per_page' , 10))
