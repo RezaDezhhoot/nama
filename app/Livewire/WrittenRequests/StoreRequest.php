@@ -22,6 +22,7 @@ class StoreRequest extends BaseComponent
 
     public function mount($action , $id)
     {
+        $this->authorize('edit_requests_written');
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->request = WrittenRequest::query()
@@ -95,6 +96,7 @@ class StoreRequest extends BaseComponent
 
     public function pdfExport($id)
     {
+        $this->authorize('export_requests_written');
         $r = WrittenRequest::query()->with(['sign'])->find($id);
         $pdf = Pdf::loadView('pdf.written-requests', ['r' => $r]);
         return response()->streamDownload(function () use ($pdf) {

@@ -111,7 +111,15 @@
                                 <td>
                                     {{ $item->unit?->city?->title }} / {{ $item->unit?->region?->title }}
                                 </td>
-                                <td><strong>{{ number_format($item->total_amount) }} ریال </strong></td>
+                                <td>
+                                    <strong>
+                                        @if(! $item->designated_by_council)
+                                            {{ number_format($item->staff ? $item->staff_amount: $item->total_amount) }} ریال
+                                        @else
+                                            هزینه توسط شورا تعیین می گردد
+                                        @endif
+                                    </strong>
+                                </td>
                                 <td><strong>{{ number_format($item->offer_amount) }} ریال </strong></td>
                                 <td><strong>{{ number_format($item->final_amount) }} ریال </strong></td>
 

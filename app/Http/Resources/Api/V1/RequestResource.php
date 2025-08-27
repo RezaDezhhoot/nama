@@ -69,7 +69,9 @@ class RequestResource extends JsonResource
             'auto_accept_at' => $this->auto_accept_at,
             'next_notify_at' => $this->next_notify_at,
             'members' => RingMemberResource::collection($this->whenLoaded('members')),
-            'request_and_report_total_amount' => $request_and_report_total_amount
+            'request_and_report_total_amount' => $request_and_report_total_amount,
+            'title' => $this->title,
+            'location' => $this->location
         ];
     }
 }

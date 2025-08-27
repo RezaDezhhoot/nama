@@ -30,6 +30,7 @@ class AttachRole extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_roles');
         $this->data['role'] = OperatorRole::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
     }
@@ -38,9 +39,9 @@ class AttachRole extends BaseComponent
     {
         $db = config('database.connections.mysql.database');
         $items = User::query()
-            ->with(['roles','roles.unit','roles.region'])
+            ->with(['roles2','roles2.unit','roles2.region'])
             ->whereNotNull('name')
-            ->withCount('roles')
+            ->withCount('roles2')
             ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
             ->leftJoin(sprintf("%s.units AS u",$db),'u.id','=','ur.unit_id')
             ->select('ur.role as role2','ur.region_id','ur.unit_id','u.id AS unit_pkey','u.region_id AS unit_region_id','users.*' ,  DB::raw('COUNT(ur.id) AS roles_count'))
@@ -85,6 +86,7 @@ class AttachRole extends BaseComponent
 
     public function export()
     {
+        $this->authorize('export_roles');
         return (new RoleExport($this->role,$this->region,$this->unit,$this->search , $this->item))->download('rolex.xlsx');
     }
 
@@ -99,10 +101,7 @@ class AttachRole extends BaseComponent
 
     public function deleteItem($id)
     {
-        User::query()->where('id', $id)->update([
-            'nama_role' => null
-        ]);
+        $this->authorize('delete_roles');
+        //
     }
-
-
 }

@@ -61,6 +61,8 @@ class IndexReport extends BaseComponent
     public function mount($type)
     {
         $this->type = $type;
+        $this->authorize('show_requests_'.$type);
+
         $this->data['status'] = RequestStatus::labels();
         $this->data['step'] = RequestStep::labels($type);
         $this->data['version'] = RequestPlanVersion::values();
@@ -78,6 +80,7 @@ class IndexReport extends BaseComponent
 
     public function exportXLSX()
     {
+        $this->authorize('export_requests_'.$this->type);
         return (new ExportReports($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search))->download('reports.xlsx');
     }
 
@@ -148,6 +151,7 @@ class IndexReport extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_requests_'.$this->type);
         Report::destroy($id);
     }
 }

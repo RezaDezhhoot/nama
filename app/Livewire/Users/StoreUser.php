@@ -45,6 +45,7 @@ class StoreUser extends BaseComponent
 
     public function mount($action , $id)
     {
+        $this->authorize('edit_roles');
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->user = User::query()->findOrFail($id);
@@ -188,6 +189,7 @@ class StoreUser extends BaseComponent
 
     public function deleteRole($id)
     {
+        $this->authorize('delete_roles');
         UserRole::destroy($id);
     }
 

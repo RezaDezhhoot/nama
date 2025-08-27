@@ -38,6 +38,7 @@ class IndexUnit extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_units');
         $this->data['type'] = UnitType::labels();
         if ($this->region) {
             $this->regionModel = Region::query()->find($this->region)?->toArray();
@@ -67,11 +68,13 @@ class IndexUnit extends BaseComponent
 
     public function export()
     {
+        $this->authorize('export_units');
         return (new ExportUnits($this->type,$this->region,$this->unit))->download('units.xlsx');
     }
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_units');
         Unit::destroy($id);
     }
 }

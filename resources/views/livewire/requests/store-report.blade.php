@@ -35,7 +35,7 @@
                             <td>{{ $request?->staff ? 'بله' : 'خیر' }}</td>
                             <td>{{ $request?->golden ? 'بله' : 'خیر' }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
-                            <td>{{ $request->step->label($request->plan_type) }}</td>
+                            <td>{{ $request->step->label2($request->plan_type) }}</td>
                             <td>
                                 <ul>
                                     <li>{{ $request->user?->name ?? "-" }}</li>
@@ -108,29 +108,44 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>تعداد دانش آموزان نوجوان</th>
-                            <th>هزینه کلی عملیات</th>
+                            @if($request->plan_type === \App\Enums\PlanTypes::DEFAULT)
+                                <th>تعداد دانش آموزان نوجوان</th>
+                                <th>هزینه کلی عملیات</th>
+                            @elseif($request->plan_type === \App\Enums\PlanTypes::UNIVERSITY)
+                                <th>عنوان برنامه</th>
+                                <th>محل برگزاری</th>
+                            @endif
                             <th>تاریخ برگزاری</th>
-                            <th>فایل پیوست نامه امام جماعت</th>
-                            <th>فایل نامه رابط منطقه</th>
+                            <th>شماره شبا</th>
+                            @if($request->plan_type === \App\Enums\PlanTypes::DEFAULT)
+                                <th>فایل پیوست نامه امام جماعت</th>
+                                <th>فایل نامه رابط منطقه</th>
+                            @endif
                             <th>تصاویر پیوست شده</th>
                             <th>هزینه پرداختی توسط آرمان(ثبت سیستمی)</th>
-                            <th>هزینه پیشنهادی مرحله اول توسط معاونت اجرایی مساجد</th>
-                            <th>هزینه نهایی تایید شده مرحله اول توسط معاونت طرح و برنامه</th>
+                            <th>هزینه پیشنهادی توسط <span>{{ $request->plan_type === \App\Enums\PlanTypes::UNIVERSITY ? 'معاونت دانشجویی' : 'معاونت اجرایی مساجد' }}</span></th>
+                            <th>هزینه نهایی تایید شده توسط معاونت طرح و برنامه</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{{ $request->students }}</td>
-                            <td>{{ number_format($request->amount) }} ریال </td>
+                            @if($request->plan_type === \App\Enums\PlanTypes::DEFAULT)
+                                <td>{{ $request->students }}</td>
+                                <td>{{ number_format($request->amount) }} ریال </td>
+                            @elseif($request->plan_type === \App\Enums\PlanTypes::UNIVERSITY)
+                                <td>{{ $request->title }}</td>
+                                <td>{{ $request->location }}  </td>
+                            @endif
                             <td>{{ persian_date($request->date) }}</td>
-                            <td>
-                                @if($request->imamLetter)
-                                    <div class="d-flex">
-                                        <button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
-                                        <a target="_blank" href="{{ $request->imamLetter->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
-                                    </div>
-                                @endif
+                            <td>{{ $request->sheba }}</td>
+                            @if($request->plan_type === \App\Enums\PlanTypes::DEFAULT)
+                                <td>
+                                    @if($request->imamLetter)
+                                        <div class="d-flex">
+                                            <button wire:click="download({{ $request->imamLetter->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                            <a target="_blank" href="{{ $request->imamLetter->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                        </div>
+                                    @endif
                                     @foreach($request->otherImamLetter ?? [] as $f)
                                         <hr>
                                         <div class=" d-flex">
@@ -138,22 +153,23 @@
                                             <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
                                         </div>
                                     @endforeach
-                            </td>
-                            <td>
-                                @if($request->areaInterfaceLetter)
-                                    <div class="d-flex">
-                                        <button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-sm btn-outline-success">بارگیری فایل</button>
-                                        <a target="_blank" href="{{ $request->areaInterfaceLetter->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
-                                    </div>
-                                @endif
-                                @foreach($request->otherAreaInterfaceLetter ?? [] as $f)
-                                    <hr>
-                                    <div class=" d-flex">
-                                        <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
-                                        <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
-                                    </div>
-                                @endforeach
-                            </td>
+                                </td>
+                                <td>
+                                    @if($request->areaInterfaceLetter)
+                                        <div class="d-flex">
+                                            <button wire:click="download({{ $request->areaInterfaceLetter->id }})" class="btn btn-sm btn-outline-success">بارگیری فایل</button>
+                                            <a target="_blank" href="{{ $request->areaInterfaceLetter->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                        </div>
+                                    @endif
+                                    @foreach($request->otherAreaInterfaceLetter ?? [] as $f)
+                                        <hr>
+                                        <div class=" d-flex">
+                                            <button wire:click="download({{ $f->id }})" class="btn btn-sm  btn-outline-success">بارگیری فایل</button>
+                                            <a target="_blank" href="{{ $f->url }}" class="btn btn-sm  btn-outline-warning">مشاهده فایل</a>
+                                        </div>
+                                    @endforeach
+                                </td>
+                            @endif
                             <td>
                                 @foreach($request->images ?? [] as $f)
                                     <hr>
@@ -163,7 +179,19 @@
                                     </div>
                                 @endforeach
                             </td>
-                            <td><strong>{{ number_format($request->total_amount) }} ریال </strong></td>
+                            <td>
+                                <strong>
+                                    @if(! $request->designated_by_council)
+                                        @if($request->staff)
+                                            {{ number_format($request->staff_amount) }} ریال
+                                        @else
+                                            {{ number_format($request->total_amount) }} ریال
+                                        @endif
+                                    @else
+                                        هزینه توسط شورا تعیین می گردد
+                                    @endif
+                                </strong>
+                            </td>
                             <td><strong>{{ number_format($request->offer_amount) }} ریال </strong></td>
                             <td><strong>{{ number_format($request->final_amount) }} ریال </strong></td>
                         </tr>
@@ -186,6 +214,29 @@
                         </tbody>
                     </table>
                 </div>
+                @if($request->status !== \App\Enums\RequestStatus::DONE)
+                    <hr>
+                    <div class="col-12">
+                        <x-admin.forms.validation-errors/>
+                        @if($request->step === \App\Enums\RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES)
+                            <x-admin.forms.input type="number"  id="offer_amount" label=" قیمت پیشنهادی توسط {{ \App\Enums\OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->label($type) }}  مرحله اول(ریال)" wire:model.defer="offer_amount"/>
+                        @elseif($request->step === \App\Enums\RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING)
+                            @if($request->single_step)
+                                <x-admin.forms.input help="پس از تایید صد درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی  تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label($type) }} مرحله اول(ریال)" wire:model.defer="final_amount"/>
+                            @else
+                                <x-admin.forms.input help="پس از تایید پنجاه درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی  تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label($type) }} مرحله اول(ریال)" wire:model.defer="final_amount"/>
+                            @endif
+                        @endif
+                        <x-admin.forms.text-area dir="rtl" id="comment" :required="true" label="کامنت" wire:model.defer="comment"/>
+                        <x-admin.forms.dropdown :data="$data['status']" :required="true" id="status" label="وضعیت درخواست" wire:model.live="status"/>
+                        @if($status == \App\Enums\RequestStatus::REJECTED->value || $status == \App\Enums\RequestStatus::ACTION_NEEDED->value)
+                            <x-admin.forms.text-area dir="rtl" id="message"  label="علت" wire:model.defer="message"/>
+                        @endif
+                        <x-admin.forms.dropdown :data="$data['step']" id="step" help="در صورت تایید درخواست به صورت خودکار وارد مراحل بعدی می شود" label="ارجاع به" wire:model.live="step"/>
+                        <button class="btn btn-outline-primary" onclick="store()">دخیره تغییرات </button>
+                    </div>
+                @endif
+
             </x-admin.form-section>
             <x-admin.form-section label="جزئیات گزارش">
                 <div class="col-12">
@@ -197,7 +248,7 @@
                             <th>تاریخ ثبت گزارش</th>
                             <th>تاریخ آخرین بروزرسانی</th>
 
-                            <th>هزینه پیشنهادی مرحله دوم توسط معاونت اجرایی مساجد</th>
+                            <th>هزینه پیشنهادی مرحله دوم <span>{{ $request->plan_type === \App\Enums\PlanTypes::UNIVERSITY ? 'معاونت دانشجویی' : 'معاونت اجرایی مساجد' }}</span></th>
                             <th>هزینه نهایی تایید شده مرحله دوم توسط معاونت طرح و برنامه</th>
                         </tr>
                         </thead>
@@ -218,17 +269,22 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>تعداد دانش آموزان نوجوان</th>
-                            <th>تاریخ برگزاری</th>
+                            @if($request->plan_type === \App\Enums\PlanTypes::DEFAULT)
+                                <th>تعداد دانش آموزان نوجوان</th>
+                                <th>تاریخ برگزاری</th>
+                            @endif
                             <th>تصاویر</th>
                             <th>ویدیو</th>
                             <th>تصاویر بیشتر</th>
+                            <th>توضیحات تکمیلی</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{{ $report->students }}</td>
-                            <td>{{ persian_date($report->date) }}</td>
+                            @if($request->plan_type === \App\Enums\PlanTypes::DEFAULT)
+                                <td>{{ $report->students }}</td>
+                                <td>{{ persian_date($report->date) }}</td>
+                            @endif
                             <td>
                                 @foreach($report->images as $image)
                                     <a target="_blank" href="{{ $image->url }}" class="btn btn-outline-success">
@@ -253,6 +309,9 @@
                                     </a>
                                 @endforeach
                             </td>
+                            <td>
+                                {{ $report->body }}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -262,12 +321,12 @@
                     <div class="col-12">
                         <x-admin.forms.validation-errors/>
                         @if($report->step === \App\Enums\RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES)
-                            <x-admin.forms.input type="number"  id="offer_amount" label="قیمت پیشنهادی توسط {{ \App\Enums\OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->label() }} مرحله دوم(ریال)" wire:model.defer="offer_amount"/>
+                            <x-admin.forms.input type="number"  id="offer_amount" label="قیمت پیشنهادی توسط {{ \App\Enums\OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES->label($type) }} مرحله دوم(ریال)" wire:model.defer="offer_amount"/>
                         @elseif($report->step === \App\Enums\RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING)
                             @if($request->single_step)
-                                <x-admin.forms.input help="پس از تایید صد درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label() }} مرحله دوم(ریال)" wire:model.defer="final_amount"/>
+                                <x-admin.forms.input help="پس از تایید صد درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label($type) }} مرحله دوم(ریال)" wire:model.defer="final_amount"/>
                             @else
-                                <x-admin.forms.input help="پس از تایید پنجاه درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label() }} مرحله دوم(ریال)" wire:model.defer="final_amount"/>
+                                <x-admin.forms.input help="پس از تایید پنجاه درصد هزینه فوق برای درخواست کننده واریز خواهد شد" type="number"  :required="true" id="final_amount" label="قیمت نهایی تایید شده توسط {{ \App\Enums\OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING->label($type) }} مرحله دوم(ریال)" wire:model.defer="final_amount"/>
                             @endif
                         @endif
                         <x-admin.forms.text-area dir="rtl" id="comment" :required="true" label="کامنت" wire:model.defer="comment"/>
@@ -291,7 +350,7 @@
                                     <div class="d-flex flex-column mb-5 {{ $reply->user_id == auth()->id() ? " align-items-start" : " align-items-end" }}">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <a class="text-dark-75 text-hover-primary font-weight-bold font-size-h6"><strong>{{$reply->display_name}} :</strong> {{ $reply->user->name }}  </a>
+                                                <a class="text-dark-75 text-hover-primary font-weight-bold font-size-h6"><strong>{{$reply?->step?->title($type) ?? '-'}} :</strong> {{ $reply->user->name }}  </a>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center">

@@ -241,7 +241,7 @@
                 confirmButtonText: 'بله'
             }).then((result) => {
                 if (result.value) {
-                @this.call('deleteItem', id)
+                @this.call('deleteItem')
                 }
             })
         }

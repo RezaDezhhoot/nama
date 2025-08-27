@@ -43,6 +43,7 @@ class StoreForm extends BaseComponent
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
+            $this->authorize('edit_forms');
             $this->form = Form::query()->with(['item','items'])->findOrFail($id);
             $this->title = $this->form->title;
             $this->required = $this->form->required;
@@ -52,6 +53,7 @@ class StoreForm extends BaseComponent
             $this->header = $this->title ?? $this->form->id;
             $this->status = $this->form->status?->value;
         } elseif ($this->isCreatingMode()) {
+            $this->authorize('create_forms');
             $this->form = Form::query()->create();
             $this->header = "فرم جدید";
         }
@@ -197,6 +199,7 @@ class StoreForm extends BaseComponent
 
     public function deleteItem()
     {
+        $this->authorize('delete_forms');
         $this->form->delete();
         return redirect()->route('admin.forms.index', [
             'search' => $this->qsearch,

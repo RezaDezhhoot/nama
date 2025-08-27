@@ -33,6 +33,7 @@ class IndexOtherRolesLogs extends BaseComponent
     public $subjects = [];
     public function mount()
     {
+        $this->authorize('show_log_activities');
         $this->subjects = [
             Subjects::REPORT->value => Subjects::REPORT->label(),
             Subjects::REQUEST->value => Subjects::REQUEST->label(),

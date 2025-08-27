@@ -31,6 +31,7 @@ class StoreFormReport extends BaseComponent
 
     public function mount($action , $id)
     {
+        $this->authorize('edit_form_reports');
         $this->setMode($action);
         $this->report = FormReport::query()->with(['user','form'])->findOrFail($id);
         $this->status = $this->report->status->value;
@@ -60,6 +61,7 @@ class StoreFormReport extends BaseComponent
 
     public function deleteItem()
     {
+        $this->authorize('delete_form_reports');
         $this->report->delete();
         return redirect()->route('admin.form-reports.index', [
             'search' => $this->qsearch,

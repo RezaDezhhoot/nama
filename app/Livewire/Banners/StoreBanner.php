@@ -14,6 +14,7 @@ class StoreBanner extends BaseComponent
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
+            $this->authorize('edit_banners');
             $this->model = Banner::query()->with(['item'])->findOrFail($id);
             $this->title = $this->model->title;
             $this->image = $this->model->image;
@@ -21,6 +22,7 @@ class StoreBanner extends BaseComponent
             $this->item = $this->model->item_id;
             $this->header = $this->title;
         } elseif ($this->isCreatingMode()) {
+            $this->authorize('create_banners');
             $this->header = 'بنر جدید';
         } else abort(404);
 
@@ -50,6 +52,7 @@ class StoreBanner extends BaseComponent
 
     public function deleteItem()
     {
+        $this->authorize('delete_banners');
         if ($this->isUpdatingMode()) {
             redirect()->route('admin.banners.index');
         }

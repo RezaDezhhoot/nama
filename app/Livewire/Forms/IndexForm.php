@@ -31,6 +31,7 @@ class IndexForm extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_forms');
         $this->data['status'] = FormStatus::labels();
         $this->data['items'] = DashboardItem::all()->pluck('title','id');
     }
@@ -55,6 +56,7 @@ class IndexForm extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_forms');
         Form::destroy($id);
     }
 }

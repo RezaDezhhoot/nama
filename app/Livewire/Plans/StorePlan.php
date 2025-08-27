@@ -49,6 +49,7 @@ class StorePlan extends BaseComponent
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
+            $this->authorize('edit_request_plans');
             $this->model = RequestPlan::query()->with(['requirements' => function ($q) {
                 $q->select2();
             }])->findOrFail($id);
@@ -98,6 +99,7 @@ class StorePlan extends BaseComponent
 
             $this->item = $this->model->item_id;
         } elseif ($this->isCreatingMode()) {
+            $this->authorize('create_request_plans');
             $this->header = 'اکشن پلن جدید';
             $this->status = RequestPlanStatus::PUBLISHED->value;
             $this->type = PlanTypes::DEFAULT->value;
@@ -242,6 +244,7 @@ class StorePlan extends BaseComponent
 
     public function deleteItem()
     {
+        $this->authorize('delete_request_plans');
         if ($this->isUpdatingMode()) {
             $this->model->delete();
             redirect()->route('admin.plans.index');

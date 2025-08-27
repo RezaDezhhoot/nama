@@ -61,6 +61,7 @@ class StoreReport extends BaseComponent
     public function mount($type , $action , $id)
     {
         $this->type = $type;
+        $this->authorize('edit_requests_'.$type);
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->report = Report::query()
@@ -73,12 +74,14 @@ class StoreReport extends BaseComponent
             $this->request = $this->report->request;
             $this->header = "گزارش $id";
 
-            $this->offer_amount = $this->request->offer_amount ?? $this->request->total_amount;
-            $this->final_amount = $this->request->final_amount ?? $this->request->offer_amount ?? $this->request->total_amount;
+            if (in_array($this->report->step,[RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES])) {
+                $this->offer_amount = $this->report->offer_amount ?? $this->request->offer_amount ??  $this->request->total_amount;
+                $this->final_amount = $this->report->final_amount ?? $this->report->offer_amount ?? $this->request->final_amount ??$this->request->offer_amount ?? $this->request->total_amount;
+            }
             $this->status = $this->report->status->value;
         } else abort(404);
         $this->data['status'] = RequestStatus::labels();
-        $this->data['step'] = RequestStep::labels();
+        $this->data['step'] = RequestStep::labels($type);
     }
 
 
@@ -96,8 +99,9 @@ class StoreReport extends BaseComponent
             $this->validate([
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
-                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','min:1'],
-                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1'],
+                'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string'],
+                'final_amount' => [$this->report->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ],
+                'offer_amount' => [$this->report->step ===  RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES ? 'required' : 'nullable','integer' ],
                 'step' => ['nullable',Rule::enum(RequestStep::class)]
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {

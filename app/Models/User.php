@@ -14,10 +14,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable , HasApiTokens , SimpleSearchable , Loggable;
+    use HasFactory, Notifiable , HasApiTokens , SimpleSearchable , Loggable , HasRoles;
 
     protected $connection = 'arman';
 
@@ -50,14 +51,14 @@ class User extends Authenticatable
         return $q->selectRaw("CONCAT(name,' - کدملی: ',national_id, ' - شماره همراه:  ',phone) as text , users.id");
     }
 
-    public function roles(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function roles2(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(\App\Models\UserRole::class,'user_id');
     }
 
     public function unitIds()
     {
-        return $this->roles()
+        return $this->roles2()
             ->where('role',OperatorRole::MOSQUE_HEAD_COACH)
             ->whereNotNull('unit_id')
             ->select("unit_id")
@@ -67,7 +68,7 @@ class User extends Authenticatable
 
     public function getAreaInterfaceLocations($item = null): array
     {
-        $roles = $this->roles()->when($item , function ($q) use ($item) {
+        $roles = $this->roles2()->when($item , function ($q) use ($item) {
             $q->where('item_id' , $item);
         })->where('role' , OperatorRole::AREA_INTERFACE)
             ->cursor();

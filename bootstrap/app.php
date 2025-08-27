@@ -19,7 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_admin' => \App\Http\Middleware\IsAdminMiddleware::class,
             'is_operator' => \App\Http\Middleware\IsOperatorMiddleware::class,
             'has_item' => \App\Http\Middleware\ItemMiddleware::class,
-            'has_role' => \App\Http\Middleware\RoleMiddleware::class
+            'has_role' => \App\Http\Middleware\RoleMiddleware::class,
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
     })
     ->withBindings([

@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function __invoke(): UserResource
     {
-        auth()->user()->load(['roles' => function ($q) {
+        auth()->user()->load(['roles2' => function ($q) {
             if (\request()->filled('item_id')) {
                 return $q->where('item_id' , \request()->item_id);
             }

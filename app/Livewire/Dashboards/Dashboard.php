@@ -54,7 +54,7 @@ class Dashboard extends BaseComponent
 
 
         foreach ($rawData as $name => $item) {
-            $groupedData = collect($item)->sortBy('created_at')->groupBy('date')->toArray();
+            $groupedData = collect($item)->sortBy('created_at')->groupBy('date_formatted')->toArray();
             foreach ($labels as $k => $label){
                 $data[$name][] = sizeof($groupedData[$k] ?? []);
             }

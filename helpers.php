@@ -145,12 +145,12 @@ function getSetting(...$name)
 
 function isAdmin(): bool
 {
-    return in_array(auth()->user()->role , [UserRole::ADMIN, UserRole::SUPER_ADMIN]);
+    return auth()->user()->hasAnyRole(['admin','super_admin','administrator']);
 }
 
 function isOperator(): bool
 {
-    return in_array(auth()->user()->nama_role , OperatorRole::cases());
+    return false;
 }
 
 function my_bcmod( $x, $y ): int

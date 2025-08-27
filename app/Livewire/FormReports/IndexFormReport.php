@@ -34,6 +34,7 @@ class IndexFormReport extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_form_reports');
         $this->data['status'] = FormReportEnum::labels();
         $this->data['forms'] = Form::query()->whereNotNull('title')->withTrashed()->get()->map(function ($v){
             $v->text = sprintf("#%d-%s" , $v->id,$v->title);
@@ -65,11 +66,13 @@ class IndexFormReport extends BaseComponent
 
     public function exportXLSX()
     {
+        $this->authorize('export_form_reports');
         return (new ExportFormReports($this->user,$this->form,$this->status,$this->search))->download('reports.xlsx');
     }
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_form_reports');
         FormReport::destroy($id);
     }
 }

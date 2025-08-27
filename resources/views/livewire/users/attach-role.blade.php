@@ -52,11 +52,11 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->national_id }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>{{ sizeof($item->roles) }}</td>
+                                <td>{{ sizeof($item->roles2) }}</td>
                                 <td>{{ $item->role?->label() }}</td>
                                 <td>
                                     <ul>
-                                        @foreach($item->roles as $role)
+                                        @foreach($item->roles2 as $role)
                                             <li>
                                                 <span class="badge my-1 badge-{{ $role->role->badge() }}">
                                                    {{ $role->role?->label() }} - {{ $role?->region?->title }} : {{ $role?->unit?->full }}

@@ -21,6 +21,7 @@ class IndexRecord extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_accounting');
         $this->data['type'] = UnitType::labels();
         $this->type = UnitType::MOSQUE->value;
         $this->subType = UnitSubType::BROTHERS->value;
@@ -71,6 +72,7 @@ class IndexRecord extends BaseComponent
 
     public function export()
     {
+        $this->authorize('export_accounting');
         return (new AccountingRecordExport($this->batchModel))->download('records.xlsx');
     }
 }

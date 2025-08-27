@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exports;
+use App\Enums\UnitType;
 use App\Models\Request;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -78,16 +79,13 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
             'مرکز',
             'شهر',
             'منطقه',
-            'هزینه کلی عملیات',
             'هزینه پرداختی توسط آرمان(ثبت سیستمی)',
             'هزینه پیشنهادی توسط معاونت اجرایی',
             'هزینه نهایی تایید شده توسط معاونت طرح و برنامه',
+            ...($this->type != UnitType::UNIVERSITY->value ? ['هزینه کلی عملیات','تعداد دانش آموزان نوجوان','فایل نامه رابط منطقه', 'فایل پیوست نامه امام جماعت'] : ['عنوان برنامه','محل برگزاری']),
             'تاریخ ارسال',
             'تاریخ اخرین بروزرسانی',
-            'تعداد دانش آموزان نوجوان',
             'تاریخ برگزاری',
-            'فایل پیوست نامه امام جماعت',
-            'فایل نامه رابط منطقه',
             'توضیحات تکمیلی',
         ];
     }
@@ -108,16 +106,14 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
                 'unit' => sprintf("%s - %s",$row?->unit?->title , $row?->unit?->text),
                 'city' => $row->unit?->city?->title,
                 'region' => $row->unit?->region?->title,
-                'amount' => number_format($row->amount),
-                'total_amount' =>  number_format($row->total_amount),
+                'total_amount' =>  $row->designated_by_council ? "هزینه توسط شورا تعیین می گردد" : number_format($row->staff ? $row->staff_amount : $row->total_amount),
                 'offer_amount' =>  number_format($row->offer_amount),
                 'final_amount' =>  number_format($row->final_amount),
+                ...($this->type != UnitType::UNIVERSITY->value ? ['amount' =>  number_format($row->amount) , 'students' => $row->students , 'areaInterfaceLetter' => $row->areaInterfaceLetter?->url , 'imamLetter' => $row->imamLetter?->url] :
+                    ['title' => $row->title,'location' => $row->location]),
                 'created_at' =>  persian_date($row->created_at),
                 'updated_at' =>  persian_date($row->updated_at),
-                'students' => $row->students,
                 'date' => persian_date($row->date),
-                'imamLetter' => $row->imamLetter?->url,
-                'areaInterfaceLetter' => $row->areaInterfaceLetter?->url,
                 'body' => $row->body,
             ];
         });

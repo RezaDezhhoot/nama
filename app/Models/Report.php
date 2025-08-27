@@ -134,12 +134,12 @@ class Report extends Model
         return $this->belongsTo(DashboardItem::class,'item_id');
     }
 
-//    public function date(): Attribute
-//    {
-//        return Attribute::get(function (){
-//            return Carbon::make($this->created_at)->format('Y-m-d');
-//        });
-//    }
+    public function dateFormatted(): Attribute
+    {
+        return Attribute::get(function (){
+            return Carbon::make($this->created_at)->format('Y-m-d');
+        });
+    }
 
     public function toNextStep($offer_amount = null , $final_amount = null): static
     {

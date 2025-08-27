@@ -29,16 +29,19 @@ class IndexRing extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_rings');
         $this->data['type'] = UnitType::labels();
     }
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_rings');
         Ring::destroy($id);
     }
 
     public function deleteMember($id)
     {
+        $this->authorize('delete_rings');
         RingMember::destroy($id);
     }
 
@@ -63,18 +66,21 @@ class IndexRing extends BaseComponent
 
     public function restoreMember($id)
     {
+        $this->authorize('delete_rings');
         $m = RingMember::query()->withTrashed()->find($id);
         $m->restore();
     }
 
     public function restore($id)
     {
+        $this->authorize('delete_rings');
         $r = Ring::query()->withTrashed()->find($id);
         $r->restore();
     }
 
     public function export()
     {
+        $this->authorize('export_rings');
         return (new RingExport(type: $this->type , q: $this->search))->download('rings.xlsx');
     }
 }

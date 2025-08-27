@@ -18,6 +18,7 @@ class IndexRequest extends BaseComponent
     public function mount()
     {
         $this->data['status'] = RequestStatus::labels();
+        $this->authorize('show_requests_written');
     }
 
     public function render()
@@ -50,6 +51,7 @@ class IndexRequest extends BaseComponent
 
     public function pdfExport($id)
     {
+        $this->authorize('export_requests_written');
         $r = WrittenRequest::query()->with(['sign'])->find($id);
         $pdf = Pdf::loadView('pdf.written-requests', ['r' => $r]);
         return response()->streamDownload(function () use ($pdf) {

@@ -22,7 +22,8 @@
         "myclabs/deep-copy": "^1.13",
         "opcodesio/log-viewer": "^3.14",
         "ramsey/uuid": "^4.9",
-        "spatie/laravel-activitylog": "^4.10"
+        "spatie/laravel-activitylog": "^4.10",
+        "spatie/laravel-permission": "^6.21"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

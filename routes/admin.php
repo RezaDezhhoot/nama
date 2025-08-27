@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
-    Route::group(['middleware' => 'auth'] , function () {
+    Route::group(['middleware' => ['auth','role:admin']] , function () {
         Route::group(['prefix' => 'dashboard' , 'as' => 'dashboard.'] , function () {
             Route::get('' , \App\Livewire\Dashboards\Dashboard::class)->name('index');
         });

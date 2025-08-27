@@ -46,76 +46,83 @@
                 </li>
 
                 @if(isAdmin() || isOperator())
-                    <li class="menu-section">
-                        <h4 class="menu-text">مساجد</h4>
-                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                    </li>
-                    <x-admin.menu-item
-                        href="{{route('admin.requests.index',[\App\Enums\UnitType::MOSQUE])}}"
-                        icon="fas fa-mosque"
-                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
-                        label="درخواست های مساجد({{ $mosque_requests }})" />
-                    <x-admin.menu-item
-                        href="{{route('admin.reports.index',[\App\Enums\UnitType::MOSQUE])}}"
-                        icon="fas fa-mosque"
-                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
-                        label="گزارش های مساجد({{ $mosque_reports }})" />
+                    @canany(['show_requests_mosque','edit_requests_mosque','delete_requests_mosque','export_requests_mosque'])
+                        <li class="menu-section">
+                            <h4 class="menu-text">مساجد</h4>
+                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                        </li>
+                        <x-admin.menu-item
+                            href="{{route('admin.requests.index',[\App\Enums\UnitType::MOSQUE])}}"
+                            icon="fas fa-mosque"
+                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
+                            label="درخواست های مساجد({{ $mosque_requests }})" />
+                        <x-admin.menu-item
+                            href="{{route('admin.reports.index',[\App\Enums\UnitType::MOSQUE])}}"
+                            icon="fas fa-mosque"
+                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
+                            label="گزارش های مساجد({{ $mosque_reports }})" />
+                    @endcanany
+                    @canany(['show_requests_school','edit_requests_school','delete_requests_school','export_requests_school'])
+                        <li class="menu-section">
+                            <h4 class="menu-text">مدارس</h4>
+                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                        </li>
+                        <x-admin.menu-item
+                            href="{{route('admin.requests.index',[\App\Enums\UnitType::SCHOOL])}}"
+                            icon="fas fa-school"
+                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
+                            label="درخواست های مدارس({{ $school_requests }})" />
+                        <x-admin.menu-item
+                            href="{{route('admin.reports.index',[\App\Enums\UnitType::SCHOOL])}}"
+                            icon="fas fa-school"
+                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
+                            label="گزارش های مدارس({{ $school_reports }})" />
+                    @endcanany
+                    @canany(['show_requests_university','edit_requests_university','delete_requests_university','export_requests_university'])
+                        <li class="menu-section">
+                            <h4 class="menu-text">دانشگاه</h4>
+                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                        </li>
+                        <x-admin.menu-item
+                            href="{{route('admin.requests.index',[\App\Enums\UnitType::UNIVERSITY])}}"
+                            icon="fas fa-university"
+                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
+                            label="درخواست های دانشگاه({{ $university_requests }})" />
+                        <x-admin.menu-item
+                            href="{{route('admin.reports.index',[\App\Enums\UnitType::UNIVERSITY])}}"
+                            icon="fas fa-university"
+                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
+                            label="گزارش های دانشگاه({{ $university_reports }})" />
+                    @endcanany
+                    @canany(['show_requests_center','edit_requests_center','delete_requests_center','export_requests_center'])
+                        <li class="menu-section">
+                            <h4 class="menu-text">مرکز تعالی</h4>
+                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                        </li>
+                        <x-admin.menu-item
+                            href="{{route('admin.requests.index',[\App\Enums\UnitType::CENTER])}}"
+                            icon="fas fa-ticket-alt"
+                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
+                            label="درخواست های مرکز تعالی({{ $center_requests }})" />
 
-                    <li class="menu-section">
-                        <h4 class="menu-text">مدارس</h4>
-                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                    </li>
-                    <x-admin.menu-item
-                        href="{{route('admin.requests.index',[\App\Enums\UnitType::SCHOOL])}}"
-                        icon="fas fa-school"
-                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
-                        label="درخواست های مدارس({{ $school_requests }})" />
-                    <x-admin.menu-item
-                        href="{{route('admin.reports.index',[\App\Enums\UnitType::SCHOOL])}}"
-                        icon="fas fa-school"
-                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
-                        label="گزارش های مدارس({{ $school_reports }})" />
+                        <x-admin.menu-item
+                            href="{{route('admin.reports.index',[\App\Enums\UnitType::CENTER])}}"
+                            icon="fas fa-ticket-alt"
+                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
+                            label="گزارش های مرکز تعالی({{ $center_reports }})" />
 
-                    <li class="menu-section">
-                        <h4 class="menu-text">دانشگاه</h4>
-                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                    </li>
-                    <x-admin.menu-item
-                        href="{{route('admin.requests.index',[\App\Enums\UnitType::UNIVERSITY])}}"
-                        icon="fas fa-university"
-                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
-                        label="درخواست های دانشگاه({{ $university_requests }})" />
-                    <x-admin.menu-item
-                        href="{{route('admin.reports.index',[\App\Enums\UnitType::UNIVERSITY])}}"
-                        icon="fas fa-university"
-                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
-                        label="گزارش های دانشگاه({{ $university_reports }})" />
-
-                    <li class="menu-section">
-                        <h4 class="menu-text">مرکز تعالی</h4>
-                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                    </li>
-                    <x-admin.menu-item
-                        href="{{route('admin.requests.index',[\App\Enums\UnitType::CENTER])}}"
-                        icon="fas fa-ticket-alt"
-                        :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
-                        label="درخواست های مرکز تعالی({{ $center_requests }})" />
-
-                    <x-admin.menu-item
-                        href="{{route('admin.reports.index',[\App\Enums\UnitType::CENTER])}}"
-                        icon="fas fa-ticket-alt"
-                        :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
-                        label="گزارش های مرکز تعالی({{ $center_reports }})" />
-
-                    <li class="menu-section">
-                        <h4 class="menu-text">سایر</h4>
-                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                    </li>
+                        <li class="menu-section">
+                            <h4 class="menu-text">سایر</h4>
+                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                        </li>
+                    @endcanany
+                    @canany(['show_requests_written','edit_requests_written','delete_requests_written','export_requests_written'])
                     <x-admin.menu-item
                         href="{{route('admin.written-requests.index')}}"
                         icon="fas fa-ticket-alt"
                         :active="request()->routeIs(['admin.written-requests.index','admin.written-requests.store'])"
                         label="درخواست های مکتوب({{ $writtenRequests }})" />
+                    @endcanany
                 @endif
 
 
@@ -124,62 +131,83 @@
                         <h4 class="menu-text">گزارش های سیستمی</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
                     </li>
-                    <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-book" :active="false" label="Telescope" />
-                    <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />
-                    <x-admin.menu-item href="{{ route('admin.log-activities.roles') }}" :active="request()->routeIs(['admin.log-activities.roles'])" icon="fas fa-history" label="فعالیت سایر نقش ها" />
-                    <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
-
+                    @if(auth()->user()->hasAnyRole(['super_admin','administrator']))
+                        <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-book" :active="false" label="Telescope" />
+                    @endif
+                    @can('show_log_activities')
+                        <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />
+                        <x-admin.menu-item href="{{ route('admin.log-activities.roles') }}" :active="request()->routeIs(['admin.log-activities.roles'])" icon="fas fa-history" label="فعالیت سایر نقش ها" />
+                    @endcan
+                    @canany(['show_accounting','export_accounting'])
+                        <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
+                    @endcanany
                     <li class="menu-section">
                         <h4 class="menu-text">تنظیمات</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
                     </li>
-                    <x-admin.menu-item
-                        href="{{route('admin.rings.index')}}"
-                        icon="fas fa-ring"
-                        :active="request()->routeIs(['admin.rings.index','admin.rings.store'])"
-                        label="حلقه ها" />
-
-                    <x-admin.menu-item
-                        href="{{route('admin.forms.index')}}"
-                        icon="flaticon2-file"
-                        :active="request()->routeIs(['admin.forms.index','admin.forms.store'])"
-                        label="فرم ها" />
-                    <x-admin.menu-item
-                        href="{{route('admin.form-reports.index')}}"
-                        icon="fas fa-ticket-alt"
-                        :active="request()->routeIs(['admin.form-reports.index','admin.form-reports.store'])"
-                        label="گزارش گیر({{ number_format($reports) }})" />
-
-                    <x-admin.menu-item
-                        href="{{route('admin.cities.index')}}"
-                        icon="fas fa-city"
-                        :active="request()->routeIs(['admin.cities.index','admin.cities.store'])"
-                        label="شهر ها و مناطق" />
-                    <x-admin.menu-item
-                        href="{{route('admin.units.index')}}"
-                        icon="fas fa-mosque"
-                        :active="request()->routeIs(['admin.units.index','admin.units.store'])"
-                        label="مراکز" />
-                    <x-admin.menu-item
-                        href="{{route('admin.plans.index')}}"
-                        icon="fas fa-gem"
-                        :active="request()->routeIs(['admin.plans.index','admin.plans.store'])"
-                        label="اکشن پلن ها" />
-                    <x-admin.menu-item
-                        href="{{route('admin.banners.index')}}"
-                        icon="far fa-image"
-                        :active="request()->routeIs(['admin.banners.index','admin.banners.store'])"
-                        label="بنر ها" />
-                    <x-admin.menu-item
-                        href="{{route('admin.dashboard-items.index')}}"
-                        icon="fas fa-home"
-                        :active="request()->routeIs(['admin.dashboard-items.index','admin.dashboard-items.store'])"
-                        label="ایتم های داشبورد" />
-                    <x-admin.menu-item
-                        href="{{route('admin.users.roles')}}"
-                        icon="fas fa-key"
-                        :active="request()->routeIs(['admin.users.roles','admin.users.roles.store'])"
-                        label="مدیریت نقش ها" />
+                    @canany(['show_rings','delete_rings','export_rings'])
+                        <x-admin.menu-item
+                            href="{{route('admin.rings.index')}}"
+                            icon="fas fa-ring"
+                            :active="request()->routeIs(['admin.rings.index','admin.rings.store'])"
+                            label="حلقه ها" />
+                    @endcanany
+                    @canany(['show_forms','delete_forms','edit_forms'])
+                        <x-admin.menu-item
+                            href="{{route('admin.forms.index')}}"
+                            icon="flaticon2-file"
+                            :active="request()->routeIs(['admin.forms.index','admin.forms.store'])"
+                            label="فرم ها" />
+                    @endcanany
+                    @canany(['show_form_reports','delete_form_reports','edit_form_reports'])
+                        <x-admin.menu-item
+                            href="{{route('admin.form-reports.index')}}"
+                            icon="fas fa-ticket-alt"
+                            :active="request()->routeIs(['admin.form-reports.index','admin.form-reports.store'])"
+                            label="گزارش گیر({{ number_format($reports) }})" />
+                    @endcanany
+                    @canany(['show_locations','delete_locations','edit_locations'])
+                        <x-admin.menu-item
+                            href="{{route('admin.cities.index')}}"
+                            icon="fas fa-city"
+                            :active="request()->routeIs(['admin.cities.index','admin.cities.store'])"
+                            label="شهر ها و مناطق" />
+                    @endcanany
+                    @canany(['show_units','delete_units','edit_units','export_units'])
+                        <x-admin.menu-item
+                            href="{{route('admin.units.index')}}"
+                            icon="fas fa-mosque"
+                            :active="request()->routeIs(['admin.units.index','admin.units.store'])"
+                            label="مراکز" />
+                    @endcanany
+                    @canany(['show_request_plans','delete_request_plans','edit_request_plans'])
+                        <x-admin.menu-item
+                            href="{{route('admin.plans.index')}}"
+                            icon="fas fa-gem"
+                            :active="request()->routeIs(['admin.plans.index','admin.plans.store'])"
+                            label="اکشن پلن ها" />
+                    @endcanany
+                    @canany(['show_banners','delete_banners','edit_banners'])
+                        <x-admin.menu-item
+                            href="{{route('admin.banners.index')}}"
+                            icon="far fa-image"
+                            :active="request()->routeIs(['admin.banners.index','admin.banners.store'])"
+                            label="بنر ها" />
+                    @endcanany
+                    @canany(['show_dashboard_items','delete_dashboard_items','edit_dashboard_items'])
+                        <x-admin.menu-item
+                            href="{{route('admin.dashboard-items.index')}}"
+                            icon="fas fa-home"
+                            :active="request()->routeIs(['admin.dashboard-items.index','admin.dashboard-items.store'])"
+                            label="ایتم های داشبورد" />
+                    @endcanany
+                    @canany(['show_roles','delete_roles','edit_roles','export_roles'])
+                        <x-admin.menu-item
+                            href="{{route('admin.users.roles')}}"
+                            icon="fas fa-key"
+                            :active="request()->routeIs(['admin.users.roles','admin.users.roles.store'])"
+                            label="مدیریت نقش ها" />
+                    @endcanany
                 @endif
             </ul>
         </div>

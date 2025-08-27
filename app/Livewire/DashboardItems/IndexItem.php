@@ -11,6 +11,11 @@ class IndexItem extends BaseComponent
 
     use WithPagination;
 
+    public function mount()
+    {
+        $this->authorize('show_dashboard_items');
+    }
+
     public function render()
     {
         $items = DashboardItem::query()
@@ -23,6 +28,7 @@ class IndexItem extends BaseComponent
 
     public function deleteItem($id)
     {
-        DashboardItem::destroy($id);
+        $this->authorize('delete_dashboard_items');
+//        DashboardItem::destroy($id);
     }
 }

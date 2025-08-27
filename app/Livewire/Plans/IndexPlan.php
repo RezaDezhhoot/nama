@@ -19,6 +19,7 @@ class IndexPlan extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_request_plans');
         $this->data['status'] = RequestPlanStatus::labels();
         $this->data['types'] = PlanTypes::labels();
     }
@@ -54,6 +55,7 @@ class IndexPlan extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_request_plans');
         RequestPlan::destroy($id);
     }
 }

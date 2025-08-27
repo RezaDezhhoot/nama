@@ -27,6 +27,7 @@ class StoreCity extends BaseComponent
 
     public function mount($action , $id = null)
     {
+        $this->authorize('edit_locations');
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->model = City::query()->findOrFail($id);
@@ -73,6 +74,13 @@ class StoreCity extends BaseComponent
         $this->reset(['nTitle','neighborhood','areas']);
     }
 
+    public function deleteItem()
+    {
+        $this->authorize('delete_locations');
+        $this->model->delete();
+        redirect()->route('admin.cities.index');
+    }
+
     public function storeArea()
     {
         $this->validate([
@@ -102,16 +110,19 @@ class StoreCity extends BaseComponent
 
     public function deleteRegion($id)
     {
+        $this->authorize('delete_locations');
         Region::destroy($id);
     }
 
     public function deleteNeighborhood($id)
     {
+        $this->authorize('delete_locations');
         Neighborhood::destroy($id);
     }
 
     public function deleteArea($id)
     {
+        $this->authorize('delete_locations');
         Area::destroy($id);
     }
 

@@ -20,6 +20,7 @@ class IndexLogs extends BaseComponent
 
     public function mount()
     {
+        $this->authorize('show_log_activities');
         $this->data['subject'] = Subjects::labels();
         $this->data['event'] = Events::labels();
     }

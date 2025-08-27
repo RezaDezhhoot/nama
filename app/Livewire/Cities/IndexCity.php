@@ -12,6 +12,11 @@ class IndexCity extends BaseComponent
     use WithPagination;
     public $title , $region;
 
+    public function mount()
+    {
+        $this->authorize('show_locations');
+    }
+
     public function render()
     {
         $items = City::query()
@@ -30,16 +35,19 @@ class IndexCity extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_locations');
         City::destroy($id);
     }
 
     public function newCity()
     {
+        $this->authorize('create_locations');
         $this->emitShowModal('city');
     }
 
     public function storeCity()
     {
+        $this->authorize('create_locations');
         $this->validate([
             'title' => ['required','string','max:140']
         ]);

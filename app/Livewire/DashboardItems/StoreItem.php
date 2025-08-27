@@ -14,6 +14,7 @@ class StoreItem extends BaseComponent
     public $logo , $color;
     public function mount($action , $id = null)
     {
+        $this->authorize('edit_dashboard_items');
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->model = DashboardItem::query()->findOrFail($id);
@@ -55,9 +56,10 @@ class StoreItem extends BaseComponent
 
     public function deleteItem()
     {
+        $this->authorize('delete_dashboard_items');
         if ($this->isUpdatingMode()) {
-            $this->model->delete();
-            redirect()->route('admin.dashboard-items.index');
+//            $this->model->delete();
+//            redirect()->route('admin.dashboard-items.index');
         }
     }
 

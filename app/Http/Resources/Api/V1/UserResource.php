@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'nama_role' => $this->nama_role,
             'arman_role' => $this->role,
             'avatar' => $this->avatar ? "https://armaniran.app/thumb/md/".ltrim($this->avatar,'/') : null,
-            'roles' => RoleResurce::collection($this->whenLoaded('roles'))
+            'roles' => RoleResurce::collection($this->whenLoaded('roles2'))
         ];
     }
 }

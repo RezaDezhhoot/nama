@@ -10,6 +10,11 @@ class IndexBanner extends BaseComponent
 {
     use WithPagination;
 
+    public function mount()
+    {
+        $this->authorize('show_banners');
+    }
+
     public function render()
     {
         $items = Banner::query()
@@ -31,6 +36,7 @@ class IndexBanner extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_banners');
         Banner::destroy($id);
     }
 }

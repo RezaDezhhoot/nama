@@ -69,6 +69,7 @@ class RequestPlan extends Model
                 if (auth()->user()) {
                     return $q->whereIn('unit_id' , auth()->user()->unitIds());
                 }
+                return $q;
             }]);
         });
         static::addGlobalScope('requirements' , function (Builder $builder) {

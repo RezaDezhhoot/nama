@@ -62,6 +62,7 @@ class StoreRequest extends BaseComponent
     {
         $this->type = $type;
         $this->setMode($action);
+        $this->authorize('edit_requests_'.$type);
         if ($this->isUpdatingMode()) {
             $this->request = Request::query()
                 ->relations()
@@ -72,12 +73,14 @@ class StoreRequest extends BaseComponent
                 ->findOrFail($id);
             $this->header = "درخواست $id";
 
-            $this->offer_amount = $this->request->offer_amount ?? $this->request->total_amount;
-            $this->final_amount = $this->request->final_amount ?? $this->request->offer_amount ?? $this->request->total_amount;
+            if (in_array($this->request->step,[RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES])) {
+                $this->offer_amount = $this->request->offer_amount ?? $this->request->total_amount;
+                $this->final_amount = $this->request->final_amount ?? $this->request->offer_amount ?? $this->request->total_amount;
+            }
             $this->status = $this->request->status->value;
         } else abort(404);
         $this->data['status'] = RequestStatus::labels();
-        $this->data['step'] = RequestStep::labels();
+        $this->data['step'] = RequestStep::labels($type);
     }
 
     public function download($id): StreamedResponse
@@ -110,7 +113,8 @@ class StoreRequest extends BaseComponent
                 'status' => ['required',Rule::enum(RequestStatus::class)],
                 'comment' => ['required','string','max:200'],
                 'message' => [in_array($this->status , [RequestStatus::REJECTED->value,RequestStatus::ACTION_NEEDED->value]) ? 'required' : 'nullable','string','max:200'],
-                'final_amount' => [$this->request->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable','integer' ,'min:1000'],
+                'final_amount' => [$this->request->step ===  RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING ? 'required' : 'nullable' , 'integer' ],
+                'offer_amount' => [$this->request->step ===  RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES ? 'required' : 'nullable' , 'integer' ],
                 'step' => ['nullable',Rule::enum(RequestStep::class)]
             ]);
             if (RequestStatus::tryFrom($this->status) === RequestStatus::DONE) {
@@ -204,7 +208,7 @@ class StoreRequest extends BaseComponent
             $this->request->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $this->comment,
-                'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
+                'display_name' => auth()->user()->role?->label($this->type) ?? auth()->user()->nama_role?->label(),
                 'from_status' => $from_status,
                 'to_status' => $this->status,
                 'step' => $step

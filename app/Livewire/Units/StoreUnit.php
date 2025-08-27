@@ -49,6 +49,7 @@ class StoreUnit extends BaseComponent
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
+            $this->authorize('edit_units');
             $this->model = Unit::query()->with(['city','parent','region','neighborhood','area'])->findOrFail($id);
 
             $this->title = $this->model->title;
@@ -86,6 +87,7 @@ class StoreUnit extends BaseComponent
             $this->updatedRegion($this->model->region_id);
             $this->updatedNeighborhood($this->model->neighborhood_id);
         } elseif ($this->isCreatingMode()) {
+            $this->authorize('create_units');
             $this->header = 'مرکز جدید';
         } else abort(404);
         $this->data['type'] = UnitType::labels();
@@ -144,6 +146,7 @@ class StoreUnit extends BaseComponent
 
     public function deleteItem()
     {
+        $this->authorize('delete_units');
         if ($this->isUpdatingMode()) {
             $this->model->delete();
             redirect()->route('admin.units.index');

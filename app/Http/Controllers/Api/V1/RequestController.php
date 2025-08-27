@@ -185,7 +185,7 @@ class RequestController extends Controller
             ] , 403);
         }
 
-        $data = $submitRequest->only(['students','amount','body','sheba']);
+        $data = $submitRequest->only(['students','amount','body','sheba','title','location']);
         $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students'] ?? 0) * $requestPlan->support_for_each_person_amount;
         $auto_accept_at = null;
         $request = new RequestModel;

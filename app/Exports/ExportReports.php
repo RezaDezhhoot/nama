@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exports;
+use App\Enums\UnitType;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -93,10 +94,10 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
             'تاریخ اخرین بروزرسانی',
             'هزینه پیشنهادی مرحله دوم توسط معاونت اجرایی مساجد',
             'هزینه نهایی تایید شده مرحله دوم توسط معاونت طرح و برنامه',
-            'تعداد دانش آموزان نوجوان',
-            'تاریخ برگزاری',
+            ...($this->type != UnitType::UNIVERSITY->value ? [ 'تعداد دانش آموزان نوجوان', 'تاریخ برگزاری'] : []),
             'تصاویر',
             'ویدیو',
+            'توضیحات تکمیلی',
         ];
     }
     public function prepareRows($rows)
@@ -110,7 +111,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
                 'golden' => $row->request?->golden ? 'بله' : 'خیر',
                 'name' => $row->request?->user?->name,
                 'phone' => $row->request?->user?->phone,
-                'national_id' => $row->request?->user->national_id,
+                'national_id' => $row->request?->user?->national_id,
                 'status' => $row->status->label(),
                 'step' => $row->step->label($row->request?->plan_type),
                 'unit' => sprintf("%s - %s",$row?->request?->unit?->title , $row->request?->unit?->text),
@@ -120,10 +121,12 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
                 'updated_at' =>  persian_date($row->updated_at),
                 'offer_amount' => number_format($row->offer_amount),
                 'final_amount' => number_format($row->final_amount),
-                'students' => $row->students,
-                'date' => persian_date($row->date),
+
+                ...($this->type != UnitType::UNIVERSITY->value ? ['students' => $row->students, 'date' => persian_date($row->date)] : []),
+
                 'images' => $row->images?->pluck('url')?->implode(','),
                 'video' => $row->video?->url,
+                'body' => $row->body,
             ];
         });
     }

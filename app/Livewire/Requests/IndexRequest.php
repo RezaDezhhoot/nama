@@ -63,6 +63,7 @@ class IndexRequest extends BaseComponent
     public function mount($type)
     {
         $this->type = $type;
+        $this->authorize('show_requests_'.$type);
         $this->data['status'] = RequestStatus::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
         $this->data['step'] = RequestStep::labels($type);
@@ -81,6 +82,7 @@ class IndexRequest extends BaseComponent
 
     public function exportXLSX()
     {
+        $this->authorize('export_requests_'.$this->type);
         return (new ExportRequests($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search))->download('requests.xlsx');
     }
 
@@ -141,6 +143,7 @@ class IndexRequest extends BaseComponent
 
     public function deleteItem($id)
     {
+        $this->authorize('delete_requests_'.$this->type);
         Request::destroy($id);
     }
 }
