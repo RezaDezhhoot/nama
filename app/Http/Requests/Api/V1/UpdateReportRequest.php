@@ -25,6 +25,8 @@ class UpdateReportRequest extends FormRequest
             'images' => ['sometimes','required','array'],
             'images.*' => ['required',Rule::file()->max(100 * 1024 * 5)],
             'video' => ['sometimes','nullable',Rule::file()->max(100 * 1024 * 5)],
+            'otherVideos' => ['nullable','array','max:10'],
+            'otherVideos.*' => ['sometimes','nullable',Rule::file()->max(100 * 1024 * 5)],
         ];
     }
 }

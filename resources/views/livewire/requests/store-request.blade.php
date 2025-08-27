@@ -35,7 +35,7 @@
                             <td>{{ $request?->staff ? 'بله' : 'خیر' }}</td>
                             <td>{{ $request?->golden ? 'بله' : 'خیر' }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
-                            <td>{{ $request->step->label2() }}</td>
+                            <td>{{ $request->step->label2($request->plan_type) }}</td>
                             <td>
                                 <ul>
                                     <li>{{ $request->user?->name ?? "-" }}</li>

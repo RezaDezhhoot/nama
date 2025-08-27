@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Plans;
 
+use App\Enums\PlanTypes;
 use App\Enums\RequestPlanStatus;
 use App\Livewire\BaseComponent;
 use App\Models\RequestPlan;
@@ -14,11 +15,12 @@ class IndexPlan extends BaseComponent
 
     public $status;
 
-    public $single_step, $staff ,$golden;
+    public $single_step, $staff ,$golden , $type , $designated_by_council;
 
     public function mount()
     {
         $this->data['status'] = RequestPlanStatus::labels();
+        $this->data['types'] = PlanTypes::labels();
     }
 
     public function render()
@@ -31,6 +33,12 @@ class IndexPlan extends BaseComponent
             })
             ->when($this->staff , function (Builder $builder) {
                 $builder->where('staff' , true);
+            })
+            ->when($this->designated_by_council , function (Builder $builder) {
+                $builder->where('designated_by_council' , true);
+            })
+            ->when($this->type , function (Builder $builder) {
+                $builder->where('type' , $this->type);
             })
             ->when($this->golden , function (Builder $builder) {
                 $builder->where('golden' , true);

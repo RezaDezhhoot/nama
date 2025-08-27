@@ -50,8 +50,12 @@ class StoreUser extends BaseComponent
             $this->user = User::query()->findOrFail($id);
             $this->header = $this->user->name;
         } else abort(404);
-        $this->data['role'] = OperatorRole::labels();
-        $this->data['items'] = DashboardItem::query()->pluck('title','id');
+        $this->data['items'] = DashboardItem::query()->get()->map(function ($v , $k) {
+            if ($k === 0) {
+                $this->data['role'] = OperatorRole::labels($v->type);
+            }
+            return $v;
+        })->pluck('title','id');
         $this->data['main_units'] = Unit::query()->whereNull('parent_id')->latest()->get()->pluck('full','id');
         $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->get()->pluck('full','id');
         $this->item = collect($this->data['items'])->keys()->first();
@@ -67,7 +71,7 @@ class StoreUser extends BaseComponent
     public function render()
     {
         $roles = UserRole::query()->with(['unit'])
-            ->with(['city','region','neighborhood','area'])
+            ->with(['city','region','neighborhood','area','item'])
             ->where('user_id',$this->user->id)->get()->groupBy('item_id');
         $this->data['units'] = [];
 
@@ -78,10 +82,12 @@ class StoreUser extends BaseComponent
         return view('livewire.users.store-user' , get_defined_vars())->extends('livewire.layouts.admin');
     }
 
+
     public function updatedItem($v)
     {
         if (! empty($v)) {
             $itemModel = DashboardItem::query()->findOrFail($v);
+            $this->data['role'] = OperatorRole::labels($itemModel->type);
             $this->dispatch('reloadAjaxURL#unit2' ,route('admin.feed.units',[0 , $itemModel->type , $this->main_unit]));
         }
         $this->dispatch('clear#unit');

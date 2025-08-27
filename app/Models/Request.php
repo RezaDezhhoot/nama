@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OperatorRole;
+use App\Enums\PlanTypes;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Traits\Loggable;
@@ -45,7 +46,9 @@ class Request extends Model
         'messages' => 'array',
         'plan_data' => 'array',
         'date' => 'datetime',
-        'staff_amount' => 'float'
+        'staff_amount' => 'float',
+        'plan_type' => PlanTypes::class,
+        'designated_by_council' => 'boolean'
     ];
 
     public function user(): BelongsTo

@@ -65,7 +65,7 @@ class IndexRequest extends BaseComponent
         $this->type = $type;
         $this->data['status'] = RequestStatus::labels();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
-        $this->data['step'] = RequestStep::labels();
+        $this->data['step'] = RequestStep::labels($type);
         $this->data['version'] = RequestPlanVersion::values();
 
         if ($this->unit) {

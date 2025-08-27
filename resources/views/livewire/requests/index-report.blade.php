@@ -90,7 +90,7 @@
                                 <td>{{ $item->request?->single_step ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->request?->staff ? 'بله' : 'خیر' }}</td>
                                 <td>{{ $item->request?->golden ? 'بله' : 'خیر' }}</td>
-                                <td>{{ $item->step->label() }}</td>
+                                <td>{{ $item->step->label($item->request->plan_type) }}</td>
                                 <td>
                                     {{ $item->request?->unit?->full ?? '-' }}
                                     @if($item->request?->unit?->parent)

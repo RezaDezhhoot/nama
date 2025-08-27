@@ -61,6 +61,8 @@ class RequestPlanResource extends JsonResource
 
             'ring_member_required' =>  $this->golden ? ($this->ring_member_required) : false,
             'show_ring_member' => $this->golden ? ($this->show_ring_member) : false,
+            'type' => $this->type,
+            'designated_by_council' => $this->designated_by_council
         ];
     }
 }

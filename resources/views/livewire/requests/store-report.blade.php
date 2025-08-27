@@ -35,7 +35,7 @@
                             <td>{{ $request?->staff ? 'بله' : 'خیر' }}</td>
                             <td>{{ $request?->golden ? 'بله' : 'خیر' }}</td>
                             <td><span class="alert alert-info">{{ $request->status->label() }}</span></td>
-                            <td>{{ $request->step->label() }}</td>
+                            <td>{{ $request->step->label($request->plan_type) }}</td>
                             <td>
                                 <ul>
                                     <li>{{ $request->user?->name ?? "-" }}</li>
@@ -204,7 +204,7 @@
                         <tbody>
                         <tr>
                             <td><span class="alert alert-info">{{ $report->status->label() }}</span></td>
-                            <td>{{ $report->step->label() }}</td>
+                            <td>{{ $report->step->label($request->plan_type) }}</td>
                             <td>{{ persian_date($report->created_at) }}</td>
                             <td>{{ persian_date($report->updated_at) }}</td>
 

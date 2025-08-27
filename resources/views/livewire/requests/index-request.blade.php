@@ -98,7 +98,7 @@
                                     </ul>
                                 </td>
                                 <td>{{ $item->status->label() }}</td>
-                                <td>{{ $item->step->label2() }}</td>
+                                <td>{{ $item->step->label2($item->plan_type) }}</td>
                                 <td>{{ $item->controller?->name ?? '-' }}</td>
                                 <td>{{ $item->controller2?->name ?? '-' }}</td>
                                 <td>
@@ -125,7 +125,7 @@
                             </tr>
                         @endforeach
                         @if(sizeof($items) == 0)
-                            <td class="text-center" colspan="17">
+                            <td class="text-center" colspan="20">
                                 اطلاعاتی برای نمایش وجود ندارد
                             </td>
                         @endif

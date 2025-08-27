@@ -20,12 +20,22 @@ enum OperatorRole: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::MOSQUE_HEAD_COACH => 'سرمربی',
-            self::MOSQUE_CULTURAL_OFFICER => 'مسئول فرهنگی',
-            self::AREA_INTERFACE => 'رابط منطقه',
-            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'معاونت اجرایی',
-            self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'معاونت طرح و برنامه'
+        $type = func_num_args() > 0 ? func_get_arg(0) : null;
+        return match ($type) {
+            PlanTypes::UNIVERSITY, PlanTypes::UNIVERSITY->value , UnitType::UNIVERSITY , UnitType::UNIVERSITY->value => match ($this) {
+                self::MOSQUE_HEAD_COACH => 'مسئول تشکل',
+                self::MOSQUE_CULTURAL_OFFICER => 'رابط دانشگاه',
+                self::AREA_INTERFACE => 'ناظر',
+                self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'معاونت دانشجویی',
+                self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'معاونت طرح و برنامه'
+            },
+            default => match ($this) {
+                self::MOSQUE_HEAD_COACH => 'سرمربی',
+                self::MOSQUE_CULTURAL_OFFICER => 'مسئول فرهنگی',
+                self::AREA_INTERFACE => 'رابط منطقه',
+                self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => 'معاونت اجرایی',
+                self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => 'معاونت طرح و برنامه'
+            }
         };
     }
 

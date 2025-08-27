@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Plans;
 
+use App\Enums\PlanTypes;
 use App\Enums\RequestPlanStatus;
 use App\Enums\RequestPlanVersion;
 use App\Imports\AreaImport;
@@ -41,6 +42,9 @@ class StorePlan extends BaseComponent
 
     public $limitValue , $limitFile;
 
+    public $designated_by_council = false;
+    public $type;
+
     public function mount($action , $id = null)
     {
         $this->setMode($action);
@@ -61,6 +65,8 @@ class StorePlan extends BaseComponent
             $this->max_allocated_request = $this->model->max_allocated_request;
             $this->body = $this->model->body;
             $this->bold = $this->model->bold;
+            $this->designated_by_council = $this->model->designated_by_council;
+            $this->type = $this->model->type?->value;
 
             $this->letter_required = $this->model->letter_required ;
             $this->letter2_required = $this->model->letter2_required;
@@ -94,16 +100,18 @@ class StorePlan extends BaseComponent
         } elseif ($this->isCreatingMode()) {
             $this->header = 'اکشن پلن جدید';
             $this->status = RequestPlanStatus::PUBLISHED->value;
+            $this->type = PlanTypes::DEFAULT->value;
             $this->model = RequestPlan::query()->create([
                 'title' => 'بدون عنوان',
                 'status' => RequestPlanStatus::DRAFT->value,
-                'image' => ""
+                'image' => "",
+                'type' => $this->type,
             ]);
         } else abort(404);
         $this->data['status'] = RequestPlanStatus::labels();
         $this->data['version'] = RequestPlanVersion::values();
         $this->data['items'] = DashboardItem::query()->pluck('title','id');
-
+        $this->data['types'] = PlanTypes::labels();
     }
 
     public function updatedItem($v)
@@ -124,8 +132,8 @@ class StorePlan extends BaseComponent
             'sub_title' => ['nullable','string','max:250'],
             'image' => ['required','string','max:1000'],
             'status' => ['required',Rule::enum(RequestPlanStatus::class)],
-            'max_number_people_supported' => ['required','integer','between:1,100000000'],
-            'support_for_each_person_amount' => ['required','integer','between:1000,10000000000000'],
+            'max_number_people_supported' => [ $this->type == PlanTypes::DEFAULT->value ? 'required' : 'nullable','integer','between:1,100000000'],
+            'support_for_each_person_amount' => [$this->type == PlanTypes::DEFAULT->value ? 'required'  : 'nullable','integer','between:1000,10000000000000'],
             'max_allocated_request' => ['required','integer','between:1,10000000000000'],
             'starts_at' => ['nullable'],
             'expires_at' => ['nullable'],
@@ -156,13 +164,18 @@ class StorePlan extends BaseComponent
 
             'golden' => ['nullable','boolean'],
             'staff' => ['nullable','boolean'],
+            'designated_by_council' => ['nullable','boolean'],
             'staff_amount' => [ $this->staff ? 'required' : 'nullable' , 'numeric','min:0'],
 
             'ring_member_required' => ['nullable','boolean'],
             'show_ring_member' => ['nullable','boolean'],
-
 //            'requirements.*' => ['required',Rule::exists('request_plans','id')],
+            'type' => ['required',Rule::enum(PlanTypes::class)]
         ]);
+        if ($this->type == PlanTypes::UNIVERSITY->value && (! $this->staff && ! $this->designated_by_council)) {
+            $this->addError("type",'پلن دانشجویی باید ستادی یا تعیین هزینه توسط شورا باشد');
+            return;
+        }
         $data = [
             'title' => $this->title,
             'sub_title' => $this->sub_title,
@@ -199,15 +212,32 @@ class StorePlan extends BaseComponent
             'single_step' => emptyToNull($this->single_step) ?? false,
             'golden' => emptyToNull($this->golden) ?? false,
             'staff' => emptyToNull($this->staff) ?? false,
+            'designated_by_council' => emptyToNull($this->designated_by_council) ?? false,
             'staff_amount' => emptyToNull($this->staff_amount) ,
 
             'ring_member_required' => emptyToNull($this->ring_member_required) ?? false,
             'show_ring_member' => emptyToNull($this->show_ring_member) ?? false,
+            'type' => $this->type,
         ];
         $model->fill($data)->save();
         $model->requirements()->{$model->wasRecentlyCreated ? "attach" : "sync"}($this->requirements);
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
         redirect()->route('admin.plans.index');
+    }
+
+    public function updatedDesignatedByCouncil($v): void
+    {
+        if ($v) {
+            $this->staff = false;
+        }
+    }
+
+    public function updatedStaff($v): void
+    {
+        if ($v) {
+            $this->designated_by_council = false;
+            $this->staff_amount = null;
+        }
     }
 
     public function deleteItem()

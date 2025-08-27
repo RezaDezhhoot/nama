@@ -186,7 +186,7 @@ class RequestController extends Controller
         }
 
         $data = $submitRequest->only(['students','amount','body','sheba']);
-        $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students']) * $requestPlan->support_for_each_person_amount;
+        $data['total_amount'] = min($requestPlan->max_number_people_supported , $data['students'] ?? 0) * $requestPlan->support_for_each_person_amount;
         $auto_accept_at = null;
         $request = new RequestModel;
         $request->plan()->associate($requestPlan);
@@ -234,7 +234,9 @@ class RequestController extends Controller
                 'single_step' => $requestPlan->single_step,
                 'auto_accept_at' => $auto_accept_at,
                 'auto_accept_period' => $cultural_officer?->auto_accept_period ?? null,
-                'plan_data' => $requestPlan
+                'plan_data' => $requestPlan,
+                'plan_type' => $requestPlan->type,
+                'designated_by_council' => $requestPlan->designated_by_council
             ])->save();
 
             $members = $submitRequest->array('members');

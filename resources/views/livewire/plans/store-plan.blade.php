@@ -16,21 +16,26 @@
                 @if(! $model || ! $model?->item_id)
                     <x-admin.forms.dropdown  :data="$data['items']" :required="true" id="item" label="پروژه" wire:model.live="item"/>
                 @endif
-
                 <x-admin.forms.lfm-standalone :required="true" id="image" label="لوگو" :file="$image" wire:model="image"/>
                 <x-admin.forms.checkbox  id="bold" label="اولین پلن نمایش داده شود" wire:model.defer="bold"/>
-
-                <x-admin.forms.input width="4" type="number" :required="true" id="max_number_people_supported" label="سقف تعداد نفرات مورد حمایت" wire:model.defer="max_number_people_supported"/>
-                <x-admin.forms.input width="4" type="number" help="ریال" :required="true" id="support_for_each_person_amount" label="سرانه حمایتی هر نفر" wire:model.defer="support_for_each_person_amount"/>
+                <x-admin.forms.dropdown :data="$data['types']" :required="true" id="type" label="نوع پلن" wire:model.live="type"/>
+                <x-admin.forms.checkbox width="4" id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
+                <x-admin.forms.checkbox width="4" id="staff" label="ستادی" wire:model.live="staff"/>
+                <x-admin.forms.checkbox width="4" id="designated_by_council" label="تعیین هزینه توسط شورا" wire:model.live="designated_by_council"/>
+                @if($staff)
+                    <x-admin.forms.input type="number" :required="true" id="staff_amount" label="مبلغ ثابت اکشن پلن" wire:model.defer="staff_amount"/>
+                @endif
+                @if($type == \App\Enums\PlanTypes::DEFAULT->value)
+                    <x-admin.forms.input width="4" type="number" :required="true" id="max_number_people_supported" label="سقف تعداد نفرات مورد حمایت" wire:model.defer="max_number_people_supported"/>
+                    @if(! $designated_by_council)
+                        <x-admin.forms.input width="4" type="number" help="ریال" :required="true" id="support_for_each_person_amount" label="سرانه حمایتی هر نفر" wire:model.defer="support_for_each_person_amount"/>
+                   @endif
+                @endif
                 <x-admin.forms.input width="4" type="number"  :required="true" id="max_allocated_request" label="تعداد دفعات مجاز برای این پلن" wire:model.defer="max_allocated_request"/>
 
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="starts_at" label="تاریخ شروع مهلت زمانی این پلن" wire:model.defer="starts_at"/>
                 <x-admin.forms.jdate-picker :timer="true" help="در صورت خالی رها کردن محدودیتی اعمال نمی شود" width="6" id="expires_at" label="تاریخ پایان مهلت زمانی این پلن" wire:model.defer="expires_at"/>
-                <x-admin.forms.checkbox  id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
-                <x-admin.forms.checkbox id="staff" label="ستادی" wire:model.live="staff"/>
-                @if($staff)
-                    <x-admin.forms.input type="number" :required="true" id="staff_amount" label="مبلغ ثابت اکشن پلن" wire:model.defer="staff_amount"/>
-                @endif
+
                 <x-admin.forms.checkbox width="6" id="golden" label="طلایی" wire:model.live="golden"/>
 
                 @if($golden)
@@ -51,13 +56,17 @@
                     @endif
                     <table class="table table-bordered">
                         <tr>
-                            <td> <x-admin.forms.checkbox id="letter_required" label="فایل نامه امام اجباری باشد(درخواست)" wire:model.defer="letter_required"/></td>
-                            <td> <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد(درخواست)" wire:model.defer="letter2_required"/></td>
+                            @if($type == \App\Enums\PlanTypes::DEFAULT->value)
+                                <td> <x-admin.forms.checkbox id="letter_required" label="فایل نامه امام اجباری باشد(درخواست)" wire:model.defer="letter_required"/></td>
+                                <td> <x-admin.forms.checkbox  id="letter2_required" label="فایل نامه رابط منطقه اجباری باشد(درخواست)" wire:model.defer="letter2_required"/></td>
+                            @endif
                             <td> <x-admin.forms.checkbox id="images_required" label="تصاویر بیشتر اجباری باشد(درخواست)" wire:model.defer="images_required"/></td>
                         </tr>
                         <tr>
-                            <td><x-admin.forms.checkbox  id="show_letter" label="نمایش فایل نامه امام(درخواست)" wire:model.defer="show_letter"/></td>
-                            <td><x-admin.forms.checkbox  id="show_area_interface" label="نمایش فایل نامه رابط منطقه(درخواست)" wire:model.defer="show_area_interface"/></td>
+                            @if($type == \App\Enums\PlanTypes::DEFAULT->value)
+                                <td><x-admin.forms.checkbox  id="show_letter" label="نمایش فایل نامه امام(درخواست)" wire:model.defer="show_letter"/></td>
+                                <td><x-admin.forms.checkbox  id="show_area_interface" label="نمایش فایل نامه رابط منطقه(درخواست)" wire:model.defer="show_area_interface"/></td>
+                            @endif
                             <td><x-admin.forms.checkbox  id="show_images" label="نمایش تصاویر بیشتر (درخواست)" wire:model.defer="show_images"/></td>
                         </tr>
                     </table>

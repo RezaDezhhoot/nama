@@ -112,7 +112,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
                 'phone' => $row->request?->user?->phone,
                 'national_id' => $row->request?->user->national_id,
                 'status' => $row->status->label(),
-                'step' => $row->step->label(),
+                'step' => $row->step->label($row->request?->plan_type),
                 'unit' => sprintf("%s - %s",$row?->request?->unit?->title , $row->request?->unit?->text),
                 'city' => $row->request->unit?->city?->title,
                 'region' => $row->request->unit?->region?->title,

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PlanTypes;
 use App\Enums\RequestPlanStatus;
 use App\Enums\RequestPlanVersion;
 use App\Enums\RequestStatus;
@@ -56,6 +57,8 @@ class RequestPlan extends Model
 
         'ring_member_required' => "boolean",
         'show_ring_member' => "boolean",
+        'type' => PlanTypes::class,
+        'designated_by_council' => 'boolean'
     ];
 
     protected static function booted()

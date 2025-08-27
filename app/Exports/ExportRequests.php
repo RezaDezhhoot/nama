@@ -104,7 +104,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
                 'phone' => $row?->user?->phone,
                 'national_id' => $row?->user?->national_id,
                 'status' => $row?->status->label(),
-                'step' => $row->step->label(),
+                'step' => $row->step->label($row->plan_type),
                 'unit' => sprintf("%s - %s",$row?->unit?->title , $row?->unit?->text),
                 'city' => $row->unit?->city?->title,
                 'region' => $row->unit?->region?->title,
