@@ -22,12 +22,14 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
         Route::group(['prefix' => 'users' , 'as' => 'users.','middleware' => 'is_admin'] , function () {
             Route::get('roles' , \App\Livewire\Users\AttachRole::class)->name('roles');
             Route::get('roles/{action}/{id}' , \App\Livewire\Users\StoreUser::class)->name('roles.store');
+            Route::get('permissions/{id}' , \App\Livewire\Users\StorePermissions::class)->name('permissions.store');
         });
         Route::group(['prefix' => 'feed' , 'as' => 'feed.','middleware' => 'is_admin'] , function () {
             Route::get('users/{withRoles?}' , \App\Http\Controllers\Feed\UserFeedController::class)->name('users');
             Route::get('units/{parent?}/{type?}/{main_unit?}' , \App\Http\Controllers\Feed\UnitFeedController::class)->name('units');
             Route::get('plans/{type?}/{ignore?}' , \App\Http\Controllers\Feed\PlanFeedController::class)->name('plans');
             Route::get('cities' , \App\Http\Controllers\Feed\CityFeedController::class)->name('cities');
+            Route::get('roles' , \App\Http\Controllers\Feed\RoleFeedController::class)->name('roles');
             Route::get('batches/{type}/{subType?}' , \App\Http\Controllers\Feed\AccountingBatchFeedController::class)->name('batches');
             Route::get('regions/{city?}' , \App\Http\Controllers\Feed\RegionFeedController::class)->name('regions');
             Route::get('neighborhoods/{region?}' , \App\Http\Controllers\Feed\NeighborhoodFeedController::class)->name('neighborhoods');

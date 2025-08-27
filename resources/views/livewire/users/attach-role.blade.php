@@ -42,6 +42,7 @@
                             <th>تعداد نقش</th>
                             <th>نقش  در ارمان</th>
                             <th>نقش ها</th>
+                            <th>درسترسی های ادمین</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -66,7 +67,32 @@
                                     </ul>
                                 </td>
                                 <td>
+                                    <ul>
+                                        @foreach($item->roles as $r)
+                                            <li>
+                                                <span class="badge my-1 badge-primary">
+                                                   {{ $r->name }}
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                            <hr>
+                                        @foreach($item->permissions as $p)
+                                            <li>
+                                                <span class="badge my-1 badge-info">
+                                                   {{ $p->title }}
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>
                                     <x-admin.edit-btn target="_blank" href="{{ route('admin.users.roles.store',[PageAction::UPDATE , $item->id]) }}"/>
+                                    @if(auth()->user()->hasAnyRole(['super_admin','administrator']))
+                                        <a target="_blank" href="{{ route('admin.users.permissions.store' , $item->id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-key"></i>
+                                            مدیریت دسترسی ها
+                                        </a>
+                                    @endif
                                     <button wire:click="generateToken('{{$item->id}}')" class="btn btn-sm btn-outline-danger">ایجاد توکن</button>
                                 </td>
                             </tr>

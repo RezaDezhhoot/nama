@@ -508,6 +508,7 @@ class RequestController extends Controller
     {
         $items = Comment::query()
             ->latest()
+            ->with(['commentable','commentable.item'])
             ->whereHasMorph('commentable',[RequestModel::class],function ($q) use ($request){
                 $q->where('commentable_id' , $request);
             })

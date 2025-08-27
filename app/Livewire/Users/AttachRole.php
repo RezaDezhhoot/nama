@@ -39,7 +39,7 @@ class AttachRole extends BaseComponent
     {
         $db = config('database.connections.mysql.database');
         $items = User::query()
-            ->with(['roles2','roles2.unit','roles2.region'])
+            ->with(['roles2','roles2.unit','roles2.region','permissions','roles'])
             ->whereNotNull('name')
             ->withCount('roles2')
             ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')

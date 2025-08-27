@@ -7,6 +7,8 @@ use App\Enums\SchoolCoachType;
 use App\Enums\UnitType;
 use App\Livewire\BaseComponent;
 use App\Models\DashboardItem;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\UserRole;

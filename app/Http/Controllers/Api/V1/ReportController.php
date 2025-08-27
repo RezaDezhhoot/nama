@@ -414,6 +414,7 @@ class ReportController extends Controller
     {
         $items = Comment::query()
             ->latest()
+            ->with(['commentable','commentable.request','commentable.request.item'])
             ->whereHasMorph('commentable',[Report::class],function ($q) use ($report){
                 $q->where('commentable_id' , $report);
             })

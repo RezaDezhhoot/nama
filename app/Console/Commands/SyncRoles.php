@@ -18,7 +18,7 @@ class SyncRoles extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:sync-roles {--super-admin-id=1} {--truncate}';
+    protected $signature = 'admin:sync-roles {--super-admin-id=24} {--truncate}';
 
     /**
      * The console command description.
