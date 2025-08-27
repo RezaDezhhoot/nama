@@ -19,7 +19,10 @@ class StorePermissions extends BaseComponent
     {
         abort_unless(auth()->user()->hasAnyRole(['super_admin','administrator']),403);
         $this->user = User::query()->with(['roles','permissions'])->findOrFail($id);
-        if ($this->user->hasAnyRole(['super_admin','administrator'])) {
+        if ($this->user->hasRole('administrator')) {
+            abort(403);
+        }
+        if ($this->user->hasRole('super_admin') && ! auth()->user()->hasRole('administrator')) {
             abort(403);
         }
         $this->header = $this->user->name;
