@@ -208,7 +208,7 @@ class StoreRequest extends BaseComponent
             $this->request->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $this->comment,
-                'display_name' => auth()->user()->role?->label($this->type) ?? auth()->user()->nama_role?->label(),
+                'display_name' => auth()->user()->role?->label() ?? auth()->user()->nama_role?->label(),
                 'from_status' => $from_status,
                 'to_status' => $this->status,
                 'step' => $step

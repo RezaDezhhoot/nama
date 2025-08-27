@@ -19,6 +19,7 @@ use App\Http\Resources\Api\V1\CommentResource;
 use App\Http\Resources\Api\V1\MediaResource;
 use App\Http\Resources\Api\V1\RequestResource;
 use App\Models\Comment;
+use App\Models\DashboardItem;
 use App\Models\File;
 use App\Models\RequestPlan;
 use App\Models\User;
@@ -459,6 +460,7 @@ class RequestController extends Controller
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
+        $item = DashboardItem::query()->find($itemID);
         $from_status = $request->status;
         $step = $request->step;
         $request->last_updated_by = $request->step;
@@ -487,7 +489,7 @@ class RequestController extends Controller
             $request->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $adminStoreRequest->comment,
-                'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+                'display_name' => OperatorRole::from(\request()->get('role'))->label($item->type),
                 'from_status' => $from_status,
                 'to_status' => $request->status,
                 'step' => $step

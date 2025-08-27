@@ -20,6 +20,7 @@ use App\Http\Requests\Api\V1\UpdateRequest;
 use App\Http\Resources\Api\V1\CommentResource;
 use App\Http\Resources\Api\V1\ReportResource;
 use App\Models\Comment;
+use App\Models\DashboardItem;
 use App\Models\Report;
 use App\Models\Request as RequestModel;
 use App\Models\User;
@@ -358,6 +359,8 @@ class ReportController extends Controller
         if (! \request()->filled('role')) {
             abort(403);
         }
+        $itemID = \request()->get('item_id');
+        $item = DashboardItem::query()->find($itemID);
         $report =  Report::query()->role(\request()->get('role'))
             ->item(\request()->get('item_id'))
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
@@ -394,7 +397,7 @@ class ReportController extends Controller
             $report->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $adminStoreReportRequest->comment,
-                'display_name' => OperatorRole::from(\request()->get('role'))->label(),
+                'display_name' => OperatorRole::from(\request()->get('role'))->label($item->type),
                 'from_status' => $from_status,
                 'to_status' => $report->status,
                 'step' => $step
