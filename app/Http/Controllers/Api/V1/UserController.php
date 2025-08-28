@@ -20,7 +20,7 @@ class UserController extends Controller
                 return $q->where('item_id' , \request()->item_id);
             }
             return $q;
-        },'roles.item']);
+        },'roles2.item']);
 
 
         return UserResource::make(auth()->user());
