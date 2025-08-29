@@ -343,7 +343,7 @@ class RequestController extends Controller
             ->confirmed()
             ->where('status' , RequestStatus::ACTION_NEEDED)
             ->findOrFail($request);
-        $data = $updateRequest->only(['students','amount','date','body']);
+        $data = $updateRequest->only(['students','amount','date','body','title','location']);
         if ($updateRequest->filled('students')) {
             $data['total_amount'] = min($request->plan->max_number_people_supported, $data['students']) *  $request->plan->support_for_each_person_amount;
         }
