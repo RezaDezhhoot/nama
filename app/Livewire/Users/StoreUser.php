@@ -151,7 +151,7 @@ class StoreUser extends BaseComponent
         ) {
             $this->emitNotify("این نقش قبلا به کاربر متصل شده است",'warning');
         } else {
-            $this->user->roles()->create([
+            $this->user->roles2()->create([
                 'item_id' => $this->item,
                 'role' => $this->role,
                 'user_id' => $this->user->id,
