@@ -29,12 +29,14 @@ class RequestListener
         $user = null;
         $template = null;
         $amount = 0;
+        $id = 0;
 
         switch (get_class($event)) {
             case ConfirmationRequestEvent::class:
                 $event->request->load('user');
                 if ($event->request->user) {
                     $user = $event->request->user;
+                    $id = $event->request->id;
                     $template = config('sms.kaveh_negar.template1');
                     $amount = $event->request->final_amount ?? $event->request->offer_amount ?? $event->request->amount ?? 0;
                 }
@@ -43,6 +45,7 @@ class RequestListener
                 $event->request->load('user');
                 if ($event->request->user) {
                     $user = $event->request->user;
+                    $id = $event->request->id;
                     $template = config('sms.kaveh_negar.template3');
                     $amount = $event->request->final_amount ?? $event->request->offer_amount ?? $event->request->amount ?? 0;
                 }
@@ -51,6 +54,7 @@ class RequestListener
                 $event->request->load('user');
                 if ($event->request->user) {
                     $user = $event->request->user;
+                    $id = $event->request->id;
                     $template = config('sms.kaveh_negar.template2');
                     $amount = $event->request->final_amount ?? $event->request->offer_amount ?? $event->request->amount ?? 0;
                 }
@@ -59,6 +63,7 @@ class RequestListener
                 $event->report->load(['request','request.user']);
                 if ($event->report->request && $event->report->request->user) {
                     $user = $event->report->request->user;
+                    $id = $event->report->request->id;
                     $template = config('sms.kaveh_negar.template4');
                     $amount = $event->report->final_amount ?? $event->report->offer_amount ?? $event->report->amount ?? 0;
                 }
@@ -67,6 +72,7 @@ class RequestListener
                 $event->report->load(['request','request.user']);
                 if ($event->report->request && $event->report->request->user) {
                     $user = $event->report->request->user;
+                    $id = $event->report->request->id;
                     $template = config('sms.kaveh_negar.template6');
                     $amount = $event->report->final_amount ?? $event->report->offer_amount ?? $event->report->amount ?? 0;
                 }
@@ -75,6 +81,7 @@ class RequestListener
                 $event->report->load(['request','request.user']);
                 if ($event->report->request && $event->report->request->user) {
                     $user = $event->report->request->user;
+                    $id = $event->report->request->id;
                     $template = config('sms.kaveh_negar.template5');
                     $amount = $event->report->final_amount ?? $event->report->offer_amount ?? $event->report->amount ?? 0;
                 }
@@ -85,7 +92,8 @@ class RequestListener
             try {
                 Send::sendOTPSMS($user->phone,$template, [
                     'token' => $amount,
-                    'token20' => $user->name ?? 'مربی گرامی'
+                    'token2' => $id,
+                    'token20' => $user->name ?? 'مربی گرامی',
                 ]);
             } catch (\Exception $exception) {
                 report($exception);
