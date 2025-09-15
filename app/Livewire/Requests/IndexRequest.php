@@ -83,7 +83,7 @@ class IndexRequest extends BaseComponent
     public function exportXLSX()
     {
         $this->authorize('export_requests_'.$this->type);
-        return (new ExportRequests($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search))->download('requests.xlsx');
+        return (new ExportRequests($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search , $this->version))->download('requests.xlsx');
     }
 
     public function render()
