@@ -81,14 +81,16 @@ class RequestController extends Controller
             })
             ->item(\request()->get('item_id'))
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
-                $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
-                    $builder->search($request->get('q'));
-                })->orWhere(function (Builder $builder) use ($request){
-                    $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
-                })->orWhereHas('unit' , function (Builder $builder) use ($request) {
-                    $builder->search($request->get('q'));
-                })->orWhereHas('report' , function (Builder $builder) use ($request) {
-                    $builder->search($request->get('q'));
+                $builder->where(function (Builder $builder) use ($request) {
+                    $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
+                        $builder->search($request->get('q'));
+                    })->orWhere(function (Builder $builder) use ($request){
+                        $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
+                    })->orWhereHas('unit' , function (Builder $builder) use ($request) {
+                        $builder->search($request->get('q'));
+                    })->orWhereHas('report' , function (Builder $builder) use ($request) {
+                        $builder->search($request->get('q'));
+                    });
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $dir = emptyToNull( $request->get('direction')) ?? "asc";
