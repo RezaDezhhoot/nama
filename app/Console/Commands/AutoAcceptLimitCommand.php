@@ -7,7 +7,9 @@ use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
 use App\Models\Report;
 use App\Models\Request;
+use App\Models\UserRole;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 
 class AutoAcceptLimitCommand extends Command
 {
@@ -35,13 +37,22 @@ class AutoAcceptLimitCommand extends Command
             case "reports":
                 $reports = Report::query()
                     ->whereNotNull('auto_accept_at')
-                    ->with('controller')
+                    ->with(['controller','request'])
+                    ->whereHas('controller')
+                    ->whereHas('request')
                     ->where('auto_accept_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER)
                     ->take(10)
                     ->get();
                 foreach ($reports as $report) {
-                    if ($report->controller) {
+                    $cultural_officer = UserRole::query()
+                        ->with('user')
+                        ->where('user_id' , $report->controller_id)
+                        ->where('role' , OperatorRole::MOSQUE_CULTURAL_OFFICER)
+                        ->where('unit_id' , $report->request->unit_id)
+                        ->whereNotNull('auto_accept_period')
+                        ->exists();
+                    if ($cultural_officer) {
                         $report->comments()->create([
                             'user_id' => $report->controller->id,
                             'body' => $message,
@@ -50,27 +61,35 @@ class AutoAcceptLimitCommand extends Command
                             'to_status' => RequestStatus::IN_PROGRESS,
                             'step' => RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER
                         ]);
+                        $report->message = $message;
+                        if (! $report->messages) {
+                            $report->messages = [];
+                        }
+                        $messages = $report->messages;
+                        $messages[RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER->value] = $message;
+                        $report->messages = $messages;
+                        $report->toNextStep()->save();
                     }
-                    $report->message = $message;
-                    if (! $report->messages) {
-                        $report->messages = [];
-                    }
-                    $messages = $report->messages;
-                    $messages[RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER->value] = $message;
-                    $report->messages = $messages;
-                    $report->toNextStep()->save();
                 }
                 break;
             default:
                 $requests = Request::query()
                     ->whereNotNull('auto_accept_at')
                     ->with('controller')
+                    ->whereHas('controller')
                     ->where('auto_accept_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER)
                     ->take(10)
                     ->get();
                 foreach ($requests as $request) {
-                    if ($request->controller) {
+                    $cultural_officer = UserRole::query()
+                        ->with('user')
+                        ->where('user_id' , $request->controller_id)
+                        ->where('role' , OperatorRole::MOSQUE_CULTURAL_OFFICER)
+                        ->where('unit_id' , $request->unit_id)
+                        ->whereNotNull('auto_accept_period')
+                        ->exists();
+                    if ($cultural_officer) {
                         $request->comments()->create([
                             'user_id' => $request->controller->id,
                             'body' => $message,
@@ -79,15 +98,15 @@ class AutoAcceptLimitCommand extends Command
                             'to_status' => RequestStatus::IN_PROGRESS,
                             'step' => RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER
                         ]);
+                        $request->message = $message;
+                        if (! $request->messages) {
+                            $request->messages = [];
+                        }
+                        $messages = $request->messages;
+                        $messages[RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER->value] = $message;
+                        $request->messages = $messages;
+                        $request->toNextStep()->save();
                     }
-                    $request->message = $message;
-                    if (! $request->messages) {
-                        $request->messages = [];
-                    }
-                    $messages = $request->messages;
-                    $messages[RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER->value] = $message;
-                    $request->messages = $messages;
-                    $request->toNextStep()->save();
                 }
         }
     }
