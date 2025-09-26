@@ -158,7 +158,7 @@
                                         @foreach($roles[$item] ?? [] as $r)
                                             <tr>
                                                 <td>{{ $r->role->label($r->item->type) }}</td>
-                                                <td>{{ $r->unit?->title ?? '-' }}</td>
+                                                <td>{{ $r->unit?->full ?? '-' }}</td>
                                                 <td>{{ $r->unit ? ($r->unit->parent ? "معمولی" : "محوری") : '-'  }}</td>
                                                 <td>{{ $r?->city?->title ?? '-' }}</td>
                                                 <td>{{ $r?->region?->title ?? '-' }}</td>
