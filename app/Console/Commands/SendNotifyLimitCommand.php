@@ -38,7 +38,6 @@ class SendNotifyLimitCommand extends Command
             case "reports":
                 $reports = Report::query()
                     ->with(['controller2','request','request.unit'])
-                    ->whereHas('controller2')
                     ->whereHas('request' , function (Builder $builder) {
                         $builder->whereHas('unit');
                     })
@@ -79,7 +78,6 @@ class SendNotifyLimitCommand extends Command
             default:
                 $requests = Request::query()
                     ->with(['controller2','unit'])
-                    ->whereHas('controller2')
                     ->whereHas('unit')
                     ->whereNotNull(['next_notify_at','notify_period'])
                     ->where('next_notify_at','<=',now())
