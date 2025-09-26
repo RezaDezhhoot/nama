@@ -81,7 +81,7 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
                         });
                 });
             })->when($this->role , function (Builder $builder) {
-                $builder->where('role' , $this->role);
+                $builder->where('user_roles.role' , $this->role);
             });
     }
 
