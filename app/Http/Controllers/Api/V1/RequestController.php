@@ -93,10 +93,10 @@ class RequestController extends Controller
                     });
                 });
             })->when($request->filled('sort') , function (Builder $builder) use ($request) {
-                $dir = emptyToNull( $request->get('direction')) ?? "asc";
-                $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'confirm')) ?? 'confirm', $dir);
+                $dir = emptyToNull( $request->get('direction')) ?? "desc";
+                $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'updated_at')) ?? 'updated_at', $dir);
             })->when(! $request->filled('sort') , function (Builder $builder) {
-                $builder->orderBy('requests.confirm');
+                $builder->orderBy('requests.updated_at','desc');
             })
             ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
                 $builder->where('requests.request_plan_id' , $request->get('plan_id'));
