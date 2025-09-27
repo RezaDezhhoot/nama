@@ -42,7 +42,6 @@ class RequestController extends Controller
             'q' => ['nullable','string','max:50']
         ]);
         $role = OperatorRole::from(request()->get('role'));
-
         $requests = RequestModel::query()
             ->with(['report'])
             ->select("requests.*","r.final_amount as report_final_amount")
@@ -92,7 +91,8 @@ class RequestController extends Controller
                         $builder->search($request->get('q'));
                     });
                 });
-            })->when($request->filled('sort') , function (Builder $builder) use ($request) {
+            })
+            ->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $dir = emptyToNull( $request->get('direction')) ?? "desc";
                 $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'updated_at')) ?? 'updated_at', $dir);
             })->when(! $request->filled('sort') , function (Builder $builder) {
@@ -116,7 +116,8 @@ class RequestController extends Controller
                         }
                     }
                 });
-            })->when($request->filled('step') , function (Builder $builder) use ($request) {
+            })
+            ->when($request->filled('step') , function (Builder $builder) use ($request) {
                 $builder->where('requests.step' , $request->get('step'));
             })
             ->with(['plan','unit','report'])

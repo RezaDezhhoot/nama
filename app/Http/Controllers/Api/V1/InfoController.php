@@ -37,7 +37,7 @@ class InfoController extends Controller
                 RequestStatus::DONE->value => $reports->where('status' , RequestStatus::DONE)->whereIn('step',$role->step())->count(),
                 RequestStatus::PENDING->value => $reports->where('status' , RequestStatus::PENDING)->whereIn('step',$role->step())->count(),
             ];
-            $requestsRes[RequestStatus::DONE->value."_temp"] = $requests->whereIn('step',$role->next())->count();
+            $requestsRes[RequestStatus::DONE->value."_temp"] = RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'))->whereIn('step',$role->next())->count();
             $reportsRes[RequestStatus::DONE->value."_temp"] = $reports->whereIn('step',$role->next())->count();
         } else {
             $requestsRes = [
