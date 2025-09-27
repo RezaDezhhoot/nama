@@ -16,11 +16,11 @@ class InfoController extends Controller
 {
     public function __invoke(): \Illuminate\Http\JsonResponse
     {
-        $requests = RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'))->get();
-        $reports = Report::query()->item(\request()->get('item_id'))->role(\request()->get('role'))->get();
+        $requests = RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'));
+        $reports = Report::query()->item(\request()->get('item_id'))->role(\request()->get('role'));
         $role = OperatorRole::from(request()->get('role'));
 
-        $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id())->get();
+        $writtenRequests = WrittenRequest::query()->where('user_id' , auth()->id());
         $isNotCoach = $role !== OperatorRole::MOSQUE_HEAD_COACH;
 
         if ($isNotCoach) {
