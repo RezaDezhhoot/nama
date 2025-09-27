@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 
 class InfoController extends Controller
 {
+    private function newReqQ()
+    {
+        return  RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'));
+    }
     public function __invoke(): \Illuminate\Http\JsonResponse
     {
         $requests = RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'));
@@ -25,10 +29,10 @@ class InfoController extends Controller
 
         if ($isNotCoach) {
             $requestsRes = [
-                RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->step())->count(),
-                RequestStatus::REJECTED->value => $requests->where('status' , RequestStatus::REJECTED)->whereIn('step',$role->step())->count(),
-                RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::ACTION_NEEDED)->whereIn('step',$role->step())->count(),
-                RequestStatus::DONE->value => $requests->where('status' , RequestStatus::DONE)->whereIn('step',$role->step())->count(),
+                RequestStatus::IN_PROGRESS->value => $this->newReqQ()->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->step())->count(),
+                RequestStatus::REJECTED->value => $this->newReqQ()->where('status' , RequestStatus::REJECTED)->whereIn('step',$role->step())->count(),
+                RequestStatus::ACTION_NEEDED->value => $this->newReqQ()->where('status' , RequestStatus::ACTION_NEEDED)->whereIn('step',$role->step())->count(),
+                RequestStatus::DONE->value => $this->newReqQ()->where('status' , RequestStatus::DONE)->whereIn('step',$role->step())->count(),
             ];
             $reportsRes = [
                 RequestStatus::IN_PROGRESS->value => $reports->where('status' , RequestStatus::IN_PROGRESS)->whereIn('step',$role->step())->count(),
@@ -37,14 +41,14 @@ class InfoController extends Controller
                 RequestStatus::DONE->value => $reports->where('status' , RequestStatus::DONE)->whereIn('step',$role->step())->count(),
                 RequestStatus::PENDING->value => $reports->where('status' , RequestStatus::PENDING)->whereIn('step',$role->step())->count(),
             ];
-            $requestsRes[RequestStatus::DONE->value."_temp"] = RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'))->whereIn('step',$role->next())->count();
+            $requestsRes[RequestStatus::DONE->value."_temp"] = $this->newReqQ()->whereIn('step',$role->next())->count();
             $reportsRes[RequestStatus::DONE->value."_temp"] = $reports->whereIn('step',$role->next())->count();
         } else {
             $requestsRes = [
-                RequestStatus::IN_PROGRESS->value => $requests->where('status' , RequestStatus::IN_PROGRESS)->count(),
-                RequestStatus::REJECTED->value => $requests->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $requests->where('status' , RequestStatus::ACTION_NEEDED)->count(),
-                RequestStatus::DONE->value => $requests->where('status' , RequestStatus::DONE)->count(),
+                RequestStatus::IN_PROGRESS->value => $this->newReqQ()->where('status' , RequestStatus::IN_PROGRESS)->count(),
+                RequestStatus::REJECTED->value => $this->newReqQ()->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::ACTION_NEEDED->value => $this->newReqQ()->where('status' , RequestStatus::ACTION_NEEDED)->count(),
+                RequestStatus::DONE->value => $this->newReqQ()->where('status' , RequestStatus::DONE)->count(),
             ];
             $reportsRes = [
                 RequestStatus::IN_PROGRESS->value => $reports->where('status' , RequestStatus::IN_PROGRESS)->count(),
