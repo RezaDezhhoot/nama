@@ -136,7 +136,7 @@ class StoreForm extends BaseComponent
             'iConditions.*.target' => ['required','string','max:200'],
             'iConditions.*.action' => ['required','string','in:visible,hidden'],
             'iOptions' => ['array', in_array($this->iType,[FormItemType::CHECKBOX->value,FormItemType::RADIO->value,FormItemType::SELECT->value,FormItemType::SELECT2->value]) ? "required" : "nullable"],
-            'iOptions.*' => ['required','string','max:100']
+            'iOptions.*' => ['required']
         ]);
         $data = [
             'title' => $this->iTitle,
