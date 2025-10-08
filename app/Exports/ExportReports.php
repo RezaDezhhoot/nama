@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSize
 {
     use Exportable;
-    public function __construct(public $type , public $step , public $plan , public $unit , public $region , public $status , public $search , public $version)
+    public function __construct(public $user ,public $type , public $step , public $plan , public $unit , public $region , public $status , public $search , public $version)
     {
     }
 
@@ -23,6 +23,11 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
             ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan','video','images'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
+            })
+            ->when($this->user , function (Builder $builder) {
+                $builder->whereHas('request' , function (Builder $builder) {
+                    $builder->where('user_id' , $this->user);
+                });
             })
             ->withCount('comments')
             ->when($this->region , function (Builder   $builder) {

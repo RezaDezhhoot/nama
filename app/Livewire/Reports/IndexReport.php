@@ -81,7 +81,7 @@ class IndexReport extends BaseComponent
     public function exportXLSX()
     {
         $this->authorize('export_requests_'.$this->type);
-        return (new ExportReports($this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search , $this->version))->download('reports.xlsx');
+        return (new ExportReports($this->user,$this->type,$this->step,$this->plan,$this->unit,$this->region,$this->status,$this->search , $this->version))->download('reports.xlsx');
     }
 
     public function render()
