@@ -92,7 +92,9 @@ class IndexReport extends BaseComponent
                 $builder->where('step' , $this->step);
             })
             ->when($this->user , function (Builder $builder) {
-                $builder->where('user_id' , $this->user);
+                $builder->whereHas('request' , function (Builder $builder) {
+                    $builder->where('user_id' , $this->user);
+                });
             })
             ->withCount('comments')
             ->when($this->region , function (Builder   $builder) {
