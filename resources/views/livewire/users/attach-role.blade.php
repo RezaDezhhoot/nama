@@ -57,13 +57,13 @@
                                 <td>{{ $item->role?->label() }}</td>
                                 <td>
                                     <ul>
-{{--                                        @foreach($item->roles2 as $role)--}}
-{{--                                            <li>--}}
-{{--                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">--}}
-{{--                                                   {{ $role->role?->label() }} - {{ $role?->region?->title }} : {{ $role?->unit?->full }}--}}
-{{--                                                </span>--}}
-{{--                                            </li>--}}
-{{--                                        @endforeach--}}
+                                        @foreach($item->roles2 as $role)
+                                            <li>
+                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">
+                                                   {{ $role->role?->label() }} - {{ $role?->region?->title }} : {{ $role?->unit?->full }}
+                                                </span>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </td>
                                 <td>
@@ -76,13 +76,13 @@
 {{--                                            </li>--}}
 {{--                                        @endforeach--}}
                                             <hr>
-{{--                                        @foreach($item->permissions as $p)--}}
-{{--                                            <li>--}}
-{{--                                                <span class="badge my-1 badge-info">--}}
-{{--                                                   {{ $p->title }}--}}
-{{--                                                </span>--}}
-{{--                                            </li>--}}
-{{--                                        @endforeach--}}
+                                        @foreach($item->permissions as $p)
+                                            <li>
+                                                <span class="badge my-1 badge-info">
+                                                   {{ $p->title }}
+                                                </span>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </td>
                                 <td>
