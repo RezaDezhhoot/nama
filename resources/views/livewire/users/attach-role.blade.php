@@ -53,36 +53,36 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->national_id }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>{{ sizeof($item->roles2) }}</td>
+                                <td>{{ sizeof($item->roles2 ?? []) }}</td>
                                 <td>{{ $item->role?->label() }}</td>
                                 <td>
                                     <ul>
-                                        @foreach($item->roles2 as $role)
-                                            <li>
-                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">
-                                                   {{ $role->role?->label() }} - {{ $role?->region?->title }} : {{ $role?->unit?->full }}
-                                                </span>
-                                            </li>
-                                        @endforeach
+{{--                                        @foreach($item->roles2 as $role)--}}
+{{--                                            <li>--}}
+{{--                                                <span class="badge my-1 badge-{{ $role->role->badge() }}">--}}
+{{--                                                   {{ $role->role?->label() }} - {{ $role?->region?->title }} : {{ $role?->unit?->full }}--}}
+{{--                                                </span>--}}
+{{--                                            </li>--}}
+{{--                                        @endforeach--}}
                                     </ul>
                                 </td>
                                 <td>
                                     <ul>
-                                        @foreach($item->roles as $r)
-                                            <li>
-                                                <span class="badge my-1 badge-primary">
-                                                   {{ $r->name }}
-                                                </span>
-                                            </li>
-                                        @endforeach
+{{--                                        @foreach($item->roles as $r)--}}
+{{--                                            <li>--}}
+{{--                                                <span class="badge my-1 badge-primary">--}}
+{{--                                                   {{ $r->name }}--}}
+{{--                                                </span>--}}
+{{--                                            </li>--}}
+{{--                                        @endforeach--}}
                                             <hr>
-                                        @foreach($item->permissions as $p)
-                                            <li>
-                                                <span class="badge my-1 badge-info">
-                                                   {{ $p->title }}
-                                                </span>
-                                            </li>
-                                        @endforeach
+{{--                                        @foreach($item->permissions as $p)--}}
+{{--                                            <li>--}}
+{{--                                                <span class="badge my-1 badge-info">--}}
+{{--                                                   {{ $p->title }}--}}
+{{--                                                </span>--}}
+{{--                                            </li>--}}
+{{--                                        @endforeach--}}
                                     </ul>
                                 </td>
                                 <td>
