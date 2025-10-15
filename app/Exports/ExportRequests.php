@@ -15,6 +15,8 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
     use Exportable;
     public function __construct(public $type , public $step , public $plan , public $unit , public $region , public $status , public $search , public $version)
     {
+        ini_set('max_execution_time', '300');
+        ini_set('memory_limit', '-1');
     }
 
     public function query()
