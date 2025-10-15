@@ -15,6 +15,8 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
     use Exportable;
     public function __construct(public $user ,public $type , public $step , public $plan , public $unit , public $region , public $status , public $search , public $version)
     {
+        ini_set('max_execution_time', '-1');
+        ini_set('memory_limit', '-1');
     }
 
     public function query()

@@ -87,8 +87,6 @@ class RequestController extends Controller
                         $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
                     })->orWhereHas('unit' , function (Builder $builder) use ($request) {
                         $builder->search($request->get('q'));
-                    })->orWhereHas('report' , function (Builder $builder) use ($request) {
-                        $builder->search($request->get('q'));
                     });
                 });
             })
