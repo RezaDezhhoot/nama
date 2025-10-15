@@ -42,7 +42,7 @@ class AttachRole extends BaseComponent
             ->with(['roles2','roles2.unit','roles2.region','permissions','roles'])
             ->whereNotNull('name')
             ->withCount('roles2')
-//            ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
+            ->leftJoin(sprintf("%s.user_roles AS  ur",$db),"user_id",'=','users.id')
 //            ->leftJoin(sprintf("%s.units AS u",$db),'u.id','=','ur.unit_id')
 //            ->select('ur.role as role2','ur.region_id','ur.unit_id','u.id AS unit_pkey','u.region_id AS unit_region_id','users.*' ,  DB::raw('COUNT(ur.id) AS roles_count'))
 //            ->whereNull('ur.deleted_at')
