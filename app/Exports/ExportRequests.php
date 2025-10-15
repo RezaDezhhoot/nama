@@ -96,7 +96,6 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
     }
     public function prepareRows($rows)
     {
-        dd($rows);
         return $rows->transform(function ($row) {
             return [
                 'id' => $row->id,
