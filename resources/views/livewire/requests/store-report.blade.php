@@ -362,7 +362,7 @@
                                                     {!! $reply->body !!}
                                                     <br>
                                                     <span class="text-muted font-size-sm">
-                                                     {{ $reply->created_at->diffForHumans() }}
+                                                     {{ $reply->created_at->diffForHumans() }} - {{ persian_date($reply->created_at , '%A, %d %B %Y H:i') }}
                                                 </span>
                                                 </div>
                                             </div>
