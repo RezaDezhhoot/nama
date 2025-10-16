@@ -191,7 +191,7 @@ class Request extends Model
             case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                 $this->step = RequestStep::APPROVAL_AREA_INTERFACE;
                 if ($this->notify_period) {
-                    $this->next_notify_at = now()->addHours($this->notify_period);
+                    $this->next_notify_at = now()->addHours((int)$this->notify_period);
                 } else if ($this->unit && $this->unit->city_id && $this->unit->region_id) {
                     $area_interface = UserRole::query()
                         ->with('user')
@@ -202,7 +202,7 @@ class Request extends Model
                         ->whereNotNull('notify_period')
                         ->first();
                     if ($area_interface && $area_interface->notify_period) {
-                        $this->next_notify_at =  now()->addHours($area_interface->notify_period);
+                        $this->next_notify_at =  now()->addHours((int)$area_interface->notify_period);
                         $this->notify_period = $area_interface->notify_period;
                         if ($area_interface->user) {
                             $this->controller2()->associate($area_interface->user);

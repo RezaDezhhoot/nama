@@ -123,13 +123,13 @@ class StoreRequest extends BaseComponent
                     case RequestStep::APPROVAL_MOSQUE_HEAD_COACH:
                         $this->request->step = $this->step ?? RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER;
                         if ($this->request->auto_accept_period) {
-                            $this->request->auto_accept_at = now()->addHours($this->request->auto_accept_period);
+                            $this->request->auto_accept_at = now()->addHours((int)$this->request->auto_accept_period);
                         }
                         break;
                     case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                         $this->request->step = $this->step ?? RequestStep::APPROVAL_AREA_INTERFACE;
                         if ($this->request->notify_period) {
-                            $this->request->next_notify_at =  now()->addHours($this->request->notify_period);
+                            $this->request->next_notify_at =  now()->addHours((int)$this->request->notify_period);
                         } else if ($this->request->unit && $this->request->unit->city_id && $this->request->unit->region_id) {
                             $area_interface = UserRole::query()
                                 ->where('item_id' , $this->request->item_id)
@@ -139,7 +139,7 @@ class StoreRequest extends BaseComponent
                                 ->whereNotNull('notify_period')
                                 ->first();
                             if ($area_interface && $area_interface->notify_period) {
-                                $this->request->next_notify_at =  now()->addHours($area_interface->notify_period);
+                                $this->request->next_notify_at =  now()->addHours((int)$area_interface->notify_period);
                                 $this->request->notify_period = $area_interface->notify_period;
                             }
                         }
@@ -175,7 +175,7 @@ class StoreRequest extends BaseComponent
                     $this->request->step = $this->step;
                     if (RequestStep::tryFrom($this->step) === RequestStep::APPROVAL_AREA_INTERFACE) {
                         if ($this->request->notify_period) {
-                            $this->request->next_notify_at = now()->addHours($this->request->notify_period);
+                            $this->request->next_notify_at = now()->addHours((int)$this->request->notify_period);
                         } else if ($this->request->unit && $this->request->unit->city_id && $this->request->unit->region_id) {
                             $area_interface = UserRole::query()
                                 ->where('item_id' , $this->request->item_id)
@@ -185,7 +185,7 @@ class StoreRequest extends BaseComponent
                                 ->whereNotNull('notify_period')
                                 ->first();
                             if ($area_interface && $area_interface->notify_period) {
-                                $this->request->next_notify_at = now()->addHours($area_interface->notify_period);
+                                $this->request->next_notify_at = now()->addHours((int)$area_interface->notify_period);
                                 $this->request->notify_period = $area_interface->notify_period;
                             }
                         }

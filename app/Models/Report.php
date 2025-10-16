@@ -150,7 +150,7 @@ class Report extends Model
             case RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER:
                 $this->step = RequestStep::APPROVAL_AREA_INTERFACE;
                 if ($this->notify_period) {
-                    $this->next_notify_at = now()->addHours($this->notify_period);
+                    $this->next_notify_at = now()->addHours((int)$this->notify_period);
                 }
                 break;
             case RequestStep::APPROVAL_AREA_INTERFACE:
