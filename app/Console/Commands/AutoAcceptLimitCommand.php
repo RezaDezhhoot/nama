@@ -73,6 +73,7 @@ class AutoAcceptLimitCommand extends Command
                     ->take(50)
                     ->get();
                 foreach ($requests as $request) {
+                    dd($request->controller);
                     if ($request->controller) {
                         $request->comments()->create([
                             'user_id' => $request->controller->id,
