@@ -88,6 +88,7 @@ class SendNotifyLimitCommand extends Command
                 foreach ($requests as $request) {
                     $user = $request->controller2;
                     if ($user && $request->unit) {
+                        dd(1);
                         $area_interface = UserRole::query()
                             ->with('user')
                             ->where('user_id' , $request->controller2_id)
