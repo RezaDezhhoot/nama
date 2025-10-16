@@ -41,17 +41,10 @@ class AutoAcceptLimitCommand extends Command
                     ->whereHas('request')
                     ->where('auto_accept_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER)
-                    ->take(10)
+                    ->take(50)
                     ->get();
                 foreach ($reports as $report) {
-                    $cultural_officer = UserRole::query()
-                        ->with('user')
-                        ->where('user_id' , $report->controller_id)
-                        ->where('role' , OperatorRole::MOSQUE_CULTURAL_OFFICER)
-                        ->where('unit_id' , $report->request->unit_id)
-                        ->whereNotNull('auto_accept_period')
-                        ->exists();
-                    if ($cultural_officer) {
+                    if ($report->controller) {
                         $report->comments()->create([
                             'user_id' => $report->controller->id,
                             'body' => $message,
@@ -77,17 +70,10 @@ class AutoAcceptLimitCommand extends Command
                     ->with('controller')
                     ->where('auto_accept_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER)
-                    ->take(10)
+                    ->take(50)
                     ->get();
                 foreach ($requests as $request) {
-                    $cultural_officer = UserRole::query()
-                        ->with('user')
-                        ->where('user_id' , $request->controller_id)
-                        ->where('role' , OperatorRole::MOSQUE_CULTURAL_OFFICER)
-                        ->where('unit_id' , $request->unit_id)
-                        ->whereNotNull('auto_accept_period')
-                        ->exists();
-                    if ($cultural_officer) {
+                    if ($request->controller) {
                         $request->comments()->create([
                             'user_id' => $request->controller->id,
                             'body' => $message,
