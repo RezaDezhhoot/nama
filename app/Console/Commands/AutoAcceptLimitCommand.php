@@ -41,7 +41,7 @@ class AutoAcceptLimitCommand extends Command
                     ->whereHas('request')
                     ->where('auto_accept_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER)
-                    ->take(50)
+                    ->take(100)
                     ->get();
                 foreach ($reports as $report) {
                     if ($report->controller) {
@@ -70,7 +70,7 @@ class AutoAcceptLimitCommand extends Command
                     ->with('controller')
                     ->where('auto_accept_at','<=',now())
                     ->where('step' , RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER)
-                    ->take(50)
+                    ->take(100)
                     ->get();
                 foreach ($requests as $request) {
                     if ($request->controller) {
