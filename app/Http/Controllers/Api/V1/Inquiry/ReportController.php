@@ -16,15 +16,13 @@ class ReportController extends Controller
                 'message' => "unauthorized",
             ] , 401);
         }
-        $items = [];
-        Report::query()
+        $items = Report::query()
             ->with(['images','images2','video','otherVideos'])
             ->where('reports.step',RequestStep::FINISH)
             ->join('requests AS r','r.id','=','reports.request_id')
             ->select(['reports.*','r.unit_id AS unit_id','r.user_id AS user_id'])
-            ->chunk(300 , function ($reqs) use(&$items) {
-                $items[] = $reqs;
-            });
+            ->paginate(100);
+
         return response()->json($items);
     }
 }
