@@ -23,8 +23,17 @@ class RequestController extends Controller
             ->where('step',RequestStep::FINISH)
             ->join('request_plans AS rp','rp.id','=','requests.request_plan_id')
             ->join($db.'.users AS u','u.id','=','requests.user_id')
-            ->select(['requests.*','rp.title as plan_title','u.national_id AS user_national_id'])
-            ->paginate(100);
+            ->select(['requests.*','rp.title as plan_title','u.national_id AS user_national_id']);
+
+        if ($request->query('sum')) {
+            $count = $items->count();
+            return response()->json([
+                'total' => $count,
+                'pages' => ceil($count / 100)
+            ]);
+        }
+
+        $items = $items->paginate(100);
 
         return response()->json($items);
     }

@@ -20,8 +20,17 @@ class ReportController extends Controller
             ->with(['images','images2','video','otherVideos'])
             ->where('reports.step',RequestStep::FINISH)
             ->join('requests AS r','r.id','=','reports.request_id')
-            ->select(['reports.*','r.unit_id AS unit_id','r.user_id AS user_id'])
-            ->paginate(100);
+            ->select(['reports.*','r.unit_id AS unit_id','r.user_id AS user_id']);
+
+        if ($request->query('sum')) {
+            $count = $items->count();
+            return response()->json([
+                'total' => $count,
+                'pages' => ceil($count / 100)
+            ]);
+        }
+
+        $items = $items->paginate(100);
 
         return response()->json($items);
     }
