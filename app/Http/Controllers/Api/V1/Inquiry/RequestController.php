@@ -11,11 +11,11 @@ class RequestController extends Controller
 {
     public function __invoke(Request $request)
     {
-//        if (app()->environment('production') && $request->header('X-API-KEY') !== config('services.pusheh.api_key')) {
-//            return response()->json([
-//                'message' => "unauthorized",
-//            ] , 401);
-//        }
+        if (app()->environment('production') && $request->header('X-API-KEY') !== config('services.pusheh.api_key')) {
+            return response()->json([
+                'message' => "unauthorized",
+            ] , 401);
+        }
         $db = config('database.connections.arman.database');
         $items = \App\Models\Request::query()
             ->without(['item','user','unit','members','members.image','plan'])
