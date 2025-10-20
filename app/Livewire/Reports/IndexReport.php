@@ -142,7 +142,7 @@ class IndexReport extends BaseComponent
                     });
                 });
             })->when($this->code , function (Builder $builder) {
-                $builder->where('id' , $this->code);
+                $builder->where('id' , convert2english($this->code));
             })
             ->confirmed()
             ->roleFilter()
