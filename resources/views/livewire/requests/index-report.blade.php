@@ -38,7 +38,7 @@
                     :data="[]"
                     text="name"
                     label="مربی"
-                    width="4"
+                    width="3"
                     :ajaxUrl="route('admin.feed.users')"
                     wire:model.defer="user"/>
                 <x-admin.forms.dropdown width="3" id="step" :data="$data['step']" label="نقش / مرحله" wire:model.live="step"/>

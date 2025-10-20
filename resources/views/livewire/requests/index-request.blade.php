@@ -37,7 +37,7 @@
                     :data="[]"
                     text="name"
                     label="مربی"
-                    width="4"
+                    width="3"
                     :ajaxUrl="route('admin.feed.users')"
                     wire:model.defer="user"/>
 
