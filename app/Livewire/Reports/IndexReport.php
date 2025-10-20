@@ -23,7 +23,7 @@ class IndexReport extends BaseComponent
     public $plan , $unit , $step , $user;
 
     public $version;
-    public $unitModel , $regionModel , $planModel;
+    public $unitModel , $regionModel , $planModel , $code;
 
     protected function queryString()
     {
@@ -141,6 +141,8 @@ class IndexReport extends BaseComponent
                         $builder->search($this->search );
                     });
                 });
+            })->when($this->code , function (Builder $builder) {
+                $builder->where('id' , $this->code);
             })
             ->confirmed()
             ->roleFilter()

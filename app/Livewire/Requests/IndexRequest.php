@@ -25,7 +25,7 @@ class IndexRequest extends BaseComponent
 
     public $plan , $unit , $step , $user;
 
-    public $unitModel , $regionModel , $planModel , $version;
+    public $unitModel , $regionModel , $planModel , $version , $code;
 
     protected function queryString()
     {
@@ -122,6 +122,9 @@ class IndexRequest extends BaseComponent
                 });
             })
             ->whereHas('plan')
+            ->when($this->code , function (Builder $builder) {
+                $builder->where('id' , $this->code);
+            })
             ->confirmed()
             ->roleFilter()
             ->when($this->status , function (Builder $builder) {

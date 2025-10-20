@@ -43,6 +43,7 @@
 
                 <x-admin.forms.dropdown width="3" id="step" :data="$data['step']" label="نقش / مرحله" wire:model.live="step"/>
                 <x-admin.forms.dropdown width="3" :data="$data['version']" id="version" label="نسخه آرمان" wire:model.live="version"/>
+                <x-admin.forms.input width="3" type="text" id="code" label="کد گزارش" wire:model.defer="code"/>
 
             </div>
             @include('livewire.includes.advance-table')
