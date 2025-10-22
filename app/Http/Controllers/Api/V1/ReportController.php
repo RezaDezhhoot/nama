@@ -79,7 +79,11 @@ class ReportController extends Controller
                         if ($request->query('role') == OperatorRole::MOSQUE_HEAD_COACH->value) {
                             $builder->where('status' , $request->get('status'));
                         } else {
-                            $builder->where('status' , $request->get('status'))->whereNotIn('step' , $role->next());
+                            if ($request->get('status') == RequestStatus::DONE->value) {
+                                $builder->where('status' , $request->get('status'));
+                            } else {
+                                $builder->where('status' , $request->get('status'))->whereNotIn('step' , $role->next());
+                            }
                         }
                     }
                 });

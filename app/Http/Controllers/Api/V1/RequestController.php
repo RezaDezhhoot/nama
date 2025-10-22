@@ -110,7 +110,11 @@ class RequestController extends Controller
                         if ($request->query('role') == OperatorRole::MOSQUE_HEAD_COACH->value) {
                             $builder->where('requests.status' , $request->get('status'));
                         } else {
-                            $builder->where('requests.status' , $request->get('status'))->whereNotIn('requests.step' , $role->next());
+                            if ($request->get('status') == RequestStatus::DONE->value) {
+                                $builder->where('requests.status' , $request->get('status'));
+                            } else {
+                                $builder->where('requests.status' , $request->get('status'))->whereNotIn('requests.step' , $role->next());
+                            }
                         }
                     }
                 });
