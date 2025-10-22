@@ -34,6 +34,17 @@ class RequestPlanController extends Controller
         );
     }
 
+    public function list(Request $request): AnonymousResourceCollection
+    {
+        return RequestPlanResource::collection(
+            RequestPlan::query()->when($request->filled('q') , function ($q) use($request) {
+                $q->search($request->get('q'));
+            })->where('item_id',\request()->get('item_id'))->orderByDesc('bold')
+                ->whereHas('requests')
+                ->paginate((int)$request->get('per_page' , 10))
+        );
+    }
+
     public function show($id): RequestPlanResource
     {
         return RequestPlanResource::make(
