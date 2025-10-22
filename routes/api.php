@@ -16,8 +16,8 @@ Route::group(['prefix' => 'v1'] , function () {
     Route::get('banners' , \App\Http\Controllers\Api\V1\BannerController::class)->middleware(['has_item']);
     Route::group(['prefix' => 'request-plans','middleware' => ['auth:sanctum','has_item']] , function () {
         Route::get('',[\App\Http\Controllers\Api\V1\RequestPlanController::class,'index']);
-        Route::get('{id}',[\App\Http\Controllers\Api\V1\RequestPlanController::class,'show']);
         Route::get('list',[\App\Http\Controllers\Api\V1\RequestPlanController::class,'list']);
+        Route::get('{id}',[\App\Http\Controllers\Api\V1\RequestPlanController::class,'show']);
     });
     Route::controller(\App\Http\Controllers\Api\V1\RequestController::class)->middleware(['auth:sanctum','has_item','has_role'])->prefix('requests')->group(function () {
         Route::get('' , 'index');
