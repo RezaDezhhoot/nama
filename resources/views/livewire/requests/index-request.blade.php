@@ -124,7 +124,7 @@
                                 <td><strong>{{ number_format($item->offer_amount) }} ریال </strong></td>
                                 <td><strong>{{ number_format($item->final_amount) }} ریال </strong></td>
 
-                                <td>{{ persian_date($item->created_at) }}</td>
+                                <td>{{ persian_date($item->created_at , '%A, %d %B %Y H:i:s') }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>
                                 <td>
