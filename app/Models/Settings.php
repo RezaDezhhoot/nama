@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Traits\Loggable;
+use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Settings extends Model
 {
-    use Loggable;
+    use Loggable , SimpleSearchable;
+
+    public array $searchAbleColumns = ['name'];
 
     protected $table = 'settings';
 

@@ -207,7 +207,7 @@ return [
     'team_duel_cost ' => 'هزینه دوئل تیم',
     'team_duel_questions' => 'سوالات دوئل تیم',
     'event' => 'رویداد',
-    'causer' => 'عامل',
+    'causer' => 'انجام دهنده',
     'avatar' => 'آواتار',
     'show' => 'نمایش',
     'items' => 'موارد',

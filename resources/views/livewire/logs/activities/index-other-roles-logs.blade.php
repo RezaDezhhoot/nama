@@ -144,19 +144,10 @@
             </h5>
             <div class="row">
                 <div class=" col-12">
-                    <h6>
-                        از
-                    </h6>
-                    <pre style="text-align: left" class="text-white p-2 bg-dark ">
-                      {{ json_encode($log?->properties['old'] ?? [] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE ) }}
-                    </pre>
-                </div>
-                <div class="col-12">
-                    <h6>
-                        به
-                    </h6>
-                    <pre style="text-align: left" class="text-white p-2 bg-dark">
-                      {{ json_encode($log?->properties['attributes'] ?? [] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE) }}
+                    <pre class="p-2">
+                     <code>
+                        {{ json_encode(arrayDiff($log?->properties['old'] ?? [], $log?->properties['attributes'] ?? []) , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE ) }}
+                        </code>
                     </pre>
                 </div>
             </div>

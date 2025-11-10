@@ -19,6 +19,16 @@ class File extends Model
 {
     use HasFactory , Loggable;
 
+    public function scopeSearch(Builder $query, $search): Builder
+    {
+        if ($search) {
+            $query->whereHasMorph('fileable',[Request::class,Report::class] , function (Builder $builder) use ($search) {
+                $builder->search($search);
+            });
+        }
+        return $query;
+    }
+
     protected $guarded = ['id'];
 
     protected $appends = ['url','thumbnail_url'];

@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Enums\OperatorRole;
 use App\Enums\SchoolCoachType;
 use App\Traits\Loggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mpdf\Tag\B;
 
 class UserRole extends Model
 {
@@ -26,6 +28,17 @@ class UserRole extends Model
             'ring' => 'boolean',
             'school_coach_type' => SchoolCoachType::class
         ];
+    }
+
+    public function scopeSearch(Builder $query, $search): Builder
+    {
+        if ($search) {
+            $db = config('database.connections.arman.database');
+            $query->join($db.".users as u","u.id",'=','user_roles.user_id')
+                ->whereAny(['u.phone','u.name','u.national_id','u.email'],'LIKE','%'.$search.'%')
+            ;
+        }
+        return $query;
     }
 
     public function item(): BelongsTo

@@ -16,6 +16,8 @@ class RingMember extends Model
 
     protected $guarded = ['id'];
 
+    public array $searchAbleColumns = ['name','national_code','postal_code','phone','father_name'];
+
     const FILE_IMAGE_SUBJECT = "image";
 
 

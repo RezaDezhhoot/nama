@@ -170,3 +170,23 @@ function my_bcmod( $x, $y ): int
     while ( strlen($x) );
     return (int)$mod;
 }
+
+function arrayDiff(array $a, array $b): array {
+    $diffs = [];
+
+    $allKeys = array_unique(array_merge(array_keys($a), array_keys($b)));
+
+    foreach ($allKeys as $key) {
+        $valA = $a[$key] ?? null;
+        $valB = $b[$key] ?? null;
+
+        if ($valA !== $valB) {
+            $diffs[$key] = [
+                'old' => $valA,
+                'new' => $valB,
+            ];
+        }
+    }
+
+    return $diffs;
+}

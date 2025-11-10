@@ -11,6 +11,7 @@
                 <x-admin.forms.select2 width="3"  id="causer" label="{{__('general.user')}}" ajaxUrl="{{route('admin.feed.users')}}" wire:model.live="causer"/>
                 <x-admin.forms.jdate-picker width="3" :timer="false" id="from_date" label="{{ __('general.from_date') }}" wire:model.live="from_date"/>
                 <x-admin.forms.jdate-picker width="3" :timer="false" id="to_date" label="{{ __('general.to_date') }}" wire:model.live="to_date"/>
+                <x-admin.forms.input width="4" type="text" id="subject_search" label="جستوجو موضوع" wire:model.live="subject_search"/>
             </div>
             @include('livewire.includes.advance-table')
             <div class="row">
@@ -34,7 +35,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->event?->label() }}</td>
-                                <td>{{ $data['subject'][$item->subject_type] ?? $item->subject_type }} # {{ $item->subject_id }}</td>
+                                <td>{{ $data['subject'][$item->subject_type] ?? $item->subject_type }} # {{ $item->subject_id }} </td>
                                 <td>{{ $item->description }}</td>
                                 <td class="jdate">{{ persian_date($item->created_at) }}</td>
                                 <td><span>{{ ($item->causer->name ?? '').' | '.($item->causer->phone ?? '').' #'.($item->causer->id ?? '') }}</span></td>
@@ -88,19 +89,10 @@
             </h5>
             <div class="row">
                 <div class=" col-12">
-                    <h6>
-                        از
-                    </h6>
-                    <pre style="text-align: left" class="text-white p-2 bg-dark ">
-                      {{ json_encode($log?->properties['old'] ?? [] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE ) }}
-                    </pre>
-                </div>
-                <div class="col-12">
-                    <h6>
-                        به
-                    </h6>
-                    <pre style="text-align: left" class="text-white p-2 bg-dark">
-                      {{ json_encode($log?->properties['attributes'] ?? [] , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE|JSON_INVALID_UTF8_SUBSTITUTE) }}
+                    <pre class=" p-2 ">
+                        <code>
+                        {{ json_encode(arrayDiff($log?->properties['old'] ?? [], $log?->properties['attributes'] ?? []) , JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_IGNORE ) }}
+                        </code>
                     </pre>
                 </div>
             </div>

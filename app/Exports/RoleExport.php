@@ -39,7 +39,6 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
         ]);
     }
 
-
     public function drawings()
     {
         $drawing = new Drawing();
