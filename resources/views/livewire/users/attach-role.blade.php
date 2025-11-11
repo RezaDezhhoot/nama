@@ -68,13 +68,13 @@
                                 </td>
                                 <td>
                                     <ul>
-{{--                                        @foreach($item->roles as $r)--}}
-{{--                                            <li>--}}
-{{--                                                <span class="badge my-1 badge-primary">--}}
-{{--                                                   {{ $r->name }}--}}
-{{--                                                </span>--}}
-{{--                                            </li>--}}
-{{--                                        @endforeach--}}
+                                        @foreach($item->roles as $r)
+                                            <li>
+                                                <span class="badge my-1 badge-primary">
+                                                   {{ $r->name }}
+                                                </span>
+                                            </li>
+                                        @endforeach
                                             <hr>
                                         @foreach($item->permissions as $p)
                                             <li>
