@@ -18,6 +18,7 @@ class FormResource extends JsonResource
             'id' => $this->id,
             'title'=> $this->title,
             'required' => $this->required,
+            'body' => $this->body,
             'item_count' => $this->whenCounted('items'),
             'items' => FormItemResource::collection($this->whenLoaded('items')),
             'report' => FormReportResource::make($this->whenLoaded('report'))
