@@ -135,6 +135,7 @@ class StoreReport extends BaseComponent
             } else {
                 $this->report->status = RequestStatus::tryFrom($this->status);
                 if ($this->step) {
+                    dd( $this->step);
                     $this->request->step = $this->step;
                 }
             }
