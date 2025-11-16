@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSize
 {
     use Exportable;
-    public function __construct(public $type , public $step , public $plan , public $unit , public $region , public $status , public $search , public $version)
+    public function __construct(public $type , public $step , public $plan , public $unit , public $region , public $status , public $search , public $version , public $user)
     {
         ini_set('max_execution_time', '-1');
         ini_set('memory_limit', '-1');
@@ -25,6 +25,9 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
             ->with(['plan','user','unit','unit.city','unit.region','imamLetter','areaInterfaceLetter'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
+            })
+            ->when($this->user , function (Builder $builder) {
+                $builder->where('user_id' , $this->user);
             })
             ->withCount('comments')
             ->when($this->plan , function (Builder $builder){
