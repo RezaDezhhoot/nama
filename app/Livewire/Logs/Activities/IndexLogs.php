@@ -30,7 +30,7 @@ class IndexLogs extends BaseComponent
     {
         $items = LogActivity::query()
             ->latest()
-            ->with(['subject'])
+//            ->with(['subject'])
             ->when($this->event , function (Builder $builder) {
                 $builder->where('event' , $this->event);
             })

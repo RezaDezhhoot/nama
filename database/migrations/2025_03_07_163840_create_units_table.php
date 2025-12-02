@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal("lng",40,12)->nullable();
             $table->softDeletes();
             $table->timestamps();
+            $table->fullText('title');
         });
     }
 
