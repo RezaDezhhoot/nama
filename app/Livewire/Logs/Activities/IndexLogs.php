@@ -30,16 +30,16 @@ class IndexLogs extends BaseComponent
     {
         $items = LogActivity::query()
             ->latest()
-//            ->with(['subject'])
+            ->with(['subject'])
             ->when($this->event , function (Builder $builder) {
                 $builder->where('event' , $this->event);
             })
             ->when($this->subject , function (Builder $builder) {
                 $builder->where('subject_type' , $this->subject);
             })->when($this->subject_search , function (Builder $builder) {
-                $builder->whereHas('subject' , function (Builder $builder) {
-                    $builder->search($this->subject_search);
-                });
+//                $builder->whereHas('subject' , function (Builder $builder) {
+//                    $builder->search($this->subject_search);
+//                });
             })->when($this->causer , function (Builder $builder) {
                 $builder->where('causer_id' , $this->causer);
             })->when($this->from_date , function (Builder $builder) {

@@ -459,12 +459,13 @@ class RequestController extends Controller
         $itemID = \request()->get('item_id');
         $request = RequestModel::query()
             ->item($itemID)
-            ->role(\request()->get('role'))
-            ->relations()
+//            ->role(\request()->get('role'))
+//            ->relations()
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
             ->findOrFail($request);
+        dd($request);
         $item = DashboardItem::query()->find($itemID);
         $from_status = $request->status;
         $step = $request->step;
