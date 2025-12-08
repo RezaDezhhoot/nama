@@ -460,7 +460,7 @@ class RequestController extends Controller
         $request = RequestModel::query()
             ->item($itemID)
 //            ->role(\request()->get('role'))
-//            ->relations()
+            ->relations()
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
             ->whereIn('status',[RequestStatus::IN_PROGRESS,RequestStatus::ACTION_NEEDED])
             ->where('step','!=',RequestStep::APPROVAL_MOSQUE_HEAD_COACH)
