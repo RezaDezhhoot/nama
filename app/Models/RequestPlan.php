@@ -25,7 +25,7 @@ class RequestPlan extends Model
 
     protected $guarded = [];
 
-//    protected $with = 'requirementsv';
+    protected $with = 'requirementsv';
 
     protected $casts = [
         'status' => RequestPlanStatus::class,
