@@ -17,19 +17,19 @@ class RequestPlanController extends Controller
             RequestPlan::query()->when($request->filled('q') , function ($q) use($request) {
                 $q->search($request->get('q'));
             })->where(function (Builder $builder) {
-//                $builder->where('golden' , false)->orWhere(function (Builder $builder) {
-//                    $builder->where('golden' , true)->whereHas('limits' , function (Builder $builder) {
-//                        $builder->where('value' , auth()->user()->national_id);
-//                    });
-//                });
+                $builder->where('golden' , false)->orWhere(function (Builder $builder) {
+                    $builder->where('golden' , true)->whereHas('limits' , function (Builder $builder) {
+                        $builder->where('value' , auth()->user()->national_id);
+                    });
+                });
             })->where('item_id',\request()->get('item_id'))->orderByDesc('bold')->where(function (Builder $builder) {
-//                $builder->where('starts_at' ,'<=' ,now())->orWhereNull('starts_at');
+                $builder->where('starts_at' ,'<=' ,now())->orWhereNull('starts_at');
             })->where(function (Builder $builder) {
-//                $builder->where('expires_at' ,'>=' ,now())->orWhereNull('expires_at');
+                $builder->where('expires_at' ,'>=' ,now())->orWhereNull('expires_at');
             })->when($request->has('soon') , function (Builder $builder) {
-//                $builder->comingSoon();
+                $builder->comingSoon();
             })->when(! $request->has('soon') , function (Builder $builder) {
-//                $builder->published();
+                $builder->published();
             })->paginate((int)$request->get('per_page' , 10))
         );
     }
