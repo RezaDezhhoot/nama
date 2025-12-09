@@ -23,13 +23,13 @@ class RequestPlanController extends Controller
 //                    });
 //                });
             })->where('item_id',\request()->get('item_id'))->orderByDesc('bold')->where(function (Builder $builder) {
-                $builder->where('starts_at' ,'<=' ,now())->orWhereNull('starts_at');
+//                $builder->where('starts_at' ,'<=' ,now())->orWhereNull('starts_at');
             })->where(function (Builder $builder) {
-                $builder->where('expires_at' ,'>=' ,now())->orWhereNull('expires_at');
+//                $builder->where('expires_at' ,'>=' ,now())->orWhereNull('expires_at');
             })->when($request->has('soon') , function (Builder $builder) {
-                $builder->comingSoon();
+//                $builder->comingSoon();
             })->when(! $request->has('soon') , function (Builder $builder) {
-                $builder->published();
+//                $builder->published();
             })->paginate((int)$request->get('per_page' , 10))
         );
     }
