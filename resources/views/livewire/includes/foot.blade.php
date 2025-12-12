@@ -59,8 +59,8 @@
     };
 </script>
 <script src="{{asset('admin/js/sweetalert2@11.js')}}"></script>
-<script src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/plugins/global/plugins.bundle.js?v=7.2.9"></script>
-<script src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/js/scripts.bundle.js?v=7.2.9"></script>
+<script src="/admin/plugins/global/plugins.bundle.js?v=7.2.9"></script>
+<script src="/admin/js/scripts.bundle.js?v=7.2.9"></script>
 <script src="{{asset('admin/plugins/custom/datepicker/persian-date.min.js')}}"></script>
 <script src="{{asset('admin/plugins/custom/datepicker/persian-datepicker.min.js')}}"></script>
 
