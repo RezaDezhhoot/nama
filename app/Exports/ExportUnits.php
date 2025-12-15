@@ -17,7 +17,7 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
 
     public function query()
     {
-        return Unit::query()->with(['city','region','area','parent','neighborhood'])->when($this->region , function (Builder $builder) {
+        return Unit::query()->with(['city','region','area','state','parent','neighborhood'])->when($this->region , function (Builder $builder) {
             $builder->where('region_id' , $this->region);
         })->when($this->unit , function (Builder $builder) {
             $builder->where('parent_id' , $this->unit);
@@ -38,13 +38,14 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
             'نوع',
             'نوع فرعی',
             'مسجد محوری',
+            'استان',
             'شهر',
             'منطقه',
             'محله',
             'ناحیه',
+            'کد پستی',
             'lat',
             'lng',
-            'کد یکتای واحد',
             'شماره 1',
             'شماره 2',
             'شماره 3',
@@ -53,6 +54,15 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
             'شماره 6',
             'شماره 7',
             'شماره 8',
+            'مرکز آرمانی',
+            'شناسه یکتای واحد(سیستمی)',
+            'شناسه یکتای واحد',
+            'نام مسئول',
+            'شماره مسئول',
+            'جنسیت',
+            'شماره تماس مرکز',
+            'حوزه ی فعالیت های مرکز',
+            'محدوده سنی'
         ];
     }
     public function prepareRows($rows)
@@ -64,9 +74,11 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
                 'type' => $row->type?->label(),
                 'sub_type' => $row->sub_type?->label(),
                 'parent_id' => $row->parent?->title ?? '-',
+                'state' => $row->state?->title,
                 'city' => $row->city?->title,
                 'region' => $row->region?->title,
                 'neighborhood' => $row->neighborhood?->title,
+                'postal_code' => $row->postal_code,
                 'area' => $row->area?->title,
                 'lat' => $row->lat,
                 'lng' => $row->lng,
@@ -79,6 +91,14 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
                 'phone6' => $row->phone6_title.' : '.$row->phone6,
                 'phone7' => $row->phone7_title.' : '.$row->phone7,
                 'phone8' => $row->phone8_title.' : '.$row->phone8,
+                'armani' => $row->armani ? 'بله' : 'خیر',
+                'systematic_code' => $row->systematic_code,
+                'responsible' => $row->responsible,
+                'responsible_phone' => $row->responsible_phone,
+                'gender' => $row->gender?->label(),
+                'tell' => $row->tell,
+                'scope_activity' => $row->scope_activity,
+                'range' => $row->from_age.' - '.$row->to_age,
             ];
         });
     }

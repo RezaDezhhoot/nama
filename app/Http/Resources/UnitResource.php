@@ -16,7 +16,7 @@ class UnitResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => sprintf("%s - %s",$this->title,$this->text),
+            'title' => $this->full,
             'type' => $this->type,
             'sub_type' => $this->sub_type,
             'city' => $this->city,

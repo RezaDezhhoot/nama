@@ -10,7 +10,6 @@
         <x-admin.nav-tabs-list>
             <x-admin.nav-tabs-item active="{{$tab =='report'}}" title="گزارش" key="tab" value="report" icon="far fa-newspaper"/>
             <x-admin.nav-tabs-item active="{{$tab =='comment'}}" title="گفتوگو" key="tab" value="comment" icon="far fa-comment"/>
-
         </x-admin.nav-tabs-list>
         <div class="card-body {{$tab != 'report' ? 'd-none' : ''}}">
             <x-admin.form-section label="جزئیات درخواست">

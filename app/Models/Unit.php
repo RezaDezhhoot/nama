@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Gender;
 use App\Enums\UnitSubType;
 use App\Enums\UnitType;
 use App\Traits\Loggable;
@@ -16,7 +17,7 @@ class Unit extends Model
 {
     use SimpleSearchable , SoftDeletes , Loggable;
 
-    public array $searchAbleColumns = ['title'];
+    public array $searchAbleColumns = ['title','systematic_code','code'];
 
     protected $guarded = ['id'];
 
@@ -30,7 +31,9 @@ class Unit extends Model
         'sub_type' => UnitSubType::class,
         'number_list' => "array",
         "lat" => "float",
-        "lng" => "float"
+        "lng" => "float",
+        'gender' => Gender::class,
+        'armani' => 'boolean'
     ];
 
 //    public function title(): Attribute
@@ -44,7 +47,7 @@ class Unit extends Model
     public function text(): Attribute
     {
         return Attribute::get(function ($v) {
-            return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری',$this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
+            return sprintf("%s(%s) - %s",$v,$this->parent_id ? "معمولی" : 'محوری', $this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label());
         });
     }
 
@@ -52,7 +55,31 @@ class Unit extends Model
     public function full(): Attribute
     {
         return Attribute::get(function ($v) {
-            return sprintf("%s - %s - %s",$this->title,$this->text , $this->region?->title);
+            $full = sprintf("%s - %s" , $this->title , $this->parent_id ? "معمولی" : 'محوری');
+
+            if ($this->sub_type) {
+                $subType = $this->sub_type instanceof UnitSubType ? $this->sub_type?->label() : UnitSubType::tryFrom($this->sub_type)?->label();
+                if ($subType) {
+                    $full .= " - ".$subType;
+                }
+            }
+
+            if ($this->region) {
+                $full .= " - ".$this->region?->title;
+            }
+
+            if ($this->systematic_code) {
+                $full .= " - ".$this->systematic_code;
+            }
+
+            if ($this->gender) {
+                $gender = $this->gender instanceof Gender ? $this->gender?->label() : Gender::tryFrom($this->gender)?->label();
+                if ($gender) {
+                    $full .= " - ".$gender;
+                }
+            }
+
+            return $full;
         });
     }
 
@@ -146,5 +173,19 @@ class Unit extends Model
     public function requests(): HasMany
     {
         return $this->hasMany(Request::class);
+    }
+
+    public function state(): BelongsTo
+    {
+        return $this->belongsTo(State::class,'state_id');
+    }
+
+    public static function generateCode($min = 1_000_000 , $ignore = []): int
+    {
+        do {
+            $final = mt_rand($min, $min * 10 - 1);
+        } while(Unit::query()->where('systematic_code',$final)->exists() || in_array($final , $ignore));
+
+        return $final;
     }
 }

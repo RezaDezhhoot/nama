@@ -15,6 +15,7 @@
                 <x-admin.forms.input width="4" type="color" id="color" label="رنگ" wire:model.defer="color"/>
                 <x-admin.forms.lfm-standalone width="6" :required="true" id="image" label="تصویر" :file="$image" wire:model="image"/>
                 <x-admin.forms.lfm-standalone width="6" :required="true" id="logo" label="لوگو" :file="$logo" wire:model="logo"/>
+                <x-admin.forms.checkbox  id="status" label="منتشر شده" wire:model.defer="status"/>
 
                 <x-admin.forms.text-area dir="rtl" id="body" label="توضیحات" wire:model.defer="body"/>
 

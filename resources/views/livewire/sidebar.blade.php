@@ -178,7 +178,7 @@
                             href="{{route('admin.units.index')}}"
                             icon="fas fa-mosque"
                             :active="request()->routeIs(['admin.units.index','admin.units.store'])"
-                            label="مراکز" />
+                            label="مراکز حقوقی" />
                     @endcanany
                     @canany(['show_request_plans','delete_request_plans','edit_request_plans'])
                         <x-admin.menu-item

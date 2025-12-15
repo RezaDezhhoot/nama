@@ -10,7 +10,8 @@
         <x-admin.forms.validation-errors/>
         <div class="card-body ">
             <div class="row">
-                <x-admin.forms.input type="text"  :required="true" id="title" label="عنوان شهر" wire:model.defer="title" />
+                <x-admin.forms.input type="text" width="6"  :required="true" id="title" label="عنوان شهر" wire:model.defer="title" />
+                <x-admin.forms.dropdown width="6" :data="$data['states']"  id="state" label="استان" wire:model.defer="state"/>
             </div>
             <x-admin.form-section label="مناطق">
                 <div class="row w-100">

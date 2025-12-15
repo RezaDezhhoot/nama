@@ -33,11 +33,14 @@
                         <tr>
                             <th>#</th>
                             <th>شناسه</th>
+                            <th>شناسه یکتای واحد(سیستمی)</th>
+                            <th>شناسه یکتای واحد</th>
                             <th>عنوان</th>
                             <th>نوع</th>
                             <th>نوع فرعی</th>
                             <th>مرکز بالادست</th>
                             <th>نقش ها</th>
+                            <th>مرکز ارمانی</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -46,6 +49,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->systematic_code ?? '-' }}</td>
+                                <td>{{ $item->code ?? '-' }}</td>
                                 <td>{{ $item->title }} - {{ $item->text }}</td>
                                 <td>{{ $item->type->label() }}</td>
                                 <td>{{ $item->sub_type?->label() ?? '-' }}</td>
@@ -59,6 +64,7 @@
                                        @endforeach
                                    </ul>
                                 </td>
+                                <td>{{ $item->armani ? 'بله' : 'خیر' }}</td>
                                 <td >
                                     <x-admin.edit-btn href="{{ route('admin.units.store',[PageAction::UPDATE , $item->id]) }}?type={{$type}}&region={{$region}}&unit={{$unit}}&search={{$search}}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />

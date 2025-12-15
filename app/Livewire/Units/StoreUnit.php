@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Units;
 
+use App\Enums\Gender;
 use App\Enums\UnitSubType;
 use App\Enums\UnitType;
 use App\Livewire\BaseComponent;
+use App\Models\State;
 use App\Models\Unit;
+use Illuminate\Validation\Rule;
 
 class StoreUnit extends BaseComponent
 {
@@ -29,6 +32,8 @@ class StoreUnit extends BaseComponent
         ];
     }
 
+    public $tab = "base";
+
     public $title , $type , $sub_type , $parent , $city , $region , $neighborhood , $area , $auto_accept;
     public $lat , $lng;
     public $regionAjax , $neighborhoodAjax , $areaAjax;
@@ -45,12 +50,14 @@ class StoreUnit extends BaseComponent
     public $phone7 , $phone7_title;
     public $phone8 , $phone8_title;
 
+    public $state , $gender , $armani , $postal_code , $responsible , $responsible_phone , $tell , $scope_activity , $description , $from_age , $to_age , $systematic_code;
+
     public function mount($action , $id = null)
     {
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->authorize('edit_units');
-            $this->model = Unit::query()->with(['city','parent','region','neighborhood','area'])->findOrFail($id);
+            $this->model = Unit::query()->with(['city','parent','region','neighborhood','area','state'])->findOrFail($id);
 
             $this->title = $this->model->title;
             $this->header = $this->model->title;
@@ -64,6 +71,19 @@ class StoreUnit extends BaseComponent
             $this->auto_accept = $this->model->auto_accept ?? false;
             $this->sub_type = $this->model->sub_type?->value ?? null;
             $this->type = $this->model->type?->value ?? null;
+
+            $this->state = $this->model->state_id;
+            $this->gender = $this->model->gender?->value;
+            $this->armani = $this->model->armani;
+            $this->systematic_code = $this->model->systematic_code;
+            $this->postal_code = $this->model->postal_code;
+            $this->responsible = $this->model->responsible;
+            $this->responsible_phone = $this->model->responsible_phone;
+            $this->tell = $this->model->tell;
+            $this->scope_activity = $this->model->scope_activity;
+            $this->description = $this->model->description;
+            $this->from_age = $this->model->from_age;
+            $this->to_age = $this->model->to_age;
 
             $this->phone1 = $this->model->phone1;
             $this->phone1_title = $this->model->phone1_title;
@@ -96,22 +116,15 @@ class StoreUnit extends BaseComponent
         })->whereNull('parent_id')->pluck('title','id')->toArray();
         $this->data['sub_type'] = [];
         $this->updatedType($this->type);
+        $this->data['states'] = State::all()->pluck('title','id')->toArray();
+        $this->data['gender'] = Gender::labels();
     }
 
     public function updatedType($value)
     {
         $this->data['sub_type'] = [];
-        if ($value == UnitType::SCHOOL->value) {
-            $this->data['sub_type'] = [
-                UnitSubType::MALE->value => UnitSubType::MALE->label(),
-                UnitSubType::FEMALE->value => UnitSubType::FEMALE->label(),
-                UnitSubType::SUPPORT->value => UnitSubType::SUPPORT->label(),
-            ];
-        } elseif ($value == UnitType::MOSQUE->value) {
-            $this->data['sub_type'] = [
-                UnitSubType::BROTHERS->value => UnitSubType::BROTHERS->label(),
-                UnitSubType::SISTERS->value => UnitSubType::SISTERS->label(),
-            ];
+        foreach (UnitType::subTypes($value) as $v) {
+            $this->data['sub_type'][$v->value] = $v->label();
         }
     }
 
@@ -184,7 +197,20 @@ class StoreUnit extends BaseComponent
             'phone8' => ['nullable','string','max:100'],
             'phone8_title' => ['nullable','string','max:100'],
             'code' => ['nullable','string','max:150'],
-            'numbers' => ['nullable','array']
+            'numbers' => ['nullable','array'],
+
+            'state' => ['nullable',Rule::exists('stats','id')],
+            'gender' => ['nullable',Rule::enum(Gender::class)],
+            'armani' => ['nullable','boolean'],
+            'postal_code' => ['nullable','string','max:10'],
+            'responsible' => ['nullable','string','max:200'],
+            'responsible_phone' => ['nullable','string','max:200'],
+            'tell' => ['nullable','string','max:200'],
+            'scope_activity' => ['nullable','string','max:200'],
+            'description' => ['nullable','string','max:20000'],
+            'from_age' => ['nullable','integer','min:1'],
+            'to_age' => ['nullable','integer','min:1'],
+            'systematic_code' => ['nullable',Rule::unique('units','systematic_code')->ignore($this->model?->id ?? 0)]
         ]);
         $data = [
             'title' => $this->title,
@@ -216,6 +242,19 @@ class StoreUnit extends BaseComponent
             'phone8' => $this->phone8,
             'phone8_title' => $this->phone8_title,
             'number_list' => $this->numbers,
+
+            'state_id' => $this->state,
+            'gender' => $this->gender,
+            'armani' => (boolean)$this->armani,
+            'postal_code' => $this->postal_code,
+            'responsible' => $this->responsible,
+            'responsible_phone' => $this->responsible_phone,
+            'tell' => $this->tell,
+            'scope_activity' => $this->scope_activity,
+            'description' => $this->description,
+            'from_age' => $this->from_age,
+            'to_age' => $this->to_age,
+            'systematic_code' => emptyToNull($this->systematic_code) ?? Unit::generateCode(),
         ];
         $model = $this->model ?: new Unit();
         $model->fill($data)->save();

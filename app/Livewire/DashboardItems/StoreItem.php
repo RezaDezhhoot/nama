@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 
 class StoreItem extends BaseComponent
 {
-    public $title , $body , $link , $image;
+    public $title , $body , $link , $image , $status;
 
     public $logo , $color;
     public function mount($action , $id = null)
@@ -23,6 +23,7 @@ class StoreItem extends BaseComponent
             $this->link = $this->model->link;
             $this->image = $this->model->image;
             $this->color = $this->model->color;
+            $this->status = $this->model->status;
             $this->logo = $this->model->logo;
             $this->header = $this->title;
         } elseif ($this->isCreatingMode()) {
@@ -39,6 +40,7 @@ class StoreItem extends BaseComponent
             'image' => ['required','string','max:150000'],
             'logo' => ['required','string','max:150000'],
             'color' => ['nullable','string'],
+            'status' => ['nullable','boolean']
         ]);
         $data = [
             'title' => $this->title,
@@ -46,6 +48,7 @@ class StoreItem extends BaseComponent
             'link' => $this->link,
             'image' => $this->image,
             'logo' => $this->logo,
+            'status' => $this->status,
             'color' => $this->color
         ];
         $model = $this->model ?: new DashboardItem;

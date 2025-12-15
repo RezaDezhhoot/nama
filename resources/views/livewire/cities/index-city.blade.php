@@ -30,6 +30,7 @@
                         <tr>
                             <th>#</th>
                             <th>عنوان</th>
+                            <th>استان</th>
                             <th>تعداد منطقه</th>
                             <th>تعداد محله</th>
                             <th>عملیات</th>
@@ -41,6 +42,7 @@
                             <tr style="cursor: grab">
                                 <td class="sortable-handler" data-index="{{$item->id}}">{{ $loop->iteration }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->state?->title }}</td>
                                 <td>{{ $item->regions_count }}</td>
                                 <td>{{ $item->neighborhoods_count }}</td>
                                 <td>
@@ -66,6 +68,7 @@
         <x-admin.forms.validation-errors />
         <div class="row">
             <x-admin.forms.input type="text"  :required="true" id="title" label="عنوان" wire:model.defer="title" />
+            <x-admin.forms.dropdown :data="$data['states']"  id="state" label="استان" wire:model.defer="state"/>
         </div>
     </x-admin.modal-page>
 </div>

@@ -75,9 +75,14 @@ class StoreUser extends BaseComponent
     {
         $roles = UserRole::query()->with(['unit'])
             ->with(['city','region','neighborhood','area','item'])
-            ->where('user_id',$this->user->id)->get()->groupBy('item_id');
-        $this->data['units'] = [];
+            ->where('user_id' , $this->user->id)
+            ->when($this->item , function ($q) {
+                $q->where('item_id' , $this->item);
+            })
+            ->get()
+            ->groupBy('item_id');
 
+        $this->data['units'] = [];
         if ($this->item) {
             $itemModel = DashboardItem::query()->findOrFail($this->item);
         }

@@ -9,6 +9,7 @@ use App\Models\Area;
 use App\Models\City;
 use App\Models\Neighborhood;
 use App\Models\Region;
+use App\Models\State;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,7 +20,7 @@ class StoreCity extends BaseComponent
 
     public $region , $rTitle , $neighborhoods;
 
-    public $nTitle , $neighborhood , $areas;
+    public $nTitle , $neighborhood , $areas , $state;
 
     public $aTitle , $area;
 
@@ -28,10 +29,12 @@ class StoreCity extends BaseComponent
     public function mount($action , $id = null)
     {
         $this->authorize('edit_locations');
+        $this->data['states'] = State::all()->pluck('title','id')->toArray();
         $this->setMode($action);
         if ($this->isUpdatingMode()) {
             $this->model = City::query()->findOrFail($id);
             $this->title = $this->model->title;
+            $this->state = $this->model->state_id;
             $this->header = $this->title;
         } else abort(404);
     }
@@ -98,10 +101,12 @@ class StoreCity extends BaseComponent
     public function store()
     {
         $this->validate([
-            'title' => ['required','string','max:150']
+            'title' => ['required','string','max:150'],
+            'state' => ['nullable' , Rule::exists('states','id')],
         ]);
         $data = [
-            'title' => $this->title
+            'title' => $this->title,
+            'state_id' => $this->state
         ];
         $this->model->fill($data)->save();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');

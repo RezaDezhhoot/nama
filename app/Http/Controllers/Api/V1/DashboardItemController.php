@@ -13,14 +13,14 @@ class DashboardItemController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return DashboardItemResource::collection(
-            DashboardItem::query()->orderBy('id')->whereNotNull('type')->paginate((int)\request()->query('per_page' , 10))
+            DashboardItem::query()->orderBy('id')->where('status' , true)->whereNotNull('type')->paginate((int)\request()->query('per_page' , 10))
         );
     }
 
     public function show($dashboardItem)
     {
         return DashboardItemResource::make(
-            DashboardItem::query()->findOrFail($dashboardItem)
+            DashboardItem::query()->where('status' , true)->findOrFail($dashboardItem)
         );
     }
 }

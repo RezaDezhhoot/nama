@@ -14,6 +14,7 @@
                             <th>#</th>
                             <th>شناسه</th>
                             <th>عنوان</th>
+                            <th>وضعیت</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -23,6 +24,7 @@
                                 <td class="sortable-handler" data-index="{{$item->id}}">{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->status ? 'منتشر شده' : 'پیشنویس' }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.dashboard-items.store',[PageAction::UPDATE , $item->id]) }}"/>
                                 </td>

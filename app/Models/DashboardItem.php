@@ -24,6 +24,7 @@ class DashboardItem extends Model
     }
 
     protected $casts = [
-        'type' => UnitType::class
+        'type' => UnitType::class,
+        'status' => 'boolean'
     ];
 }

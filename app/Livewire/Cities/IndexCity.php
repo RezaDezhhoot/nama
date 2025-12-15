@@ -5,15 +5,18 @@ namespace App\Livewire\Cities;
 use App\Enums\PageAction;
 use App\Livewire\BaseComponent;
 use App\Models\City;
+use App\Models\State;
+use Illuminate\Validation\Rule;
 use Livewire\WithPagination;
 
 class IndexCity extends BaseComponent
 {
     use WithPagination;
-    public $title , $region;
+    public $title , $region , $state;
 
     public function mount()
     {
+        $this->data['states'] = State::all()->pluck('title','id')->toArray();
         $this->authorize('show_locations');
     }
 
@@ -21,7 +24,7 @@ class IndexCity extends BaseComponent
     {
         $items = City::query()
             ->latest()
-            ->withCount(['regions','neighborhoods'])
+            ->withCount(['regions','neighborhoods','state'])
             ->when($this->region , function ($q) {
                 $q->whereHas('regions' , function ($q){
                     $q->where('id' , $this->region);
@@ -49,10 +52,12 @@ class IndexCity extends BaseComponent
     {
         $this->authorize('create_locations');
         $this->validate([
-            'title' => ['required','string','max:140']
+            'title' => ['required','string','max:140'],
+            'state' => ['nullable' , Rule::exists('states','id')]
         ]);
         $data = [
-            'title' => $this->title
+            'title' => $this->title,
+            'state_id' => $this->state
         ];
         $model = City::query()->create($data);
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');

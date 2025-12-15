@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,5 +31,10 @@ class City extends Model
     public function regions(): HasMany
     {
         return $this->hasMany(Region::class);
+    }
+
+    public function state(): BelongsTo
+    {
+        return $this->belongsTo(State::class,'state_id');
     }
 }
