@@ -48,7 +48,7 @@
                 </div>
                 <div class="row w-100">
                     <div class="col-6 row">
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -92,6 +92,86 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-tree fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_GARDEN_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های بوستان</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-city fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_HALL_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های سرا</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-drum-steelpan    fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_STADIUM_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های ورزشگاه</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-quran fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_DARUL_QURAN_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های دارالقرآن</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-dungeon fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_CULTURAL_INSTITUTE_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های داراموسسه فرهنگی</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-kaaba fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_SEMINARY_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های حوزه علمیه</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-quran fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_QURANIC_CENTER_REQUESTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل درخواست های مرکز قرآنی</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="card card-custom bg-dark bgi-no-repeat card-stretch gutter-b shadow" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
@@ -105,7 +185,7 @@
                         </div>
                     </div>
                     <div class="col-6 row">
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -116,7 +196,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -127,7 +207,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -138,7 +218,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-3 col-12">
                             <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">
                                     <span class="svg-icon svg-icon-white svg-icon-5x">
@@ -149,6 +229,86 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-tree fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_GARDEN_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های بوستان</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-city fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_HALL_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های سرا</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-drum-steelpan    fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_STADIUM_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های ورزشگاه</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-quran fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_DARUL_QURAN_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های دارالقرآن</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-dungeon fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_CULTURAL_INSTITUTE_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های داراموسسه فرهنگی</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-kaaba fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_SEMINARY_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های حوزه علمیه</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="card card-custom bg-dark shadow bgi-no-repeat card-stretch gutter-b" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
+                                <div class="card-body">
+                                    <span class="svg-icon svg-icon-white svg-icon-5x">
+                                       <i class="fas fa-quran fa-4x text-white"></i>
+                                    </span>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block">{{ number_format($box['sub'][\App\Enums\StatisticType::TOTAL_QURANIC_CENTER_REPORTS->value] ?? 0) }}</span>
+                                    <span class="font-weight-bold text-white font-size-sm">تعداد کل گزارش های مرکز قرآنی</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="card card-custom bg-dark bgi-no-repeat card-stretch gutter-b shadow" style="background-position: right top; background-size: 30% auto; background-image: url({{asset('admin/media/svg/shapes/abstract-1.svg')}})">
                                 <div class="card-body">

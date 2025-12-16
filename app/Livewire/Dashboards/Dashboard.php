@@ -23,8 +23,6 @@ class Dashboard extends BaseComponent
             'root' => Statistic::query()->whereNull('sub_name')->get()->pluck("value","name.value")->toArray(),
             'sub' => Statistic::query()->whereNotNull('sub_name')->get()->pluck("value","sub_name.value")->toArray(),
         ];
-
-//        dd($this->box);
     }
 
     public function init(): void
