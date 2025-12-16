@@ -19,6 +19,7 @@ class IndexItem extends BaseComponent
     public function render()
     {
         $items = DashboardItem::query()
+            ->latest('id')
             ->when($this->search , function ($q) {
                 $q->search($this->search);
             })->paginate($this->per_page);
