@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\OperatorRole;
 use App\Enums\RequestStatus;
 use App\Enums\RequestStep;
+use App\Enums\UnitType;
 use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Builder;
@@ -177,5 +178,19 @@ class Report extends Model
     public function controller2(): BelongsTo
     {
         return $this->belongsTo(User::class,'controller2_id');
+    }
+
+    public static function counter($t)
+    {
+        return self::query()
+            ->whereHas('request')
+            ->limit(50)
+            ->where('status' , RequestStatus::IN_PROGRESS)
+            ->whereHas('item' , function ($q) use ($t){
+                $q->where('type' , $t);
+            })
+            ->roleFilter()
+            ->confirmed()
+            ->count();
     }
 }

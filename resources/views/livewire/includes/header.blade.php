@@ -1,7 +1,39 @@
 @use('App\Modules\Base\Enums\PageAction')
+@use('App\Models\Request')
+@use('App\Models\Report')
+@use('App\Enums\UnitType')
 <div id="kt_header" class="header header-fixed">
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+            <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
+                <!--begin::Header Nav-->
+                <ul class="menu-nav">
+                    @if(isAdmin() || isOperator())
+                        <li class="menu-item menu-item-open menu-item-here menu-item-submenu menu-item-rel menu-item-open menu-item-here menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="javascript:;" class="menu-link menu-toggle">
+                                <span class="menu-text">درخواست ها / گزارش ها</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                <ul class="menu-subnav">
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::MOSQUE)" :report_counter="Report::counter(UnitType::MOSQUE)" icon="fas fa-mosque" :name="UnitType::MOSQUE->value" :title="UnitType::MOSQUE->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::SCHOOL)" :report_counter="Report::counter(UnitType::SCHOOL)" icon="fas fa-school" :name="UnitType::SCHOOL->value" :title="UnitType::SCHOOL->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::UNIVERSITY)" :report_counter="Report::counter(UnitType::UNIVERSITY)" icon="fas fa-university" :name="UnitType::UNIVERSITY->value" :title="UnitType::UNIVERSITY->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::CENTER)" :report_counter="Report::counter(UnitType::CENTER)" icon="fas fa-ticket-alt" :name="UnitType::CENTER->value" :title="UnitType::CENTER->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::GARDEN)" :report_counter="Report::counter(UnitType::GARDEN)" icon="fas fa-tree" :name="UnitType::GARDEN->value" :title="UnitType::GARDEN->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::HALL)" :report_counter="Report::counter(UnitType::HALL)" icon="fas fa-city" :name="UnitType::HALL->value" :title="UnitType::HALL->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::STADIUM)" :report_counter="Report::counter(UnitType::STADIUM)" icon="fas fa-drum-steelpan" :name="UnitType::STADIUM->value" :title="UnitType::STADIUM->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::DARUL_QURAN)" :report_counter="Report::counter(UnitType::DARUL_QURAN)" icon="fas fa-quran" :name="UnitType::DARUL_QURAN->value" :title="UnitType::DARUL_QURAN->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::CULTURAL_INSTITUTE)" :report_counter="Report::counter(UnitType::CULTURAL_INSTITUTE)" icon="fas fa-dungeon" :name="UnitType::CULTURAL_INSTITUTE->value" :title="UnitType::CULTURAL_INSTITUTE->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::SEMINARY)" :report_counter="Report::counter(UnitType::SEMINARY)" icon="fas fa-kaaba" :name="UnitType::SEMINARY->value" :title="UnitType::SEMINARY->label()" />
+                                    <x-admin.menu-item-header :request_counter="Request::counter(UnitType::QURANIC_CENTER)" :report_counter="Report::counter(UnitType::QURANIC_CENTER)" icon="fas fa-quran" :name="UnitType::QURANIC_CENTER->value" :title="UnitType::QURANIC_CENTER->label()" />
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+                </ul>
+                <!--end::Header Nav-->
+            </div>
         </div>
         <div class="topbar">
             <div class="topbar-item">

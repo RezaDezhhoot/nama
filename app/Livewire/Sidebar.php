@@ -16,87 +16,34 @@ class Sidebar extends Component
 {
     public function render()
     {
-        $mosque_requests = Request::query()
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::MOSQUE);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
+        $mosque_requests = Request::counter(UnitType::MOSQUE);
+        $school_requests = Request::counter(UnitType::SCHOOL);
+        $university_requests = 0;
+        $center_requests = Request::counter(UnitType::CENTER);
+        $garden_requests = Request::counter(UnitType::GARDEN);
+        $hall_requests = Request::counter(UnitType::HALL);
+        $stadium_requests = Request::counter(UnitType::STADIUM);
+        $darul_quran_requests = Request::counter(UnitType::DARUL_QURAN);
+        $cultural_institute_requests = Request::counter(UnitType::CULTURAL_INSTITUTE);
+        $seminary_requests = Request::counter(UnitType::SEMINARY);
+        $quranic_center_requests = Request::counter(UnitType::QURANIC_CENTER);
 
-        $school_requests = Request::query()
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::SCHOOL);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
-        $university_requests = Request::query()
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::UNIVERSITY);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
-
-
-        $center_requests = Request::query()
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::CENTER);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
-
-        $mosque_reports = Report::query()
-            ->whereHas('request')
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::MOSQUE);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
-
-        $school_reports = Report::query()
-            ->whereHas('request')
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::SCHOOL);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
-
-        $university_reports = Report::query()
-            ->whereHas('request')
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::UNIVERSITY);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
-
-        $center_reports = Report::query()
-            ->whereHas('request')
-            ->where('status' , RequestStatus::IN_PROGRESS)
-            ->whereHas('item' , function ($q){
-                $q->where('type' , UnitType::CENTER);
-            })
-            ->roleFilter()
-            ->confirmed()
-            ->count();
+        $mosque_reports = Report::counter(UnitType::MOSQUE);
+        $school_reports = Report::counter(UnitType::SCHOOL);
+        $university_reports = 0;
+        $center_reports = Report::counter(UnitType::CENTER);
+        $garden_reports = Report::counter(UnitType::GARDEN);
+        $hall_reports = Report::counter(UnitType::HALL);
+        $stadium_reports = Report::counter(UnitType::STADIUM);
+        $darul_quran_reports = Report::counter(UnitType::DARUL_QURAN);
+        $cultural_institute_reports = Report::counter(UnitType::CULTURAL_INSTITUTE);
+        $seminary_reports = Report::counter(UnitType::SEMINARY);
+        $quranic_center_reports = Report::counter(UnitType::QURANIC_CENTER);
 
         $writtenRequests = WrittenRequest::query()
             ->where('status' , RequestStatus::IN_PROGRESS)
             ->roleFilter()
             ->count();
-
         $reports = FormReport::query()
             ->where('status' , FormReportEnum::PENDING)
             ->count();

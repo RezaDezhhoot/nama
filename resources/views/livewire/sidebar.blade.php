@@ -46,77 +46,11 @@
                 </li>
 
                 @if(isAdmin() || isOperator())
-                    @canany(['show_requests_mosque','edit_requests_mosque','delete_requests_mosque','export_requests_mosque'])
-                        <li class="menu-section">
-                            <h4 class="menu-text">مساجد</h4>
-                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                        </li>
-                        <x-admin.menu-item
-                            href="{{route('admin.requests.index',[\App\Enums\UnitType::MOSQUE])}}"
-                            icon="fas fa-mosque"
-                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
-                            label="درخواست های مساجد({{ $mosque_requests }})" />
-                        <x-admin.menu-item
-                            href="{{route('admin.reports.index',[\App\Enums\UnitType::MOSQUE])}}"
-                            icon="fas fa-mosque"
-                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::MOSQUE->value"
-                            label="گزارش های مساجد({{ $mosque_reports }})" />
-                    @endcanany
-                    @canany(['show_requests_school','edit_requests_school','delete_requests_school','export_requests_school'])
-                        <li class="menu-section">
-                            <h4 class="menu-text">مدارس</h4>
-                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                        </li>
-                        <x-admin.menu-item
-                            href="{{route('admin.requests.index',[\App\Enums\UnitType::SCHOOL])}}"
-                            icon="fas fa-school"
-                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
-                            label="درخواست های مدارس({{ $school_requests }})" />
-                        <x-admin.menu-item
-                            href="{{route('admin.reports.index',[\App\Enums\UnitType::SCHOOL])}}"
-                            icon="fas fa-school"
-                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::SCHOOL->value"
-                            label="گزارش های مدارس({{ $school_reports }})" />
-                    @endcanany
-                    @canany(['show_requests_university','edit_requests_university','delete_requests_university','export_requests_university'])
-                        <li class="menu-section">
-                            <h4 class="menu-text">دانشگاه</h4>
-                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                        </li>
-                        <x-admin.menu-item
-                            href="{{route('admin.requests.index',[\App\Enums\UnitType::UNIVERSITY])}}"
-                            icon="fas fa-university"
-                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
-                            label="درخواست های دانشگاه({{ $university_requests }})" />
-                        <x-admin.menu-item
-                            href="{{route('admin.reports.index',[\App\Enums\UnitType::UNIVERSITY])}}"
-                            icon="fas fa-university"
-                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::UNIVERSITY->value"
-                            label="گزارش های دانشگاه({{ $university_reports }})" />
-                    @endcanany
-                    @canany(['show_requests_center','edit_requests_center','delete_requests_center','export_requests_center'])
-                        <li class="menu-section">
-                            <h4 class="menu-text">مرکز تعالی</h4>
-                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                        </li>
-                        <x-admin.menu-item
-                            href="{{route('admin.requests.index',[\App\Enums\UnitType::CENTER])}}"
-                            icon="fas fa-ticket-alt"
-                            :active="request()->routeIs(['admin.requests.index','admin.requests.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
-                            label="درخواست های مرکز تعالی({{ $center_requests }})" />
-
-                        <x-admin.menu-item
-                            href="{{route('admin.reports.index',[\App\Enums\UnitType::CENTER])}}"
-                            icon="fas fa-ticket-alt"
-                            :active="request()->routeIs(['admin.reports.index','admin.reports.store']) && request()->route()->parameter('type') == \App\Enums\UnitType::CENTER->value"
-                            label="گزارش های مرکز تعالی({{ $center_reports }})" />
-
-                        <li class="menu-section">
-                            <h4 class="menu-text">سایر</h4>
-                            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                        </li>
-                    @endcanany
                     @canany(['show_requests_written','edit_requests_written','delete_requests_written','export_requests_written'])
+                            <li class="menu-section">
+                                <h4 class="menu-text">سایر</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
                     <x-admin.menu-item
                         href="{{route('admin.written-requests.index')}}"
                         icon="fas fa-ticket-alt"

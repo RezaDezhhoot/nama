@@ -264,4 +264,17 @@ class Request extends Model
     {
         return $this->belongsToMany(RingMember::class,'request_ring_member','request_id','ring_member_id')->withTrashed();
     }
+
+    public static function counter($t)
+    {
+        return self::query()
+            ->limit(50)
+            ->where('status' , RequestStatus::IN_PROGRESS)
+            ->whereHas('item' , function ($q) use ($t) {
+                $q->where('type' , $t);
+            })
+            ->roleFilter()
+            ->confirmed()
+            ->count();
+    }
 }

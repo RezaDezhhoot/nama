@@ -37,6 +37,41 @@ class PermissionTableSeeder extends Seeder
             ['name' => 'delete_requests_'.UnitType::UNIVERSITY->value, 'title' => 'حذف درخواست های دانشگاه', 'guard_name' => 'web'],
             ['name' => 'export_requests_'.UnitType::UNIVERSITY->value, 'title' => 'خروجی درخواست های دانشگاه', 'guard_name' => 'web'],
 
+            ['name' => 'show_requests_'.UnitType::GARDEN->value, 'title' => 'نمایش درخواست های بوستان', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::GARDEN->value, 'title' => 'ویرایش درخواست های بوستان', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::GARDEN->value, 'title' => 'حذف درخواست های بوستان', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::GARDEN->value, 'title' => 'خروجی درخواست های بوستان', 'guard_name' => 'web'],
+
+            ['name' => 'show_requests_'.UnitType::HALL->value, 'title' => 'نمایش درخواست های سرا', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::HALL->value, 'title' => 'ویرایش درخواست های سرا', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::HALL->value, 'title' => 'حذف درخواست های سرا', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::HALL->value, 'title' => 'خروجی درخواست های سرا', 'guard_name' => 'web'],
+
+            ['name' => 'show_requests_'.UnitType::STADIUM->value, 'title' => 'نمایش درخواست های ورزشگاه', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::STADIUM->value, 'title' => 'ویرایش درخواست های ورزشگاه', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::STADIUM->value, 'title' => 'حذف درخواست های ورزشگاه', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::STADIUM->value, 'title' => 'خروجی درخواست های ورزشگاه', 'guard_name' => 'web'],
+
+            ['name' => 'show_requests_'.UnitType::DARUL_QURAN->value, 'title' => 'نمایش درخواست های دارالقرآن', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::DARUL_QURAN->value, 'title' => 'ویرایش درخواست های دارالقرآن', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::DARUL_QURAN->value, 'title' => 'حذف درخواست های دارالقرآن', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::DARUL_QURAN->value, 'title' => 'خروجی درخواست های دارالقرآن', 'guard_name' => 'web'],
+
+            ['name' => 'show_requests_'.UnitType::CULTURAL_INSTITUTE->value, 'title' => 'نمایش درخواست های موسسه فرهنگی', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::CULTURAL_INSTITUTE->value, 'title' => 'ویرایش درخواست های موسسه فرهنگی', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::CULTURAL_INSTITUTE->value, 'title' => 'حذف درخواست های موسسه فرهنگی', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::CULTURAL_INSTITUTE->value, 'title' => 'خروجی درخواست های موسسه فرهنگی', 'guard_name' => 'web'],
+
+            ['name' => 'show_requests_'.UnitType::SEMINARY->value, 'title' => 'نمایش درخواست های حوزه علمیه', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::SEMINARY->value, 'title' => 'ویرایش درخواست های حوزه علمیه', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::SEMINARY->value, 'title' => 'حذف درخواست های حوزه علمیه', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::SEMINARY->value, 'title' => 'خروجی درخواست های حوزه علمیه', 'guard_name' => 'web'],
+
+            ['name' => 'show_requests_'.UnitType::QURANIC_CENTER->value, 'title' => 'نمایش درخواست های مرکز قرآنی', 'guard_name' => 'web'],
+            ['name' => 'edit_requests_'.UnitType::QURANIC_CENTER->value, 'title' => 'ویرایش درخواست های مرکز قرآنی', 'guard_name' => 'web'],
+            ['name' => 'delete_requests_'.UnitType::QURANIC_CENTER->value, 'title' => 'حذف درخواست های مرکز قرآنی', 'guard_name' => 'web'],
+            ['name' => 'export_requests_'.UnitType::QURANIC_CENTER->value, 'title' => 'خروجی درخواست های مرکز قرآنی', 'guard_name' => 'web'],
+
             ['name' => 'show_requests_written', 'title' => 'نمایش درخواست های مکتوب', 'guard_name' => 'web'],
             ['name' => 'edit_requests_written', 'title' => 'ویرایش درخواست های مکتوب','guard_name' => 'web'],
             ['name' => 'delete_requests_written', 'title' => 'حذف درخواست های مکتوب', 'guard_name' => 'web'],
