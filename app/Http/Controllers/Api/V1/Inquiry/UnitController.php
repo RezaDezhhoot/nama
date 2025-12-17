@@ -17,11 +17,16 @@ class UnitController extends Controller
         }
 
         $units = [];
-        Unit::query()
-            ->with(['roles'])
-            ->chunkById(200 , function ($items) use (&$units) {
+        $items = Unit::query()
+            ->with(['roles']);
+
+        if ($request->query('per_page')) {
+            $units = $items->paginate($request->query('per_page'));
+        } else {
+            $items->chunkById(200 , function ($items) use (&$units) {
                 $units[] = $items;
             });
+        }
 
         return response()->json($units);
     }
