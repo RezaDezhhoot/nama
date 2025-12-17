@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +20,23 @@ class TrackErrorsMiddleware
         $response = $next($request);
 
         if ($response->status() >= 400) {
+            if ($response instanceof JsonResponse) {
+                $responseContent = $response->getData(true);
+            } else {
+                $responseContent = mb_convert_encoding(
+                    $response->getContent(),
+                    'UTF-8',
+                    'UTF-8'
+                );
+            }
+
             Log::error('HTTP Error', [
                 'status' => $response->status(),
                 'method' => $request->method(),
                 'url' => $request->fullUrl(),
                 'headers' => $request->headers->all(),
                 'body' => $request->all(),
-                'response' => $response->getContent(),
+                'response' => $responseContent,
             ]);
         }
         return $response;
