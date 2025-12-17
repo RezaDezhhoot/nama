@@ -67,6 +67,7 @@
                     </li>
                     @if(auth()->user()->hasAnyRole(['super_admin','administrator']))
                         <x-admin.menu-item href="{{route('telescope')}}" icon="flaticon-book" :active="false" label="Telescope" />
+                        <x-admin.menu-item href="{{route('pulse')}}" icon="flaticon-book" :active="false" label="Pulse" />
                     @endif
                     @can('show_log_activities')
                         <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />

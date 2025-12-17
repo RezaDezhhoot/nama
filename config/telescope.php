@@ -93,7 +93,8 @@ return [
 
     'middleware' => [
         'web',
-        'auth'
+        'auth',
+        'role:administrator'
     ],
 
     /*
