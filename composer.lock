@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7b649c626a9a57de936dff789db7c04",
+    "content-hash": "7ba01e1cedbe293b2d3a8c0c1686a437",
     "packages": [
         {
             "name": "alexusmai/laravel-file-manager",
@@ -4476,16 +4476,16 @@
         },
         {
             "name": "opcodesio/log-viewer",
-            "version": "v3.15.5",
+            "version": "v3.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opcodesio/log-viewer.git",
-                "reference": "726afaac63458ad41073057670727fd892cf10d1"
+                "reference": "6dfa99c3a8c5ae128c6b7f2f0a4f026af7ca055c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opcodesio/log-viewer/zipball/726afaac63458ad41073057670727fd892cf10d1",
-                "reference": "726afaac63458ad41073057670727fd892cf10d1",
+                "url": "https://api.github.com/repos/opcodesio/log-viewer/zipball/6dfa99c3a8c5ae128c6b7f2f0a4f026af7ca055c",
+                "reference": "6dfa99c3a8c5ae128c6b7f2f0a4f026af7ca055c",
                 "shasum": ""
             },
             "require": {
@@ -4548,7 +4548,7 @@
             ],
             "support": {
                 "issues": "https://github.com/opcodesio/log-viewer/issues",
-                "source": "https://github.com/opcodesio/log-viewer/tree/v3.15.5"
+                "source": "https://github.com/opcodesio/log-viewer/tree/v3.21.1"
             },
             "funding": [
                 {
@@ -4560,7 +4560,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-02T17:40:35+00:00"
+            "time": "2025-10-23T05:12:09+00:00"
         },
         {
             "name": "opcodesio/mail-parser",
