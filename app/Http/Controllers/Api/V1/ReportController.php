@@ -40,7 +40,7 @@ class ReportController extends Controller
             'sort' => ['nullable','in:created_at,confirm'],
             'direction' => ['nullable','in:desc,asc'],
             'step' => ['nullable',Rule::enum(RequestStep::class)],
-            'q' => ['nullable','string','max:50']
+            'q' => ['nullable','string']
         ]);
         $role = OperatorRole::from(request()->get('role'));
         return ReportResource::collection(

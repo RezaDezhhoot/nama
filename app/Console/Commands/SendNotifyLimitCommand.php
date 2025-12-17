@@ -104,7 +104,7 @@ class SendNotifyLimitCommand extends Command
                                     'token20' => $user->name ?? 'کاربر گرامی'
                                 ]);
                                 $request->update([
-                                    'next_notify_at' => now()->addHours($request->notify_period)
+                                    'next_notify_at' => now()->addHours((float)$request->notify_period)
                                 ]);
                             } catch (\Exception $exception) {
                                 report($exception);
