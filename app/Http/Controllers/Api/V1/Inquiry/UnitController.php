@@ -28,8 +28,6 @@ class UnitController extends Controller
             });
         }
 
-        return response()->json([
-            'data' => $units
-        ]);
+        return response()->json($units);
     }
 }
