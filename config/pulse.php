@@ -123,7 +123,7 @@ return [
     'middleware' => [
         'web',
         'auth',
-        'role:administrator'
+        'role:super_admin'
     ],
 
     /*
