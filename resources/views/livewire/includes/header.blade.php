@@ -6,7 +6,6 @@
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
             <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
-                <!--begin::Header Nav-->
                 <ul class="menu-nav">
                     @if(isAdmin() || isOperator())
                         <li class="menu-item menu-item-open menu-item-here menu-item-submenu menu-item-rel menu-item-open menu-item-here menu-item-active" data-menu-toggle="click" aria-haspopup="true">
@@ -32,7 +31,6 @@
                         </li>
                     @endif
                 </ul>
-                <!--end::Header Nav-->
             </div>
         </div>
         <div class="topbar">

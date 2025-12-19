@@ -8,7 +8,6 @@
         <button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
             <span></span>
         </button>
-
     </div>
 </div>
 <div class="d-flex flex-column flex-root">
