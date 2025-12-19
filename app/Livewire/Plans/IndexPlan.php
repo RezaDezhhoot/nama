@@ -15,7 +15,7 @@ class IndexPlan extends BaseComponent
 
     public $status;
 
-    public $single_step, $staff ,$golden , $type , $designated_by_council;
+    public $single_step, $staff ,$golden , $type , $designated_by_council , $double_step;
 
     public function mount()
     {
@@ -31,6 +31,9 @@ class IndexPlan extends BaseComponent
             ->latest()
             ->when($this->single_step , function (Builder $builder) {
                 $builder->where('single_step' , true);
+            })
+            ->when($this->double_step , function (Builder $builder) {
+                $builder->where('single_step' , false);
             })
             ->when($this->staff , function (Builder $builder) {
                 $builder->where('staff' , true);

@@ -10,6 +10,7 @@
                 <x-admin.forms.dropdown width="6" id="status" :data="$data['status']" label="وضعیت" wire:model.live="status"/>
                 <x-admin.forms.dropdown width="6" id="type" :data="$data['types']" label="نوع پلن" wire:model.live="type"/>
                 <x-admin.forms.checkbox width="3" id="single_step" label="درخواست تک مرحله ای" wire:model.live="single_step"/>
+                <x-admin.forms.checkbox width="3" id="double_step" label="درخواست دو مرحله ای" wire:model.live="double_step"/>
                 <x-admin.forms.checkbox width="3" id="staff" label="ستادی" wire:model.live="staff"/>
                 <x-admin.forms.checkbox width="3" id="golden" label="طلایی" wire:model.live="golden"/>
                 <x-admin.forms.checkbox width="3" id="designated_by_council" label="تعیین هزینه توسط شورا" wire:model.live="designated_by_council"/>
