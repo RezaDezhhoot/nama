@@ -55,8 +55,7 @@ class IndexOtherRolesLogs extends BaseComponent
         $this->boxes = [];
         $db = config('database.connections.arman.database');
         $q = LogActivity::query()
-            ->latest("activity_log.created_at")
-            ->with(['causer.roles'])
+            ->latest("activity_log.id")
             ->when($this->event , function (Builder $builder) {
                 $builder->where('event' , $this->event);
             })
