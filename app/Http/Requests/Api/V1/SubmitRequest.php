@@ -20,7 +20,7 @@ class SubmitRequest extends FormRequest
     {
         return [
             'students' => [$this->isNormal() ? 'required' : 'nullable' ,'integer','between:1,1000000000'],
-            'amount' => [$this->isNormal() ? 'required' : null ,'integer','between:1000,10000000000000'],
+            'amount' => [$this->isNormal() ? 'required' : null ,'integer','between:1,10000000000000'],
 
             'title' => [! $this->isNormal() ? 'required' : 'nullable' ,'string','max:250'],
             'location' => [! $this->isNormal() ? 'required' : 'nullable' ,'string','max:30000'],

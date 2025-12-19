@@ -12,7 +12,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'students' => ['sometimes','required','integer','between:1,1000000000'],
-            'amount' => ['sometimes','required','integer','between:1000,10000000000000'],
+            'amount' => ['sometimes','required','integer','between:1,10000000000000'],
 
             'title' => ['sometimes','required' ,'string','max:250'],
             'location' => ['sometimes','required' ,'string','max:30000'],
