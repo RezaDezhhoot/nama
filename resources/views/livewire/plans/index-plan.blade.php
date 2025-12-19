@@ -13,6 +13,7 @@
                 <x-admin.forms.checkbox width="3" id="double_step" label="درخواست دو مرحله ای" wire:model.live="double_step"/>
                 <x-admin.forms.checkbox width="3" id="staff" label="ستادی" wire:model.live="staff"/>
                 <x-admin.forms.checkbox width="3" id="golden" label="طلایی" wire:model.live="golden"/>
+                <x-admin.forms.checkbox width="3" id="normal" label="عادی" wire:model.live="normal"/>
                 <x-admin.forms.checkbox width="3" id="designated_by_council" label="تعیین هزینه توسط شورا" wire:model.live="designated_by_council"/>
             </div>
             @include('livewire.includes.advance-table')
