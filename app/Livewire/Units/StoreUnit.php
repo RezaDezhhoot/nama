@@ -199,7 +199,7 @@ class StoreUnit extends BaseComponent
             'code' => ['nullable','string','max:150'],
             'numbers' => ['nullable','array'],
 
-            'state' => ['nullable',Rule::exists('stats','id')],
+            'state' => ['nullable',Rule::exists('states','id')],
             'gender' => ['nullable',Rule::enum(Gender::class)],
             'armani' => ['nullable','boolean'],
             'postal_code' => ['nullable','string','max:10'],
