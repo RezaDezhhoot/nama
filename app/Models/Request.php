@@ -27,7 +27,7 @@ class Request extends Model
     public array $searchAbleColumns = ['requests.id','requests.amount','requests.total_amount','requests.final_amount','requests.offer_amount'];
     protected $guarded = ['id'];
 
-    protected $with = ['item','user','unit','members','members.image'];
+//    protected $with = ['item','user','unit','members','members.image'];
 
     const FILE_IMAM_LETTER_SUBJECT = 'request_imam_letter';
     const FILE_IMAGES_SUBJECT = 'request_images';
