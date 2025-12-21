@@ -60,7 +60,7 @@ class ReportController extends Controller
                     });
                 })
                 ->role(\request()->get('role'))->item(\request()->get('item_id'))
-                ->with(['request','request.plan'])
+                ->with(['request','request.plan','request.item','request.user','request.unit'])
                 ->whereHas('request' , function (Builder $builder) use ($request) {
                     $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
                         $builder->where(function (Builder $builder) use ($request) {
@@ -123,7 +123,10 @@ class ReportController extends Controller
     public function show($report): ReportResource
     {
         $report = Report::query()->role(\request()->get('role'))->item(\request()->get('item_id'))
-            ->with(['request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter','request.images','images2'])
+            ->with([
+                'request','images','otherVideos','video','request.areaInterfaceLetter','request.imamLetter','request.plan','request.otherImamLetter','request.otherAreaInterfaceLetter','request.images','images2',
+                'request.item','request.user','request.unit','request.members','request.members.image','request.plan','request.unit','request.report','request.unit.region'
+                ])
             ->findOrFail($report);
         return ReportResource::make(
             $report
