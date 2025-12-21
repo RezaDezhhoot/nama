@@ -28,12 +28,19 @@ class InfoTest extends TestCase
         $this->actingAs($this->user);
         $time1 = [];
         $time2 = [];
+        $data1 = [];
+        $data2 = [];
 
         foreach (OperatorRole::values() as $v) {
             $time1[$v] = benchmark(fn() => $this->getJson("/api/v1/info?item_id=$itemID&role=$v"));
             $time2[$v] = benchmark(fn() => $this->getJson("/api/v2/info?item_id=$itemID&role=$v"));
-        }
 
+            $data1[$v] = $this->actingAs($this->user)->getJson("/api/v1/info?item_id=$itemID&role=$v")->json();
+            $data2[$v] = $this->actingAs($this->user)->getJson("/api/v2/info?item_id=$itemID&role=$v")->json();
+        }
+        foreach ($data1 as $k => $v) {
+            $this->assertEquals($data2[$k] , $v);
+        }
         dump(compact('time1','time2'));
     }
 }
