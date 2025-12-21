@@ -15,12 +15,6 @@ class RequestPlanController extends Controller
     {
         $q = RequestPlan::query()->when($request->filled('q') , function ($q) use($request) {
             $q->search($request->get('q'));
-        })->where(function (Builder $builder) {
-            $builder->where('golden' , false)->orWhere(function (Builder $builder) {
-                $builder->where('golden' , true)->whereHas('limits' , function (Builder $builder) {
-                    $builder->where('value' , auth()->user()->national_id);
-                });
-            });
         })->where('item_id',\request()->get('item_id'))->orderByDesc('bold')->where(function (Builder $builder) {
             $builder->where('starts_at' ,'<=' ,now())->orWhereNull('starts_at');
         })->where(function (Builder $builder) {
@@ -31,9 +25,15 @@ class RequestPlanController extends Controller
             $builder->published();
         });
         if (! $request->query('ignore_requirements')) {
-            $q->with('requirementsv');
+            $q->with('requirementsv')->where(function (Builder $builder) {
+                $builder->where('golden' , false)->orWhere(function (Builder $builder) {
+                    $builder->where('golden' , true)->whereHas('limits' , function (Builder $builder) {
+                        $builder->where('value' , auth()->user()->national_id);
+                    });
+                });
+            });
         } else {
-            $q->withoutGlobalScopes();
+            $q->withoutGlobalScopes()->select(['id','title','expires_at','item_id','starts_at','expires_at','status']);
         }
         $q = $q->paginate((int)$request->get('per_page' , 10));
 
@@ -50,7 +50,7 @@ class RequestPlanController extends Controller
         if (! $request->query('ignore_requirements')) {
             $q->with('requirementsv');
         } else {
-            $q->withoutGlobalScopes();
+            $q->withoutGlobalScopes()->select(['id','title','expires_at','item_id','starts_at','expires_at']);
         }
         $q = $q->paginate((int)$request->get('per_page' , 10));
         return RequestPlanResource::collection($q);

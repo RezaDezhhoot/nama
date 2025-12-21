@@ -18,22 +18,22 @@ class RequestPlanResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'status' => $this->status,
-            'sub_title' => $this->sub_title,
-            'max_number_people_supported' => $this->max_number_people_supported,
-            'support_for_each_person_amount' => $this->support_for_each_person_amount,
+            'sub_title' => $this->whenHas('sub_title'),
+            'max_number_people_supported' => $this->whenHas('max_number_people_supported'),
+            'support_for_each_person_amount' => $this->whenHas('support_for_each_person_amount'),
             'starts_at' => $this->starts_at,
             'expires_at' => $this->expires_at,
-            'max_allocated_request' => $this->max_allocated_request,
-            'bold' => $this->bold,
-            'body' => $this->body,
-            'image' => asset($this->image),
+            'max_allocated_request' => $this->whenHas('max_allocated_request'),
+            'bold' => $this->whenHas('bold'),
+            'body' => $this->whenHas('body'),
+            'image' => $this->whenHas('image',asset($this->image)),
             'previous_requests' => $this->whenCounted('requests'),
             'completed_cycle' => $this->completed_cycle,
-            'single_step' => $this->single_step ?? false,
-            'golden' => $this->golden ?? false,
-            'staff' => $this->staff ?? false,
-            'version' => $this->version,
-            'staff_amount' => $this->staff_amount,
+            'single_step' => $this->whenHas('single_step'),
+            'golden' => $this->whenHas('golden'),
+            'staff' => $this->whenHas('staff'),
+            'version' => $this->whenHas('version'),
+            'staff_amount' => $this->whenHas('staff_amount'),
             'requirements' => RequestPlanResource::collection($this->whenLoaded('requirementsv')),
             'active' => sizeof(collect($this->requirementsv)?->filter(function ($v) {
                 if (is_array($v)) {
@@ -61,8 +61,8 @@ class RequestPlanResource extends JsonResource
 
             'ring_member_required' =>  $this->golden ? ($this->ring_member_required) : false,
             'show_ring_member' => $this->golden ? ($this->show_ring_member) : false,
-            'type' => $this->type,
-            'designated_by_council' => $this->designated_by_council
+            'type' => $this->whenHas('type'),
+            'designated_by_council' => $this->whenHas('designated_by_council'),
         ];
     }
 }

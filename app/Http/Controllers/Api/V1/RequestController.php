@@ -43,7 +43,7 @@ class RequestController extends Controller
         ]);
         $role = OperatorRole::from(request()->get('role'));
         $requests = RequestModel::query()
-            ->with(['report'])
+            ->with(['report','item','user','unit','members','members.image'])
             ->select("requests.*","r.final_amount as report_final_amount")
             ->leftJoin('reports AS r',"r.request_id",'=','requests.id')
             ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
@@ -147,6 +147,7 @@ class RequestController extends Controller
     public function show($request): RequestResource
     {
         $request = RequestModel::query()
+            ->with(['report','item','user','unit','members','members.image'])
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
             ->relations()
@@ -341,6 +342,7 @@ class RequestController extends Controller
     public function update(UpdateRequest $updateRequest , $request): JsonResponse|RequestResource
     {
         $request = RequestModel::query()
+            ->with(['report','item','user','unit','members','members.image'])
             ->item(\request()->get('item_id'))
             ->relations()
             ->whereHas('plan')
@@ -459,6 +461,7 @@ class RequestController extends Controller
         $itemID = \request()->get('item_id');
         $request = RequestModel::query()
             ->item($itemID)
+            ->with(['report','item','user','unit','members','members.image'])
             ->role(\request()->get('role'))
             ->relations()
             ->whereIn('step',OperatorRole::from(\request()->get('role'))->step())
