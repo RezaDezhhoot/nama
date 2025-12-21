@@ -31,7 +31,9 @@ class RequestPlanController extends Controller
             $builder->published();
         });
         if (! $request->query('ignore_requirements')) {
-            $q->withoutGlobalScopes()->with('requirementsv');
+            $q->with('requirementsv');
+        } else {
+            $q->withoutGlobalScopes();
         }
         $q = $q->paginate((int)$request->get('per_page' , 10));
 
@@ -46,7 +48,9 @@ class RequestPlanController extends Controller
             ->whereHas('requests');
 
         if (! $request->query('ignore_requirements')) {
-            $q->withoutGlobalScopes()->with('requirementsv');
+            $q->with('requirementsv');
+        } else {
+            $q->withoutGlobalScopes();
         }
         $q = $q->paginate((int)$request->get('per_page' , 10));
         return RequestPlanResource::collection($q);
