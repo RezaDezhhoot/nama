@@ -117,7 +117,36 @@ class InfoController extends Controller
 
     private function newWReqQ()
     {
-        return WrittenRequest::query()->where('user_id' , auth()->id());
+        return WrittenRequest::query()
+            ->where('user_id' , auth()->id())
+            ->selectRaw(
+                sprintf("
+                SUM(CASE
+                    WHEN status = ?
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    THEN 1 ELSE 0
+                END) AS %s
+            " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value
+                ) , [
+                RequestStatus::IN_PROGRESS->value,
+                RequestStatus::REJECTED->value,
+                RequestStatus::ACTION_NEEDED->value,
+                RequestStatus::DONE->value,
+            ])
+                ->limit(1)
+                ->first()
+            ;
     }
 
     public function __invoke(): JsonResponse
@@ -159,15 +188,16 @@ class InfoController extends Controller
                 RequestStatus::PENDING->value => (int)$reportData->{RequestStatus::PENDING->value},
             ];
         }
+        $wrequestData = $this->newWReqQ();
 
         return response()->json([
             'requests' => $requestsRes,
             'reports' => $reportsRes,
             'written-requests' => [
-                RequestStatus::IN_PROGRESS->value => $this->newWReqQ()->where('status' , RequestStatus::IN_PROGRESS)->count(),
-                RequestStatus::REJECTED->value => $this->newWReqQ()->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::ACTION_NEEDED->value => $this->newWReqQ()->where('status' , RequestStatus::REJECTED)->count(),
-                RequestStatus::DONE->value => $this->newWReqQ()->where('status' , RequestStatus::DONE)->count(),
+                RequestStatus::IN_PROGRESS->value => $wrequestData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => $wrequestData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => $wrequestData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => $wrequestData->{RequestStatus::DONE->value},
             ],
             'plans' => RequestPlan::query()->where('item_id',\request()->get('item_id'))->published()->count()
         ]);
