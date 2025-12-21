@@ -43,7 +43,7 @@ class RequestController extends Controller
         ]);
         $role = OperatorRole::from(request()->get('role'));
         $requests = RequestModel::query()
-            ->with(['report','item','user','unit','members','members.image','plan','unit','report'])
+            ->with(['report','item','user','unit','members','members.image','plan','unit','report','unit.region'])
             ->select("requests.*","r.final_amount as report_final_amount")
             ->leftJoin('reports AS r',"r.request_id",'=','requests.id')
             ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
