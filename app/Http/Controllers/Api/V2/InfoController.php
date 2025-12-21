@@ -28,26 +28,26 @@ class InfoController extends Controller
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN step IN ($next)
                     THEN 1 ELSE 0
-                END) AS %s
+                END) + 0 AS %s
             " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value , RequestStatus::DONE->value."_temp"
             ) , [
                 RequestStatus::IN_PROGRESS->value,
@@ -75,31 +75,31 @@ class InfoController extends Controller
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN step IN ($next)
                     THEN 1 ELSE 0
-                END) AS %s
+                END) + 0 AS %s
             " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value,RequestStatus::PENDING->value , RequestStatus::DONE->value."_temp"
                 ) , [
                 RequestStatus::IN_PROGRESS->value,
@@ -124,19 +124,19 @@ class InfoController extends Controller
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) AS %s,
+                END) + 0 AS %s,
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) AS %s
+                END) + 0 AS %s
             " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value
                 ) , [
                 RequestStatus::IN_PROGRESS->value,
@@ -157,35 +157,35 @@ class InfoController extends Controller
             $requestData = $this->newReqQ(true);
             $reportData = $this->newRepQ(true);
             $requestsRes = [
-                RequestStatus::IN_PROGRESS->value => (int)$requestData->{RequestStatus::IN_PROGRESS->value},
-                RequestStatus::REJECTED->value => (int)$requestData->{RequestStatus::REJECTED->value},
-                RequestStatus::ACTION_NEEDED->value => (int)$requestData->{RequestStatus::ACTION_NEEDED->value},
-                RequestStatus::DONE->value => (int)$requestData->{RequestStatus::DONE->value},
-                RequestStatus::DONE->value.'_temp' => (int)$requestData->{RequestStatus::DONE->value.'_temp'},
+                RequestStatus::IN_PROGRESS->value => $requestData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => $requestData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => $requestData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => $requestData->{RequestStatus::DONE->value},
+                RequestStatus::DONE->value.'_temp' => $requestData->{RequestStatus::DONE->value.'_temp'},
             ];
             $reportsRes = [
-                RequestStatus::IN_PROGRESS->value => (int)$reportData->{RequestStatus::IN_PROGRESS->value},
-                RequestStatus::REJECTED->value => (int)$reportData->{RequestStatus::REJECTED->value},
-                RequestStatus::ACTION_NEEDED->value => (int)$reportData->{RequestStatus::ACTION_NEEDED->value},
-                RequestStatus::DONE->value => (int)$reportData->{RequestStatus::DONE->value},
-                RequestStatus::PENDING->value => (int)$reportData->{RequestStatus::PENDING->value},
-                RequestStatus::DONE->value.'_temp' => (int)$reportData->{RequestStatus::DONE->value.'_temp'},
+                RequestStatus::IN_PROGRESS->value => $reportData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => $reportData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => $reportData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => $reportData->{RequestStatus::DONE->value},
+                RequestStatus::PENDING->value => $reportData->{RequestStatus::PENDING->value},
+                RequestStatus::DONE->value.'_temp' => $reportData->{RequestStatus::DONE->value.'_temp'},
             ];
         } else {
             $requestData = $this->newReqQ();
             $reportData = $this->newRepQ();
             $requestsRes = [
-                RequestStatus::IN_PROGRESS->value => (int)$requestData->{RequestStatus::IN_PROGRESS->value},
-                RequestStatus::REJECTED->value => (int)$requestData->{RequestStatus::REJECTED->value},
-                RequestStatus::ACTION_NEEDED->value => (int)$requestData->{RequestStatus::ACTION_NEEDED->value},
-                RequestStatus::DONE->value => (int)$requestData->{RequestStatus::DONE->value},
+                RequestStatus::IN_PROGRESS->value => $requestData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => $requestData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => $requestData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => $requestData->{RequestStatus::DONE->value},
             ];
             $reportsRes = [
-                RequestStatus::IN_PROGRESS->value => (int)$reportData->{RequestStatus::IN_PROGRESS->value},
-                RequestStatus::REJECTED->value => (int)$reportData->{RequestStatus::REJECTED->value},
-                RequestStatus::ACTION_NEEDED->value => (int)$reportData->{RequestStatus::ACTION_NEEDED->value},
-                RequestStatus::DONE->value => (int)$reportData->{RequestStatus::DONE->value},
-                RequestStatus::PENDING->value => (int)$reportData->{RequestStatus::PENDING->value},
+                RequestStatus::IN_PROGRESS->value => $reportData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => $reportData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => $reportData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => $reportData->{RequestStatus::DONE->value},
+                RequestStatus::PENDING->value => $reportData->{RequestStatus::PENDING->value},
             ];
         }
         $wrequestData = $this->newWReqQ();
