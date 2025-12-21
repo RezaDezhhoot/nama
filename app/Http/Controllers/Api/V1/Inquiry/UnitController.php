@@ -18,7 +18,7 @@ class UnitController extends Controller
 
         $units = [];
         $items = Unit::query()
-            ->with(['roles']);
+            ->with(['roles','city','area','parent','region','neighborhood','area']);
 
         if ($request->query('per_page')) {
             $units = $items->paginate($request->query('per_page'));

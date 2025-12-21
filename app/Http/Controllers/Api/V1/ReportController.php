@@ -59,50 +59,58 @@ class ReportController extends Controller
                         });
                     });
                 })
-                ->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])->whereHas('request' , function (Builder $builder) use ($request) {
-                $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
-                   $builder->where(function (Builder $builder) use ($request) {
-                       $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
-                           $builder->search($request->get('q'));
-                       })->orWhere(function (Builder $builder) use ($request){
-                           $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
-                       })->orWhereHas('unit' , function (Builder $builder) use ($request) {
-                           $builder->search($request->get('q'));
-                       });
-                   });
-                });
-            })->when($request->filled('status') , function (Builder $builder) use ($request , $role) {
-                $builder->where(function (Builder $builder) use ($request , $role) {
-                    if ( $request->get('status') == "done_temp") {
-                        $builder->whereIn('step' , $role->next());
-                    } else {
-                        if ($request->query('role') == OperatorRole::MOSQUE_HEAD_COACH->value) {
-                            $builder->where('status' , $request->get('status'));
+                ->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])
+                ->whereHas('request' , function (Builder $builder) use ($request) {
+                    $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
+                        $builder->where(function (Builder $builder) use ($request) {
+                            $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
+                                $builder->search($request->get('q'));
+                            })->orWhere(function (Builder $builder) use ($request){
+                                $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
+                            })->orWhereHas('unit' , function (Builder $builder) use ($request) {
+                                $builder->search($request->get('q'));
+                            });
+                        });
+                    });
+                })
+                ->when($request->filled('status') , function (Builder $builder) use ($request , $role) {
+                    $builder->where(function (Builder $builder) use ($request , $role) {
+                        if ( $request->get('status') == "done_temp") {
+                            $builder->whereIn('step' , $role->next());
                         } else {
-                            if ($request->get('status') == RequestStatus::DONE->value) {
+                            if ($request->query('role') == OperatorRole::MOSQUE_HEAD_COACH->value) {
                                 $builder->where('status' , $request->get('status'));
                             } else {
-                                $builder->where('status' , $request->get('status'))->whereNotIn('step' , $role->next());
+                                if ($request->get('status') == RequestStatus::DONE->value) {
+                                    $builder->where('status' , $request->get('status'));
+                                } else {
+                                    $builder->where('status' , $request->get('status'))->whereNotIn('step' , $role->next());
+                                }
                             }
                         }
-                    }
-                });
-            })->when($request->filled('step') , function (Builder $builder) use ($request) {
-                $builder->where('step' , $request->get('step'));
-            })->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
-               $builder->whereHas('request' , function (Builder $builder) use ($request) {
-                   $builder->where('request_plan_id' , $request->get('plan_id'));
-               });
-            })->when($request->filled('unit_id') , function (Builder $builder) use ($request) {
-                $builder->whereHas('request' , function (Builder $builder) use ($request) {
-                    $builder->where('unit_id' , $request->get('unit_id'));
-                });
-            })->when($request->filled('sort') , function (Builder $builder) use ($request) {
+                    });
+                })
+                ->when($request->filled('step') , function (Builder $builder) use ($request) {
+                    $builder->where('step' , $request->get('step'));
+                })
+                ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
+                    $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                        $builder->where('request_plan_id' , $request->get('plan_id'));
+                    });
+                })
+                ->when($request->filled('unit_id') , function (Builder $builder) use ($request) {
+                    $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                        $builder->where('unit_id' , $request->get('unit_id'));
+                    });
+                })
+                ->when($request->filled('sort') , function (Builder $builder) use ($request) {
                     $dir = emptyToNull( $request->get('direction')) ?? "desc";
-                $builder->orderBy(emptyToNull($request->get('sort' , 'updated_at')) ?? 'updated_at', $dir);
-            })->when(! $request->filled('sort') , function (Builder $builder) {
-                $builder->orderBy('updated_at','desc');
-            })->paginate((int)$request->get('per_page' , 10))
+                    $builder->orderBy(emptyToNull($request->get('sort' , 'updated_at')) ?? 'updated_at', $dir);
+                })
+                ->when(! $request->filled('sort') , function (Builder $builder) {
+                    $builder->orderBy('updated_at','desc');
+                })
+                ->paginate((int)$request->get('per_page' , 10))
         )->additional([
             'statuses' => RequestStatus::values(),
             'steps' => RequestStep::values(),

@@ -7,12 +7,14 @@ use App\Http\Resources\UnitResource;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UnitController extends Controller
 {
-    public function __invoke(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function __invoke(Request $request): AnonymousResourceCollection
     {
         $units = Unit::query()
+            ->with(['city','area','parent','region','neighborhood','area'])
             ->when($request->filled('q') , function (Builder $builder) use ($request) {
                 $builder->where(function (Builder $builder) use ($request) {
                     $builder->search($request->get('q'))

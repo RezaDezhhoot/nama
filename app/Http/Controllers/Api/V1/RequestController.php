@@ -43,7 +43,7 @@ class RequestController extends Controller
         ]);
         $role = OperatorRole::from(request()->get('role'));
         $requests = RequestModel::query()
-            ->with(['report','item','user','unit','members','members.image'])
+            ->with(['report','item','user','unit','members','members.image','plan','unit','report'])
             ->select("requests.*","r.final_amount as report_final_amount")
             ->leftJoin('reports AS r',"r.request_id",'=','requests.id')
             ->when($request->filled('sub_type') , function (Builder $builder) use ($request) {
@@ -93,7 +93,8 @@ class RequestController extends Controller
             ->when($request->filled('sort') , function (Builder $builder) use ($request) {
                 $dir = emptyToNull( $request->get('direction')) ?? "desc";
                 $builder->orderBy('requests.'.emptyToNull($request->get('sort' , 'updated_at')) ?? 'updated_at', $dir);
-            })->when(! $request->filled('sort') , function (Builder $builder) {
+            })
+            ->when(! $request->filled('sort') , function (Builder $builder) {
                 $builder->orderBy('requests.updated_at','desc');
             })
             ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
@@ -122,7 +123,6 @@ class RequestController extends Controller
             ->when($request->filled('step') , function (Builder $builder) use ($request) {
                 $builder->where('requests.step' , $request->get('step'));
             })
-            ->with(['plan','unit','report'])
             ->role(\request()->get('role'));
 
         $total_request_amount = 0;
@@ -147,7 +147,7 @@ class RequestController extends Controller
     public function show($request): RequestResource
     {
         $request = RequestModel::query()
-            ->with(['report','item','user','unit','members','members.image'])
+            ->with(['report','item','user','unit','members','members.image' ,'unit.city','unit.area','unit.parent','unit.region','unit.neighborhood','unit.area'])
             ->item(\request()->get('item_id'))
             ->role(\request()->get('role'))
             ->relations()

@@ -21,7 +21,7 @@ class Unit extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['city','area','parent','region','neighborhood','area'];
+//    protected $with = ['city','area','parent','region','neighborhood','area'];
 
     protected $appends = ['full'];
 
