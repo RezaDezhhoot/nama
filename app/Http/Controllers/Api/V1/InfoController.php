@@ -16,17 +16,17 @@ class InfoController extends Controller
 {
     private function newReqQ()
     {
-        return  RequestModel::query()->limit(100)->item(\request()->get('item_id'))->role(\request()->get('role'));
+        return  RequestModel::query()->item(\request()->get('item_id'))->role(\request()->get('role'));
     }
 
     private function newRepQ()
     {
-        return Report::query()->limit(100)->item(\request()->get('item_id'))->role(\request()->get('role'));
+        return Report::query()->item(\request()->get('item_id'))->role(\request()->get('role'));
     }
 
     private function newWReqQ()
     {
-        return WrittenRequest::query()->limit(100)->where('user_id' , auth()->id());
+        return WrittenRequest::query()->where('user_id' , auth()->id());
     }
 
     public function __invoke(): \Illuminate\Http\JsonResponse

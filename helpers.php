@@ -191,4 +191,17 @@ function arrayDiff(array $a, array $b): array {
     return $diffs;
 }
 
+function benchmark(callable $fn, int $times = 10): float
+{
+    $total = 0;
+
+    for ($i = 0; $i < $times; $i++) {
+        $start = microtime(true);
+        $fn();
+        $total += microtime(true) - $start;
+    }
+
+    return $total / $times;
+}
+
 

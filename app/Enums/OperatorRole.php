@@ -51,6 +51,18 @@ enum OperatorRole: string
         };
     }
 
+    public function stepArr(): array
+    {
+        return match ($this) {
+            self::MOSQUE_HEAD_COACH => [RequestStep::APPROVAL_MOSQUE_HEAD_COACH->value],
+            self::MOSQUE_CULTURAL_OFFICER => [RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER->value ],
+            self::AREA_INTERFACE => [RequestStep::APPROVAL_AREA_INTERFACE->value  ],
+            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => [RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES->value ],
+            self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => [RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value ],
+            default => []
+        };
+    }
+
     public function badge(): string
     {
         return match ($this) {
@@ -95,6 +107,17 @@ enum OperatorRole: string
             self::AREA_INTERFACE => [RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::FINISH],
             self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => [RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING,RequestStep::FINISH],
             self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => [RequestStep::FINISH],
+        };
+    }
+
+    public function nextArr(): array
+    {
+        return match ($this) {
+            self::MOSQUE_HEAD_COACH => [RequestStep::APPROVAL_MOSQUE_CULTURAL_OFFICER->value , RequestStep::APPROVAL_AREA_INTERFACE->value,RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES->value,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value,RequestStep::FINISH->value],
+            self::MOSQUE_CULTURAL_OFFICER => [RequestStep::APPROVAL_AREA_INTERFACE->value,RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES->value,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value,RequestStep::FINISH->value],
+            self::AREA_INTERFACE => [RequestStep::APPROVAL_EXECUTIVE_VICE_PRESIDENT_MOSQUES->value,RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value,RequestStep::FINISH->value],
+            self::EXECUTIVE_VICE_PRESIDENT_MOSQUES => [RequestStep::APPROVAL_DEPUTY_FOR_PLANNING_AND_PROGRAMMING->value,RequestStep::FINISH->value],
+            self::DEPUTY_FOR_PLANNING_AND_PROGRAMMING => [RequestStep::FINISH->value],
         };
     }
 

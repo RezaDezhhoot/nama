@@ -129,7 +129,7 @@ class Request extends Model
                     }
                 });
                 if (! in_array($role,[ OperatorRole::EXECUTIVE_VICE_PRESIDENT_MOSQUES, OperatorRole::DEPUTY_FOR_PLANNING_AND_PROGRAMMING])) {
-                    $builder ->whereHas('unit' , function (Builder $builder) use ($role) {
+                    $builder->whereHas('unit' , function (Builder $builder) use ($role) {
                         if ($role === OperatorRole::MOSQUE_CULTURAL_OFFICER) {
                             return $builder->whereHas('roles' , function (Builder $builder) use ($role) {
                                 $builder->where('role' , $role)->where('user_id' , auth()->id());

@@ -1,0 +1,175 @@
+<?php
+
+namespace App\Http\Controllers\Api\V2;
+
+use App\Enums\OperatorRole;
+use App\Enums\RequestStatus;
+use App\Http\Controllers\Controller;
+use App\Models\Report;
+use App\Models\Request as RequestModel;
+use App\Models\RequestPlan;
+use App\Models\WrittenRequest;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+class InfoController extends Controller
+{
+    private function newReqQ($withStep = false)
+    {
+        $role = OperatorRole::from(request()->get('role'));
+        $steps = "'" . implode("','", $role->stepArr()) . "'";
+        $next =  "'" . implode("','", $role->nextArr()) . "'";
+
+        return RequestModel::query()
+            ->selectRaw(
+                sprintf("
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN step IN ($next)
+                    THEN 1 ELSE 0
+                END) AS %s
+            " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value , RequestStatus::DONE->value."_temp"
+            ) , [
+                RequestStatus::IN_PROGRESS->value,
+                RequestStatus::REJECTED->value,
+                RequestStatus::ACTION_NEEDED->value,
+                RequestStatus::DONE->value,
+            ])
+            ->item(\request()->get('item_id'))
+            ->role(\request()->get('role'))
+            ->limit(1)
+            ->first()
+            ;
+    }
+
+    private function newRepQ($withStep = false)
+    {
+        $role = OperatorRole::from(request()->get('role'));
+        $steps = "'" . implode("','", $role->stepArr()) . "'";
+        $next =  "'" . implode("','", $role->nextArr()) . "'";
+
+        return Report::query()
+            ->selectRaw(
+                sprintf("
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN status = ?
+                    ".($withStep ? "AND step IN ($steps)" : '')."
+                    THEN 1 ELSE 0
+                END) AS %s,
+                SUM(CASE
+                    WHEN step IN ($next)
+                    THEN 1 ELSE 0
+                END) AS %s
+            " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value,RequestStatus::PENDING->value , RequestStatus::DONE->value."_temp"
+                ) , [
+                RequestStatus::IN_PROGRESS->value,
+                RequestStatus::REJECTED->value,
+                RequestStatus::ACTION_NEEDED->value,
+                RequestStatus::DONE->value,
+                RequestStatus::PENDING->value,
+            ])
+            ->item(\request()->get('item_id'))
+            ->role(\request()->get('role'))
+            ->limit(1)
+            ->first()
+            ;
+    }
+
+    private function newWReqQ()
+    {
+        return WrittenRequest::query()->where('user_id' , auth()->id());
+    }
+
+    public function __invoke(): JsonResponse
+    {
+        $role = OperatorRole::from(request()->get('role'));
+        $isNotCoach = $role !== OperatorRole::MOSQUE_HEAD_COACH;
+        if ($isNotCoach) {
+            $requestData = $this->newReqQ(true);
+            $reportData = $this->newRepQ(true);
+            $requestsRes = [
+                RequestStatus::IN_PROGRESS->value => (int)$requestData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => (int)$requestData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => (int)$requestData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => (int)$requestData->{RequestStatus::DONE->value},
+                RequestStatus::DONE->value.'_temp' => (int)$requestData->{RequestStatus::DONE->value.'_temp'},
+            ];
+            $reportsRes = [
+                RequestStatus::IN_PROGRESS->value => (int)$reportData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => (int)$reportData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => (int)$reportData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => (int)$reportData->{RequestStatus::DONE->value},
+                RequestStatus::PENDING->value => (int)$reportData->{RequestStatus::PENDING->value},
+                RequestStatus::DONE->value.'_temp' => (int)$reportData->{RequestStatus::DONE->value.'_temp'},
+            ];
+        } else {
+            $requestData = $this->newReqQ();
+            $reportData = $this->newRepQ();
+            $requestsRes = [
+                RequestStatus::IN_PROGRESS->value => (int)$requestData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => (int)$requestData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => (int)$requestData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => (int)$requestData->{RequestStatus::DONE->value},
+            ];
+            $reportsRes = [
+                RequestStatus::IN_PROGRESS->value => (int)$reportData->{RequestStatus::IN_PROGRESS->value},
+                RequestStatus::REJECTED->value => (int)$reportData->{RequestStatus::REJECTED->value},
+                RequestStatus::ACTION_NEEDED->value => (int)$reportData->{RequestStatus::ACTION_NEEDED->value},
+                RequestStatus::DONE->value => (int)$reportData->{RequestStatus::DONE->value},
+                RequestStatus::PENDING->value => (int)$reportData->{RequestStatus::PENDING->value},
+            ];
+        }
+
+        return response()->json([
+            'requests' => $requestsRes,
+            'reports' => $reportsRes,
+            'written-requests' => [
+                RequestStatus::IN_PROGRESS->value => $this->newWReqQ()->where('status' , RequestStatus::IN_PROGRESS)->count(),
+                RequestStatus::REJECTED->value => $this->newWReqQ()->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::ACTION_NEEDED->value => $this->newWReqQ()->where('status' , RequestStatus::REJECTED)->count(),
+                RequestStatus::DONE->value => $this->newWReqQ()->where('status' , RequestStatus::DONE)->count(),
+            ],
+            'plans' => RequestPlan::query()->where('item_id',\request()->get('item_id'))->published()->count()
+        ]);
+    }
+}
