@@ -13,7 +13,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::get("reports" , \App\Http\Controllers\Api\V1\Inquiry\ReportController::class);
     });
     Route::get('users/profile' , \App\Http\Controllers\Api\V1\UserController::class)->middleware(['auth:sanctum']);
-    Route::get('info' , \App\Http\Controllers\Api\V2\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
+    Route::get('info' , \App\Http\Controllers\Api\V1\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::get('units' , \App\Http\Controllers\Api\V1\UnitController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::apiResource('dashboard-items' , \App\Http\Controllers\Api\V1\DashboardItemController::class)->only(['index','show']);
     Route::get('banners' , \App\Http\Controllers\Api\V1\BannerController::class)->middleware(['has_item']);
