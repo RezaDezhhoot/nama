@@ -28,26 +28,26 @@ class InfoController extends Controller
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN step IN ($next)
                     THEN 1 ELSE 0
-                END) + 0 AS %s
+                END) AS %s
             " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value , RequestStatus::DONE->value."_temp"
             ) , [
                 RequestStatus::IN_PROGRESS->value,
@@ -75,31 +75,31 @@ class InfoController extends Controller
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     ".($withStep ? "AND step IN ($steps)" : '')."
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN step IN ($next)
                     THEN 1 ELSE 0
-                END) + 0 AS %s
+                END) AS %s
             " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value,RequestStatus::PENDING->value , RequestStatus::DONE->value."_temp"
                 ) , [
                 RequestStatus::IN_PROGRESS->value,
@@ -124,19 +124,19 @@ class InfoController extends Controller
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) + 0 AS %s,
+                END) AS %s,
                 SUM(CASE
                     WHEN status = ?
                     THEN 1 ELSE 0
-                END) + 0 AS %s
+                END) AS %s
             " , RequestStatus::IN_PROGRESS->value ,  RequestStatus::REJECTED->value , RequestStatus::ACTION_NEEDED->value , RequestStatus::DONE->value
                 ) , [
                 RequestStatus::IN_PROGRESS->value,
