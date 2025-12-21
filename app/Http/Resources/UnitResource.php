@@ -19,14 +19,14 @@ class UnitResource extends JsonResource
             'title' => $this->full,
             'type' => $this->type,
             'sub_type' => $this->sub_type,
-            'city' => $this->city,
-            'region' => $this->region,
-            'neighborhood' => $this->neighborhood,
-            'area' => $this->area,
+            'city' => $this->whenLoaded('city'),
+            'region' => $this->whenLoaded('region'),
+            'neighborhood' => $this->whenLoaded('neighborhood'),
+            'area' => $this->whenLoaded('area'),
             'lat' => $this->lat,
             'lng' => $this->lng,
             'code' => $this->code,
-            'parent' => self::make($this->parent)
+            'parent' => self::make($this->whenLoaded('parent'))
         ];
     }
 }

@@ -59,7 +59,8 @@ class ReportController extends Controller
                         });
                     });
                 })
-                ->role(\request()->get('role'))->item(\request()->get('item_id'))->with(['request','request.plan'])
+                ->role(\request()->get('role'))->item(\request()->get('item_id'))
+                ->with(['request','request.plan'])
                 ->whereHas('request' , function (Builder $builder) use ($request) {
                     $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
                         $builder->where(function (Builder $builder) use ($request) {
