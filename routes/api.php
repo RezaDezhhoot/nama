@@ -58,4 +58,5 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::apiResource("rings" , \App\Http\Controllers\Api\V1\RingController::class);
         Route::delete('rings/{ring}/{member}' , [\App\Http\Controllers\Api\V1\RingController::class,'destroyMember']);
     });
+    Route::post('client-log',\App\Http\Controllers\Api\V1\ClientLogController::class)->middleware('throttle:100,1');
 });

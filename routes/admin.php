@@ -71,6 +71,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function () {
             Route::get('' , \App\Livewire\Logs\Activities\IndexLogs::class)->name('index');
             Route::get('roles' , \App\Livewire\Logs\Activities\IndexOtherRolesLogs::class)->name('roles');
         });
+        Route::get('client-logs',\App\Livewire\ClientLogs\Log::class)->middleware(['is_admin','role:super_admin'])->name('client-logs');
         Route::group(['prefix' => 'accounting' , 'as' => 'accounting.' , 'middleware' => 'is_admin'] , function () {
             Route::get('records' , \App\Livewire\Accounting\IndexRecord::class)->name('records');
         });
