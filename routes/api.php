@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1'] , function () {
     Route::get('info' , \App\Http\Controllers\Api\V1\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::get('units' , \App\Http\Controllers\Api\V1\UnitController::class)->middleware(['auth:sanctum','has_item','has_role']);
     Route::apiResource('dashboard-items' , \App\Http\Controllers\Api\V1\DashboardItemController::class)->only(['index','show']);
-    Route::get('banners' , \App\Http\Controllers\Api\V1\BannerController::class)->middleware(['has_item']);
+    Route::get('banners' , \App\Http\Controllers\Api\V1\BannerController::class);
     Route::group(['prefix' => 'request-plans','middleware' => ['auth:sanctum','has_item']] , function () {
         Route::get('',[\App\Http\Controllers\Api\V1\RequestPlanController::class,'index']);
         Route::get('list',[\App\Http\Controllers\Api\V1\RequestPlanController::class,'list']);
