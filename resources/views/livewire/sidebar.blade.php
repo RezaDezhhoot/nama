@@ -106,10 +106,10 @@
                             <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />
                             <x-admin.menu-item href="{{ route('admin.log-activities.roles') }}" :active="request()->routeIs(['admin.log-activities.roles'])" icon="fas fa-history" label="فعالیت سایر نقش ها" />
 {{--                        @endcan--}}
-{{--                        @canany(['show_accounting','export_accounting'])--}}
-                            <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
-{{--                        @endcanany--}}
                     @endif
+                    @canany(['show_accounting','export_accounting'])
+                        <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
+                    @endcanany
 
                     <li class="menu-section">
                         <h4 class="menu-text">تنظیمات</h4>
