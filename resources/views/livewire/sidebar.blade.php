@@ -101,14 +101,16 @@
                         <x-admin.menu-item href="{{route('pulse')}}" icon="flaticon-book" :active="false" label="Pulse" />
                         <x-admin.menu-item href="{{route('log-viewer.index')}}" icon="flaticon-book" :active="false" label="Logs" />
                         <x-admin.menu-item href="{{route('admin.client-logs')}}" icon="flaticon-book" :active="request()->routeIs(['admin.client-logs'])" label="Client logs" />
+
+{{--                        @can('show_log_activities')--}}
+                            <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />
+                            <x-admin.menu-item href="{{ route('admin.log-activities.roles') }}" :active="request()->routeIs(['admin.log-activities.roles'])" icon="fas fa-history" label="فعالیت سایر نقش ها" />
+{{--                        @endcan--}}
+{{--                        @canany(['show_accounting','export_accounting'])--}}
+                            <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
+{{--                        @endcanany--}}
                     @endif
-                    @can('show_log_activities')
-                        <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />
-                        <x-admin.menu-item href="{{ route('admin.log-activities.roles') }}" :active="request()->routeIs(['admin.log-activities.roles'])" icon="fas fa-history" label="فعالیت سایر نقش ها" />
-                    @endcan
-                    @canany(['show_accounting','export_accounting'])
-                        <x-admin.menu-item href="{{ route('admin.accounting.records') }}" :active="request()->routeIs(['admin.accounting.records'])" icon="flaticon2-medical-records" label="حسابداری" />
-                    @endcanany
+
                     <li class="menu-section">
                         <h4 class="menu-text">تنظیمات</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
