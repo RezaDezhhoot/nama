@@ -36,7 +36,7 @@
                                 <td>{{ $item->client_version }}</td>
                                 <td>{{ $item->platform }}</td>
                                 <td><span>{{ ($item->user?->name ?? '').' | '.($item->user?->phone ?? '').' #'.($item->user?->id ?? '') }}</span></td>
-                                <td class="jdate">{{ persian_date($item->created_at) }}</td>
+                                <td class="jdate">{{ persian_date($item->created_at,'%A, %d %B %Y H:i:s') }}</td>
                                 <td>{{ $item->context }}</td>
                                 <td>
                                     <pre>
