@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
         $middleware->api(\App\Http\Middleware\TrackErrorsMiddleware::class);
+        $middleware->throttleApi(null);
     })
     ->withBindings([
 //        'path.public' => fn() => realpath(base_path().'/../public_html')
