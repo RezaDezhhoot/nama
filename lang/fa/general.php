@@ -519,6 +519,7 @@ return [
         'terminals' => 'ترمینال ها',
         'tours' => 'تور ها',
         'weathers' => 'آب و هواب',
+        'camp_ticket' => 'بلیط های اردو',
         'hotels' => 'هتل ها',
         'stories' => 'استوری ها',
         'collaborations' => 'درخواست های همکاری',

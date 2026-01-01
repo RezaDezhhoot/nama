@@ -46,6 +46,7 @@ class RequestListener
                     CampTicket::query()
                         ->create([
                             'request_id' => $event->request->id,
+                            'camp_code' => $event->request->plan_data['camp_code']
                         ]);
                 }
                 break;

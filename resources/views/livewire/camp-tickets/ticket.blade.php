@@ -11,6 +11,7 @@
         <div class="card-body ">
             <x-admin.form-section label="تنطیمات پایه">
                 <x-admin.forms.input  type="number" :required="true" id="request" label="شماره درخواست" wire:model.defer="request"/>
+                <x-admin.forms.input  type="text" :required="true"  id="camp_code" label="کد 6 رقمی اردو" wire:model.defer="camp_code"/>
             </x-admin.form-section>
         </div>
     </div>

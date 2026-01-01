@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Loggable;
 use App\Traits\SimpleSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CampTicket extends Model
 {
-    use SimpleSearchable;
-    protected array $searchAbleColumns = ['request_id'];
+    use SimpleSearchable , Loggable;
+    protected array $searchAbleColumns = ['request_id','title','camp_code'];
     protected $guarded = ['id'];
 
     protected $casts = [

@@ -24,14 +24,19 @@ class MakeCampTicketJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->ticket->update(['status' => 1]);
         $request = $this->ticket->request;
+        $code = $this->ticket->camp_code ?? $request->plan_data['camp_code'] ?? $request->plan->camp_code;
+        if (! $code) {
+            $this->ticket->update(['status' => 0, 'result' => 'کد اردو وارد نشده است']);
+            return;
+        }
+        $this->ticket->update(['status' => 1]);
         $conf = config('services.camp');
         $req = Http::baseUrl($conf['base_url'])
             ->acceptJson()
             ->withHeader('X-API-KEY' , $conf['api_key'])
             ->post('/api/v1/camp-tickets' , [
-                'code' => $request->plan_data['camp_code'],
+                'code' => $code,
                 'max_capacity_allocated' => $request->students,
                 'national_id' => $request->user->national_id,
                 'request_id' => $request->id,
@@ -41,7 +46,7 @@ class MakeCampTicketJob implements ShouldQueue
         if ($req->successful()) {
             $data = $req->json('data');
             $request->fill(['camp_ticket_id' => $data['id']])->save();
-            $this->ticket->update(['status' => 2, 'result' => $data]);
+            $this->ticket->update(['status' => 2, 'result' => $data,'title' => $data['camp']['title']]);
             return;
         }
         $this->ticket->update(['status' => 0, 'result' => $req->json()]);

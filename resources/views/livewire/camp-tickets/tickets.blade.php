@@ -16,6 +16,8 @@
                         <tr>
                             <th>#</th>
                             <th>{{ __('general.id') }}</th>
+                            <th>{{ __('general.title') }}</th>
+                            <th>کد 6 رقمی اردو</th>
                             <th>شماره درخواست</th>
                             <th>{{ __('general.status') }}</th>
                             <th>نتیجه</th>
@@ -27,9 +29,11 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->title ?? '-' }}</td>
+                                <td>{{ $item->camp_code ?? '-' }}</td>
                                 <td>{{ $item->request_id }} - {{ $item->request?->item?->title }}</td>
                                 <td>{{ $item->status === 0 ? 'در انتظار' : ($item->status === 1 ? 'خظا' : 'صادر شده') }}</td>
-                                <td><pre>{{json_encode($item->result ?? [])}}</pre></td>
+                                <td><pre>{{json_encode($item->result ?? [],JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)}}</pre></td>
                                 <td class="jdate">{{ persian_date($item->updated_at,'%A, %d %B %Y H:i:s') }}</td>
                             </tr>
                         @endforeach

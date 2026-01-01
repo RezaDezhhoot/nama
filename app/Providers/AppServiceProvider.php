@@ -76,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
             'user' => 'App\Models\User',
             'user_role' => 'App\Models\UserRole',
             'written_request' => 'App\Models\WrittenRequest',
+            'camp_ticket' => 'App\Models\CampTicket',
         ]);
     }
 }

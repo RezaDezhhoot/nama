@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 
 class Ticket extends BaseComponent
 {
-    public $request;
+    public $request , $camp_code;
 
     public function mount($action)
     {
@@ -22,10 +22,12 @@ class Ticket extends BaseComponent
     public function store()
     {
         $this->validate([
-            'request' => ['required',Rule::exists('requests','id')->where('status',RequestStatus::DONE->value)]
+            'request' => ['required',Rule::exists('requests','id')->where('status',RequestStatus::DONE->value)],
+            'camp_code' => ['required','string']
         ]);
         $data = [
-            'request_id' => $this->request
+            'request_id' => $this->request,
+            'camp_code' => $this->camp_code,
         ];
         CampTicket::query()->create($data);
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
