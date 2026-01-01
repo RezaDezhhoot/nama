@@ -22,6 +22,7 @@
                             <th>{{ __('general.status') }}</th>
                             <th>نتیجه</th>
                             <th>{{ __('general.date') }}</th>
+                            <th>اقدامات</th>
                         </tr>
                         </thead>
                         <tbody >
@@ -35,6 +36,9 @@
                                 <td>{{ $item->status === 0 ? 'در انتظار' : ($item->status === 1 ? 'خظا' : 'صادر شده') }}</td>
                                 <td><pre>{{json_encode($item->result ?? [],JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)}}</pre></td>
                                 <td class="jdate">{{ persian_date($item->updated_at,'%A, %d %B %Y H:i:s') }}</td>
+                                <td>
+                                    <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -50,3 +54,23 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script>
+        function deleteItem(id) {
+            Swal.fire({
+                title: 'حذف کردن',
+                text: 'آیا از حذف کردن این مورد اطمینان دارید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'خیر',
+                confirmButtonText: 'بله',
+            }).then((result) => {
+                if (result.value) {
+                @this.call('deleteItem' , id)
+                }
+            })
+        }
+    </script>
+@endpush

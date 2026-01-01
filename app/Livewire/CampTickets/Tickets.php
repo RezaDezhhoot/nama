@@ -37,4 +37,9 @@ class Tickets extends BaseComponent
 
         return view('livewire.camp-tickets.tickets' , get_defined_vars())->extends('livewire.layouts.admin');
     }
+
+    public function deleteItem($id)
+    {
+        CampTicket::destroy($id);
+    }
 }
