@@ -35,6 +35,7 @@
                             <th>نسخه آرمان</th>
                             <th>پیشنیاز ها</th>
                             <th>نوع اکشن پلن</th>
+                            <th>شناسه 6 رقمی اردو</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -60,6 +61,7 @@
                                     @endforeach
                                 </td>
                                 <td>{{ $item->type?->label() }}</td>
+                                <td>{{ $item->camp_code ?? '-' }}</td>
                                 <td>
                                     <x-admin.edit-btn href="{{ route('admin.plans.store',[PageAction::UPDATE , $item->id]) }}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />

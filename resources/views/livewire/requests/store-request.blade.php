@@ -27,6 +27,7 @@
                             <th>تاریخ ثبت درخواست</th>
                             <th>تاریخ آخرین بروزرسانی</th>
                             <th>واحد</th>
+                            <th>شناسه بلیط اردو</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@
                                 <hr>
                                 {{ $request->unit?->parent?->full ?? "-" }}
                             </td>
+                            <td>{{ $request->camp_ticket_id ?? '-' }}</td>
                         </tr>
                         </tbody>
                     </table>

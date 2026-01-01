@@ -73,6 +73,7 @@
                             <th>تاریخ ارسال</th>
                             <th>تاریخ اخرین بروزرسانی</th>
                             <th>تعداد گفتوگو</th>
+                            <th>شناسه بلیط اردو</th>
                             <th>اقدامات</th>
                         </tr>
                         </thead>
@@ -127,6 +128,7 @@
                                 <td>{{ persian_date($item->created_at , '%A, %d %B %Y H:i:s') }}</td>
                                 <td>{{ persian_date($item->updated_at) }}</td>
                                 <td>{{ number_format($item->comments_count) }}</td>
+                                <td>{{ $item->camp_ticket_id ?? '-' }}</td>
                                 <td>
                                     <x-admin.edit-btn target="_blank" href="{{ route('admin.requests.store',[$type,PageAction::UPDATE , $item->id]) }}?version={{$version}}&status={{$status}}&type={{$type}}&region={{$region}}&plan={{$plan}}&unit={{$unit}}&step={{$step}}&search={{$search}}"/>
                                     <x-admin.delete-btn onclick="deleteItem('{{$item->id}}')"  />

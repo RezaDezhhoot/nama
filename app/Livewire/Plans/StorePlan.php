@@ -24,6 +24,7 @@ class StorePlan extends BaseComponent
     public $title , $sub_title , $image , $status , $max_number_people_supported = 10 , $support_for_each_person_amount = 1000;
     public $starts_at , $expires_at , $max_allocated_request = 1 , $body , $bold = false , $single_step = false , $images_required = false;
 
+    public $camp_code;
     public $version;
 
     public $item;
@@ -70,6 +71,7 @@ class StorePlan extends BaseComponent
             $this->type = $this->model->type?->value;
 
             $this->letter_required = $this->model->letter_required ;
+            $this->camp_code = $this->model->camp_code ;
             $this->letter2_required = $this->model->letter2_required;
             $this->images_required = $this->model->images_required ;
 
@@ -172,7 +174,8 @@ class StorePlan extends BaseComponent
             'ring_member_required' => ['nullable','boolean'],
             'show_ring_member' => ['nullable','boolean'],
 //            'requirements.*' => ['required',Rule::exists('request_plans','id')],
-            'type' => ['required',Rule::enum(PlanTypes::class)]
+            'type' => ['required',Rule::enum(PlanTypes::class)],
+            'camp_code' => ['nullable','string']
         ]);
         if ($this->type == PlanTypes::UNIVERSITY->value && (! $this->staff && ! $this->designated_by_council)) {
             $this->addError("type",'پلن دانشجویی باید ستادی یا تعیین هزینه توسط شورا باشد');
@@ -216,6 +219,7 @@ class StorePlan extends BaseComponent
             'staff' => emptyToNull($this->staff) ?? false,
             'designated_by_council' => emptyToNull($this->designated_by_council) ?? false,
             'staff_amount' => emptyToNull($this->staff_amount) ,
+            'camp_code' => emptyToNull($this->camp_code) ,
 
             'ring_member_required' => emptyToNull($this->ring_member_required) ?? false,
             'show_ring_member' => emptyToNull($this->show_ring_member) ?? false,

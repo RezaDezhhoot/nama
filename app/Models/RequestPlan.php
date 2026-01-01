@@ -21,7 +21,7 @@ class RequestPlan extends Model
 {
     use SoftDeletes , SimpleSearchable , Loggable;
 
-    public array $searchAbleColumns = ['title','max_number_people_supported','support_for_each_person_amount','body'];
+    public array $searchAbleColumns = ['title','max_number_people_supported','support_for_each_person_amount','body','camp_code'];
 
     protected $guarded = [];
 

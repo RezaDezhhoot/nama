@@ -19,7 +19,7 @@
                 <x-admin.forms.lfm-standalone :required="true" id="image" label="لوگو" :file="$image" wire:model="image"/>
                 <x-admin.forms.checkbox  id="bold" label="اولین پلن نمایش داده شود" wire:model.defer="bold"/>
                 <x-admin.forms.dropdown :data="$data['types']" :required="true" id="type" label="نوع پلن" wire:model.live="type"/>
-                <x-admin.forms.checkbox width="4" id="single_step" label="درخواست تک مرحله ای" wire:model.defer="single_step"/>
+                <x-admin.forms.checkbox width="4" id="single_step" label="درخواست تک مرحله ای" wire:model.live="single_step"/>
                 <x-admin.forms.checkbox width="4" id="staff" label="ستادی" wire:model.live="staff"/>
                 <x-admin.forms.checkbox width="4" id="designated_by_council" label="تعیین هزینه توسط شورا" wire:model.live="designated_by_council"/>
                 @if($staff)
@@ -85,6 +85,9 @@
                         </tr>
                     </table>
                 </div>
+                @if($single_step)
+                    <x-admin.forms.input type="text" id="camp_code" label="شناسه 6 رقمی اردو" wire:model.defer="camp_code"/>
+                @endif
 
                 <div wire:ignore class="{{ $item ? '' : 'd-none' }} col-12 row">
                     <x-admin.forms.select2
