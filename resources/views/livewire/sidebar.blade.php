@@ -101,6 +101,7 @@
                         <x-admin.menu-item href="{{route('pulse')}}" icon="flaticon-book" :active="false" label="Pulse" />
                         <x-admin.menu-item href="{{route('log-viewer.index')}}" icon="flaticon-book" :active="false" label="Logs" />
                         <x-admin.menu-item href="{{route('admin.client-logs')}}" icon="flaticon-book" :active="request()->routeIs(['admin.client-logs'])" label="Client logs" />
+                        <x-admin.menu-item href="{{route('admin.camp-tickets.index')}}" icon="fas fa-ticket-alt" :active="request()->routeIs(['admin.camp-tickets.index','admin.camp-tickets.store'])" label="بلیط های اردو" />
 
 {{--                        @can('show_log_activities')--}}
                             <x-admin.menu-item href="{{ route('admin.log-activities.index') }}" :active="request()->routeIs(['admin.log-activities.index'])" icon="fas fa-history" label="فعالیت کاربران" />

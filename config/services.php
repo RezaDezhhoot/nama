@@ -47,5 +47,9 @@ return [
     ],
     'pusheh' => [
         'api_key' => env("PUSHEH_X_API_KEY")
+    ],
+    'camp' => [
+        'base_url' => env('CAMP_BASE_URL',"https://camp.backend.armaniran.app"),
+        'api_key' => env("CAMP_API_KEY")
     ]
 ];

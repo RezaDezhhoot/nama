@@ -8,8 +8,10 @@ use App\Events\ConfirmationReportEvent;
 use App\Events\ConfirmationRequestEvent;
 use App\Events\RejectReportEvent;
 use App\Events\RejectRequestEvent;
+use App\Models\CampTicket;
 use App\Services\Notification\Send;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Http;
 
 class RequestListener
 {
@@ -39,6 +41,12 @@ class RequestListener
                     $id = $event->request->id;
                     $template = config('sms.kaveh_negar.template1');
                     $amount = $event->request->final_amount ?? $event->request->offer_amount ?? $event->request->amount ?? 0;
+                }
+                if ($event->request->single_step && ! empty($event->request->plan_data['camp_code'])) {
+                    CampTicket::query()
+                        ->create([
+                            'request_id' => $event->request->id,
+                        ]);
                 }
                 break;
             case ActionNeededRequestEvent::class:
