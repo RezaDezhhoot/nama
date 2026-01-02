@@ -19,4 +19,4 @@ use Illuminate\Support\Facades\Artisan;
 \Illuminate\Support\Facades\Schedule::command("app:prepare-daily-accounting-record-command school --subType=support")->dailyAt("12:00");
 \Illuminate\Support\Facades\Schedule::command("app:prepare-daily-accounting-record-command center")->dailyAt("12:00");
 \Illuminate\Support\Facades\Schedule::command("app:prepare-daily-accounting-record-command university")->dailyAt("12:00");
-\Illuminate\Support\Facades\Schedule::command("app:make-camp-ticket")->everyFiveMinutes();
+\Illuminate\Support\Facades\Schedule::command("app:make-camp-ticket")->everyMinute();
