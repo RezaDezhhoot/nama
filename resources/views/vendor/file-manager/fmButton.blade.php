@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="/lfm/css/bootstrap.min.css"  >
-    <link rel="stylesheet" href="/lfm/css/all.css" >
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
     <link rel="stylesheet" href="{{asset('lfm/css/file-manager.css')}}">
 
     <!-- Styles -->
