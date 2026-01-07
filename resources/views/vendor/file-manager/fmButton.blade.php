@@ -6,8 +6,9 @@
     <title>{{ __('pages.file-manager.file-manager') }}</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"  >
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
+
+    <link rel="stylesheet" href="/admin/lfm/css/bootstrap.min.css"  >
+    <link rel="stylesheet" href="/admin/lfm/css/all.css" >
     <link rel="stylesheet" href="{{asset('lfm/css/file-manager.css')}}">
 
     <!-- Styles -->
