@@ -115,7 +115,7 @@ class Unit extends Model
 
     public function scopeSelect2($q)
     {
-        return $q->selectRaw("title as text , id,sub_type,parent_id");
+        return $q->selectRaw("CONCAT(title,'-',systematic_code) as text , id,sub_type,parent_id");
     }
 
     public function roles(): HasMany

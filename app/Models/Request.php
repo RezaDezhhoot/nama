@@ -148,10 +148,10 @@ class Request extends Model
                         return $builder;
                     });
                 }
-
                 return $builder;
             }
-            return $builder->where('user_id' , auth()->id());
+            $ids = auth()->user()->unitIds();
+            return $builder->whereIn('unit_id' , $ids);
         });
     }
 
