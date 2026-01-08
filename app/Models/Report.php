@@ -126,7 +126,8 @@ class Report extends Model
                 });
             }
             return $builder->whereHas('request' , function ($q) {
-                $q->where('user_id',auth()->id());
+                $ids = auth()->user()->unitIds();
+                $q->whereIn('unit_id' , $ids);
             });
         });
     }
