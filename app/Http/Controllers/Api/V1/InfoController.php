@@ -10,6 +10,7 @@ use App\Models\Request as RequestModel;
 use App\Models\RequestPlan;
 use App\Models\WrittenRequest;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class InfoController extends Controller
@@ -29,7 +30,7 @@ class InfoController extends Controller
         return WrittenRequest::query()->where('user_id' , auth()->id());
     }
 
-    public function __invoke(): \Illuminate\Http\JsonResponse
+    public function __invoke(): JsonResponse
     {
         $role = OperatorRole::from(request()->get('role'));
         $isNotCoach = $role !== OperatorRole::MOSQUE_HEAD_COACH;

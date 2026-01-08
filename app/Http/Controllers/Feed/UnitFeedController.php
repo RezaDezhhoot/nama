@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Feed;
 
 use App\Http\Controllers\Controller;
 use App\Models\Unit;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UnitFeedController extends Controller
 {
-    public function __invoke(Request $request , bool $parent = true , $type = null , $main_unit = null)
+    public function __invoke(Request $request , bool $parent = true , $type = null , $main_unit = null): JsonResponse
     {
         $items = Unit::query()->when($parent , function ($q) {
             $q->whereNull('parent_id');
