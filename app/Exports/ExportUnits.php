@@ -17,7 +17,7 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
 
     public function query()
     {
-        return Unit::query()->with(['city','region','area','state','parent','neighborhood'])->when($this->region , function (Builder $builder) {
+        return Unit::query()->with(['roles','roles.user','roles.region','city','region','area','state','parent','neighborhood'])->when($this->region , function (Builder $builder) {
             $builder->where('region_id' , $this->region);
         })->when($this->unit , function (Builder $builder) {
             $builder->where('parent_id' , $this->unit);
@@ -38,6 +38,7 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
             'نوع',
             'نوع فرعی',
             'مسجد محوری',
+            'نقش ها',
             'استان',
             'شهر',
             'منطقه',
@@ -74,6 +75,9 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
                 'type' => $row->type?->label(),
                 'sub_type' => $row->sub_type?->label(),
                 'parent_id' => $row->parent?->title ?? '-',
+                'roles' => implode('\n',array_map(function ($v) {
+                    return sprintf("%s : %s - %s" ,$v->user?->name ,  $v->role?->label() , $v?->region?->title);
+                } , $row->roles)),
                 'state' => $row->state?->title,
                 'city' => $row->city?->title,
                 'region' => $row->region?->title,
