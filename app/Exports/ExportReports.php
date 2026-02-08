@@ -22,7 +22,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
     public function query()
     {
         return Report::query()
-            ->with(['request','request.user','request.unit','request.unit.city','request.unit.region','request.plan','video','images'])
+            ->with(['request','request.user','request.unit.parent','request.unit','request.unit.city','request.unit.region','request.plan','video','images'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
             })
@@ -128,7 +128,7 @@ class ExportReports implements FromQuery , WithHeadings,WithHeadingRow,ShouldAut
                 'national_id' => $row->request?->user?->national_id,
                 'status' => $row->status->label(),
                 'step' => $row->step->label($row->request?->plan_type),
-                'unit' => sprintf("%s - %s",$row?->request?->unit?->title , $row->request?->unit?->text),
+                'unit' => sprintf("%s - %s",$row?->request?->unit?->full , $row->request?->unit?->parnet?->full),
                 'city' => $row->request->unit?->city?->title,
                 'region' => $row->request->unit?->region?->title,
                 'created_at' =>  persian_date($row->created_at),

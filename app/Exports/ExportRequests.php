@@ -22,7 +22,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
     public function query()
     {
         return Request::query()
-            ->with(['plan','user','unit','unit.city','unit.region','imamLetter','areaInterfaceLetter'])
+            ->with(['plan','user','unit','unit.parent','unit.city','unit.region','imamLetter','areaInterfaceLetter'])
             ->when($this->step , function (Builder $builder) {
                 $builder->where('step' , $this->step);
             })
@@ -113,7 +113,7 @@ class ExportRequests implements FromQuery , WithHeadings,WithHeadingRow,ShouldAu
                 'national_id' => $row?->user?->national_id,
                 'status' => $row?->status->label(),
                 'step' => $row->step->label($row->plan_type),
-                'unit' => sprintf("%s - %s",$row?->unit?->title , $row?->unit?->text),
+                'unit' => sprintf("%s - %s",$row?->unit?->full , $row?->unit?->parent?->full),
                 'city' => $row->unit?->city?->title,
                 'region' => $row->unit?->region?->title,
                 'total_amount' =>  $row->designated_by_council ? "هزینه توسط شورا تعیین می گردد" : number_format($row->staff ? $row->staff_amount : $row->total_amount),
