@@ -94,6 +94,13 @@ class ReportController extends Controller
                 ->when($request->filled('step') , function (Builder $builder) use ($request) {
                     $builder->where('step' , $request->get('step'));
                 })
+                ->when($request->filled('region_id') , function (Builder $builder) use ($request) {
+                    $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                        $builder->whereHas('unit' , function (Builder $builder) use ($request) {
+                            $builder->where('region_id' , $request->get('region_id'));
+                        });
+                    });
+                })
                 ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
                     $builder->whereHas('request' , function (Builder $builder) use ($request) {
                         $builder->where('request_plan_id' , $request->get('plan_id'));

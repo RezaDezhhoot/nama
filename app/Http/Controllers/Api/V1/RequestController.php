@@ -53,8 +53,8 @@ class RequestController extends Controller
             })
             ->when($request->filled('invoice') , function (Builder $builder) {
                 $builder->whereHas('report' , function (Builder $builder) {
-                        $builder->where('status' , RequestStatus::DONE);
-                    });
+                    $builder->where('status' , RequestStatus::DONE);
+                });
             })
             ->when($request->filled('school_coach_type') , function (Builder $builder) use ($request) {
                 $builder->whereHas('roles' , function (Builder $builder) use ($request) {
@@ -99,6 +99,11 @@ class RequestController extends Controller
             })
             ->when($request->filled('plan_id') , function (Builder $builder) use ($request) {
                 $builder->where('requests.request_plan_id' , $request->get('plan_id'));
+            })
+            ->when($request->filled('region_id') , function (Builder $builder) use ($request) {
+                $builder->whereHas('unit' , function (Builder $builder) use ($request) {
+                    $builder->where('region_id' , $request->get('region_id'));
+                });
             })
             ->when($request->filled('unit_id') , function (Builder $builder) use ($request) {
                 $builder->where('requests.unit_id' , $request->get('unit_id'));
