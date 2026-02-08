@@ -75,4 +75,14 @@ class UserRole extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function causer(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'causer_id');
+    }
+
+    public function editor(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'updated_by_id');
+    }
 }

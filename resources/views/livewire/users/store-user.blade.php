@@ -134,6 +134,9 @@
                                         <thead>
                                         <tr>
                                             <th>عنوان نقش</th>
+                                            <th>تاریخ ثبت</th>
+                                            <th>ثبت شده توسط</th>
+                                            <th>ادیت شده توسط</th>
                                             <th>مرکز</th>
                                             <th>نوع مرکز</th>
                                             <th>شهر</th>
@@ -158,6 +161,9 @@
                                         @foreach($roles[$item] ?? [] as $r)
                                             <tr>
                                                 <td>{{ $r->role->label($r->item->type) }}</td>
+                                                <td>{{ persian_date($r->created_at) }}</td>
+                                                <td>{{ $r->causer?->name ?? 'نامشخص' }}</td>
+                                                <td>{{ $r->editor?->name ?? 'نامشخص' }}</td>
                                                 <td>{{ $r->unit?->full ?? '-' }}</td>
                                                 <td>{{ $r->unit ? ($r->unit->parent ? "معمولی" : "محوری") : '-'  }}</td>
                                                 <td>{{ $r?->city?->title ?? '-' }}</td>

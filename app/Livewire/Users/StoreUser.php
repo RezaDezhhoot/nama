@@ -74,7 +74,7 @@ class StoreUser extends BaseComponent
     public function render()
     {
         $roles = UserRole::query()->with(['unit'])
-            ->with(['city','region','neighborhood','area','item'])
+            ->with(['city','region','neighborhood','area','item','causer','editor'])
             ->where('user_id' , $this->user->id)
             ->when($this->item , function ($q) {
                 $q->where('item_id' , $this->item);
@@ -188,6 +188,7 @@ class StoreUser extends BaseComponent
                 'ring' => emptyToNull($this->ring) ?? false,
                 'auto_accept_period' => $this->auto_accept_period,
                 'notify_period' => $this->notify_period,
+                'causer_id' => auth()->id()
             ]);
             $this->resetRole();
             $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
@@ -340,6 +341,7 @@ class StoreUser extends BaseComponent
             'ring' => emptyToNull($this->ring) ?? false,
             'auto_accept_period' => $this->auto_accept_period,
             'notify_period' => $this->notify_period,
+            'updated_by_id' => auth()->id()
         ])->save();
         $this->resetRole();
         $this->emitNotify('اطلاعات با موفقیت ذخیره شد');
