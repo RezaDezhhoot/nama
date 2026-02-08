@@ -75,9 +75,9 @@ class ExportUnits implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoS
                 'type' => $row->type?->label(),
                 'sub_type' => $row->sub_type?->label(),
                 'parent_id' => $row->parent?->title ?? '-',
-                'roles' => implode('\n',array_map(function ($v) {
+                'roles' => collect($row->roles)?->map(function ($v) {
                     return sprintf("%s : %s - %s" ,$v->user?->name ,  $v->role?->label() , $v?->region?->title);
-                } , $row->roles)),
+                })->implode("\n"),
                 'state' => $row->state?->title,
                 'city' => $row->city?->title,
                 'region' => $row->region?->title,
