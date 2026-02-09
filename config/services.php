@@ -43,6 +43,9 @@ return [
         'oauth' => [
             'token' => env('ARMAN_OAUTH_TOKEN'),
             'api_endpoint' => env('ARMAN_OAUTH_API_ENDPOINT')
+        ],
+        'profile' => [
+            'base_url' => env("PROFILE_BASE_URL","https://profile.armaniran.app")
         ]
     ],
     'pusheh' => [
@@ -51,5 +54,5 @@ return [
     'camp' => [
         'base_url' => env('CAMP_BASE_URL',"https://camp.backend.armaniran.app"),
         'api_key' => env("CAMP_API_KEY")
-    ]
+    ],
 ];

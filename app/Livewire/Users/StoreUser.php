@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\UserRole;
+use App\Services\Arman\ProfileService;
 use Illuminate\Validation\Rule;
 
 class StoreUser extends BaseComponent
@@ -39,6 +40,8 @@ class StoreUser extends BaseComponent
 
     public $ring = false;
 
+    public $profileRoles = [];
+
     protected $queryString = [
         'qsearch' => [
             'as' => 'search'
@@ -63,6 +66,16 @@ class StoreUser extends BaseComponent
         $this->data['units'] = Unit::query()->whereNotNull('parent_id')->latest()->get()->pluck('full','id');
         $this->item = collect($this->data['items'])->keys()->first();
         $this->data['coach_type'] = SchoolCoachType::labels();
+        try {
+            $res = ProfileService::new()->submission($this->user->national_id);
+            $this->profileRoles = [
+                'setad_roles' => $res['setad_roles'],
+                'educational_roles' => $res['educational_roles'],
+            ];
+        } catch (\Exception $exception) {
+            report($exception);
+            $this->profileRoles = false;
+        }
     }
 
 

@@ -4,6 +4,44 @@
     @section('title', 'نقش'.(' '.$header ?? '') )
     <x-admin.form-control :deleteAble="false" :store="false" title="نقش"/>
     <div class="card card-custom h-100 gutter-b example example-compact">
+        <div class="card-body ">
+            <x-admin.form-section label="نقش های سامانه پروفایل">
+                @if($profileRoles)
+                    <div class="col-12  table-responsive">
+                        <h4>نقش های ستادی</h4>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>عنوان</th>
+                                <th>نوع نقش</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($profileRoles['setad_roles'] ?? [] as $r)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $r }}</td>
+                                    <td>ستادی</td>
+                                </tr>
+                            @endforeach
+                            @foreach($profileRoles['educational_roles'] ?? [] as $r)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $r }}</td>
+                                    <td>آمورشی</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="alert alert-warning">
+                        مشکلی در استعلام نقش های سامانه پروفایل وجود دارد!
+                    </p>
+                @endif
+            </x-admin.form-section>
+        </div>
         <div class="card-header">
             <h3 class="card-title">{{ $header }}</h3>
         </div>
@@ -12,9 +50,8 @@
             @foreach($data['items'] as $key => $value)
                 <x-admin.nav-tabs-item :active="$key == $item" :title="$value" key="item" :value="$key" icon="far fa-newspaper"/>
             @endforeach
-
         </x-admin.nav-tabs-list>
-        <div class="card-body ">
+        <div class="card-body">
             <x-admin.form-section label="تنطیمات نقش کاربر">
                 <x-admin.forms.dropdown :required="true" id="role" :data="$data['role']" label="نقش" wire:model.live="role"/>
                 <div class="col-12 row {{$role == \App\Enums\OperatorRole::MOSQUE_CULTURAL_OFFICER->value ? '' :"d-none"}}" >
