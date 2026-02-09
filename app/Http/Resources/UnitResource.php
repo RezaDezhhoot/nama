@@ -18,6 +18,7 @@ class UnitResource extends JsonResource
             'id' => $this->id,
             'title' => $this->full,
             'type' => $this->type,
+            'type_fa' => $this->type?->label(),
             'sub_type' => $this->sub_type,
             'city' => $this->whenLoaded('city'),
             'region' => $this->whenLoaded('region'),

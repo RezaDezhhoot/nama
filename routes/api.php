@@ -11,6 +11,7 @@ Route::group(['prefix' => 'v1'] , function () {
         Route::get("units" , \App\Http\Controllers\Api\V1\Inquiry\UnitController::class);
         Route::get("requests" , \App\Http\Controllers\Api\V1\Inquiry\RequestController::class);
         Route::get("reports" , \App\Http\Controllers\Api\V1\Inquiry\ReportController::class);
+        Route::get("role/{code}" , [\App\Http\Controllers\Api\V1\Inquiry\RoleController::class,'show']);
     });
     Route::get('users/profile' , \App\Http\Controllers\Api\V1\UserController::class)->middleware(['auth:sanctum']);
     Route::get('info' , \App\Http\Controllers\Api\V1\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
