@@ -6,7 +6,7 @@
     <div class="card card-custom h-100 gutter-b example example-compact">
         <div class="card-body ">
             <x-admin.form-section label="نقش های سامانه پروفایل">
-                @if($profileRoles)
+                @if(is_array($profileRoles))
                     <div class="col-12  table-responsive">
                         <h4>نقش های ستادی</h4>
                         <table class="table table-striped table-bordered">
