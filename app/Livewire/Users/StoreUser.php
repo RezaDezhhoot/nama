@@ -75,6 +75,7 @@ class StoreUser extends BaseComponent
         } catch (\Exception $exception) {
             report($exception);
             $this->profileRoles = false;
+            dd($exception->getMessage());
         }
     }
 
