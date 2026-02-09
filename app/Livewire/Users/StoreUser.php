@@ -68,7 +68,6 @@ class StoreUser extends BaseComponent
         $this->data['coach_type'] = SchoolCoachType::labels();
         try {
             $res = ProfileService::new()->submission($this->user->national_id);
-            dd($res);
             $this->profileRoles = [
                 'setad_roles' => $res['setad_roles'],
                 'educational_roles' => $res['educational_roles'],
@@ -76,7 +75,6 @@ class StoreUser extends BaseComponent
         } catch (\Exception $exception) {
             report($exception);
             $this->profileRoles = false;
-            dd($exception->getMessage());
         }
     }
 
