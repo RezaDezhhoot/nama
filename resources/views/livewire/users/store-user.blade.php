@@ -36,9 +36,11 @@
                         </table>
                     </div>
                 @else
-                    <p class="alert alert-warning">
-                        مشکلی در استعلام نقش های سامانه پروفایل وجود دارد!
-                    </p>
+                    <div class="col-12">
+                        <p class="alert alert-warning">
+                            مشکلی در استعلام نقش های سامانه پروفایل وجود دارد!
+                        </p>
+                    </div>
                 @endif
             </x-admin.form-section>
         </div>
