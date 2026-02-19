@@ -23,9 +23,7 @@ class AuthController extends Controller
                 throw new \Exception("invalid data");
 
             return response()->json([
-                'data' => [
-                    'redirect' => $redirect
-                ]
+                'verify_url' => $redirect
             ],201);
         } catch (\Exception $exception) {
             report($exception);
