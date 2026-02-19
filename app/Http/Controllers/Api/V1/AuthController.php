@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function sendRequest(SendAuthRequest $request): JsonResponse
     {
         try {
-            $redirect = ArmanOAuth::make()->sendRequest(route('api.auth.verify'),[
+            $redirect = ArmanOAuth::make()->sendRequest($request->input('callback'),[
                 'callback' => $request->input('callback'),
             ]);
             if (! $redirect)
