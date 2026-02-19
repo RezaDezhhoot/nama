@@ -37,6 +37,7 @@ class AuthController extends Controller
     {
         $status = 401;
         $jwt = null;
+        dd($request->all());
         $callback = $request->get('callback_data')['callback'] ?? "/";
         try {
             $user = ArmanOAuth::make()->verify($request->get('jwt',"-"));
