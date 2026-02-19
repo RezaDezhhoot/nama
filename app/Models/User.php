@@ -20,7 +20,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable , HasApiTokens , SimpleSearchable , Loggable , HasRoles;
 
-    protected $connection = 'arman';
+//    protected $connection = 'arman';
 
     protected $guarded = ['id'];
 

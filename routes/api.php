@@ -6,7 +6,12 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v2'] , function () {
     Route::get('info' , \App\Http\Controllers\Api\V2\InfoController::class)->middleware(['auth:sanctum','has_item','has_role']);
 });
-Route::group(['prefix' => 'v1'] , function () {
+Route::group(['prefix' => 'v1','as' => 'api.'] , function () {
+    Route::group(['prefix' => "auth",'as' => "auth."] , function () {
+        Route::post("send-request" , [\App\Http\Controllers\Api\V1\AuthController::class,'sendRequest']);
+        Route::withoutMiddleware('api')->get("verify" , [\App\Http\Controllers\Api\V1\AuthController::class,'verify'])->name('verify');
+    });
+
     Route::group(['prefix' => "inquiry"] , function () {
         Route::get("units" , \App\Http\Controllers\Api\V1\Inquiry\UnitController::class);
         Route::get("requests" , \App\Http\Controllers\Api\V1\Inquiry\RequestController::class);

@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use App\Livewire\BaseComponent;
 use App\Models\PersonalAccessToken;
 use App\Rules\ReCaptchaRule;
+use App\Services\Arman\ArmanOAuth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
@@ -20,31 +21,22 @@ class Auth extends BaseComponent
 
     public function mount()
     {
-//        AuthFacades::loginUsingId(24);
         if (request()->query('jwt')) {
-            $token = PersonalAccessToken::findToken(request()->query('jwt'));
-            if ($token) {
-                AuthFacades::login($token->tokenable);
-                if (isAdmin()) {
-                    return redirect()->intended(route('admin.dashboard.index'));
-                }
-                abort(403);
-            }
-            abort(404);
+            $user = ArmanOAuth::make()->verify(request()->get('jwt'));
+            \Illuminate\Support\Facades\Auth::login($user);
+            return redirect()->intended(route('admin.dashboard.index'));
+//            $token = PersonalAccessToken::findToken(request()->query('jwt'));
+//            if ($token) {
+//                AuthFacades::login($token->tokenable);
+//                if (isAdmin()) {
+//                    return redirect()->intended(route('admin.dashboard.index'));
+//                }
+//                abort(403);
+//            }
+//            abort(404);
         } else {
-            try {
-                $http = Http::acceptJson()
-                    ->get(config('services.arman.oauth.api_endpoint') , [
-                        'token' => config('services.arman.oauth.token'),
-                        'callback' => url()->current()
-                    ]);
-                if ($http->successful()) {
-                    $verify_url = $http->json('verify_url');
-                    return redirect()->away($verify_url);
-                }
-            } catch (\Exception $exception) {
-                report($exception);
-            }
+            $redirect = ArmanOAuth::make()->sendRequest(url()->current());
+            return redirect()->away($redirect);
         }
     }
 

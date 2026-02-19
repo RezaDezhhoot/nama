@@ -53,8 +53,7 @@ class RoleExport implements FromQuery , WithHeadings,WithHeadingRow,ShouldAutoSi
 
     public function query()
     {
-        $db = config('database.connections.arman.database');
-
+        $db = config('database.connections.mysql.database');
         return UserRole::query()
             ->latest('user_roles.user_id')
             ->select("u.id","u.name","u.phone","u.national_id","user_roles.*")
