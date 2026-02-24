@@ -61,16 +61,22 @@ class ReportController extends Controller
                 })
                 ->role(\request()->get('role'))->item(\request()->get('item_id'))
                 ->with(['request','request.plan','request.item','request.user','request.unit'])
-                ->whereHas('request' , function (Builder $builder) use ($request) {
-                    $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
-                        $builder->where(function (Builder $builder) use ($request) {
-                            $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
-                                $builder->search($request->get('q'));
-                            })->orWhere(function (Builder $builder) use ($request){
-                                $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
-                            })->orWhereHas('unit' , function (Builder $builder) use ($request) {
-                                $builder->search($request->get('q'));
+                ->where(function (Builder $builder) use($request) {
+                    $builder->whereHas('request' , function (Builder $builder) use ($request) {
+                        $builder->when($request->filled('q') , function (Builder $builder) use ($request) {
+                            $builder->where(function (Builder $builder) use ($request) {
+                                $builder->search($request->get('q'))->orWhereHas('plan' , function (Builder $builder) use ($request) {
+                                    $builder->search($request->get('q'));
+                                })->orWhere(function (Builder $builder) use ($request){
+                                    $builder->whereIn('user_id' , User::query()->search($request->get('q'))->take(30)->get()->pluck('id')->toArray());
+                                })->orWhereHas('unit' , function (Builder $builder) use ($request) {
+                                    $builder->search($request->get('q'));
+                                });
                             });
+                        });
+                    })->orWhere(function (Builder $builder) use ($request) {
+                        $builder->when($request->filled('q') , function ($q) use($request) {
+                            $q->search($request->get('q'));
                         });
                     });
                 })
