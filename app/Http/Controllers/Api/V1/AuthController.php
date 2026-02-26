@@ -57,8 +57,10 @@ class AuthController extends Controller
     {
         $userId = $request->post('user_id');
         $user = User::query()->where('arman_id' , $userId)->firstOrFail();
-
+        $count = $user->tokens()->count();
         $user->tokens()->delete();
-        return response()->json();
+        return response()->json([
+            'deleted' => $count
+        ]);
     }
 }
