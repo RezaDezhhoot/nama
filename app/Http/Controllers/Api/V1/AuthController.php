@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -59,6 +60,7 @@ class AuthController extends Controller
         $user = User::query()->where('arman_id' , $userId)->firstOrFail();
         $count = $user->tokens()->count();
         $user->tokens()->delete();
+        DB::table('sessions')->where('user_id',$user->id)->delete();
         return response()->json([
             'deleted' => $count
         ]);
