@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\SendAuthRequest;
+use App\Models\User;
 use App\Services\Arman\ArmanOAuth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -50,5 +51,14 @@ class AuthController extends Controller
             'jwt' => $jwt,
         ]);
         return redirect()->away(sprintf("%s?%s",$callback , $query));
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $userId = $request->post('user_id');
+        $user = User::query()->where('arman_id' , $userId)->firstOrFail();
+
+        $user->tokens()->delete();
+        return response()->json();
     }
 }

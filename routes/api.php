@@ -10,6 +10,7 @@ Route::group(['prefix' => 'v1','as' => 'api.'] , function () {
     Route::group(['prefix' => "auth",'as' => "auth."] , function () {
         Route::post("send-request" , [\App\Http\Controllers\Api\V1\AuthController::class,'sendRequest']);
         Route::withoutMiddleware('api')->get("verify" , [\App\Http\Controllers\Api\V1\AuthController::class,'verify'])->name('verify');
+        Route::post('ouath-logout',[\App\Http\Controllers\Api\V1\AuthController::class,'logout']);
     });
 
     Route::group(['prefix' => "inquiry"] , function () {
