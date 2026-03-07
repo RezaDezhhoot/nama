@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="robots" content="noindex,follow">
     <link href="{{asset('admin/css/pages/login/classic/login-2.rtl.css')}}" rel="stylesheet" type="text/css" />
-    <link href="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/css/style.bundle.rtl.css?v=7.2.9" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('admin/css/style.bundle.rtl.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('admin/css/custom.css')}}" rel="stylesheet" type="text/css"/>
     @livewireStyles
 </head>

@@ -19,5 +19,5 @@
         <small class="text-danger d-block">{{ $message }}</small>
         @enderror
     </div>
-    <script src="https://cdn.ckeditor.com/4.13.0/basic/ckeditor.js"></script>
+    <script src="{{ asset('vendor/cdn/ckeditor/4.13.0/basic/ckeditor.js') }}"></script>
 </div>

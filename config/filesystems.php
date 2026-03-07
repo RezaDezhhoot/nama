@@ -59,7 +59,15 @@ return [
             'throw' => false,
             'report' => false,
         ],
-
+        'remote_storage' => [
+            'driver' => 'ftp',
+            'host' => env('ARMAN_REMOTE_STORAGE_HOST'),
+            'username' => env('ARMAN_REMOTE_STORAGE_USERNAME'),
+            'password' => env('ARMAN_REMOTE_STORAGE_PASSWORD'),
+            'root' => 'www/namaBack',
+            'url' => 'https://dl1.armaniran.app/namaBack',
+            'timeout' => 180,
+        ]
     ],
 
     /*

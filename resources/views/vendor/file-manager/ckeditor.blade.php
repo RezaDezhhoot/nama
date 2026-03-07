@@ -8,8 +8,8 @@
 {{--    <link rel="icon" sizes="16x16" href="{{asset($logo)}}" />--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"  >
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
+    <link rel="stylesheet" href="{{ asset('vendor/cdn/bootstrap/4.6.2/css/bootstrap.min.css') }}"  >
+    <link rel="stylesheet" href="{{ asset('vendor/cdn/fontawesome/5.5.0/css/all.css') }}" >
     <link rel="stylesheet" href="{{asset('lfm/css/file-manager.css')}}">
 
     <!-- Styles -->

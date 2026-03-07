@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>آرمان | سوپر اپ</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="/assets/css/all.min.css" />
+    <link rel="stylesheet" href="/assets/css/fonts.css" />
+    <link rel="stylesheet" href="/assets/css/animate.min.css" />
+    <script type="module" crossorigin src="/assets/index-BpTm6gt-.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-6-yjIMGD.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

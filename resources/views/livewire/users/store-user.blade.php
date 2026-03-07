@@ -321,8 +321,8 @@
     </x-admin.modal-page>
 </div>
 @push('scripts')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="{{ asset('vendor/cdn/leaflet/1.7.1/dist/leaflet.css') }}" />
+    <script src="{{ asset('vendor/cdn/leaflet/1.7.1/dist/leaflet.js') }}"></script>
     <script>
         function deleteRole(id) {
             Swal.fire({

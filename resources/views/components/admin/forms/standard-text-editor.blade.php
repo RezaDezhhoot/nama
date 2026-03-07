@@ -1,6 +1,6 @@
 @props(['id', 'label'])
 <div class="form-group col-12">
-    <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+    <script src="{{ asset('vendor/cdn/ckeditor/4.13.0/standard/ckeditor.js') }}"></script>
     <div style="padding: 5px">
         <div wire:ignore>
             <label for="{{$id}}">{{$label}} </label>

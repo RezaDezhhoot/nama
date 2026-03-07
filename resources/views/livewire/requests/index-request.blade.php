@@ -152,9 +152,9 @@
     </div>
 </div>
 @push('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+    <script src="{{ asset('vendor/cdn/jquery/jquery-3.6.4.min.js') }}"></script>
+    <script src="{{ asset('vendor/cdn/jquery-ui/1.13.2/jquery-ui.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('vendor/cdn/jquery-ui/1.13.2/themes/base/jquery-ui.css') }}"/>
     <script>
         function deleteItem(id) {
             Swal.fire({
